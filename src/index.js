@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { LoginScreen } from './components/auth/LoginScreen';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <LoginScreen />
   </React.StrictMode>,
   document.getElementById('root')
 );

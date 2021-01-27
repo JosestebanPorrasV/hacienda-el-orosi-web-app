@@ -8,7 +8,7 @@ export const LoginScreen = () => {
       className="m-0 p-0 box-border relative h-screen w-full bg-cover bg-center"
       style={{ backgroundImage: `url(${bgLogin})` }}
     >
-      <div class="min-h-screen text-white antialiased px-4 py-6 flex flex-col justify-center sm:py-12">
+      <div class="min-h-screen text-white antialiased px-4 py-6 flex flex-col justify-center sm:py-12 font-body">
         <div class="relative py-3 sm:max-w-xl mx-auto text-center">
           <span class="text-5xl uppercase">Hacienda El Orosi</span>
           <div class="relative mt-4 bg-black bg-opacity-50 shadow-md sm:rounded-lg text-left">
@@ -30,7 +30,7 @@ export const LoginScreen = () => {
                 <button class="mt-4 bg-green-900 text-white py-2 px-6 rounded-lg">
                   Ingresar
                 </button>
-                <a href="#" class=" pl-3 text-sm hover:underline">
+                <a href="#" class="pl-3 text-sm hover:underline">
                 ¿Problemas para iniciar sesión?
                 </a>
               </div>

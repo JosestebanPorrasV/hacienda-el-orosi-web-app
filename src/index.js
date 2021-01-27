@@ -4,10 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { LoginScreen } from './components/auth/LoginScreen';
+import { LoginScreen2 } from './components/auth/LoginScreen2';
 
 ReactDOM.render(
   <React.StrictMode>
-    <LoginScreen />
+    <LoginScreen2 />
   </React.StrictMode>,
   document.getElementById('root')
 );

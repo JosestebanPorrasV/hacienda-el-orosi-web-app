@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { LoginScreen } from './components/auth/LoginScreen';
+import { LoginScreen2 } from './components/auth/LoginScreen2';
+import { LoginScreen3 } from './components/auth/LoginScreen3';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <LoginScreen3 />
   </React.StrictMode>,
   document.getElementById('root')
 );

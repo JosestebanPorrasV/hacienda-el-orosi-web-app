@@ -9,7 +9,7 @@ import { LoginScreen3 } from './components/auth/LoginScreen3';
 
 ReactDOM.render(
   <React.StrictMode>
-    <LoginScreen3 />
+    <LoginScreen2 />
   </React.StrictMode>,
   document.getElementById('root')
 );

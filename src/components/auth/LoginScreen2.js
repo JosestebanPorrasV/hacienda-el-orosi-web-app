@@ -7,7 +7,7 @@ import mainLogo from "../../assets/mainLogo.png";
 
 export const LoginScreen2 = () => {
   return (
-    <div className="bg-green-700 font-family-karla text-white h-screen">
+    <div className="bg-second font-family-karla text-white h-screen">
       <div class="w-full flex flex-wrap">
         <div class="w-full md:w-1/2 flex flex-col">
           <div class="flex justify-center md:justify-start pt-12 md:pl-12 md:-mb-24">
@@ -28,7 +28,7 @@ export const LoginScreen2 = () => {
                   type="Cédula"
                   id="Cédula"
                   placeholder="X-XXX-XXX"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                  class="shadow appearance-none bg-first border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>
 
@@ -40,18 +40,18 @@ export const LoginScreen2 = () => {
                   type="password"
                   id="password"
                   placeholder="******"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                  class="shadow appearance-none bg-first border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>
 
               <input
                 type="submit"
                 value="Ingresar"
-                class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"
+                class="bg-third text-first font-bold text-lg hover:bg-gray-700 p-2 mt-8"
               />
             </form>
             <div class="text-center pt-12 pb-12">
-              <a href="#" class="pl-3  hover:underline">
+              <a href="#" class="pl-3 text-fourth hover:underline">
                 ¿Problemas para iniciar sesión?
               </a>
             </div>

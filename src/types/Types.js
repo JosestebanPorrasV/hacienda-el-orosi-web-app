@@ -1,0 +1,6 @@
+export const Types = {
+// LOGIN
+LOGIN: 'LOGIN',
+LOGOUT: 'LOGOUT',
+CHECK_LOGIN_FINISH: 'CHECK_LOGIN_FINISH',
+};

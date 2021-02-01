@@ -47,7 +47,7 @@ export const LoginScreen3 = () => {
                   <div class="flex flex-col mt-8">
                     <button
                       type="submit"
-                      class="bg-green-600 hover:bg-green-900 text-white text-sm font-semibold py-2 px-4 rounded"
+                      class="bg-green-500 hover:bg-yellow-600 text-white text-sm font-semibold py-2 px-4 rounded"
                     >
                       Ingresar
                     </button>

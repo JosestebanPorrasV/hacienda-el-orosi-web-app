@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
-import { LoginScreen3 } from "../components/auth/LoginScreen3";
 import { LoginScreen } from "../components/auth/LoginScreen";
 
 export const AppRouter = () => {
@@ -18,7 +17,7 @@ export const AppRouter = () => {
           <PublicRoute
             exact
             path="/acceso"
-            component={LoginScreen3}
+            component={LoginScreen}
             isAuthenticated={!!x}
           />
 

@@ -10,6 +10,7 @@ export const Dashboard = () => {
 
       <Link class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" to="/prestamos"> Ir prestamos </Link>
 
+      <Link class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" to="/listar-administradores"> Ir Administradores </Link>
 
     </div>
   );

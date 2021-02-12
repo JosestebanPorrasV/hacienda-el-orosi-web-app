@@ -5,11 +5,11 @@ import {FetchConsult} from "../helpers/FetchService";
 export const collaboratorStartLoading = (page_) => {
     return async (dispatch) => {
         try{
-            const resp = await FetchConsult(`recursos-humanos/colaboradores-activos/${page_}`, null);
+            const resp = await FetchConsult(`recursos-humanos/colaboradores-activos/${page_}`);
             const body = await resp.json();
 
             if (body.status === "success") {
-                console.log("este es mi colaborador", body.collaborators)
+                console.log("este es mi colaborador", body)
                 dispatch(collaboratorsLoaded(body.collaborators))
             }else {
                 console.log("Error", body.msg, "error")

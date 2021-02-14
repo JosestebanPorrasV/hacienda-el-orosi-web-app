@@ -17,6 +17,9 @@ export const Types = {
   //pagos
   PAYMENT_LOADED: "LOAD_PAYMENT",
 
+  //PRESTAMOS
+  LEND_LOADED: "LOAD_LEND",
+
   UI_OPEN_MODAL: "UI_OPEN_MODAL",
   UI_CLOSE_MODAL: "UI_CLOSE_MODAL",
 };

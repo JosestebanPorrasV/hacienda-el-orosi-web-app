@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { HaciendaApp } from './HaciendaApp';
 
 ReactDOM.render(
   <React.StrictMode>
-    <HaciendaApp />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

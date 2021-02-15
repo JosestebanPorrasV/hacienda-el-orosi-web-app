@@ -5,6 +5,7 @@ import { Dashboard } from "../components/ui/Dashboard";
 import {CollaboratorScreen } from "../components/collaborator/CollaboratorScreen";
 import { AdministratorScreen } from "../components/administrator/AdministratorScreen";
 import { LendScreen } from "../components/lend/LendScreen";
+import { LendHistoryScreen } from "../components/lend/LendHistoryScreen";
 
 export const DashboardRoutes = () => {
   return (
@@ -13,10 +14,10 @@ export const DashboardRoutes = () => {
       <main>
         <div>
           <Switch>
-            <Route exact path="/menu-principal" component={LendScreen} />
             <Route exact path="/listar-administradores" component={AdministratorScreen} />
             <Route exact path="/listar-colaboradores" component={CollaboratorScreen} />
             <Route exact path="/listar-prestamos" component={LendScreen} />
+            <Route exact path="/prestamo-historial" component={ LendHistoryScreen } />
 
             <Redirect to="/menu-principal" />
           </Switch>

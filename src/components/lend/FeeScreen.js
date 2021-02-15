@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { lendStartLoading } from "../../actions/LendAction";
+import { lendCanceltLoading } from "../../actions/LendAction";
 
-export const LendScreen = () => {
+export const FeeScreen = () => {
   const dispatch = useDispatch();
 
   const { lends, count } = useSelector((state) => state.lend);
 
   useEffect(() => {
-    dispatch(lendStartLoading(1));
+    dispatch(lendCanceltLoading(1));
   }, [dispatch]);
   return (
     <div class="main-content flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">
       <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-5">
-        <h5 class="font-bold uppercase text-gray-600">Prestamos Activos</h5>
+        <h5 class="font-bold uppercase text-gray-600">Historial de Cuotas</h5>
       </div>
       <div class="p-5">
         <table class="w-full p-5 text-gray-700">

@@ -21,6 +21,26 @@ export const lendStartLoading = () => {
     };
   };
 
+  export const lendCanceltLoading = () => {
+    return async (dispatch) => {
+      try {
+        const resp = await FetchConsult(`recursos-humanos/historial`);
+  
+        const body = await resp.json();
+        
+        if (body.status === "success") {
+  
+          console.log(body.lends);
+          dispatch(lendLoaded(body.lends));
+        } else {
+          console.log("Error", body.msg, "error")
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  };
+
   const lendLoaded = (lends) => ({
     type: Types.LEND_LOADED,
     payload: lends

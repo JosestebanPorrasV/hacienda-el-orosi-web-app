@@ -1,7 +1,7 @@
 import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 
-export const administratorStartLoading = () => {
+export const AdministratorLoading = () => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult("/administradores");

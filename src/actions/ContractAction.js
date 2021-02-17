@@ -1,27 +1,25 @@
 import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
+import Swal from "sweetalert2";
 
-export const contractStartLoading = () => {
+export const contractLoading = () => {
   return async (dispatch) => {
     try {
-      const resp = await FetchConsult(
-        `recursos-humanos/ver-contratos`
-      );
-
+      const resp = await FetchConsult(`recursos-humanos/ver-contratos/active`);
       const body = await resp.json();
+
       if (body.status === "success") {
-        console.log(body.contracts);
-        dispatch(contractLoaded(body.contracts));
-      }else{
-          console.log( "Error", body.msg, "error" );
+        dispatch(contractsLoaded(body));
+      } else {
+        Swal.fire("Error", body.msg, "error");
       }
-    }catch (error) {
-        console.log(error);
+    } catch (error) {
+      console.log(error);
     }
   };
 };
 
-const contractLoaded = (contracts) => ({
-    types: Types.CONTRACT_LOADED,
-    payload: contracts,
+const contractsLoaded = (contracts) => ({
+  type: Types.CONTRACTS_ACTIVES_LOADED,
+  payload: contracts,
 });

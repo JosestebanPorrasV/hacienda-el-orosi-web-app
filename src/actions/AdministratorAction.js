@@ -1,17 +1,16 @@
 import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
+import Swal from "sweetalert2";
 
 export const AdministratorLoading = () => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult("/administradores");
       const body = await resp.json();
-
       if (body.status === "success") {
-        console.log(body.admins);
-        dispatch(administratorLoaded(body.admins));
+        dispatch(administratorLoaded(body));
       } else {
-        console.log("Error", body.msg, "error");
+        Swal.fire("Error", body.msg, "error");
       }
     } catch (error) {
       console.log(error);

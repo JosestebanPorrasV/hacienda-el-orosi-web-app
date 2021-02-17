@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { DashboardRoutes } from "../../routers/DashboardRoutes";
 
 export const Dashboard = () => {
+  const logout = () => {
+    localStorage.clear();
+    window.location.reload(true);
+  };
   return (
     <div>
       <nav className="bg-gray-800 pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto fixed w-full z-20 top-0">
@@ -20,20 +24,10 @@ export const Dashboard = () => {
           <div className="flex w-full pt-2 content-center justify-between md:w-1/3 md:justify-end">
             <ul className="list-reset flex justify-between flex-1 md:flex-none items-center">
               <li className="flex-1 md:flex-none md:mr-3">
-                <a
-                  className="inline-block py-2 px-4 text-white no-underline"
-                  href="google.com"
-                >
-                  Active
-                </a>
-              </li>
-              <li className="flex-1 md:flex-none md:mr-3">
-                <a
-                  className="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4"
-                  href="google.com"
-                >
-                  link
-                </a>
+
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={()=>logout()}>
+                  Cerrar Sesion
+                </button>
               </li>
             </ul>
           </div>
@@ -78,16 +72,16 @@ export const Dashboard = () => {
               <li className="mr-3 flex-1">
                 <Link
                   className="block py-1 md:py-3 pl-0 md:pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-white-800 hover:border-red-500"
-                  to="/prestamo-historial"
+                  to="/listar-contratos"
                 >
-                  Historial de Prestamos
+                  Ver contratos activos
                 </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        <DashboardRoutes/>
+        <DashboardRoutes />
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import { CollaboratorScreen } from "../components/collaborator/CollaboratorScree
 import { AdministratorScreen } from "../components/administrator/AdministratorScreen";
 import { LendScreen } from "../components/lend/LendScreen";
 import { LendHistoryScreen } from "../components/lend/LendHistoryScreen";
+import { ContractScreen } from "../components/contract/ContractScreen";
 
 export const DashboardRoutes = () => {
   return (
@@ -26,8 +27,8 @@ export const DashboardRoutes = () => {
         />
         <Route exact path="/listar-prestamos" component={LendScreen} />
         <Route exact path="/prestamo-historial" component={LendHistoryScreen} />
-
-        <Redirect to="/menu-principal" />
+        <Route exact path="/listar-contratos" component={ContractScreen} />
+        <Redirect to="/listar-colaboradores" />
       </Switch>
     </Router>
   );

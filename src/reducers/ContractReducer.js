@@ -1,20 +1,17 @@
 import { Types } from "../types/Types";
 
 const initialState = {
-contracts: [],
-count: 0,
+  contracts: [],
 };
 
-export const ContractReducer = ( state = initialState, action ) => {
-switch (action.type) {
-    case Types.CONTRACT_LOADED:
-        return{
-            ...state,
-            contracts: [...action.payload.contracts],
-            count: action.payload.count,
-        };
+export const ContractReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case Types.CONTRACTS_ACTIVES_LOADED:
+      return {
+        ...state,
+        contracts: [...action.payload.contracts],
+      };
     default:
-        return state;
-}
-
-}
+      return state;
+  }
+};

@@ -83,6 +83,14 @@ export const Dashboard = () => {
                   Historial de Prestamos
                 </Link>
               </li>
+              <li className="mr-3 flex-1">
+                <Link
+                  className="block py-1 md:py-3 pl-0 md:pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-white-800 hover:border-red-500"
+                  to="/listar-contratos"
+                >
+                  Ver contratos activos
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

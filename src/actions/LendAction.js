@@ -5,12 +5,11 @@ import Swal from "sweetalert2";
 export const lendStartLoading = () => {
   return async (dispatch) => {
     try {
-      const resp = await FetchConsult(`recursos-humanos/prestamo-activos`);
+      const resp = await FetchConsult(`recursos-humanos/prestamos-activos`);
 
       const body = await resp.json();
-
       if (body.status === "success") {
-        dispatch(lendLoaded(body.lends));
+        dispatch(lendLoaded(body));
       } else {
         Swal.fire("Error", body.msg, "error");
       }

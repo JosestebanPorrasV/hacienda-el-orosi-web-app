@@ -24,21 +24,21 @@ export const LendScreen = () => {
           <thead className="justify-between">
             <tr className="bg-gray-800 text-gray-300">
               <th>Colaborador</th>
+              <th className="px-16 py-2">Cedula del colaborador</th>
               <th className="px-16 py-2">Monto prestado</th>
               <th className="px-16 py-2">Fecha de registro</th>
-              <th className="px-16 py-2">Estado</th>
             </tr>
           </thead>
           <tbody className="bg-gray-200">
-            {lends.map((item, index) => (
+            {lends.map((lend) => (
               <tr
-                key={index}
+                key={lend._id}
                 className="bg-white border-4 border-gray-200 text-center ml-2 font-semibold"
               >
-                <th className="px-16 py-2">{item.collaborator}</th>
-                <th className="px-16 py-2">{item.amount}</th>
-                <th className="px-16 py-2">{item.date_issued}</th>
-                <th className="px-16 py-2">{item.status}</th>
+                <th className="px-16 py-2">{lend.collaborator ? `${lend.collaborator.name} ${lend.collaborator.surname}` : "No existe colaborador"}</th>
+                <th className="px-16 py-2">{lend.collaborator ? lend.collaborator.document_id : "No existe colaborador"}</th>
+                <th className="px-16 py-2">{lend.amount}</th>
+                <th className="px-16 py-2">{lend.date_issued}</th>
               </tr>
             ))}
           </tbody>

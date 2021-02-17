@@ -28,7 +28,7 @@ export const DashboardRoutes = () => {
         <Route exact path="/listar-prestamos" component={LendScreen} />
         <Route exact path="/prestamo-historial" component={LendHistoryScreen} />
         <Route exact path="/listar-contratos" component={ContractScreen} />
-        <Redirect to="/menu-principal" />
+        <Redirect to="/listar-colaboradores" />
       </Switch>
     </Router>
   );

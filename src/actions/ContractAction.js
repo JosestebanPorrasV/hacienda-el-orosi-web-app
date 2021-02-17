@@ -8,7 +8,6 @@ export const contractLoading = () => {
       const resp = await FetchConsult(`recursos-humanos/ver-contratos/active`);
       const body = await resp.json();
 
-      console.log(body);
       if (body.status === "success") {
         dispatch(contractsLoaded(body));
       } else {

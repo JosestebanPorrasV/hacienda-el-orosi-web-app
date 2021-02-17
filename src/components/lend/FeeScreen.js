@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { lendStartLoading } from "../../actions/LendAction";
+import { lendCanceltLoading } from "../../actions/LendAction";
 
-export const LendScreen = () => {
+export const FeeScreen = () => {
   const dispatch = useDispatch();
 
   const { lends, count } = useSelector((state) => state.lend);
 
   useEffect(() => {
-    dispatch(lendStartLoading(1));
+    dispatch(lendCanceltLoading(1));
   }, [dispatch]);
   return (
-    <div class="main-content flex-1 bg-gray-100 mt-20 md:mt-2 pb-5 md:pb-5">
-      <div class="bg-green-900 pt-20">
-                <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
-                    <h3 class="font-bold pl-2">Prestamos Activos</h3>
-                </div>
-            </div>
+    <div class="main-content flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">
+      <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-5">
+        <h5 class="font-bold uppercase text-gray-600">Historial de Cuotas</h5>
+      </div>
       <div class="p-5">
-        <table class="w-full p-5 text-gray-700 border-separate">
+        <table class="w-full p-5 text-gray-700">
           <thead class="justify-between">
             <tr class="bg-gray-800 text-gray-300">
               <th>Colaborador</th>

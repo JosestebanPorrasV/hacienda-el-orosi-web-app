@@ -1,7 +1,6 @@
 import { Types } from "../types/Types";
 
 const initialState = {
-  //name: 'Adrian', ...
   checking: true,
   recoveryState: 0,
 };

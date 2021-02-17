@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
 import { LoginScreen } from "../components/auth/LoginScreen";
-import { DashboardRoutes } from "./DashboardRoutes";
 import { startChecking } from "../actions/AuthAction";
 import { RecoveryPass } from "../components/auth/RecoveryPass";
+import { Dashboard } from "../components/ui/Dashboard";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ export const AppRouter = () => {
 
           <PrivateRoute
             path="/"
-            component={DashboardRoutes}
+            component={Dashboard}
             isAuthenticated={!!id}
           />
 

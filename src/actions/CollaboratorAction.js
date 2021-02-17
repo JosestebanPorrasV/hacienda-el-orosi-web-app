@@ -1,8 +1,7 @@
 import {Types} from "../types/Types";
 import {FetchConsult} from "../helpers/FetchService";
 
-//listar collaboradores
-export const collaboratorStartLoading = (page_) => {
+export const CollaboratorLoading = (page_) => {
     return async (dispatch) => {
         try{
             const resp = await FetchConsult(`recursos-humanos/colaboradores-activos/${page_}`);

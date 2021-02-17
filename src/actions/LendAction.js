@@ -21,7 +21,7 @@ export const lendStartLoading = () => {
     };
   };
 
-  export const lendCanceltLoading = () => {
+  export const lendCancelLoading = () => {
     return async (dispatch) => {
       try {
         const resp = await FetchConsult(`recursos-humanos/historial`);

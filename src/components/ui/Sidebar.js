@@ -1,7 +1,13 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { uiOpenMenu, uiCloseMenu } from "../../actions/UIAction";
 
 import logo from "../../assets/mainLogo.png";
 export const Sidebar = () => {
+
+  const dispatch = useDispatch();
+  const { menuOpen } = useSelector((state) => state.ui);
+
   return (
     <div class="bg-green-800 w-54 xl:w-64 2xl:w-80 px-4 lg:px-6 xl:px-8 py-4 lg:py-6 sticky top-0 hidden lg:flex flex-col shadow-2xl h-screen  z-10">
       <div class="flex-1 py-4">

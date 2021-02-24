@@ -1,6 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { logout } from "../../actions/AuthAction";
+import { uiCloseMenu } from "../../actions/UIAction";
+
 
 import logo from "../../assets/mainLogo.png";
 export const Sidebar = () => {
@@ -10,12 +13,16 @@ export const Sidebar = () => {
 
   const adminLogout = async () => {
     localStorage.clear();
-   await dispatch(logout());
+    await dispatch(logout());
+  };
 
+  const menuClose = () => {
+    dispatch(uiCloseMenu());
   };
 
   return (
     <div
+      onClick={() => menuClose()}
       className={`bg-green-800 w-54 xl:w-64 2xl:w-80 px-4 lg:px-6 xl:px-8 py-4 lg:py-6 sticky ${
         menuOpen ? "overflow-hidden" : "hidden"
       } lg:flex flex-col shadow-2xl  z-10`}
@@ -46,8 +53,8 @@ export const Sidebar = () => {
           <div className="border-solid border-2 border-blue-200"></div>
           <ul className="text-base pt-4 space-y-3">
             <li>
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">
@@ -58,66 +65,69 @@ export const Sidebar = () => {
                 <span className="bg-red-500  text-xs w-5 h-5 rounded-full inline-flex items-center justify-center">
                   6
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">
                   <i className="fas fa-users pr-4"></i>
                   Colaboradores
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">
                   <i className="fas fa-tools pr-4"></i>
                   Herramientas
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">
                   <i className="fas fa-horse pr-4"></i>Ganado
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">
                   <i className="fas fa-hat-cowboy-side pr-4"></i>
                   Administradores
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">
                   <i className="fas fa-user-cog pr-4"></i>
                   Mi perfil
                 </span>
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
       </div>
-      <button className="px-4 py-2 font-medium tracking-wide capitalize transition-colors duration-200 transform bg-black rounded-md dark:bg-gray-800 hover:bg-blue-500 dark:hover:bg-gray-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-gray-700" onClick={() => adminLogout()}>
+      <button
+        className="px-4 py-2 font-medium tracking-wide capitalize transition-colors duration-200 transform bg-black rounded-md dark:bg-gray-800 hover:bg-blue-500 dark:hover:bg-gray-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-gray-700"
+        onClick={() => adminLogout()}
+      >
         <span className="font-bold">
           <i className="fas fa-sign-out-alt pr-2"></i>
           Cerrar la sesión

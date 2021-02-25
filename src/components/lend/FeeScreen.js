@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { lendCancelLoading } from "../../actions/LendAction";
+import { FeeStartLoading } from "../../actions/LendAction";
 
 export const FeeScreen = () => {
   const dispatch = useDispatch();
 
   const { lends, count } = useSelector((state) => state.lend);
 
-  useEffect(() => {
-    dispatch(lendCancelLoading(1));
+  useEffect(
+    (id) => {
+    dispatch(FeeStartLoading(id));
   }, [dispatch]);
   return (
     <div className="main-content flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">

@@ -2,7 +2,7 @@ import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 
-export const lendStartLoading = (status, page) => {
+export const lendStartLoading = (status="active", page) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(`recursos-humanos/prestamos/${status}/${page}`);
@@ -10,7 +10,7 @@ export const lendStartLoading = (status, page) => {
       const body = await resp.json();
       console.log(body);
       if (body.status === "success") {
-        dispatch(lendLoaded(body));
+        dispatch(lendLoaded(body.lends));
       } else {
         Swal.fire("Error", body.msg, "error");
       }
@@ -35,11 +35,11 @@ export const lendCancelLoading = () => {
   };
 };
 
-export const FeeStartLoading = (id_) => {
+export const FeeStartLoading = (id) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
-        `recursos-humanos/historial-cuotas/${id_}`
+        `recursos-humanos/historial-cuotas/${id}`
       );
 
       const body = await resp.json();

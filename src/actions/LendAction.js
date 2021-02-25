@@ -2,12 +2,13 @@ import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 
-export const lendStartLoading = () => {
+export const lendStartLoading = (status, page) => {
   return async (dispatch) => {
     try {
-      const resp = await FetchConsult(`recursos-humanos/prestamos-activos`);
+      const resp = await FetchConsult(`recursos-humanos/prestamos/${status}/${page}`);
 
       const body = await resp.json();
+      console.log(body);
       if (body.status === "success") {
         dispatch(lendLoaded(body));
       } else {

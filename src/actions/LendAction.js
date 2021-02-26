@@ -2,15 +2,14 @@ import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 
-export const lendStartLoading = (status="active", page) => {
+export const lendsStartLoading = (status="active", page) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(`recursos-humanos/prestamos/${status}/${page}`);
 
       const body = await resp.json();
-      console.log(body);
       if (body.status === "success") {
-        dispatch(lendLoaded(body.lends));
+        dispatch(lendsLoaded(body.lends));
       } else {
         Swal.fire("Error", body.msg, "error");
       }
@@ -20,22 +19,7 @@ export const lendStartLoading = (status="active", page) => {
   };
 };
 
-export const lendCancelLoading = () => {
-  return async (dispatch) => {
-    try {
-      const resp = await FetchConsult(`recursos-humanos/historial`);
-
-      const body = await resp.json();
-
-      if (body.status === "success") {
-        dispatch(lendLoaded(body.lends));
-      } else {
-      }
-    } catch (error) {}
-  };
-};
-
-export const FeeStartLoading = (id) => {
+export const FeesStartLoading = (id) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
@@ -45,19 +29,19 @@ export const FeeStartLoading = (id) => {
       const body = await resp.json();
 
       if (body.status === "success") {
-        dispatch(feeLoaded(body.fees));
+        dispatch(feesLoaded(body.fees));
       } else {
       }
     } catch (error) {}
   };
 };
 
-const lendLoaded = (lends) => ({
-  type: Types.LEND_LOADED,
+const lendsLoaded = (lends) => ({
+  type: Types.LENDS_LOADED,
   payload: lends,
 });
 
-const feeLoaded = (fees) => ({
-  type: Types.FEE_LOADED,
+const feesLoaded = (fees) => ({
+  type: Types.FEES_LOADED,
   payload: fees,
 });

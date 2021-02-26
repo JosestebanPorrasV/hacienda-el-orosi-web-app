@@ -7,7 +7,7 @@ const initialState = {
 
 export const LendReducer = (state = initialState, action) => {
     switch (action.type) {
-      case Types.LEND_LOADED:
+      case Types.LENDS_LOADED:
         return {
           ...state,
           lends: [...action.payload.lends],

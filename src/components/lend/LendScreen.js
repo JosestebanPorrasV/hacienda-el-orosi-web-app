@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import SearchResults from "react-filter-search";
 
-import { lendStartLoading, FeeStartLoading } from "../../actions/LendAction";
+import { lendsStartLoading, FeesStartLoading } from "../../actions/LendAction";
 
 export const LendScreen = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ export const LendScreen = () => {
 
   useEffect(
     (page) => {
-      dispatch(lendStartLoading(page));
+      dispatch(lendsStartLoading(page));
     },
     [dispatch]
   );
@@ -25,14 +25,14 @@ export const LendScreen = () => {
   };
 
   const getLendsCancel = () => {
-    dispatch(lendStartLoading("cancel"));
+    dispatch(lendsStartLoading("cancel"));
   };
   const getLendsActive = () => {
-    dispatch(lendStartLoading("active"));
+    dispatch(lendsStartLoading("active"));
   };
 
   const selectFeesByCollaborator = (id) => {
-    dispatch(FeeStartLoading(id));
+    dispatch(FeesStartLoading(id));
   };
 
   return (
@@ -53,7 +53,7 @@ export const LendScreen = () => {
           >
             <span className="text-blue-100 opacity-70">Realizar prestamo</span>
           </Link>
-          <a
+          <button
             onClick={() => getLendsActive()}
             className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
           >
@@ -70,8 +70,8 @@ export const LendScreen = () => {
               ></path>
             </svg>
             <span className="text-blue-100 opacity-70">Listar activos</span>
-          </a>
-          <a
+          </button>
+          <button
             onClick={() => getLendsCancel()}
             className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-35"
           >
@@ -84,7 +84,7 @@ export const LendScreen = () => {
               <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
             </svg>
             <span className="text-blue-100 opacity-70">Listar cancelados</span>
-          </a>
+          </button>
           <Link
             to="/listar-cuotas"
             className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"

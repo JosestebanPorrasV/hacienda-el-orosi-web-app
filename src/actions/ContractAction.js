@@ -2,7 +2,7 @@ import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 
-export const contractLoading = () => {
+export const contractsLoading = () => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(`recursos-humanos/ver-contratos/active`);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { FeeStartLoading } from "../../actions/LendAction";
+import { FeesStartLoading } from "../../actions/LendAction";
 
 export const FeeScreen = () => {
   const dispatch = useDispatch();
@@ -10,7 +10,7 @@ export const FeeScreen = () => {
 
   useEffect(
     (id) => {
-    dispatch(FeeStartLoading(id));
+    dispatch(FeesStartLoading(id));
   }, [dispatch]);
   return (
     <div className="main-content flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">

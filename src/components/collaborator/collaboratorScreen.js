@@ -3,8 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { CollaboratorLoading } from "../../actions/CollaboratorAction";
-
+import { CollaboratorsLoading } from "../../actions/CollaboratorAction";
 
 export const CollaboratorScreen = () => {
   const dispatch = useDispatch();
@@ -12,7 +11,7 @@ export const CollaboratorScreen = () => {
   const { collaborators } = useSelector((state) => state.collaborator);
 
   useEffect(() => {
-    dispatch(CollaboratorLoading());
+    dispatch(CollaboratorsLoading());
   }, [dispatch]);
 
   return (

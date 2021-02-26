@@ -5,8 +5,9 @@ import Swal from "sweetalert2";
 export const lendsStartLoading = (status="active", page) => {
   return async (dispatch) => {
     try {
-      const resp = await FetchConsult(`recursos-humanos/prestamos/${status}/${page}`);
 
+      console.log(page, status);
+      const resp = await FetchConsult(`recursos-humanos/prestamos/${status}/${page}`);
       const body = await resp.json();
       if (body.status === "success") {
         dispatch(lendsLoaded(body.lends));

@@ -3,6 +3,7 @@ import { Types } from "../types/Types";
 const initialState = {
     lends: [],
     count: 0,
+    lendsState: '',
 }
 
 export const LendReducer = (state = initialState, action) => {
@@ -12,6 +13,7 @@ export const LendReducer = (state = initialState, action) => {
           ...state,
           lends: [...action.payload.lends],
           count: action.payload.count,
+          lendsState: action.payload.lendsState,
         };
 
       default:

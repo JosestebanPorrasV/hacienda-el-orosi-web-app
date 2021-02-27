@@ -14,12 +14,9 @@ export const LendScreen = () => {
 
   const { lends, count, lendsState } = useSelector((state) => state.lend);
 
-  useEffect(
-    (page) => {
-      dispatch(lendsStartLoading(page));
-    },
-    [dispatch]
-  );
+  useEffect(() => {
+    dispatch(lendsStartLoading());
+  }, [dispatch]);
 
   const [formValues, handleInputChange] = UseForm({
     filter: "",
@@ -133,7 +130,7 @@ export const LendScreen = () => {
                 <table className="min-w-full">
                   <thead className="bg-gray-600">
                     <tr className="bg-gray-600 text-white text-lg">
-                      <th className="py-2 px-3">
+                      <th className="py-2 px-3" hidden={lendsState}>
                         <i className="fas fa-signal"></i> Estado
                       </th>
                       <th className="py-2 px-3">
@@ -149,6 +146,9 @@ export const LendScreen = () => {
                         <i className="fas fa-comments-dollar"></i> Cuota semanal
                       </th>
                       <th className="py-2 px-3">
+                        <i className="fas fa-dollar-sign"></i> Restante
+                      </th>
+                      <th className="py-2 px-3">
                         <i className="fas fa-calendar-day"></i> Registrado
                       </th>
                       <th className="py-2 px-3">
@@ -159,7 +159,7 @@ export const LendScreen = () => {
                   <tbody className="divide-y divide-grey-600 divide-solid text-blue-100 text-opacity-80 whitespace-nowrap">
                     {results.map((lend) => (
                       <tr key={lend._id}>
-                        <th className="py-3 px-3">
+                        <th className="py-3 px-3" hidden={lendsState}>
                           <span
                             className={` ${
                               lend.status === "active"
@@ -192,6 +192,18 @@ export const LendScreen = () => {
                           </button>
                           {new Intl.NumberFormat("en-EN").format(lend.fee)}
                         </th>
+                        <th
+                          className="py-3 px-3"
+                          hidden={lend.status === "cancel"}
+                        >
+                          {new Intl.NumberFormat("en-EN").format(lend.amount)}
+                        </th>
+                        <th
+                          className="py-3 px-3"
+                          hidden={lend.status === "active"}
+                        >
+                          <i className="fas fa-check-circle"></i>
+                        </th>
                         <th className="py-3 px-3">{lend.date_issued}</th>
                         <th
                           className="py-3 px-3"
@@ -216,7 +228,7 @@ export const LendScreen = () => {
                           className="py-3 px-3"
                           hidden={lend.status === "active"}
                         >
-                          <i className="fas fa-exclamation-triangle"></i>
+                          <i className="fas fa-ban text-green-600"></i>
                         </th>
                       </tr>
                     ))}
@@ -234,7 +246,7 @@ export const LendScreen = () => {
         previousLabel={"Atras"}
         breakClassName={"text-2xl text-grey-900 pl-4"}
         nextLabel={"Adelante"}
-        breakLabel={". . ."}
+        breakLabel={"..."}
         pageLinkClassName={
           "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-gray-900 rounded-full my-1"
         }
@@ -244,8 +256,14 @@ export const LendScreen = () => {
         nextClassName={
           "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900"
         }
-        onPageChange={(data) =>
-          dispatch(lendsStartLoading(lendsState, data.selected + 1))
+        onPageChange={
+          lendsState
+            ? (data) =>
+                dispatch(lendsStartLoading(lendsState, data.selected + 1))
+            : (data) =>
+                dispatch(
+                  lendsByCollaboratorLoading(document_id, data.selected + 1)
+                )
         }
         containerClassName={"sm:flex m-4 p-3"}
       />

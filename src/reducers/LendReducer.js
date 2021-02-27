@@ -4,6 +4,7 @@ const initialState = {
     lends: [],
     count: 0,
     lendsState: '',
+    currentLend: ''
 }
 
 export const LendReducer = (state = initialState, action) => {
@@ -15,6 +16,14 @@ export const LendReducer = (state = initialState, action) => {
           count: action.payload.count,
           lendsState: action.payload.lendsState,
         };
+
+        case Types.LENDS_LOADED_BY_COLLABORATOR:
+          return {
+            ...state,
+            lends: [...action.payload.lends],
+            count: action.payload.count,
+            lendsState: null
+          };
 
       default:
         return state;

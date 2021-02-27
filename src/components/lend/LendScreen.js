@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
 
-import { lendsStartLoading } from "../../actions/LendAction";
+import {
+  lendsByCollaboratorLoading,
+  lendsStartLoading,
+} from "../../actions/LendAction";
 import ReactPaginate from "react-paginate";
+import { UseForm } from "../../hooks/UseForm";
 
 export const LendScreen = () => {
   const dispatch = useDispatch();
@@ -17,10 +21,16 @@ export const LendScreen = () => {
     [dispatch]
   );
 
-  const [value, setValue] = useState("");
-  const handleChange = (e) => {
-    const { value } = e.target;
-    setValue(value);
+  const [formValues, handleInputChange] = UseForm({
+    filter: "",
+    document_id: "",
+  });
+
+  const { filter, document_id } = formValues;
+
+  const handleLendsByCollaborator = (e) => {
+    e.preventDefault();
+    dispatch(lendsByCollaboratorLoading(document_id));
   };
 
   const getLendsCancel = () => {
@@ -63,13 +73,18 @@ export const LendScreen = () => {
 
       <div className="flex flex-col mt-8 space-y-3 sm:space-y-0 sm:flex-row sm:justify-center sm:space-x-4">
         <input
-          id="email"
-          type="text"
+          type="number"
+          name="document_id"
           className="px-4 py-2 text-blue-900 border-4 border-blue-900  placeholder-blue-800  rounded-md focus:border-blue-500 focus:outline-none focus:ring"
           placeholder="Buscar por cedula"
+          value={document_id}
+          onChange={handleInputChange}
         />
 
-        <button className="px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600">
+        <button
+          onClick={handleLendsByCollaborator}
+          className="px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+        >
           <i className="fas fa-search-dollar"></i> Buscar
         </button>
       </div>
@@ -77,23 +92,34 @@ export const LendScreen = () => {
       <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
         <h2
           className={`${
-            lendsState === "active" ? "text-green-400" : "text-red-400"
+            lendsState === "active"
+              ? "text-green-400"
+              : lendsState === "cancel"
+              ? "text-red-400"
+              : "text-yellow-400"
           } text-xl font-bold mb-2`}
         >{`PRESTAMOS ${
-          lendsState === "active" ? "ACTIVOS" : "CANCELADOS"
+          lendsState === "active"
+            ? "ACTIVOS"
+            : lendsState === "cancel"
+            ? "CANCELADOS"
+            : "REGISTRADOS"
         }`}</h2>
         <input
           type="text"
+          name="filter"
           className="rounded-t-lg w-2/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
           placeholder="Filtrar por ..."
-          value={value}
-          onChange={handleChange}
+          value={filter}
+          onChange={handleInputChange}
         />
         <span
           className={`${
             lendsState === "active"
               ? "bg-green-200 text-green-600"
-              : "bg-red-200 text-red-600"
+              : lendsState === "cancel"
+              ? "bg-red-200 text-red-600"
+              : "bg-yellow-200 text-yellow-600"
           } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
         >
           <i className="fas fa-box-open"></i> {`total: ${count}`}
@@ -101,7 +127,7 @@ export const LendScreen = () => {
         <div className="overflow-x-auto">
           <div className="align-middle inline-block min-w-full overflow-hidden">
             <SearchResults
-              value={value}
+              value={filter}
               data={lends}
               renderResults={(results) => (
                 <table className="min-w-full">

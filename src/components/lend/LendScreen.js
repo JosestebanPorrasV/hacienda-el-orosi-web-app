@@ -1,214 +1,273 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import SearchResults from "react-filter-search";
 
-import { lendStartLoading } from "../../actions/LendAction";
+import {
+  lendsByCollaboratorLoading,
+  lendsStartLoading,
+} from "../../actions/LendAction";
+import ReactPaginate from "react-paginate";
+import { UseForm } from "../../hooks/UseForm";
 
 export const LendScreen = () => {
   const dispatch = useDispatch();
 
-  const { lends } = useSelector((state) => state.lend);
+  const { lends, count, lendsState } = useSelector((state) => state.lend);
 
   useEffect(() => {
-    dispatch(lendStartLoading());
+    dispatch(lendsStartLoading());
   }, [dispatch]);
+
+  const [formValues, handleInputChange] = UseForm({
+    filter: "",
+    document_id: "",
+  });
+
+  const { filter, document_id } = formValues;
+
+  const handleLendsByCollaborator = (e) => {
+    e.preventDefault();
+    dispatch(lendsByCollaboratorLoading(document_id));
+  };
+
+  const getLendsCancel = () => {
+    dispatch(lendsStartLoading("cancel"));
+  };
+  const getLendsActive = () => {
+    dispatch(lendsStartLoading("active"));
+  };
 
   return (
     <>
-      <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
+      <div className="bg-green-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
-          <h2 className="text-xl text-blue-200 font-bold mb-2">
-            Acciones rapidas
-          </h2>
+          <h2>PRESTAMOS</h2>
           <p className="text-blue-100 opacity-70">
-            Funcionalidades principales del modulo prestamos
+            Funcionalidades principales
           </p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
-          <Link
-            to="/"
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-35"
+          <button className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35">
+            <i className="fas fa-hand-holding-usd"></i>
+            <span className="text-white font-bold">Realizar prestamo</span>
+          </button>
+          <button
+            onClick={() => getLendsActive()}
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35"
           >
-             
-            <span className="text-blue-100 opacity-70">Realizar prestamo</span>
-          </Link>
-          <Link
-            to="/listar-prestamos"
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
+            <i className="fas fa-chart-line"></i>
+            <span className="text-white font-bold">Listar activos</span>
+          </button>
+          <button
+            onClick={() => getLendsCancel()}
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35"
           >
-            <svg
-              className="w-8 h-8 text-blue-100"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V8z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            <span className="text-blue-100 opacity-70">Listar activos</span>
-          </Link>
-          <Link
-            to="/prestamo-historial"
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-35"
-          >
-            <svg
-              className="w-8 h-8 text-blue-100"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
-            </svg>
-            <span className="text-blue-100 opacity-70">Listar cancelados</span>
-          </Link>
-          <Link
-            to="/listar-cuotas"
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
-          >
-            <svg
-              className="w-8 h-8 text-blue-100"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm9 4a1 1 0 10-2 0v6a1 1 0 102 0V7zm-3 2a1 1 0 10-2 0v4a1 1 0 102 0V9zm-3 3a1 1 0 10-2 0v1a1 1 0 102 0v-1z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            <span className="text-blue-100 opacity-70">Listar Cuotas</span>
-          </Link>
+            <i className="fas fa-strikethrough"></i>
+            <span className="text-white font-bold">Listar cancelados</span>
+          </button>
         </nav>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 2xl:gap-8 pt-10">
-        <div className="col-span-1 bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6">
-          <h2 className="text-xl text-blue-200 font-bold mb-4 lg:mb-6">
-            Total de monto prestado
-          </h2>
-          <div className="flex space-x-4 items-end mb-4 lg:mb-6">
-            <div className="w-12 h-12 rounded-lg bg-blue-900 flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-blue-100"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.736 6.979C9.208 6.193 9.696 6 10 6c.304 0 .792.193 1.264.979a1 1 0 001.715-1.029C12.279 4.784 11.232 4 10 4s-2.279.784-2.979 1.95c-.285.475-.507 1-.67 1.55H6a1 1 0 000 2h.013a9.358 9.358 0 000 1H6a1 1 0 100 2h.351c.163.55.385 1.075.67 1.55C7.721 15.216 8.768 16 10 16s2.279-.784 2.979-1.95a1 1 0 10-1.715-1.029c-.472.786-.96.979-1.264.979-.304 0-.792-.193-1.264-.979a4.265 4.265 0 01-.264-.521H10a1 1 0 100-2H8.017a7.36 7.36 0 010-1H10a1 1 0 100-2H8.472c.08-.185.167-.36.264-.521z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-            </div>
-            <span className="text-2xl mb-2 text-blue-100">&euro;21.291,09</span>
-            <span className="text-blue-100 opacity-70 mb-2 whitespace-pre hidden xl:inline-block">
-              / &euro;40.000
-            </span>
-          </div>
-          <div className="rounded-full bg-gray-600 h-7 overflow-hidden">
-            <div
-              style={{ width: "65%" }}
-              className="bg-green-400 h-7 rounded-full text-center text-green-50 flex items-center justify-center"
-            >
-              65%
-            </div>
-          </div>
-        </div>
+      <div className="flex flex-col mt-8 space-y-3 sm:space-y-0 sm:flex-row sm:justify-center sm:space-x-4">
+        <input
+          type="number"
+          name="document_id"
+          className="px-4 py-2 text-blue-900 border-4 border-blue-900  placeholder-blue-800  rounded-md focus:border-blue-500 focus:outline-none focus:ring"
+          placeholder="Buscar por cedula"
+          value={document_id}
+          onChange={handleInputChange}
+        />
 
-        <div className="col-span-1 bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6">
-          <h2 className="text-xl text-blue-200 font-bold mb-4 lg:mb-6">
-            Total de prestamos
-          </h2>
-          <div className="flex space-x-4 items-end mb-4 lg:mb-6">
-            <div className="w-12 h-12 rounded-lg bg-blue-900 flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-blue-100"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
-              </svg>
-            </div>
-            <span className="text-2xl mb-2">491</span>
-            <span className="text-green-600 text-base mb-2 bg-green-200 border-full  px-3 rounded-full">
-              &#8605; 32
-            </span>
-          </div>
-          <p>Ultimo mes</p>
-        </div>
-
-        <div className="col-span-1 bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6">
-          <h2 className="text-xl text-blue-200 font-bold mb-4 lg:mb-6">
-           Cuotas realizadas
-          </h2>
-          <div className="flex space-x-4 items-end mb-4 lg:mb-6">
-            <div className="w-12 h-12 rounded-lg bg-blue-900 flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-blue-100"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
-              </svg>
-            </div>
-            <span className="text-2xl mb-2">230</span>
-            <span className="text-red-600 text-base mb-2 bg-red-200 border-full  px-3 rounded-full">
-              <span className="transform rotate-180 inline-block">&#8604;</span>
-              12
-            </span>
-          </div>
-          <p>Ultimo mes</p>
-        </div>
+        <button
+          onClick={handleLendsByCollaborator}
+          className="px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+        >
+          <i className="fas fa-search-dollar"></i> Buscar
+        </button>
       </div>
 
-      <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8">
-            <h3 className="text-xl text-blue-200 font-bold mb-4 lg:mb-6">
-              Prestamos Activos
-            </h3>
-       
+      <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
+        <h2
+          className={`${
+            lendsState === "active"
+              ? "text-green-400"
+              : lendsState === "cancel"
+              ? "text-red-400"
+              : "text-yellow-400"
+          } text-xl font-bold mb-2`}
+        >{`PRESTAMOS ${
+          lendsState === "active"
+            ? "ACTIVOS"
+            : lendsState === "cancel"
+            ? "CANCELADOS"
+            : "REGISTRADOS"
+        }`}</h2>
+        <input
+          type="text"
+          name="filter"
+          className="rounded-t-lg w-2/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
+          placeholder="Filtrar por ..."
+          value={filter}
+          onChange={handleInputChange}
+        />
+        <span
+          className={`${
+            lendsState === "active"
+              ? "bg-green-200 text-green-600"
+              : lendsState === "cancel"
+              ? "bg-red-200 text-red-600"
+              : "bg-yellow-200 text-yellow-600"
+          } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
+        >
+          <i className="fas fa-box-open"></i> {`total: ${count}`}
+        </span>
         <div className="overflow-x-auto">
-        <div className="align-middle inline-block min-w-full overflow-hidden">
-          <table className="min-w-full">
-            <thead className=" bg-gray-600">
-              <tr className="bg-gray-600 text-gray-300">
-                <th className="py-2 px-3">Colaborador</th>
-                <th className="py-2 px-3">Cedula del colaborador</th>
-                <th className="py-2 px-3">Monto prestado</th>
-                <th className="py-2 px-3">Fecha de registro</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-600 text-blue-100 text-opacity-80 whitespace-nowrap">
-              {lends.map((lend) => (
-                <tr
-                  key={lend._id}
-                  >
-                  <th className="py-3 px-3">
-                    {lend.collaborator
-                      ? `${lend.collaborator.name} ${lend.collaborator.surname}`
-                      : "No existe colaborador"}
-                  </th>
-                  <th className="py-3 px-3">
-                    {lend.collaborator
-                      ? lend.collaborator.document_id
-                      : "No existe colaborador"}
-                  </th>
-                  <th className="py-3 px-3">{lend.amount}</th>
-                  <th className="py-3 px-3">{lend.date_issued}</th>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="align-middle inline-block min-w-full overflow-hidden">
+            <SearchResults
+              value={filter}
+              data={lends}
+              renderResults={(results) => (
+                <table className="min-w-full">
+                  <thead className="bg-gray-600">
+                    <tr className="bg-gray-600 text-white text-lg">
+                      <th className="py-2 px-3" hidden={lendsState}>
+                        <i className="fas fa-signal"></i> Estado
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-user"></i> Colaborador
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-id-card"></i> Cedula
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-funnel-dollar"></i> Monto
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-comments-dollar"></i> Cuota semanal
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-dollar-sign"></i> Restante
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-calendar-day"></i> Registrado
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-cash-register"></i> Cuotas
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-grey-600 divide-solid text-blue-100 text-opacity-80 whitespace-nowrap">
+                    {results.map((lend) => (
+                      <tr key={lend._id}>
+                        <th className="py-3 px-3" hidden={lendsState}>
+                          <span
+                            className={` ${
+                              lend.status === "active"
+                                ? "bg-green-200 text-green-600"
+                                : "bg-red-200 text-red-600"
+                            }  text-xs rounded-full px-3 py-1 w-26 inline-block text-center uppercase`}
+                          >
+                            {lend.status === "active" ? "Activo" : "Cancelado"}
+                          </span>
+                        </th>
+
+                        <th className="py-3 px-3">
+                          {lend.collaborator
+                            ? `${lend.collaborator.name} ${lend.collaborator.surname}`
+                            : "No existe colaborador"}
+                        </th>
+                        <th className="py-3 px-3">
+                          {lend.collaborator
+                            ? lend.collaborator.document_id
+                            : "No existe colaborador"}
+                        </th>
+                        <th className="py-3 px-3">
+                          {new Intl.NumberFormat("en-EN").format(
+                            lend.initial_amount
+                          )}
+                        </th>
+                        <th className="py-3 px-3">
+                          <button hidden={lend.status === "cancel"}>
+                            <i className="fas fa-edit text-xl text-white" />
+                          </button>
+                          {new Intl.NumberFormat("en-EN").format(lend.fee)}
+                        </th>
+                        <th
+                          className="py-3 px-3"
+                          hidden={lend.status === "cancel"}
+                        >
+                          {new Intl.NumberFormat("en-EN").format(lend.amount)}
+                        </th>
+                        <th
+                          className="py-3 px-3"
+                          hidden={lend.status === "active"}
+                        >
+                          <i className="fas fa-check-circle"></i>
+                        </th>
+                        <th className="py-3 px-3">{lend.date_issued}</th>
+                        <th
+                          className="py-3 px-3"
+                          hidden={lend.status === "cancel"}
+                        >
+                          <button
+                            className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
+                            type="button"
+                            style={{ transition: "all .15s ease" }}
+                          >
+                            <i className="fas fa-calculator"></i> Agregar
+                          </button>
+                          <button
+                            className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
+                            type="button"
+                            style={{ transition: "all .15s ease" }}
+                          >
+                            <i className="far fa-eye"></i> Ver
+                          </button>
+                        </th>
+                        <th
+                          className="py-3 px-3"
+                          hidden={lend.status === "active"}
+                        >
+                          <i className="fas fa-ban text-green-600"></i>
+                        </th>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            />
+          </div>
         </div>
       </div>
-      </div>
+      <ReactPaginate
+        pageCount={Math.ceil(count / 10)}
+        marginPagesDisplayed={1}
+        pageRangeDisplayed={2}
+        previousLabel={"Atras"}
+        activeClassName={" bg-green-900 rounded-full my-1"}
+        breakClassName={"text-2xl text-grey-900 pl-4"}
+        nextLabel={"Adelante"}
+        breakLabel={"..."}
+        pageLinkClassName={
+          "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-gray-900 rounded-full my-1"
+        }
+        previousClassName={
+          "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900"
+        }
+        nextClassName={
+          "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900"
+        }
+        onPageChange={
+          lendsState
+            ? (data) =>
+                dispatch(lendsStartLoading(lendsState, data.selected + 1))
+            : (data) =>
+                dispatch(
+                  lendsByCollaboratorLoading(document_id, data.selected + 1)
+                )
+        }
+        containerClassName={"sm:flex m-4 p-3"}
+      />
     </>
   );
 };

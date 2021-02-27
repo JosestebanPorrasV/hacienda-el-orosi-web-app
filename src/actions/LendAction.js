@@ -2,15 +2,15 @@ import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 
-export const lendStartLoading = (status, page) => {
+export const lendsStartLoading = (status = "active", page) => {
   return async (dispatch) => {
     try {
-      const resp = await FetchConsult(`recursos-humanos/prestamos/${status}/${page}`);
-
+      const resp = await FetchConsult(
+        `recursos-humanos/prestamos/${status}/${page}`
+      );
       const body = await resp.json();
-      console.log(body);
       if (body.status === "success") {
-        dispatch(lendLoaded(body));
+        dispatch(lendsLoaded(body.lends));
       } else {
         Swal.fire("Error", body.msg, "error");
       }
@@ -20,44 +20,56 @@ export const lendStartLoading = (status, page) => {
   };
 };
 
-export const lendCancelLoading = () => {
+export const lendsByCollaboratorLoading = (document_id, page) => {
   return async (dispatch) => {
     try {
-      const resp = await FetchConsult(`recursos-humanos/historial`);
-
-      const body = await resp.json();
-
-      if (body.status === "success") {
-        dispatch(lendLoaded(body.lends));
-      } else {
+      if (document_id <= 0 || undefined) {
+        return Swal.fire("Error", "Escribir cedula", "warning");
       }
-    } catch (error) {}
+
+      const resp = await FetchConsult(
+        `recursos-humanos/colaborador/prestamos/${document_id}/${page}`
+      );
+      const body = await resp.json();
+      if (body.status === "success") {
+        dispatch(lendsByCollaboratorLoaded(body.lends));
+      } else {
+        Swal.fire("Error", body.msg, "warning");
+        lendsStartLoading();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
-export const FeeStartLoading = (id_) => {
+export const FeesStartLoading = (id) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
-        `recursos-humanos/historial-cuotas/${id_}`
+        `recursos-humanos/historial-cuotas/${id}`
       );
 
       const body = await resp.json();
 
       if (body.status === "success") {
-        dispatch(feeLoaded(body.fees));
+        dispatch(feesLoaded(body.fees));
       } else {
       }
     } catch (error) {}
   };
 };
 
-const lendLoaded = (lends) => ({
-  type: Types.LEND_LOADED,
+const lendsLoaded = (lends) => ({
+  type: Types.LENDS_LOADED,
+  payload: lends,
+});
+const lendsByCollaboratorLoaded = (lends) => ({
+  type: Types.LENDS_LOADED_BY_COLLABORATOR,
   payload: lends,
 });
 
-const feeLoaded = (fees) => ({
-  type: Types.FEE_LOADED,
+const feesLoaded = (fees) => ({
+  type: Types.FEES_LOADED,
   payload: fees,
 });

@@ -28,7 +28,7 @@ export const Sidebar = () => {
       } lg:flex flex-col shadow-2xl  z-10`}
     >
       <div className="flex-1 py-4">
-        <h2 className="text-2xl font-semibold text-center">
+        <h2 className="text-xl font-semibold text-center">
           HACIENDA EL OROSI
         </h2>
         <nav className="md:mt-8 -mx-2">

@@ -24,7 +24,7 @@ export const lendsByCollaboratorLoading = (document_id, page) => {
   return async (dispatch) => {
     try {
       if (document_id <= 0 || undefined) {
-        return Swal.fire("Error", "Escribir cedula", "error");
+        return Swal.fire("Error", "Escribir cedula", "warning");
       }
 
       const resp = await FetchConsult(
@@ -34,7 +34,7 @@ export const lendsByCollaboratorLoading = (document_id, page) => {
       if (body.status === "success") {
         dispatch(lendsByCollaboratorLoaded(body.lends));
       } else {
-        Swal.fire("Error", body.msg, "error");
+        Swal.fire("Error", body.msg, "warning");
         lendsStartLoading();
       }
     } catch (error) {

@@ -3,11 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
 
 import {
+  addFee,
+  deleteOneLend,
+  lendClearActive,
   lendsByCollaboratorLoading,
+  lendSetActive,
   lendsStartLoading,
+  changeFee
 } from "../../actions/LendAction";
 import ReactPaginate from "react-paginate";
 import { UseForm } from "../../hooks/UseForm";
+import Swal from "sweetalert2";
 
 export const LendScreen = () => {
   const dispatch = useDispatch();
@@ -35,6 +41,79 @@ export const LendScreen = () => {
   };
   const getLendsActive = () => {
     dispatch(lendsStartLoading("active"));
+  };
+
+  const onSelectLendOneDelete = (lend) => {
+    dispatch(lendSetActive(lend));
+    oneDeleteLend(lend);
+  };
+
+  const onSelectAddNewFee = (lend) => {
+    dispatch(lendSetActive(lend));
+    lendAddFee(lend);
+  };
+
+  const onSelectChangeFee = (lend) => {
+    dispatch(lendSetActive(lend));
+    lendChangeFee(lend);
+  };
+
+  const lendChangeFee = async (lend) => {
+    const { value: newFee } = await Swal.fire({
+      title: "Cambiar cuotas",
+      input: "number",
+      inputLabel: "Nueva cuota",
+      inputPlaceholder: "Ingrese",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, cambiar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (newFee) {
+      dispatch(changeFee(lend, newFee));
+    } else {
+      dispatch(lendClearActive());
+    }
+  };
+
+  const oneDeleteLend = (lend) => {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "El prestamo no se podra recuperar",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteOneLend(lend._id));
+      } else {
+        dispatch(lendClearActive());
+      }
+    });
+  };
+
+  const lendAddFee = (lend) => {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "Se agregara una nueva cuota",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, agregar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(addFee(lend));
+      } else {
+        dispatch(lendClearActive());
+      }
+    });
   };
 
   return (
@@ -105,7 +184,7 @@ export const LendScreen = () => {
         <input
           type="text"
           name="filter"
-          className="rounded-t-lg w-2/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
+          className="rounded-t-lg w-1/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
           placeholder="Filtrar por ..."
           value={filter}
           onChange={handleInputChange}
@@ -187,8 +266,11 @@ export const LendScreen = () => {
                           )}
                         </th>
                         <th className="py-3 px-3">
-                          <button hidden={lend.status === "cancel"}>
-                            <i className="fas fa-edit text-xl text-white" />
+                          <button
+                            onClick={() => onSelectChangeFee(lend)}
+                            hidden={lend.status === "cancel"}
+                          >
+                            <i className="fas fa-edit text-xl text-yellow-400" />
                           </button>
                           {new Intl.NumberFormat("en-EN").format(lend.fee)}
                         </th>
@@ -210,18 +292,27 @@ export const LendScreen = () => {
                           hidden={lend.status === "cancel"}
                         >
                           <button
+                            onClick={() => onSelectAddNewFee(lend)}
                             className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}
                           >
-                            <i className="fas fa-calculator"></i> Agregar
+                            <i className="fas fa-plus"></i>
                           </button>
                           <button
+                            className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-green-600 outline-none focus:outline-none mr-1 mb-1"
+                            type="button"
+                            style={{ transition: "all .15s ease" }}
+                          >
+                            <i className="far fa-eye"></i>
+                          </button>
+                          <button
+                            onClick={() => onSelectLendOneDelete(lend)}
                             className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}
                           >
-                            <i className="far fa-eye"></i> Ver
+                            <i className="fas fa-trash-alt"></i>
                           </button>
                         </th>
                         <th
@@ -244,7 +335,7 @@ export const LendScreen = () => {
         marginPagesDisplayed={1}
         pageRangeDisplayed={2}
         previousLabel={"Atras"}
-        activeClassName={" bg-green-900 rounded-full my-1"}
+        activeClassName={"bg-green-900 rounded-full my-1"}
         breakClassName={"text-2xl text-grey-900 pl-4"}
         nextLabel={"Adelante"}
         breakLabel={"..."}

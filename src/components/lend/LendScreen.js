@@ -240,10 +240,11 @@ export const LendScreen = () => {
         </div>
       </div>
       <ReactPaginate
-        pageCount={Math.ceil(count / 5)}
+        pageCount={Math.ceil(count / 10)}
         marginPagesDisplayed={1}
         pageRangeDisplayed={2}
         previousLabel={"Atras"}
+        activeClassName={" bg-green-900 rounded-full my-1"}
         breakClassName={"text-2xl text-grey-900 pl-4"}
         nextLabel={"Adelante"}
         breakLabel={"..."}

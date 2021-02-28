@@ -93,11 +93,9 @@ export function addFee(lend) {
     );
 
     const body = await resp.json();
-
     if (body.status === "success") {
       await dispatch(addFeeSuccess());
       await dispatch(lendsStartLoading());
-
       await Swal.fire({
         icon: "success",
         title: body.msg,
@@ -115,7 +113,7 @@ export function changeFee(lend, newFee) {
     if (lend.amount <= newFee || newFee < 5000) {
       return Swal.fire(
         "Ops...",
-        "Nueva cuota no puede ser mayor al monto actual o menor a 5mil",
+        "Nueva cuota no puede ser mayor al monto actual o menor a 5,000",
         "warning"
       );
     }
@@ -129,8 +127,8 @@ export function changeFee(lend, newFee) {
     const body = await resp.json();
 
     if (body.status === "success") {
-      await dispatch(changeFeeSuccess());
-      await dispatch(lendsStartLoading());
+      console.log(body.lend);
+      await dispatch(changeFeeSuccess(body.lend));
 
       await Swal.fire({
         icon: "success",
@@ -144,8 +142,14 @@ export function changeFee(lend, newFee) {
   };
 }
 
-export const addFeeSuccess = () => ({ type: Types.ADD_FEE_SUCCESS });
-export const changeFeeSuccess = () => ({ type: Types.LEND_CHANGE_FEE });
+export const addFeeSuccess = (lend) => ({
+  type: Types.ADD_FEE_SUCCESS,
+});
+
+export const changeFeeSuccess = (lend) => ({
+  type: Types.LEND_CHANGE_FEE,
+  payload: lend,
+});
 
 const lendsLoaded = (lends) => ({
   type: Types.LENDS_LOADED,

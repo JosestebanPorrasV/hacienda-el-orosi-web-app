@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 import {
   addFee,
@@ -9,7 +10,7 @@ import {
   lendsByCollaboratorLoading,
   lendSetActive,
   lendsStartLoading,
-  changeFee
+  changeFee,
 } from "../../actions/LendAction";
 import ReactPaginate from "react-paginate";
 import { UseForm } from "../../hooks/UseForm";
@@ -17,6 +18,7 @@ import Swal from "sweetalert2";
 
 export const LendScreen = () => {
   const dispatch = useDispatch();
+  let dateNow = new Date();
 
   const { lends, count, lendsState } = useSelector((state) => state.lend);
 
@@ -144,6 +146,32 @@ export const LendScreen = () => {
             <i className="fas fa-strikethrough"></i>
             <span className="text-white font-bold">Listar cancelados</span>
           </button>
+
+          <ReactHTMLTableToExcel
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 text-white font-bold fas fa-cloud-download-alt"
+            table="table-lends"
+            filename={`Prestamos${
+              lendsState === "active"
+                ? "_activos"
+                : lendsState === "cancel"
+                ? "_cancelados"
+                : `_ced_${document_id}`
+            }-${
+              dateNow.getDate() +
+              "_" +
+              (dateNow.getMonth() + 1) +
+              "_" +
+              dateNow.getFullYear()
+            }`}
+            sheet="Prestamos"
+            buttonText={`Descargar ${
+              lendsState === "active"
+                ? "activos"
+                : lendsState === "cancel"
+                ? "cancelados"
+                : "prestamos"
+            }`}
+          />
         </nav>
       </div>
 
@@ -206,7 +234,7 @@ export const LendScreen = () => {
               value={filter}
               data={lends}
               renderResults={(results) => (
-                <table className="min-w-full">
+                <table id="table-lends" className="min-w-full">
                   <thead className="bg-gray-600">
                     <tr className="bg-gray-600 text-white text-lg">
                       <th className="py-2 px-3" hidden={lendsState}>
@@ -219,6 +247,9 @@ export const LendScreen = () => {
                         <i className="fas fa-id-card"></i> Cedula
                       </th>
                       <th className="py-2 px-3">
+                        <i className="fas fa-calendar-day"></i> Registrado
+                      </th>
+                      <th className="py-2 px-3">
                         <i className="fas fa-funnel-dollar"></i> Monto
                       </th>
                       <th className="py-2 px-3">
@@ -226,9 +257,6 @@ export const LendScreen = () => {
                       </th>
                       <th className="py-2 px-3">
                         <i className="fas fa-dollar-sign"></i> Restante
-                      </th>
-                      <th className="py-2 px-3">
-                        <i className="fas fa-calendar-day"></i> Registrado
                       </th>
                       <th className="py-2 px-3">
                         <i className="fas fa-cash-register"></i> Cuotas
@@ -260,6 +288,7 @@ export const LendScreen = () => {
                             ? lend.collaborator.document_id
                             : "No existe colaborador"}
                         </th>
+                        <th className="py-3 px-3">{lend.date_issued}</th>
                         <th className="py-3 px-3">
                           {new Intl.NumberFormat("en-EN").format(
                             lend.initial_amount
@@ -286,13 +315,10 @@ export const LendScreen = () => {
                         >
                           <i className="fas fa-check-circle"></i>
                         </th>
-                        <th className="py-3 px-3">{lend.date_issued}</th>
-                        <th
-                          className="py-3 px-3"
-                          hidden={lend.status === "cancel"}
-                        >
+                        <th className="py-3 px-3">
                           <button
                             onClick={() => onSelectAddNewFee(lend)}
+                            hidden={lend.status === "cancel"}
                             className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}
@@ -308,18 +334,13 @@ export const LendScreen = () => {
                           </button>
                           <button
                             onClick={() => onSelectLendOneDelete(lend)}
+                            hidden={lend.status === "cancel"}
                             className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}
                           >
                             <i className="fas fa-trash-alt"></i>
                           </button>
-                        </th>
-                        <th
-                          className="py-3 px-3"
-                          hidden={lend.status === "active"}
-                        >
-                          <i className="fas fa-ban text-green-600"></i>
                         </th>
                       </tr>
                     ))}

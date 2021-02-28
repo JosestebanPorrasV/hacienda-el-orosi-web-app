@@ -53,7 +53,9 @@ export const LendReducer = (state = initialState, action) => {
     case Types.LEND_CHANGE_FEE:
       return {
         ...state,
-        ...action.payload,
+        lends: state.lends.map((e) =>
+          e._id === action.payload._id ? action.payload : e
+        ),
       };
 
     default:

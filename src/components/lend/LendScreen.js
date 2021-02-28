@@ -12,6 +12,8 @@ import {
   lendsStartLoading,
   changeFee,
 } from "../../actions/LendAction";
+import { ModalFee } from "./ModalFee";
+import { uiOpenModal } from "../../actions/UIAction";
 import ReactPaginate from "react-paginate";
 import { UseForm } from "../../hooks/UseForm";
 import Swal from "sweetalert2";
@@ -58,6 +60,15 @@ export const LendScreen = () => {
   const onSelectChangeFee = (lend) => {
     dispatch(lendSetActive(lend));
     lendChangeFee(lend);
+  };
+
+  const onSelectLend = (lend) => {
+    dispatch(lendSetActive(lend));
+    openModal();
+  };
+
+  const openModal = () => {
+    dispatch(uiOpenModal());
   };
 
   const lendChangeFee = async (lend) => {
@@ -326,6 +337,7 @@ export const LendScreen = () => {
                             <i className="fas fa-plus"></i>
                           </button>
                           <button
+                            onClick={() => onSelectLend(lend)}
                             className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-green-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}
@@ -380,6 +392,7 @@ export const LendScreen = () => {
         }
         containerClassName={"sm:flex m-4 p-3"}
       />
+      <ModalFee/>
     </>
   );
 };

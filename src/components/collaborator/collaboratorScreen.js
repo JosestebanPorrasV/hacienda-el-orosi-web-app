@@ -3,8 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { CollaboratorLoading } from "../../actions/CollaboratorAction";
-
+import { CollaboratorsLoading } from "../../actions/CollaboratorAction";
 
 export const CollaboratorScreen = () => {
   const dispatch = useDispatch();
@@ -12,7 +11,7 @@ export const CollaboratorScreen = () => {
   const { collaborators } = useSelector((state) => state.collaborator);
 
   useEffect(() => {
-    dispatch(CollaboratorLoading());
+    dispatch(CollaboratorsLoading());
   }, [dispatch]);
 
   return (
@@ -29,7 +28,7 @@ export const CollaboratorScreen = () => {
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
           <Link
             to="/"
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
+            className="inline-flex flex-col justify-center collaborators-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
           >
             <svg
               className="w-8 h-8 text-blue-100"
@@ -43,7 +42,7 @@ export const CollaboratorScreen = () => {
           </Link>
           <Link
             to="/"
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
+            className="inline-flex flex-col justify-center collaborators-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
           >
             <svg
               className="w-8 h-8 text-blue-100"
@@ -61,7 +60,7 @@ export const CollaboratorScreen = () => {
           </Link>
           <Link
             to="/"
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
+            className="inline-flex flex-col justify-center collaborators-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
           >
             <svg
               className="w-8 h-8 text-blue-100"
@@ -75,7 +74,7 @@ export const CollaboratorScreen = () => {
           </Link>
           <Link
             to="/"
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
+            className="inline-flex flex-col justify-center collaborators-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
           >
             <svg
               className="w-8 h-8 text-blue-100"
@@ -93,7 +92,7 @@ export const CollaboratorScreen = () => {
           </Link>
           <Link
             to="/listar-prestamos"
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
+            className="inline-flex flex-col justify-center collaborators-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
           >
             <i className="fas fa-hand-holding-usd text-lg"></i>
             <span className="text-blue-100 opacity-70">Prestamos</span>
@@ -106,8 +105,8 @@ export const CollaboratorScreen = () => {
           <h2 className="text-xl text-blue-200 font-bold mb-4 lg:mb-6">
             Todal de pagos
           </h2>
-          <div className="flex space-x-4 items-end mb-4 lg:mb-6">
-            <div className="w-12 h-12 rounded-lg bg-blue-900 flex items-center justify-center">
+          <div className="flex space-x-4 collaborators-end mb-4 lg:mb-6">
+            <div className="w-12 h-12 rounded-lg bg-blue-900 flex collaborators-center justify-center">
               <svg
                 className="w-6 h-6 text-blue-100"
                 fill="currentColor"
@@ -129,7 +128,7 @@ export const CollaboratorScreen = () => {
           <div className="rounded-full bg-gray-600 h-7 overflow-hidden">
             <div
               style={{ width: "65%" }}
-              className="bg-green-400 h-7 rounded-full text-center text-green-50 flex items-center justify-center"
+              className="bg-green-400 h-7 rounded-full text-center text-green-50 flex collaborators-center justify-center"
             >
               65%
             </div>
@@ -140,8 +139,8 @@ export const CollaboratorScreen = () => {
           <h2 className="text-xl text-blue-200 font-bold mb-4 lg:mb-6">
             Total de colaboradores
           </h2>
-          <div className="flex space-x-4 items-end mb-4 lg:mb-6">
-            <div className="w-12 h-12 rounded-lg bg-blue-900 flex items-center justify-center">
+          <div className="flex space-x-4 collaborators-end mb-4 lg:mb-6">
+            <div className="w-12 h-12 rounded-lg bg-blue-900 flex collaborators-center justify-center">
               <svg
                 className="w-6 h-6 text-blue-100"
                 fill="currentColor"
@@ -163,8 +162,8 @@ export const CollaboratorScreen = () => {
           <h2 className="text-xl text-blue-200 font-bold mb-4 lg:mb-6">
             Herramientas utilizadas
           </h2>
-          <div className="flex space-x-4 items-end mb-4 lg:mb-6">
-            <div className="w-12 h-12 rounded-lg bg-blue-900 flex items-center justify-center">
+          <div className="flex space-x-4 collaborators-end mb-4 lg:mb-6">
+            <div className="w-12 h-12 rounded-lg bg-blue-900 flex collaborators-center justify-center">
               <svg
                 className="w-6 h-6 text-blue-100"
                 fill="currentColor"
@@ -191,27 +190,27 @@ export const CollaboratorScreen = () => {
         <div className="overflow-x-auto">
           <div className="align-middle inline-block min-w-full overflow-hidden">
             <table className="min-w-full">
-              <thead className="text-left bg-gray-600">
+              <thead className="text-left text-xs bg-gray-600">
                 <tr>
-                  <th className="py-2 px-3">Colaborador</th>
-                  <th className="py-2 px-3">Apellidos</th>
-                  <th className="py-2 px-3">Cedula</th>
-                  <th className="py-2 px-3">Dirección</th>
-                  <th className="py-2 px-3">Celular</th>
-                  <th className="py-2 px-3">Telefono</th>
-                  <th className="py-2 px-3">Estado</th>
+                  <th className="py-2 px-2">Colaborador</th>
+                  <th className="py-2 px-2">Apellidos</th>
+                  <th className="py-2 px-2">Cedula</th>
+                  <th className="py-2 px-2">Dirección</th>
+                  <th className="py-2 px-2">Celular</th>
+                  <th className="py-2 px-2">Telefono</th>
+                  <th className="py-2 px-2">Estado</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-600 text-blue-100 text-opacity-80 whitespace-nowrap">
-                {collaborators.map((item, index) => (
-                  <tr key={item._id}>
-                    <td className="py-3 px-3">{item.name}</td>
-                    <td className="py-3 px-3">{item.surname}</td>
-                    <td className="py-3 px-3">{item.document_id}</td>
-                    <td className="py-3 px-3">{item.direction}</td>
-                    <td className="py-3 px-3">{item.cel}</td>
-                    <td className="py-3 px-3">{item.tel}</td>
-                    <td className="py-3 px-3">
+                {collaborators.map((collaborator) => (
+                  <tr key={collaborator._id}>
+                    <td className="py-3 px-2">{collaborator.name}</td>
+                    <td className="py-3 px-2">{collaborator.surname}</td>
+                    <td className="py-3 px-2">{collaborator.document_id}</td>
+                    <td className="py-3 px-2">{collaborator.direction}</td>
+                    <td className="py-3 px-2">{collaborator.cel}</td>
+                    <td className="py-3 px-2">{collaborator.tel}</td>
+                    <td className="py-3 px-2">
                       <span className="bg-green-200 text-green-600 text-xs rounded-full px-3 py-1 w-16 inline-block text-center uppercase">
                         Activo
                       </span>

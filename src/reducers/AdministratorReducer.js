@@ -6,7 +6,7 @@ const initialState = {
 
 export const AdministratorReducer = (state = initialState, action) => {
   switch (action.type) {
-    case Types.ADMINISTRATOR_LOADED:
+    case Types.ADMINISTRATORS_LOADED:
       return {
         ...state,
         administrators: [...action.payload.administrators],

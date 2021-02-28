@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { AdministratorLoading } from "../../actions/AdministratorAction";
+import { AdministratorsLoading } from "../../actions/AdministratorAction";
 
 export const AdministratorScreen = () => {
   const dispatch = useDispatch();
@@ -9,7 +9,7 @@ export const AdministratorScreen = () => {
   const { administrators } = useSelector((state) => state.administrator);
 
   useEffect(() => {
-    dispatch(AdministratorLoading());
+    dispatch(AdministratorsLoading());
   }, [dispatch]);
 
   return (

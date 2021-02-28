@@ -1,159 +1,272 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import ReactPaginate from "react-paginate";
 import SearchResults from "react-filter-search";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-import { lendStartLoading, FeeStartLoading } from "../../actions/LendAction";
+import {
+  addFee,
+  deleteOneLend,
+  lendClearActive,
+  lendsByCollaboratorLoading,
+  lendSetActive,
+  lendsStartLoading,
+  changeFee,
+} from "../../actions/LendAction";
+import ReactPaginate from "react-paginate";
+import { UseForm } from "../../hooks/UseForm";
+import Swal from "sweetalert2";
 
 export const LendScreen = () => {
   const dispatch = useDispatch();
+  let dateNow = new Date();
 
-  const { lends, count } = useSelector((state) => state.lend);
+  const { lends, count, lendsState } = useSelector((state) => state.lend);
 
-  useEffect(
-    (page) => {
-      dispatch(lendStartLoading(page));
-    },
-    [dispatch]
-  );
+  useEffect(() => {
+    dispatch(lendsStartLoading());
+  }, [dispatch]);
 
-  const [value, setValue] = useState("");
-  const handleChange = (e) => {
-    const { value } = e.target;
-    setValue(value);
+  const [formValues, handleInputChange] = UseForm({
+    filter: "",
+    document_id: "",
+  });
+
+  const { filter, document_id } = formValues;
+
+  const handleLendsByCollaborator = (e) => {
+    e.preventDefault();
+    dispatch(lendsByCollaboratorLoading(document_id));
   };
 
   const getLendsCancel = () => {
-    dispatch(lendStartLoading("cancel"));
+    dispatch(lendsStartLoading("cancel"));
   };
   const getLendsActive = () => {
-    dispatch(lendStartLoading("active"));
+    dispatch(lendsStartLoading("active"));
   };
 
-  const selectFeesByCollaborator = (id) => {
-    dispatch(FeeStartLoading(id));
+  const onSelectLendOneDelete = (lend) => {
+    dispatch(lendSetActive(lend));
+    oneDeleteLend(lend);
+  };
+
+  const onSelectAddNewFee = (lend) => {
+    dispatch(lendSetActive(lend));
+    lendAddFee(lend);
+  };
+
+  const onSelectChangeFee = (lend) => {
+    dispatch(lendSetActive(lend));
+    lendChangeFee(lend);
+  };
+
+  const lendChangeFee = async (lend) => {
+    const { value: newFee } = await Swal.fire({
+      title: "Cambiar cuotas",
+      input: "number",
+      inputLabel: "Nueva cuota",
+      inputPlaceholder: "Ingrese",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, cambiar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (newFee) {
+      dispatch(changeFee(lend, newFee));
+    } else {
+      dispatch(lendClearActive());
+    }
+  };
+
+  const oneDeleteLend = (lend) => {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "El prestamo no se podra recuperar",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteOneLend(lend._id));
+      } else {
+        dispatch(lendClearActive());
+      }
+    });
+  };
+
+  const lendAddFee = (lend) => {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "Se agregara una nueva cuota",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, agregar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(addFee(lend));
+      } else {
+        dispatch(lendClearActive());
+      }
+    });
   };
 
   return (
     <>
-      <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
+      <div className="bg-green-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
-          <h2 className="text-xl text-blue-200 font-bold mb-2">
-            Acciones rapidas
-          </h2>
+          <h2>PRESTAMOS</h2>
           <p className="text-blue-100 opacity-70">
-            Funcionalidades principales del modulo prestamos
+            Funcionalidades principales
           </p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
-          <Link
-            to="/"
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-35"
-          >
-            <span className="text-blue-100 opacity-70">Realizar prestamo</span>
-          </Link>
-          <a
+          <button className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35">
+            <i className="fas fa-hand-holding-usd"></i>
+            <span className="text-white font-bold">Realizar prestamo</span>
+          </button>
+          <button
             onClick={() => getLendsActive()}
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35"
           >
-            <svg
-              className="w-8 h-8 text-blue-100"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V8z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            <span className="text-blue-100 opacity-70">Listar activos</span>
-          </a>
-          <a
+            <i className="fas fa-chart-line"></i>
+            <span className="text-white font-bold">Listar activos</span>
+          </button>
+          <button
             onClick={() => getLendsCancel()}
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-35"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35"
           >
-            <svg
-              className="w-8 h-8 text-blue-100"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
-            </svg>
-            <span className="text-blue-100 opacity-70">Listar cancelados</span>
-          </a>
-          <Link
-            to="/listar-cuotas"
-            className="inline-flex flex-col justify-center items-center px-3 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 w-32"
-          >
-            <svg
-              className="w-8 h-8 text-blue-100"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm9 4a1 1 0 10-2 0v6a1 1 0 102 0V7zm-3 2a1 1 0 10-2 0v4a1 1 0 102 0V9zm-3 3a1 1 0 10-2 0v1a1 1 0 102 0v-1z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            <span className="text-blue-100 opacity-70">Listar Cuotas</span>
-          </Link>
+            <i className="fas fa-strikethrough"></i>
+            <span className="text-white font-bold">Listar cancelados</span>
+          </button>
+
+          <ReactHTMLTableToExcel
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 text-white font-bold fas fa-cloud-download-alt"
+            table="table-lends"
+            filename={`Prestamos${
+              lendsState === "active"
+                ? "_activos"
+                : lendsState === "cancel"
+                ? "_cancelados"
+                : `_ced_${document_id}`
+            }-${
+              dateNow.getDate() +
+              "_" +
+              (dateNow.getMonth() + 1) +
+              "_" +
+              dateNow.getFullYear()
+            }`}
+            sheet="Prestamos"
+            buttonText={`Descargar ${
+              lendsState === "active"
+                ? "activos"
+                : lendsState === "cancel"
+                ? "cancelados"
+                : "prestamos"
+            }`}
+          />
         </nav>
       </div>
 
-      <input
-        type="text"
-        className="bg-gray-600 rounded-lg w-2/4 h-10 p-6 mt-10 placeholder-blue-200 placeholder-opacity-70 text-blue-100 text-xl font-bold  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-        placeholder="Buscar por ..."
-        value={value}
-        onChange={handleChange}
-      />
+      <div className="flex flex-col mt-8 space-y-3 sm:space-y-0 sm:flex-row sm:justify-center sm:space-x-4">
+        <input
+          type="number"
+          name="document_id"
+          className="px-4 py-2 text-blue-900 border-4 border-blue-900  placeholder-blue-800  rounded-md focus:border-blue-500 focus:outline-none focus:ring"
+          placeholder="Buscar por cedula"
+          value={document_id}
+          onChange={handleInputChange}
+        />
 
-      <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8">
-        <h3 className="text-xl text-blue-200 font-bold mb-4 lg:mb-6">
-          Prestamos
-        </h3>
+        <button
+          onClick={handleLendsByCollaborator}
+          className="px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+        >
+          <i className="fas fa-search-dollar"></i> Buscar
+        </button>
+      </div>
 
+      <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
+        <h2
+          className={`${
+            lendsState === "active"
+              ? "text-green-400"
+              : lendsState === "cancel"
+              ? "text-red-400"
+              : "text-yellow-400"
+          } text-xl font-bold mb-2`}
+        >{`PRESTAMOS ${
+          lendsState === "active"
+            ? "ACTIVOS"
+            : lendsState === "cancel"
+            ? "CANCELADOS"
+            : "REGISTRADOS"
+        }`}</h2>
+        <input
+          type="text"
+          name="filter"
+          className="rounded-t-lg w-1/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
+          placeholder="Filtrar por ..."
+          value={filter}
+          onChange={handleInputChange}
+        />
+        <span
+          className={`${
+            lendsState === "active"
+              ? "bg-green-200 text-green-600"
+              : lendsState === "cancel"
+              ? "bg-red-200 text-red-600"
+              : "bg-yellow-200 text-yellow-600"
+          } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
+        >
+          <i className="fas fa-box-open"></i> {`total: ${count}`}
+        </span>
         <div className="overflow-x-auto">
           <div className="align-middle inline-block min-w-full overflow-hidden">
             <SearchResults
-              value={value}
+              value={filter}
               data={lends}
               renderResults={(results) => (
-                <table className="min-w-full">
+                <table id="table-lends" className="min-w-full">
                   <thead className="bg-gray-600">
-                    <tr className="bg-gray-600 text-gray-300">
-                      <th className="py-2 px-3">Colaborador</th>
-                      <th className="py-2 px-3">Cedula</th>
-                      <th className="py-2 px-3">Monto</th>
-                      <th className="py-2 px-3">Cuota semanal</th>
-                      <th className="py-2 px-3">Fecha de registro</th>
-                      <th className="py-2 px-3">Estado</th>
-                      <th className="py-2 px-3">Acciones</th>
+                    <tr className="bg-gray-600 text-white text-lg">
+                      <th className="py-2 px-3" hidden={lendsState}>
+                        <i className="fas fa-signal"></i> Estado
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-user"></i> Colaborador
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-id-card"></i> Cedula
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-calendar-day"></i> Registrado
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-funnel-dollar"></i> Monto
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-comments-dollar"></i> Cuota semanal
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-dollar-sign"></i> Restante
+                      </th>
+                      <th className="py-2 px-3">
+                        <i className="fas fa-cash-register"></i> Cuotas
+                      </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-600 text-blue-100 text-opacity-80 whitespace-nowrap">
+                  <tbody className="divide-y divide-grey-600 divide-solid text-blue-100 text-opacity-80 whitespace-nowrap">
                     {results.map((lend) => (
                       <tr key={lend._id}>
-                        <th className="py-3 px-3">
-                          {lend.collaborator
-                            ? `${lend.collaborator.name} ${lend.collaborator.surname}`
-                            : "No existe colaborador"}
-                        </th>
-                        <th className="py-3 px-3">
-                          {lend.collaborator
-                            ? lend.collaborator.document_id
-                            : "No existe colaborador"}
-                        </th>
-                        <th className="py-3 px-3">{lend.initial_amount}</th>
-                        <th className="py-3 px-3">{lend.fee}</th>
-                        <th className="py-3 px-3">{lend.date_issued}</th>
-                        <th className="py-3 px-3">
+                        <th className="py-3 px-3" hidden={lendsState}>
                           <span
                             className={` ${
                               lend.status === "active"
@@ -164,20 +277,69 @@ export const LendScreen = () => {
                             {lend.status === "active" ? "Activo" : "Cancelado"}
                           </span>
                         </th>
+
+                        <th className="py-3 px-3">
+                          {lend.collaborator
+                            ? `${lend.collaborator.name} ${lend.collaborator.surname}`
+                            : "No existe colaborador"}
+                        </th>
+                        <th className="py-3 px-3">
+                          {lend.collaborator
+                            ? lend.collaborator.document_id
+                            : "No existe colaborador"}
+                        </th>
+                        <th className="py-3 px-3">{lend.date_issued}</th>
+                        <th className="py-3 px-3">
+                          {new Intl.NumberFormat("en-EN").format(
+                            lend.initial_amount
+                          )}
+                        </th>
                         <th className="py-3 px-3">
                           <button
-                            className="bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:bg-yellow-700 shadow-md outline-none focus:outline-none mr-1 mb-1"
-                            type="button"
+                            onClick={() => onSelectChangeFee(lend)}
+                            hidden={lend.status === "cancel"}
                           >
-                            Agregar Cuota
+                            <i className="fas fa-edit text-xl text-yellow-400" />
                           </button>
-                           | 
-                           <button
-                           onClick={() => selectFeesByCollaborator(lend.collaborator.id)}
-                            className="bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:bg-yellow-700 shadow-md outline-none focus:outline-none mr-1 mb-1"
+                          {new Intl.NumberFormat("en-EN").format(lend.fee)}
+                        </th>
+                        <th
+                          className="py-3 px-3"
+                          hidden={lend.status === "cancel"}
+                        >
+                          {new Intl.NumberFormat("en-EN").format(lend.amount)}
+                        </th>
+                        <th
+                          className="py-3 px-3"
+                          hidden={lend.status === "active"}
+                        >
+                          <i className="fas fa-check-circle"></i>
+                        </th>
+                        <th className="py-3 px-3">
+                          <button
+                            onClick={() => onSelectAddNewFee(lend)}
+                            hidden={lend.status === "cancel"}
+                            className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
+                            style={{ transition: "all .15s ease" }}
                           >
-                            Ver Cuotas
+                            <i className="fas fa-plus"></i>
+                          </button>
+                          <button
+                            className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-green-600 outline-none focus:outline-none mr-1 mb-1"
+                            type="button"
+                            style={{ transition: "all .15s ease" }}
+                          >
+                            <i className="far fa-eye"></i>
+                          </button>
+                          <button
+                            onClick={() => onSelectLendOneDelete(lend)}
+                            hidden={lend.status === "cancel"}
+                            className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
+                            type="button"
+                            style={{ transition: "all .15s ease" }}
+                          >
+                            <i className="fas fa-trash-alt"></i>
                           </button>
                         </th>
                       </tr>
@@ -189,6 +351,35 @@ export const LendScreen = () => {
           </div>
         </div>
       </div>
+      <ReactPaginate
+        pageCount={Math.ceil(count / 10)}
+        marginPagesDisplayed={1}
+        pageRangeDisplayed={2}
+        previousLabel={"Atras"}
+        activeClassName={"bg-green-900 rounded-full my-1"}
+        breakClassName={"text-2xl text-grey-900 pl-4"}
+        nextLabel={"Adelante"}
+        breakLabel={"..."}
+        pageLinkClassName={
+          "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-gray-900 rounded-full my-1"
+        }
+        previousClassName={
+          "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900"
+        }
+        nextClassName={
+          "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900"
+        }
+        onPageChange={
+          lendsState
+            ? (data) =>
+                dispatch(lendsStartLoading(lendsState, data.selected + 1))
+            : (data) =>
+                dispatch(
+                  lendsByCollaboratorLoading(document_id, data.selected + 1)
+                )
+        }
+        containerClassName={"sm:flex m-4 p-3"}
+      />
     </>
   );
 };

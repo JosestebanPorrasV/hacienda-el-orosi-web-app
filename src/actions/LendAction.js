@@ -43,16 +43,16 @@ export const lendsByCollaboratorLoading = (document_id, page) => {
   };
 };
 
-export const FeesByLendStartLoading = (lendId, page) => {
+export const FeesByLendStartLoading = (lendId) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
-        `recursos-humanos/historial-cuotas/${lendId}/${page}`
+        `recursos-humanos/historial-cuotas/${lendId}`
       );
       const body = await resp.json();
 
       if (body.status === "success") {
-        dispatch(feesLoaded(body.fees));
+        dispatch(feesLoaded(body));
       } else {
         Swal.fire("Error", body.msg, "warning");
       }
@@ -86,6 +86,34 @@ export const deleteOneLend = (id) => {
   };
 };
 
+export function registerLend(collaborator_id, lendFormValues) {
+  return async (dispatch) => {
+    const resp = await FetchConsult(
+      "recursos-humanos/realizar-prestamo",
+      {
+        collaborator_id: collaborator_id,
+        initial_amount: lendFormValues.initial_amount,
+        fee: lendFormValues.fee_amount,
+      },
+      "POST"
+    );
+
+    const body = await resp.json();
+    if (body.status === "success") {
+      await dispatch(addLendSuccess(body.lend));
+      await dispatch(lendsStartLoading());
+      await Swal.fire({
+        icon: "success",
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    } else {
+      Swal.fire("Error", body.msg, "error");
+    }
+  };
+}
+
 export function addFee(lend) {
   return async (dispatch) => {
     const resp = await FetchConsult(
@@ -96,7 +124,7 @@ export function addFee(lend) {
 
     const body = await resp.json();
     if (body.status === "success") {
-      await dispatch(addFeeSuccess());
+      await dispatch(addFeeSuccess(body.lend));
       await dispatch(lendsStartLoading());
       await Swal.fire({
         icon: "success",
@@ -113,6 +141,7 @@ export function addFee(lend) {
 export function changeFee(lend, newFee) {
   return async (dispatch) => {
     if (lend.amount <= newFee || newFee < 5000) {
+      await dispatch(lendClearActive());
       return Swal.fire(
         "Ops...",
         "Nueva cuota no puede ser mayor al monto actual o menor a 5,000",
@@ -144,8 +173,14 @@ export function changeFee(lend, newFee) {
   };
 }
 
-export const addFeeSuccess = (lend) => ({
+export const addLendSuccess = (lend) => ({
+  type: Types.ADD_NEW_LEND,
+  payload: lend,
+});
+
+export const addFeeSuccess = (fee) => ({
   type: Types.ADD_FEE_SUCCESS,
+  payload: fee,
 });
 
 export const changeFeeSuccess = (lend) => ({

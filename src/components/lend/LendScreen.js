@@ -11,12 +11,14 @@ import {
   lendSetActive,
   lendsStartLoading,
   changeFee,
+  FeesByLendStartLoading,
 } from "../../actions/LendAction";
 import { ModalFee } from "./ModalFee";
-import { uiOpenModal } from "../../actions/UIAction";
+import { uiOpenModalFee, uiOpenModalAddLend } from "../../actions/UIAction";
 import ReactPaginate from "react-paginate";
 import { UseForm } from "../../hooks/UseForm";
 import Swal from "sweetalert2";
+import { ModalLend } from "./ModalLend";
 
 export const LendScreen = () => {
   const dispatch = useDispatch();
@@ -52,6 +54,11 @@ export const LendScreen = () => {
     oneDeleteLend(lend);
   };
 
+  const onSelectLendFeeByCollaborator = (lend) => {
+    onSelectLend(lend);
+    dispatch(FeesByLendStartLoading(lend._id));
+  };
+
   const onSelectAddNewFee = (lend) => {
     dispatch(lendSetActive(lend));
     lendAddFee(lend);
@@ -64,11 +71,15 @@ export const LendScreen = () => {
 
   const onSelectLend = (lend) => {
     dispatch(lendSetActive(lend));
-    openModal();
+    openModalFee();
   };
 
-  const openModal = () => {
-    dispatch(uiOpenModal());
+  const openModalFee = () => {
+    dispatch(uiOpenModalFee());
+  };
+
+  const openModalAddLend = () => {
+    dispatch(uiOpenModalAddLend());
   };
 
   const lendChangeFee = async (lend) => {
@@ -133,33 +144,33 @@ export const LendScreen = () => {
     <>
       <div className="bg-green-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
-          <h2>PRESTAMOS</h2>
+          <h2 className="text-2xl">PRESTAMOS</h2>
           <p className="text-blue-100 opacity-70">
             Funcionalidades principales
           </p>
         </div>
-        <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
-          <button className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35">
-            <i className="fas fa-hand-holding-usd"></i>
-            <span className="text-white font-bold">Realizar prestamo</span>
+        <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0 text-lg text-gray-200">
+          <button
+            onClick={() => openModalAddLend()}
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-hand-holding-usd"
+          >
+            <span>Realizar prestamo</span>
           </button>
           <button
             onClick={() => getLendsActive()}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-chart-line"
           >
-            <i className="fas fa-chart-line"></i>
-            <span className="text-white font-bold">Listar activos</span>
+            <span>Listar activos</span>
           </button>
           <button
             onClick={() => getLendsCancel()}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-strikethrough"
           >
-            <i className="fas fa-strikethrough"></i>
-            <span className="text-white font-bold">Listar cancelados</span>
+            <span>Listar cancelados</span>
           </button>
 
           <ReactHTMLTableToExcel
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 text-white font-bold fas fa-cloud-download-alt"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-cloud-download-alt"
             table="table-lends"
             filename={`Prestamos${
               lendsState === "active"
@@ -337,7 +348,7 @@ export const LendScreen = () => {
                             <i className="fas fa-plus"></i>
                           </button>
                           <button
-                            onClick={() => onSelectLend(lend)}
+                            onClick={() => onSelectLendFeeByCollaborator(lend)}
                             className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-green-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}
@@ -392,7 +403,8 @@ export const LendScreen = () => {
         }
         containerClassName={"sm:flex m-4 p-3"}
       />
-      <ModalFee/>
+      <ModalFee />
+      <ModalLend />
     </>
   );
 };

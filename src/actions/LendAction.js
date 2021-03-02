@@ -43,20 +43,22 @@ export const lendsByCollaboratorLoading = (document_id, page) => {
   };
 };
 
-export const FeesStartLoading = (id) => {
+export const FeesByLendStartLoading = (lendId, page) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
-        `recursos-humanos/historial-cuotas/${id}`
+        `recursos-humanos/historial-cuotas/${lendId}/${page}`
       );
-
       const body = await resp.json();
 
       if (body.status === "success") {
         dispatch(feesLoaded(body.fees));
       } else {
+        Swal.fire("Error", body.msg, "warning");
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
@@ -166,6 +168,10 @@ export const lendSetActive = (lend) => ({
 });
 export const lendClearActive = () => ({
   type: Types.LEND_CLEAR_ACTIVE,
+});
+
+export const feesClean = () => ({
+  type: Types.FEE_LOADED_CLEAR,
 });
 
 const lendsByCollaboratorLoaded = (lends) => ({

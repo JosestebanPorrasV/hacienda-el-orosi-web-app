@@ -11,6 +11,7 @@ import {
   lendSetActive,
   lendsStartLoading,
   changeFee,
+  FeesByLendStartLoading,
 } from "../../actions/LendAction";
 import { ModalFee } from "./ModalFee";
 import { uiOpenModal } from "../../actions/UIAction";
@@ -50,6 +51,11 @@ export const LendScreen = () => {
   const onSelectLendOneDelete = (lend) => {
     dispatch(lendSetActive(lend));
     oneDeleteLend(lend);
+  };
+
+  const onSelectLendFeeByCollaborator = (lend) => {
+    onSelectLend(lend);
+    dispatch(FeesByLendStartLoading(lend._id));
   };
 
   const onSelectAddNewFee = (lend) => {
@@ -337,7 +343,7 @@ export const LendScreen = () => {
                             <i className="fas fa-plus"></i>
                           </button>
                           <button
-                            onClick={() => onSelectLend(lend)}
+                            onClick={() => onSelectLendFeeByCollaborator(lend)}
                             className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-green-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}
@@ -392,7 +398,7 @@ export const LendScreen = () => {
         }
         containerClassName={"sm:flex m-4 p-3"}
       />
-      <ModalFee/>
+      <ModalFee />
     </>
   );
 };

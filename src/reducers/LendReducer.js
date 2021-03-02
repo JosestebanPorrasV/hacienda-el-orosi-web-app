@@ -4,13 +4,17 @@ const initialState = {
   lends: [],
   fees: [],
   count: 0,
-  countFee: 0,
   lendsState: "",
   currentLend: "",
 };
 
 export const LendReducer = (state = initialState, action) => {
   switch (action.type) {
+    case Types.ADD_NEW_LEND:
+      return {
+        ...state,
+        lends: [...state.lends, action.payload],
+      };
     case Types.LENDS_LOADED:
       return {
         ...state,

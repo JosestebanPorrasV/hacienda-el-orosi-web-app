@@ -2,7 +2,7 @@ import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 
-export const CollaboratorLoading = (page_) => {
+export const CollaboratorsLoading = (page_) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
@@ -22,6 +22,6 @@ export const CollaboratorLoading = (page_) => {
 };
 
 const collaboratorsLoaded = (collaborators) => ({
-  type: Types.COLLABORATOR_LOADED,
+  type: Types.COLLABORATORS_LOADED,
   payload: collaborators,
 });

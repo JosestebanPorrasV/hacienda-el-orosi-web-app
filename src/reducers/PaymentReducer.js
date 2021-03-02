@@ -7,7 +7,7 @@ const initialState = {
 
 export const PaymentReducer = (state = initialState, action) => {
   switch (action.type) {
-    case Types.PAYMENT_LOADED:
+    case Types.PAYMENTS_LOADED:
       return {
         ...state,
         payments: [...action.payload.payments],

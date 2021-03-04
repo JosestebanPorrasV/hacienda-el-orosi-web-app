@@ -14,7 +14,7 @@ export const tooltStartLoading = (page_) => {
         Swal.fire("Error", body.msg, "error");
       }
     } catch (error) {
-      console - log(error);
+      console.log(error);
     }
   };
 };

@@ -132,3 +132,5 @@ const login = (user) => ({
   type: Types.LOGIN,
   payload: user,
 });
+
+export const logout = () => ({ type: Types.LOGOUT });

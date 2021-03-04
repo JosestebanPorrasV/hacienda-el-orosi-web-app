@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { contractLoading } from "../../actions/ContractAction";
+import { contractsLoading } from "../../actions/ContractAction";
 
 export const ContractScreen = () => {
   const dispatch = useDispatch();
   const { contracts } = useSelector((state) => state.contract);
 
   useEffect(() => {
-    dispatch(contractLoading());
+    dispatch(contractsLoading());
   }, [dispatch]);
   return (
     <div className="main-content flex-1 bg-gray-100 mt-20 md:mt-2 pb-5 md:pb-5">

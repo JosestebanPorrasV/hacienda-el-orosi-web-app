@@ -7,6 +7,7 @@ import { CollaboratorReducer } from "./CollaboratorReducer";
 import { PaymentReducer } from "./PaymentReducer";
 import { LendReducer } from "./LendReducer";
 import { ContractReducer } from "./ContractReducer";
+import { ToolReducer } from "./ToolReducer";
 
 export const rootReducer = combineReducers({
   auth: AuthReducer,
@@ -16,4 +17,5 @@ export const rootReducer = combineReducers({
   lend: LendReducer,
   payment: PaymentReducer,
   contract: ContractReducer,
+  tool: ToolReducer,
 });

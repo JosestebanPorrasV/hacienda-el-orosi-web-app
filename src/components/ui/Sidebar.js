@@ -80,7 +80,7 @@ export const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/"
+                to="/listar-herramientas"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">

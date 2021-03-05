@@ -4,6 +4,8 @@ const initialState = {
   menuOpen: false,
   modalFeeOpen: false,
   modalAddLendOpen: false,
+  modalAddToolOpen: false,
+  modalActiveOpen: false,
 };
 
 export const UIReducer = (state = initialState, action) => {
@@ -40,6 +42,29 @@ export const UIReducer = (state = initialState, action) => {
         ...state,
         modalAddLendOpen: false,
       };
+
+      case Types.UI_OPEN_MODAL_ADD_TOOL:
+      return {
+        ...state,
+        modalAddToolOpen: true,
+      };
+    case Types.UI_CLOSE_MODAL_ADD_TOOL:
+      return {
+        ...state,
+        modalAddToolOpen: false,
+      };
+
+      case Types.UI_OPEN_MODAL_ACTIVES:
+      return {
+        ...state,
+        modalActiveOpen: true,
+      };
+    case Types.UI_CLOSE_MODAL_ACTIVES:
+      return {
+        ...state,
+        modalActiveOpen: false,
+      };
+
     default:
       return state;
   }

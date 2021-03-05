@@ -12,3 +12,13 @@ export const uiOpenModalAddLend = () => ({
 export const uiCloseModalAddLend = () => ({
   type: Types.UI_CLOSE_MODAL_ADD_LEND,
 });
+
+export const uiOpenModalAddTool = () => ({
+  type: Types.UI_OPEN_MODAL_ADD_TOOL,
+});
+export const uiCloseModalAddTool = () => ({
+  type: Types.UI_CLOSE_MODAL_ADD_TOOL,
+});
+
+export const uiOpenModalActive = () => ({ type: Types.UI_OPEN_MODAL_ACTIVES });
+export const uiCloseModalActive = () => ({ type: Types.UI_CLOSE_MODAL_ACTIVES });

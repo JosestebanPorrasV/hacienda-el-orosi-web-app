@@ -172,21 +172,22 @@ export const CollaboratorScreen = () => {
                 </tr>
               </thead>
               <tbody
-                className=" divide-y divide-gray-500 divide-solid text-blue-100 bg-grey-light flex flex-col justify-between overflow-y-scroll w-full"
+                className="text-blue-100 flex flex-col justify-between overflow-y-scroll w-full"
                 style={{ height: "50vh" }}
               >
                 {results.map((collaborator) => (
-                  <tr className="flex w-full " key={collaborator._id}>
+                  
+                  <tr className="flex w-full" key={collaborator._id}>
                     <th
                       className="p-4 w-1/4"
                       hidden={
                         collaboratorsState === "inactive" || !collaboratorsState
                       }
                     >
-                      <label className="inline-flex items-center mt-3">
+                      <label className="inline-flex items-center mt-3 ">
                         <input
                           type="checkbox"
-                          className="form-checkbox h-5 w-5 text-green-600"
+                          className="form-checkbox h-5 w-5"
                           defaultChecked={false}
                         />
                       </label>

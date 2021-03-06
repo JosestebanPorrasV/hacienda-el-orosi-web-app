@@ -12,6 +12,7 @@ import { ModalInfo } from "./ModalInfo";
 import { uiOpenModalInfoCollaborator } from "../../actions/UIAction";
 import DropdownRender from "./Dropdown";
 import { ModalLend } from "../lend/ModalLend";
+import { ModalActive } from "../tool/ModalActive";
 
 export const CollaboratorScreen = () => {
   const dispatch = useDispatch();
@@ -263,6 +264,7 @@ export const CollaboratorScreen = () => {
 
       <ModalInfo />
       <ModalLend />
+      <ModalActive />
     </>
   );
 };

@@ -2,6 +2,8 @@ import { Types } from "../types/Types";
 
 const initialState = {
   collaborators: [],
+  countCollaborators: 0,
+  collaboratorsState: null,
   currentCollaborator: null,
 };
 
@@ -11,6 +13,8 @@ export const CollaboratorReducer = (state = initialState, action) => {
       return {
         ...state,
         collaborators: [...action.payload.collaborators],
+        countCollaborators: action.payload.count,
+        collaboratorsState: action.payload.collaboratorsState,
       };
     case Types.ADD_NEW_COLLABORATOR:
       return {

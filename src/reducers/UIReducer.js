@@ -6,6 +6,7 @@ const initialState = {
   modalAddLendOpen: false,
   modalAddToolOpen: false,
   modalActiveOpen: false,
+  modalCollaboratorInfoOpen: false,
 };
 
 export const UIReducer = (state = initialState, action) => {
@@ -19,6 +20,17 @@ export const UIReducer = (state = initialState, action) => {
       return {
         ...state,
         menuOpen: false,
+      };
+
+    case Types.UI_OPEN_MODAL_COLLABORATOR_INFO:
+      return {
+        ...state,
+        modalCollaboratorInfoOpen: true,
+      };
+    case Types.UI_CLOSE_MODAL_COLLABORATOR_INFO:
+      return {
+        ...state,
+        modalCollaboratorInfoOpen: false,
       };
 
     case Types.UI_OPEN_MODAL_FEES:
@@ -43,7 +55,7 @@ export const UIReducer = (state = initialState, action) => {
         modalAddLendOpen: false,
       };
 
-      case Types.UI_OPEN_MODAL_ADD_TOOL:
+    case Types.UI_OPEN_MODAL_ADD_TOOL:
       return {
         ...state,
         modalAddToolOpen: true,
@@ -54,7 +66,7 @@ export const UIReducer = (state = initialState, action) => {
         modalAddToolOpen: false,
       };
 
-      case Types.UI_OPEN_MODAL_ACTIVES:
+    case Types.UI_OPEN_MODAL_ACTIVES:
       return {
         ...state,
         modalActiveOpen: true,

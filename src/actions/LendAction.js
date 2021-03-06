@@ -1,6 +1,8 @@
 import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
+import { uiCloseModalAddLend } from "./UIAction";
+import { collaboratorClearActive } from "./CollaboratorAction";
 
 export const lendsStartLoading = (status = "active", page) => {
   return async (dispatch) => {
@@ -92,14 +94,16 @@ export function registerLend(collaborator_id, lendFormValues) {
       "recursos-humanos/realizar-prestamo",
       {
         collaborator_id: collaborator_id,
-        initial_amount: lendFormValues.initial_amount,
-        fee: lendFormValues.fee_amount,
+        initial_amount: parseInt(lendFormValues.initial_amount),
+        fee_amount: parseInt(lendFormValues.fee_amount),
       },
       "POST"
     );
 
     const body = await resp.json();
+
     if (body.status === "success") {
+      await dispatch(collaboratorClearActive());
       await dispatch(addLendSuccess(body.lend));
       await dispatch(lendsStartLoading());
       await Swal.fire({
@@ -108,6 +112,7 @@ export function registerLend(collaborator_id, lendFormValues) {
         showConfirmButton: false,
         timer: 2000,
       });
+      await dispatch(uiCloseModalAddLend());
     } else {
       Swal.fire("Error", body.msg, "error");
     }
@@ -151,14 +156,13 @@ export function changeFee(lend, newFee) {
 
     const resp = await FetchConsult(
       `recursos-humanos/cambiar-cuota/${lend._id}`,
-      { newFee: newFee },
+      { newFee: parseInt(newFee) },
       "PUT"
     );
 
     const body = await resp.json();
 
     if (body.status === "success") {
-      console.log(body.lend);
       await dispatch(changeFeeSuccess(body.lend));
 
       await Swal.fire({

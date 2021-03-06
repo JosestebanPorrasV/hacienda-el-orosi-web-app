@@ -40,9 +40,10 @@ export const ModalLend = () => {
     setFormValues(initEvent);
   };
 
-  const handleRegisterLend = (e) => {
+  const handleRegisterLend = async (e) => {
     e.preventDefault();
-    dispatch(registerLend(currentCollaborator._id, formValues));
+    await dispatch(registerLend(currentCollaborator._id, formValues));
+    await setFormValues(initEvent); 
   };
 
   return (
@@ -80,7 +81,7 @@ export const ModalLend = () => {
                         </label>
                         <input
                           required
-                          value={document_id}
+                          value={currentCollaborator ? currentCollaborator.document_id: document_id}
                           onChange={handleInputChange}
                           name="document_id"
                           type="number"

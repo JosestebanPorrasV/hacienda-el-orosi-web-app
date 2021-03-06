@@ -9,8 +9,7 @@ export const CollaboratorsLoading = ( status = "active", page ) => {
         `recursos-humanos/colaboradores/${status}/${page}`
       );
       const body = await resp.json();
-
-        console.log(body);
+      
       if (body.status === "success") {
         dispatch(collaboratorsLoaded(body.collaborators));
       } else {

@@ -11,6 +11,7 @@ import { UseForm } from "../../hooks/UseForm";
 import { ModalInfo } from "./ModalInfo";
 import { uiOpenModalInfoCollaborator } from "../../actions/UIAction";
 import DropdownRender from "./Dropdown";
+import { ModalLend } from "../lend/ModalLend";
 
 export const CollaboratorScreen = () => {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ export const CollaboratorScreen = () => {
 
   return (
     <>
-      <div className="bg-blue-900 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
+      <div className="bg-blue-900 rounded-lg px-4 lg:px-8  lg:py-6 mt-8 flex flex-col lg:flex-row  lg:space-y-0 lg:space-x-12">
         <div>
           <h2 className="text-2xl">COLABORADORES</h2>
           <p className="text-blue-100 opacity-70">
@@ -79,9 +80,9 @@ export const CollaboratorScreen = () => {
       </div>
 
       <div className="mt-8 overflow-x-auto bg-gray-700 rounded-lg">
-        
         <span className="pl-4 pt-2 text-lg flex space-x-4">
-          {"Fecha actual: " + dateNow.getDate() +
+          {"Fecha actual: " +
+            dateNow.getDate() +
             "-" +
             (dateNow.getMonth() + 1) +
             "-" +
@@ -182,11 +183,11 @@ export const CollaboratorScreen = () => {
                         collaboratorsState === "inactive" || !collaboratorsState
                       }
                     >
-                      <label class="inline-flex items-center mt-3">
+                      <label className="inline-flex items-center mt-3">
                         <input
                           type="checkbox"
-                          class="form-checkbox h-5 w-5 text-green-600"
-                          checked={false}
+                          className="form-checkbox h-5 w-5 text-green-600"
+                          defaultChecked={false}
                         />
                       </label>
                     </th>
@@ -234,7 +235,7 @@ export const CollaboratorScreen = () => {
                         collaboratorsState === "inactive" || !collaboratorsState
                       }
                     >
-                      <DropdownRender />
+                      <DropdownRender collaborator={collaborator} />
                     </th>
 
                     <th
@@ -260,6 +261,7 @@ export const CollaboratorScreen = () => {
       </div>
 
       <ModalInfo />
+      <ModalLend />
     </>
   );
 };

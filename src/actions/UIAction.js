@@ -20,5 +20,14 @@ export const uiCloseModalAddTool = () => ({
   type: Types.UI_CLOSE_MODAL_ADD_TOOL,
 });
 
+export const uiOpenModalInfoCollaborator = () => ({
+  type: Types.UI_OPEN_MODAL_COLLABORATOR_INFO,
+});
+export const uiCloseModalInfoCollaborator = () => ({
+  type: Types.UI_CLOSE_MODAL_COLLABORATOR_INFO,
+});
+
 export const uiOpenModalActive = () => ({ type: Types.UI_OPEN_MODAL_ACTIVES });
-export const uiCloseModalActive = () => ({ type: Types.UI_CLOSE_MODAL_ACTIVES });
+export const uiCloseModalActive = () => ({
+  type: Types.UI_CLOSE_MODAL_ACTIVES,
+});

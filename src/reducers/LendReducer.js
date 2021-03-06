@@ -4,8 +4,8 @@ const initialState = {
   lends: [],
   fees: [],
   count: 0,
-  lendsState: "",
-  currentLend: "",
+  lendsState: null,
+  currentLend: null,
 };
 
 export const LendReducer = (state = initialState, action) => {

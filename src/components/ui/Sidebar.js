@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { logout } from "../../actions/AuthAction";
 import { uiCloseMenu } from "../../actions/UIAction";
 
-
 import logo from "../../assets/mainLogo.png";
 export const Sidebar = () => {
   const dispatch = useDispatch();
@@ -28,9 +27,7 @@ export const Sidebar = () => {
       } lg:flex flex-col shadow-2xl  z-10`}
     >
       <div className="flex-1 py-4">
-        <h2 className="text-xl font-semibold text-center">
-          HACIENDA EL OROSI
-        </h2>
+        <h2 className="text-xl font-semibold text-center">HACIENDA EL OROSI</h2>
         <nav className="md:mt-8 -mx-2">
           <div className="flex flex-col items-center mt-6 -mx-2 pb-3">
             <img
@@ -112,12 +109,11 @@ export const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/"
+                to="/listar-prestamos"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">
-                  <i className="fas fa-user-cog pr-4"></i>
-                  Mi perfil
+                  <i className="fas fa-donate pr-4"></i>Prestamos
                 </span>
               </Link>
             </li>

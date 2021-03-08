@@ -6,6 +6,7 @@ import {
 } from "../../actions/CollaboratorAction";
 import { useDispatch } from "react-redux";
 import { uiOpenModalAddLend } from "../../actions/UIAction";
+import { uiOpenModalActive } from "../../actions/UIAction";
 
 const Dropdown = ({ collaborator }) => {
   const dispatch = useDispatch();
@@ -79,13 +80,13 @@ const Dropdown = ({ collaborator }) => {
               >
                 <i className="fas fa-user-edit"></i> Editar datos
               </a>
-              <a
-                href="/"
+              <button
+                
                 className="py-2 px-4 font-bold block w-full whitespace-no-wrap hover:bg-blue-800 hover:text-white"
-                onClick={(e) => e.preventDefault()}
+                onClick={() => dispatch(uiOpenModalActive())}
               >
                 <i className="fas fa-tools"></i> Herramientas
-              </a>
+              </button>
 
               <button
                 onClick={() => dispatch(uiOpenModalAddLend())}

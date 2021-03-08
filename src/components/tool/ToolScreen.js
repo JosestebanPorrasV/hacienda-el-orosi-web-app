@@ -4,13 +4,11 @@ import { useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
 
 import {
-  tooltStartLoading, //TODAS LAS HERRAMIENTAS
   toolsStartLoading, //BYSTATUS
   deleteBulk,
 } from "../../actions/ToolAction";
 import { uiOpenModalAddTool } from "../../actions/UIAction";
 import { UseForm } from "../../hooks/UseForm";
-import ReactPaginate from "react-paginate";
 import Swal from "sweetalert2";
 import { ModalTool } from "./ModalTool";
 
@@ -36,10 +34,6 @@ export const ToolScreen = () => {
 
   const getToolsInStock = () => {
     dispatch(toolsStartLoading("stock"));
-  };
-
-  const getAllsTools = () => {
-    dispatch(tooltStartLoading());
   };
 
   const OpenModalAddTool = () => {
@@ -74,7 +68,6 @@ export const ToolScreen = () => {
       <div className="bg-indigo-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
           <button
-            onClick={() => getAllsTools()}
             className="bg-indigo-900 hover:bg-gray-800 text-white font-bold py-2 px-4 border-b-4 border-gray-900 hover:border-indigo-200 rounded"
           >
             HERRAMIENTAS
@@ -229,33 +222,7 @@ export const ToolScreen = () => {
           </div>
         </div>
       </div>
-      <ReactPaginate
-        pageCount={Math.ceil(count / 10)}
-        marginPagesDisplayed={1}
-        pageRangeDisplayed={2}
-        previousLabel={"Atras"}
-        activeClassName={"bg-green-900 rounded-full my-1"}
-        breakClassName={"text-2xl text-grey-900 pl-4"}
-        nextLabel={"Adelante"}
-        breakLabel={"..."}
-        pageLinkClassName={
-          "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-gray-900 rounded-full my-1"
-        }
-        previousClassName={
-          "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900"
-        }
-        nextClassName={
-          "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900"
-        }
-        onPageChange={
-          toolsState
-            ? (data) =>
-                dispatch(tooltStartLoading(toolsState, data.selected + 1))
-            : (data) =>
-                dispatch(tooltStartLoading(document_id, data.selected + 1))
-        }
-        containerClassName={"sm:flex m-4 p-3"}
-      />
+
       <ModalTool />
     </>
   );

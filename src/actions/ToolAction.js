@@ -1,31 +1,14 @@
 import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
-
-export const tooltStartLoading = (page) => {
-  return async (dispatch) => {
-    try {
-      const resp = await FetchConsult(`herramientas/registradas/${page}`);
-      const body = await resp.json();
-      
-      if (body.status === "success") {
-        dispatch(toolLoaded(body.tools));
-      } else {
-        Swal.fire("Error", body.msg, "error");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
+import { uiCloseModalAddTool } from "./../actions/UIAction";
 
 export const toolsStartLoading = (status = "stock", page) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(`herramientas/ver/${status}/${page}`);
       const body = await resp.json();
-      
+
       if (body.status === "success") {
         dispatch(toolLoaded(body.tools));
       } else {
@@ -42,7 +25,7 @@ export const activeToolStartLoading = (page_) => {
     try {
       const resp = await FetchConsult(`herramientas/activas/${page_}`);
       const body = await resp.json();
-      
+
       if (body.status === "success") {
         dispatch(activesLoaded(body));
       } else {
@@ -54,20 +37,35 @@ export const activeToolStartLoading = (page_) => {
   };
 };
 
+export const activeToolByCollaboratorLoading = (collaboratorId) => {
+  return async (dispatch) => {
+    try {
+      const resp = await FetchConsult(`herramientas/activas/colaborador/${collaboratorId}`);
+      const body = await resp.json();
+      console.log(body);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
 export function registerTool(toolFormValues) {
   return async (dispatch) => {
     const resp = await FetchConsult(
       "herramientas/registrar",
       {
-        name: toolFormValues.name
+        name: toolFormValues.name,
+        liters: toolFormValues.liters,
       },
       "POST"
     );
 
     const body = await resp.json();
     if (body.status === "success") {
-      await dispatch(addToolSuccess(body.tool));
+      await dispatch(addToolSuccess());
       await dispatch(toolsStartLoading());
+      await dispatch(uiCloseModalAddTool());
       await Swal.fire({
         icon: "success",
         title: body.msg,
@@ -102,9 +100,24 @@ export const deleteBulk = (collaborator_id, data) => {
   };
 };
 
-export const addToolSuccess = (tool) => ({
-  type: Types.ADD_NEW_TOOL,
+export const addToolSelected = (tool) => {
+  return async (dispatch) => {
+    dispatch(addToSelectedTools(tool));
+  };
+};
+
+export const addToSelectedTools = (tool) => ({
+  type: Types.ADD_TO_SELECT_TOOLS,
   payload: tool,
+});
+
+export const removeInSelectedTools = (tool_id) => ({
+  type: Types.REMOVE_IN_SELECT_TOOLS,
+  payload: tool_id,
+});
+
+export const addToolSuccess = () => ({
+  type: Types.ADD_NEW_TOOL,
 });
 
 export const deleteActivesSuccess = () => ({

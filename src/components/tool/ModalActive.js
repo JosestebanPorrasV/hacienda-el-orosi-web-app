@@ -201,7 +201,7 @@ export const ModalActive = () => {
                         </div>
                         <div className="p-12 md:w-1/2 flex flex-col items-center">
                           <span className="inline-block py-1 px-2 rounded bg-green-200 text-green-500 text-xl font-medium tracking-widest">
-                            PARA ASIGNAR ASIGNAR
+                            PARA ASIGNAR  
                           </span>
                           <section className="relative w-full pt-4">
                             <div className="relative">

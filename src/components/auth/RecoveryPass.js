@@ -1,10 +1,9 @@
 import React from "react";
 import Swal from "sweetalert2";
-import bgLogin from "../../assets/bglogin4.jpg";
+import bgLogin from "../../assets/bgLogin.jpg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { UseForm } from "../../hooks/UseForm";
-import { FooterSmall } from "../ui/FooterSmall";
 import { setRecoveryKey } from "../../actions/AuthAction";
 import { verifyRecoveryKey } from "../../actions/AuthAction";
 import { changePass } from "../../actions/AuthAction";
@@ -175,7 +174,6 @@ export const RecoveryPass = () => {
             </Link>
           </div>
         </div>
-        <FooterSmall />
       </section>
     );
   }

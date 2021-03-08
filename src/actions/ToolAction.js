@@ -8,7 +8,7 @@ export const toolsStartLoading = (status = "stock", page) => {
     try {
       const resp = await FetchConsult(`herramientas/ver/${status}/${page}`);
       const body = await resp.json();
-      
+
       if (body.status === "success") {
         dispatch(toolLoaded(body.tools));
       } else {
@@ -25,7 +25,7 @@ export const activeToolStartLoading = (page_) => {
     try {
       const resp = await FetchConsult(`herramientas/activas/${page_}`);
       const body = await resp.json();
-      
+
       if (body.status === "success") {
         dispatch(activesLoaded(body));
       } else {
@@ -37,13 +37,26 @@ export const activeToolStartLoading = (page_) => {
   };
 };
 
+export const activeToolByCollaboratorLoading = (collaboratorId) => {
+  return async (dispatch) => {
+    try {
+      const resp = await FetchConsult(`herramientas/activas/colaborador/${collaboratorId}`);
+      const body = await resp.json();
+      console.log(body);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
 export function registerTool(toolFormValues) {
   return async (dispatch) => {
     const resp = await FetchConsult(
       "herramientas/registrar",
       {
         name: toolFormValues.name,
-        liters: toolFormValues.liters
+        liters: toolFormValues.liters,
       },
       "POST"
     );
@@ -86,6 +99,22 @@ export const deleteBulk = (collaborator_id, data) => {
     }
   };
 };
+
+export const addToolSelected = (tool) => {
+  return async (dispatch) => {
+    dispatch(addToSelectedTools(tool));
+  };
+};
+
+export const addToSelectedTools = (tool) => ({
+  type: Types.ADD_TO_SELECT_TOOLS,
+  payload: tool,
+});
+
+export const removeInSelectedTools = (tool_id) => ({
+  type: Types.REMOVE_IN_SELECT_TOOLS,
+  payload: tool_id,
+});
 
 export const addToolSuccess = () => ({
   type: Types.ADD_NEW_TOOL,

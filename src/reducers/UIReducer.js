@@ -2,6 +2,7 @@ import { Types } from "../types/Types";
 
 const initialState = {
   menuOpen: false,
+  modalCollaboratorOpen: false,
   modalFeeOpen: false,
   modalAddLendOpen: false,
   modalAddToolOpen: false,
@@ -21,6 +22,17 @@ export const UIReducer = (state = initialState, action) => {
         ...state,
         menuOpen: false,
       };
+
+    case Types.UI_OPEN_MODAL_COLLABORATOR:
+        return {
+          ...state,
+          modalCollaboratorOpen: true,
+        };
+    case Types.UI_CLOSE_MODAL_COLLABORATOR:
+        return {
+          ...state,
+          modalCollaboratorOpen: false,
+        };
 
     case Types.UI_OPEN_MODAL_COLLABORATOR_INFO:
       return {

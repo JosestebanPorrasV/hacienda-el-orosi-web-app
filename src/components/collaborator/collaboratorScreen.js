@@ -9,10 +9,11 @@ import {
 } from "../../actions/CollaboratorAction";
 import { UseForm } from "../../hooks/UseForm";
 import { ModalInfo } from "./ModalInfo";
-import { uiOpenModalInfoCollaborator } from "../../actions/UIAction";
+import { uiOpenModalInfoCollaborator, uiOpenModalCollaborator } from "../../actions/UIAction";
 import DropdownRender from "./Dropdown";
 import { ModalLend } from "../lend/ModalLend";
 import { ModalActive } from "../tool/ModalActive";
+import { ModalCollaborator } from "./ModalCollaborator";
 
 export const CollaboratorScreen = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,15 @@ export const CollaboratorScreen = () => {
   const [formValues, handleInputChange] = UseForm({
     filter: "",
   });
+
+  const onSelectAddUpdateCollaborator = (collaborator) => {
+    dispatch(collaboratorSetActive(collaborator));
+    openModalCollaborator();
+  };
+
+  const openModalCollaborator = () => {
+    dispatch(uiOpenModalCollaborator());
+  };
 
   const onSelectCollaborator = (collaborator) => {
     dispatch(collaboratorSetActive(collaborator));
@@ -59,7 +69,9 @@ export const CollaboratorScreen = () => {
           </p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0 text-lg text-gray-200">
-          <button className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-700 w-35 fas fa-user-plus">
+          <button 
+          onClick={() => onSelectAddUpdateCollaborator()}
+          className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-700 w-35 fas fa-user-plus">
             <span>Contratar nuevo</span>
           </button>
           <button
@@ -177,7 +189,6 @@ export const CollaboratorScreen = () => {
                 style={{ height: "50vh" }}
               >
                 {results.map((collaborator) => (
-                  
                   <tr className="flex w-full" key={collaborator._id}>
                     <th
                       className="p-4 w-1/4"
@@ -262,6 +273,7 @@ export const CollaboratorScreen = () => {
         />
       </div>
 
+      <ModalCollaborator />
       <ModalInfo />
       <ModalLend />
       <ModalActive />

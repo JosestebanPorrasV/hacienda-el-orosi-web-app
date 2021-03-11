@@ -83,7 +83,7 @@ export function editOneCollaborator(collaborator_id, collaborator) {
           direction: collaborator.direction,
           tel: collaborator.tel,
           cel: collaborator.cel, },
-        "POST"
+        "PUT"
       );
       const body = await resp.json();
       if (body.status === "success") {

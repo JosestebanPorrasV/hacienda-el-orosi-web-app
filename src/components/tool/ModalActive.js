@@ -63,7 +63,7 @@ export const ModalActive = () => {
           <div className="absolute inset-0  z-50 outline-none focus:outline-none">
             <div className="relative w-auto my-6 mx-auto max-w-6xl">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none bg-white">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none bg-hwite">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blue-100  text-blue-800 rounded-t">
                   <h3 className="text-3xl font-semibold">
@@ -201,7 +201,7 @@ export const ModalActive = () => {
                         </div>
                         <div className="p-12 md:w-1/2 flex flex-col items-center">
                           <span className="inline-block py-1 px-2 rounded bg-green-200 text-green-500 text-xl font-medium tracking-widest">
-                            PARA ASIGNAR ASIGNAR
+                            PARA ASIGNAR  
                           </span>
                           <section className="relative w-full pt-4">
                             <div className="relative">

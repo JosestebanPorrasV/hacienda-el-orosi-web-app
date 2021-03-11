@@ -9,7 +9,6 @@ import {
 } from "../../actions/ToolAction";
 import { uiOpenModalAddTool } from "../../actions/UIAction";
 import { UseForm } from "../../hooks/UseForm";
-import ReactPaginate from "react-paginate";
 import Swal from "sweetalert2";
 import { ModalTool } from "./ModalTool";
 
@@ -223,30 +222,7 @@ export const ToolScreen = () => {
           </div>
         </div>
       </div>
-      <ReactPaginate
-        pageCount={Math.ceil(count / 5)}
-        marginPagesDisplayed={1}
-        pageRangeDisplayed={2}
-        previousLabel={"Atras"}
-        activeClassName={"bg-green-900 rounded-full my-1"}
-        breakClassName={"text-2xl text-grey-900 pl-4"}
-        nextLabel={"Adelante"}
-        breakLabel={"..."}
-        pageLinkClassName={
-          "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-gray-900 rounded-full my-1"
-        }
-        previousClassName={
-          "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900"
-        }
-        nextClassName={
-          "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900"
-        }
-        onPageChange={
-             (data) =>
-                dispatch(toolsStartLoading(toolsState, data.selected + 1))
-        }
-        containerClassName={"sm:flex m-4 p-3"}
-      />
+
       <ModalTool />
     </>
   );

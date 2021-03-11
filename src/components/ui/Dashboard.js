@@ -2,7 +2,6 @@ import React from "react";
 import { Navbar } from "./Navbar";
 
 import { DashboardRoutes } from "../../routers/DashboardRoutes";
-import { FooterSmall } from "./FooterSmall";
 import { Sidebar } from "./Sidebar";
 import { NavbarInfo } from "./NavbarInfo";
 
@@ -22,7 +21,6 @@ export const Dashboard = () => {
           </div>
         </div>
       </div>
-      <FooterSmall />
     </>
   );
 };

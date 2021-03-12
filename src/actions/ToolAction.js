@@ -3,10 +3,10 @@ import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 import { uiCloseModalAddTool } from "./../actions/UIAction";
 
-export const toolsStartLoading = (status = "stock", page) => {
+export const toolsStartLoading = (status = "stock") => {
   return async (dispatch) => {
     try {
-      const resp = await FetchConsult(`herramientas/ver/${status}/${page}`);
+      const resp = await FetchConsult(`herramientas/ver/${status}`);
       const body = await resp.json();
 
       if (body.status === "success") {

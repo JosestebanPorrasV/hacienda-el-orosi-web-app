@@ -19,6 +19,7 @@ export const CollaboratorReducer = (state = initialState, action) => {
     case Types.ADD_NEW_COLLABORATOR:
       return {
         ...state,
+        ...action.payload,
       };
 
     case Types.COLLABORATOR_SET_ACTIVE:

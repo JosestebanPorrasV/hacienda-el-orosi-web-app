@@ -6,7 +6,7 @@ import {
 } from "../../actions/CollaboratorAction";
 import { useDispatch } from "react-redux";
 import { uiOpenModalAddLend } from "../../actions/UIAction";
-import { uiOpenModalActive } from "../../actions/UIAction";
+import { uiOpenModalActive, uiOpenModalCollaborator } from "../../actions/UIAction";
 
 const Dropdown = ({ collaborator }) => {
   const dispatch = useDispatch();
@@ -73,13 +73,12 @@ const Dropdown = ({ collaborator }) => {
                 <i className="far fa-handshake"></i> Liquidar
               </a>
 
-              <a
-                href="#pablo"
+              <button
                 className="py-2 px-4 font-bold block w-full whitespace-no-wrap hover:bg-blue-800 hover:text-white"
-                onClick={(e) => e.preventDefault()}
+                onClick={() => dispatch(uiOpenModalCollaborator())}
               >
                 <i className="fas fa-user-edit"></i> Editar datos
-              </a>
+              </button>
               <button
                 
                 className="py-2 px-4 font-bold block w-full whitespace-no-wrap hover:bg-blue-800 hover:text-white"
@@ -89,7 +88,7 @@ const Dropdown = ({ collaborator }) => {
               </button>
 
               <button
-                onClick={() => dispatch(uiOpenModalAddLend())}
+                onClick={async() => await dispatch(uiOpenModalAddLend())}
                 className="py-2 px-4 font-bold block w-full whitespace-no-wrap hover:bg-blue-800 hover:text-white"
               >
                 <i className="fas fa-hand-holding-usd"></i> Realizar prestemo

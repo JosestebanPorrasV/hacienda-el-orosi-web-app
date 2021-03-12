@@ -69,7 +69,7 @@ export const deleteOneLend = (id) => {
     try {
       const resp = await FetchConsult(
         `recursos-humanos/eliminar-prestamo/${id}`,
-        { id: id },
+        { },
         "DELETE"
       );
       const body = await resp.json();

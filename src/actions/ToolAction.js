@@ -20,10 +20,10 @@ export const toolsStartLoading = (status = "stock", page) => {
   };
 };
 
-export const activeToolStartLoading = (page_) => {
+export const activesToolsLoaded = () => {
   return async (dispatch) => {
     try {
-      const resp = await FetchConsult(`herramientas/activas/${page_}`);
+      const resp = await FetchConsult(`herramientas/activas`);
       const body = await resp.json();
 
       if (body.status === "success") {
@@ -83,14 +83,14 @@ export const deleteBulk = (collaborator_id, data) => {
     try {
       const resp = await FetchConsult(
         `herramientas/eliminar-activos/${collaborator_id}`,
-        { data: data },
+        { tools: data },
         "DELETE"
       );
       const body = await resp.json();
       if (body.status === "success") {
-        Swal.fire("Eliminados", body.msg, "success");
-        dispatch(toolsStartLoading());
+        dispatch(activesToolsLoaded());
         dispatch(deleteActivesSuccess());
+        Swal.fire("Eliminados", body.msg, "success");
       } else {
         Swal.fire("Error", body.msg, "error");
       }
@@ -129,7 +129,7 @@ const toolLoaded = (tools) => ({
   payload: tools,
 });
 
-const activesLoaded = (active) => ({
+const activesLoaded = (actives) => ({
   type: Types.ACTIVES_LOADED,
-  payload: active,
+  payload: actives,
 });

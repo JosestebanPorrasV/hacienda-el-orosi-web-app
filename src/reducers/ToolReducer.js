@@ -34,7 +34,6 @@ export const ToolReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedTools: [...state.selectedTools, action.payload],
-        
       };
 
     case Types.REMOVE_IN_SELECT_TOOLS:
@@ -43,6 +42,18 @@ export const ToolReducer = (state = initialState, action) => {
         selectedTools: state.selectedTools.filter(
           (e) => e.tool_id !== action.payload
         ),
+      };
+
+    case Types.ACTIVES_LOADED:
+      return {
+        ...state,
+        actives: [...action.payload.actives],
+      };
+
+    case Types.ACTIVES_DELETE:
+      return {
+        ...state,
+        ...action.payload,
       };
 
     default:

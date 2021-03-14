@@ -290,7 +290,7 @@ export const LendScreen = () => {
                         </th>
                         <th className="py-3 px-3">
                           <button
-                            onClick={() => dispatch(lendChangeFee(lend))}
+                            onClick={() => lendChangeFee(lend)}
                             hidden={lend.status === "cancel"}
                           >
                             <i className="fas fa-edit text-xl text-yellow-400" />

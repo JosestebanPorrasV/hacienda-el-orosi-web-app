@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
 
 import {
-  toolsStartLoading, //BYSTATUS
+  toolsLoading, //BYSTATUS
   deleteBulk,
 } from "../../actions/ToolAction";
 import { uiOpenModalAddTool } from "../../actions/UIAction";
@@ -18,7 +18,7 @@ export const ToolScreen = () => {
   const { currentCollaborator } = useSelector((state) => state.collaborator);
 
   useEffect(() => {
-    dispatch(toolsStartLoading());
+    dispatch(toolsLoading());
   }, [dispatch]);
 
   const [formValues, handleInputChange] = UseForm({
@@ -29,11 +29,11 @@ export const ToolScreen = () => {
   const { filter, document_id } = formValues;
 
   const getActivesTools = () => {
-    dispatch(toolsStartLoading("active"));
+    dispatch(toolsLoading("active"));
   };
 
   const getToolsInStock = () => {
-    dispatch(toolsStartLoading("stock"));
+    dispatch(toolsLoading("stock"));
   };
 
   const OpenModalAddTool = () => {

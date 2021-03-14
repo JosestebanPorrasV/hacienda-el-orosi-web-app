@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   collaboratorClearActive,
   registerCollaborator,
-  CollaboratorsLoading,
   editOneCollaborator,
 } from "../../actions/CollaboratorAction";
 

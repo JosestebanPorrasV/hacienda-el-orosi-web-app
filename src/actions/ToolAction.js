@@ -3,7 +3,7 @@ import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 import { uiCloseModalAddTool } from "./../actions/UIAction";
 
-export const toolsStartLoading = (status = "stock") => {
+export const toolsLoading = (status = "stock") => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(`herramientas/ver/${status}`);
@@ -64,7 +64,7 @@ export function registerTool(toolFormValues) {
     const body = await resp.json();
     if (body.status === "success") {
       await dispatch(addToolSuccess());
-      await dispatch(toolsStartLoading());
+      await dispatch(toolsLoading());
       await dispatch(uiCloseModalAddTool());
       await Swal.fire({
         icon: "success",
@@ -89,7 +89,7 @@ export const deleteBulk = (collaborator_id, data) => {
       const body = await resp.json();
       if (body.status === "success") {
         Swal.fire("Eliminados", body.msg, "success");
-        dispatch(toolsStartLoading());
+        dispatch(toolsLoading());
         dispatch(deleteActivesSuccess());
       } else {
         Swal.fire("Error", body.msg, "error");

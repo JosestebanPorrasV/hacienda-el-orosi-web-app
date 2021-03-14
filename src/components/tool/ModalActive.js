@@ -5,10 +5,12 @@ import SearchResults from "react-filter-search";
 import { UseForm } from "../../hooks/UseForm";
 import {
   addToolSelected,
-  toolsStartLoading,
+  toolsLoading,
   removeInSelectedTools,
   activeToolByCollaboratorLoading,
 } from "../../actions/ToolAction";
+import { collaboratorClearActive } from "../../actions/CollaboratorAction";
+
 import { Link } from "react-router-dom";
 
 export const ModalActive = () => {
@@ -20,6 +22,7 @@ export const ModalActive = () => {
 
   const closeModal = () => {
     dispatch(uiCloseModalActive());
+    dispatch(collaboratorClearActive());
   };
 
   const [formValues, handleInputChange] = UseForm({
@@ -30,11 +33,10 @@ export const ModalActive = () => {
   const { filter1, filter2 } = formValues;
 
   useEffect(() => {
-    dispatch(toolsStartLoading());
-    if(currentCollaborator){
+    dispatch(toolsLoading());
+    if (currentCollaborator) {
       dispatch(activeToolByCollaboratorLoading(currentCollaborator._id));
     }
-
   }, [dispatch, currentCollaborator]);
 
   const selectTool = (tool) => {
@@ -201,7 +203,7 @@ export const ModalActive = () => {
                         </div>
                         <div className="p-12 md:w-1/2 flex flex-col items-center">
                           <span className="inline-block py-1 px-2 rounded bg-green-200 text-green-500 text-xl font-medium tracking-widest">
-                            PARA ASIGNAR  
+                            PARA ASIGNAR
                           </span>
                           <section className="relative w-full pt-4">
                             <div className="relative">

@@ -9,8 +9,11 @@ import {
 } from "../../actions/CollaboratorAction";
 import { UseForm } from "../../hooks/UseForm";
 import { ModalInfo } from "./ModalInfo";
-import { uiOpenModalInfoCollaborator, uiOpenModalCollaborator } from "../../actions/UIAction";
-import DropdownRender from "./Dropdown";
+import {
+  uiOpenModalInfoCollaborator,
+  uiOpenModalCollaborator,
+} from "../../actions/UIAction";
+import { Dropdown } from "./Dropdown";
 import { ModalLend } from "../lend/ModalLend";
 import { ModalActive } from "../tool/ModalActive";
 import { ModalCollaborator } from "./ModalCollaborator";
@@ -48,12 +51,6 @@ export const CollaboratorScreen = () => {
     dispatch(uiOpenModalInfoCollaborator());
   };
 
-  const getCollaboratorsInactive = () => {
-    dispatch(CollaboratorsLoading("inactive"));
-  };
-  const getCollaboratorsActive = () => {
-    dispatch(CollaboratorsLoading("active"));
-  };
 
   const { filter } = formValues;
 
@@ -69,19 +66,20 @@ export const CollaboratorScreen = () => {
           </p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0 text-lg text-gray-200">
-          <button 
-          onClick={() => onSelectAddUpdateCollaborator()}
-          className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-700 w-35 fas fa-user-plus">
+          <button
+            onClick={() => onSelectAddUpdateCollaborator()}
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-700 w-35 fas fa-user-plus"
+          >
             <span>Contratar nuevo</span>
           </button>
           <button
-            onClick={() => getCollaboratorsActive()}
+            onClick={() => dispatch(CollaboratorsLoading("active"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35 fas fa-chart-line"
           >
             <span>Listar activos</span>
           </button>
           <button
-            onClick={() => getCollaboratorsInactive()}
+            onClick={() => dispatch(CollaboratorsLoading("inactive"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35 fas fa-stop-circle"
           >
             <span>Listar inactivos</span>
@@ -247,8 +245,11 @@ export const CollaboratorScreen = () => {
                       hidden={
                         collaboratorsState === "inactive" || !collaboratorsState
                       }
+                      onClick={() =>
+                        dispatch(collaboratorSetActive(collaborator))
+                      }
                     >
-                      <DropdownRender collaborator={collaborator} />
+                      <Dropdown />
                     </th>
 
                     <th

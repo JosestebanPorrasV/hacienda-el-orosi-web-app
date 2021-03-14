@@ -55,14 +55,7 @@ export const LendReducer = (state = initialState, action) => {
         ...state,
         currentLend: null,
       };
-
-    case Types.LEND_DELETED:
-      return {
-        ...state,
-        lends: state.lends.filter((e) => e._id !== state.lends._id),
-        currentLend: null,
-      };
-
+      
     case Types.ADD_FEE_SUCCESS:
       return {
         ...state,

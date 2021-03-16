@@ -4,41 +4,42 @@ import SearchResults from "react-filter-search";
 import { Link } from "react-router-dom";
 
 import {
-  activesToolsLoaded, //BYSTATUS
+  activesToolsLoaded,
   removeTools,
-  addToolSelected,
-  removeInSelectedTools,
+  addActiveSelected,
+  removeInSelectedActives,
 } from "../../actions/ToolAction";
 import { UseForm } from "../../hooks/UseForm";
 import Swal from "sweetalert2";
 
 export const ActiveScreen = () => {
   const dispatch = useDispatch();
-  const { actives, selectedTools, tools } = useSelector((state) => state.tool);
+  const { actives, selectedActives } = useSelector((state) => state.tool);
 
   useEffect(() => {
     dispatch(activesToolsLoaded());
   }, [dispatch]);
 
   const [formValues, handleInputChange] = UseForm({
-    filter: "",
-    document_id: "",
+    filter: ""
   });
 
-  const { filter, document_id } = formValues;
+  const { filter } = formValues;
 
   const toggleCheckbox = (e, active) => {
     if (e.target.checked) {
-      dispatch(addToolSelected({ tool_id: active.tool._id }));
+      dispatch(
+        addActiveSelected({ active_id: active._id, tool_id: active.tool._id })
+      );
     } else {
-      dispatch(removeInSelectedTools(active._id));
+      dispatch(removeInSelectedActives(active._id));
     }
   };
 
   const removeManyTool = () => {
     Swal.fire({
       title: "¿Estas seguro?",
-      text: "La herramienta se regresara a Bodega",
+      text: "Las herramientas se regresaran a Bodega",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -47,7 +48,7 @@ export const ActiveScreen = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        dispatch(removeTools(selectedTools));
+        dispatch(removeTools(selectedActives));
       }
     });
   };
@@ -63,13 +64,11 @@ export const ActiveScreen = () => {
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
           <Link
-            to="/listar-herramientas"
+            to="/herramientas"
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
           >
             <i className="fas fa-arrow-circle-left"></i>
-            <span className="text-white font-bold">
-              Regresar a Herramientas
-            </span>
+            <span className="text-white font-bold">Ir a Herramientas</span>
           </Link>
         </nav>
       </div>
@@ -95,7 +94,7 @@ export const ActiveScreen = () => {
             onClick={() => removeManyTool()}
             className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
             type="button"
-            hidden={selectedTools.length === 0}
+            hidden={selectedActives.length === 0}
             style={{ transition: "all .15s ease" }}
           >
             <i className="fas fa-trash-alt"></i> Eliminar marcados
@@ -126,7 +125,7 @@ export const ActiveScreen = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-grey-600 divide-solid text-blue-100 text-opacity-80 whitespace-nowrap">
+                  <tbody className="text-blue-100 text-opacity-80 whitespace-nowrap">
                     {results.map((active) => (
                       <tr key={active._id}>
                         <th className="py-3 px-2">

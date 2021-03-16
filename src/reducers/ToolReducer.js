@@ -4,6 +4,7 @@ const initialState = {
   tools: [],
   actives: [],
   selectedTools: [],
+  selectedActives: [],
   currentTool: null,
   count: 0,
   toolsState: "",
@@ -43,10 +44,36 @@ export const ToolReducer = (state = initialState, action) => {
         ),
       };
 
+    case Types.ADD_TO_SELECT_ACTIVES:
+      return {
+        ...state,
+        selectedActives: [...state.selectedActives, action.payload],
+      };
+
+    case Types.REMOVE_IN_SELECT_ACTIVES:
+      return {
+        ...state,
+        selectedActives: state.selectedActives.filter(
+          (e) => e.active_id !== action.payload
+        ),
+      };
+
+    case Types.REMOVE_IN_ACTIVES:
+      return {
+        ...state,
+        actives: state.actives.filter((e) => e._id !== action.payload),
+      };
+
     case Types.CLEAN_SELECT_TOOLS:
       return {
         ...state,
         selectedTools: [],
+      };
+
+    case Types.CLEAN_SELECT_ACTIVES:
+      return {
+        ...state,
+        selectedActives: [],
       };
 
     default:

@@ -18,10 +18,9 @@ export const AdministratorScreen = () => {
 
   const [formValues, handleInputChange] = UseForm({
     filter: "",
-    document_id: "",
   });
 
-  const { filter, document_id } = formValues;
+  const { filter } = formValues;
 
   const onSelectAddChangeAdministrator = (administrator) => {
     dispatch(administratorSetActive(administrator));
@@ -105,7 +104,7 @@ export const AdministratorScreen = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-grey-600 divide-solid text-blue-100 text-opacity-80 whitespace-nowrap">
+                  <tbody className="text-blue-100 text-opacity-80 whitespace-nowrap">
                     {results.map((administrator) => (
                       <tr key={administrator._id}>
                         <th className="py-3 px-3">

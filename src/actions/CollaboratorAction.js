@@ -1,9 +1,12 @@
 import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
+import TopLoaderService from "top-loader-service";
 
 export const CollaboratorsLoading = (status = "active") => {
   return async (dispatch) => {
+    await TopLoaderService.start();
+
     try {
       const resp = await FetchConsult(
         `recursos-humanos/colaboradores/${status}`
@@ -11,9 +14,11 @@ export const CollaboratorsLoading = (status = "active") => {
       const body = await resp.json();
 
       if (body.status === "success") {
-        dispatch(collaboratorsLoaded(body.collaborators));
+        await dispatch(collaboratorsLoaded(body.collaborators));
+        await TopLoaderService.end();
       } else {
-        Swal.fire("Error", body.msg, "error");
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
       }
     } catch (error) {
       console.log(error);
@@ -70,37 +75,37 @@ export function registerCollaborator(collaboratorFormValues) {
       Swal.fire("Error", body.msg, "error");
     }
   };
-};
+}
 export function editOneCollaborator(collaborator_id, collaborator) {
   return async (dispatch) => {
-   
-      const resp = await FetchConsult(
-        `recursos-humanos/actualizar-colaborador/${collaborator_id}`,
-        { document_id: collaborator.document_id,
-          nationality: collaborator.nationality,
-          name: collaborator.name,
-          surname: collaborator.surname,
-          direction: collaborator.direction,
-          tel: collaborator.tel,
-          cel: collaborator.cel, },
-        "PUT"
-      );
-      const body = await resp.json();
-      if (body.status === "success") {
-        await dispatch(CollaboratorsLoading());
-        await dispatch(collaboratorClearActive());
-        await Swal.fire({
-          icon: "success",
-          title: body.msg,
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      } else {
-        Swal.fire("Error", body.msg, "error");
-      }
+    const resp = await FetchConsult(
+      `recursos-humanos/actualizar-colaborador/${collaborator_id}`,
+      {
+        document_id: collaborator.document_id,
+        nationality: collaborator.nationality,
+        name: collaborator.name,
+        surname: collaborator.surname,
+        direction: collaborator.direction,
+        tel: collaborator.tel,
+        cel: collaborator.cel,
+      },
+      "PUT"
+    );
+    const body = await resp.json();
+    if (body.status === "success") {
+      await dispatch(CollaboratorsLoading());
+      await dispatch(collaboratorClearActive());
+      await Swal.fire({
+        icon: "success",
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    } else {
+      Swal.fire("Error", body.msg, "error");
     }
   };
-
+}
 
 export const collaboratorSetActive = (collaborator) => ({
   type: Types.COLLABORATOR_SET_ACTIVE,

@@ -257,7 +257,7 @@ export const LendScreen = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-grey-600 divide-solid text-blue-100 text-opacity-80 whitespace-nowrap">
+                  <tbody className="text-blue-100 text-opacity-80 whitespace-nowrap">
                     {results.map((lend) => (
                       <tr key={lend._id}>
                         <th className="py-3 px-3" hidden={lendsState}>

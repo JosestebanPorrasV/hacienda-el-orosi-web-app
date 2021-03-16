@@ -11,7 +11,7 @@ export const Dropdown = () => {
 
   return (
     <div className="dropdown relative group ">
-      <button className="bg-gray-300 text-gray-700 font-bold py-2 px-2 rounded inline-flex group-hover:bg-gray-800 group-hover:text-white">
+      <button className="bg-gray-300 text-gray-700 font-bold py-2 px-2 rounded inline-flex items-center group-hover:bg-gray-800 group-hover:text-white">
         <i className="fas fa-cogs"></i> <span className="ml-1 mr-1">Menu</span>
         <svg
           className="fill-current h-4 w-4"

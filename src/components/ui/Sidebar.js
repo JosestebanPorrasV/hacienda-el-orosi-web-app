@@ -47,7 +47,7 @@ export const Sidebar = () => {
                 : "Encargado de Ganado"}
             </p>
           </div>
-          <div className="border-solid border-2 border-blue-200"></div>
+          <div className="border-solid border border-blue-200"></div>
           <ul className="text-base pt-4 space-y-3">
             <li>
               <Link
@@ -96,9 +96,9 @@ export const Sidebar = () => {
                 </span>
               </Link>
             </li>
-            <li>
+            <li hidden={role != "GENERAL_ROLE"}>
               <Link
-                to="/"
+                to="/listar-administradores"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">
@@ -119,6 +119,8 @@ export const Sidebar = () => {
             </li>
           </ul>
         </nav>
+
+        
       </div>
       <button
         className="px-4 py-2 font-medium tracking-wide capitalize transition-colors duration-200 transform bg-black rounded-md dark:bg-gray-800 hover:bg-blue-500 dark:hover:bg-gray-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-gray-700"

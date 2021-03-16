@@ -2,6 +2,7 @@ import { Types } from "../types/Types";
 
 const initialState = {
   administrators: [],
+  currentAdministrator: null,
 };
 
 export const AdministratorReducer = (state = initialState, action) => {
@@ -10,6 +11,24 @@ export const AdministratorReducer = (state = initialState, action) => {
       return {
         ...state,
         administrators: [...action.payload.administrators],
+      };
+
+    case Types.ADD_NEW_ADMINISTRATOR:
+      return {
+        ...state,
+        ...action.payload,
+      };
+
+    case Types.ADMINISTRATOR_SET_ACTIVE:
+      return {
+        ...state,
+        currentAdministrator: action.payload,
+      };
+
+    case Types.ADMINISTRATOR_CLEAR_ACTIVE:
+      return {
+        ...state,
+        currentAdministrator: null,
       };
 
     default:

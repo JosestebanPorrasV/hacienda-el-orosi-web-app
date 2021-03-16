@@ -3,6 +3,9 @@ import { Types } from "../types/Types";
 export const uiOpenMenu = () => ({ type: Types.UI_OPEN_MENU });
 export const uiCloseMenu = () => ({ type: Types.UI_CLOSE_MENU });
 
+export const uiOpenModalAdministrator = () => ({ type: Types.UI_OPEN_MODAL_ADMINISTRATOR });
+export const uiCloseModalAdministrator = () => ({ type: Types.UI_CLOSE_MODAL_ADMINISTRATOR });
+
 export const uiOpenModalCollaborator = () => ({ type: Types.UI_OPEN_MODAL_COLLABORATOR });
 export const uiCloseModalCollaborator = () => ({ type: Types.UI_CLOSE_MODAL_COLLABORATOR });
 

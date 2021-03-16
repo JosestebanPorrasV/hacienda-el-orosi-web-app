@@ -66,6 +66,17 @@ export const Sidebar = () => {
             </li>
             <li>
               <Link
+                to="/herramientas-activas"
+                className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
+              >
+                <span className="flex-1">
+                  <i className="fas fa-hammer pr-4"></i>
+                  Activos
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
@@ -75,9 +86,10 @@ export const Sidebar = () => {
                 </span>
               </Link>
             </li>
+
             <li>
               <Link
-                to="/listar-herramientas"
+                to="/herramientas"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">
@@ -96,7 +108,7 @@ export const Sidebar = () => {
                 </span>
               </Link>
             </li>
-            <li hidden={role != "GENERAL_ROLE"}>
+            <li hidden={role !== "GENERAL_ROLE"}>
               <Link
                 to="/listar-administradores"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
@@ -109,7 +121,7 @@ export const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/listar-prestamos"
+                to="/prestamos"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">
@@ -119,8 +131,6 @@ export const Sidebar = () => {
             </li>
           </ul>
         </nav>
-
-        
       </div>
       <button
         className="px-4 py-2 font-medium tracking-wide capitalize transition-colors duration-200 transform bg-black rounded-md dark:bg-gray-800 hover:bg-blue-500 dark:hover:bg-gray-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-gray-700"

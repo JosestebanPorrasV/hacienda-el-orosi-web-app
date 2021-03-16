@@ -169,7 +169,7 @@ export const ModalActive = () => {
                           </section>
                           <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 w-full">
                             <Link
-                              to="/listar-herramientas"
+                              to="/herramientas"
                               className="text-green-500 font-semibold inline-flex items-center hover:underline"
                             >
                               Ir a herramientas
@@ -255,7 +255,7 @@ export const ModalActive = () => {
                             />
                           </section>
                           <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">
-                            <a className="text-green-500 inline-flex items-center">
+                            <span className="text-green-500 inline-flex items-center">
                               Ir a Activos
                               <svg
                                 className="w-4 h-4 ml-2"
@@ -269,7 +269,7 @@ export const ModalActive = () => {
                                 <path d="M5 12h14"></path>
                                 <path d="M12 5l7 7-7 7"></path>
                               </svg>
-                            </a>
+                            </span>
                             <span className="text-gray-400 mr-3 inline-flex items-center ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
                               <svg
                                 className="w-4 h-4 mr-1"
@@ -286,7 +286,7 @@ export const ModalActive = () => {
                               Total asignadas: {selectedTools.length}
                             </span>
                           </div>
-                          <a className="inline-flex items-center">
+                          <span className="inline-flex items-center">
                             <span className="flex-grow flex flex-col pl-4">
                               <button
                                 className="bg-green-600 text-white active:bg-green-600 font-bold uppercase text-sm py-2 rounded shadow hover:bg-green-700 hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
@@ -300,7 +300,7 @@ export const ModalActive = () => {
                                 Se asignaran estas herramientas
                               </span>
                             </span>
-                          </a>
+                          </span>
                         </div>
                       </div>
                     </div>

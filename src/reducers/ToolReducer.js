@@ -22,7 +22,6 @@ export const ToolReducer = (state = initialState, action) => {
       return {
         ...state,
         actives: [...action.payload.actives],
-        countActive: action.payload.count,
       };
     case Types.ADD_NEW_TOOL:
       return {

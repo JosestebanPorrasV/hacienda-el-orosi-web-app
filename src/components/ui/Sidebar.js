@@ -96,9 +96,9 @@ export const Sidebar = () => {
                 </span>
               </Link>
             </li>
-            <li>
+            <li hidden={role != "GENERAL_ROLE"}>
               <Link
-                to="/"
+                to="/listar-administradores"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">

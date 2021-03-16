@@ -2,8 +2,11 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
+import { Link } from "react-router-dom";
 
 import {
+  toolsStartLoading, //BYSTATUS
+  removeTools,
   toolsLoading, //BYSTATUS
   deleteBulk,
 } from "../../actions/ToolAction";
@@ -31,7 +34,6 @@ export const ToolScreen = () => {
   const getActivesTools = () => {
     dispatch(toolsLoading("active"));
   };
-
   const getToolsInStock = () => {
     dispatch(toolsLoading("stock"));
   };
@@ -55,7 +57,7 @@ export const ToolScreen = () => {
     .then((result) => {
       if (result.value) {
         if (actives.length > 0) {
-          dispatch(deleteBulk(currentCollaborator._id, actives));
+          dispatch(removeTools(currentCollaborator._id, actives));
         } else {
           console.log("primero dale check a algun registro");
         }
@@ -84,13 +86,13 @@ export const ToolScreen = () => {
             <i className="fas fa-plus-circle"></i>
             <span className="text-white font-bold">Agregar Herramienta</span>
           </button>
-          <button
-            onClick={() => getActivesTools()}
+          <Link
+            to="/listar-activos"
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
           >
             <i className="fas fa-chart-line"></i>
             <span className="text-white font-bold">Listar activas</span>
-          </button>
+          </Link>
           <button
             onClick={() => getToolsInStock()}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"

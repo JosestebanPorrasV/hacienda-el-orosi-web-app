@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 import {
   toolsStartLoading, //BYSTATUS
-  deleteBulk,
+  removeTools,
 } from "../../actions/ToolAction";
 import { uiOpenModalAddTool } from "../../actions/UIAction";
 import { UseForm } from "../../hooks/UseForm";
@@ -28,10 +28,6 @@ export const ToolScreen = () => {
   });
 
   const { filter, document_id } = formValues;
-
-  const getActivesTools = () => {
-    dispatch(toolsStartLoading("active"));
-  };
 
   const getToolsInStock = () => {
     dispatch(toolsStartLoading("stock"));
@@ -56,7 +52,7 @@ export const ToolScreen = () => {
     .then((result) => {
       if (result.value) {
         if (actives.length > 0) {
-          dispatch(deleteBulk(currentCollaborator._id, actives));
+          dispatch(removeTools(currentCollaborator._id, actives));
         } else {
           console.log("primero dale check a algun registro");
         }

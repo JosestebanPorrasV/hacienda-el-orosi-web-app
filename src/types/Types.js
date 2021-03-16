@@ -67,5 +67,4 @@ export const Types = {
 
   //Activos
   ACTIVES_LOADED: "ACTIVES_LOADED",
-  ACTIVES_DELETE: "ACTIVES_DELETE",
 };

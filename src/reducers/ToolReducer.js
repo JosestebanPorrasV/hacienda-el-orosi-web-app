@@ -22,7 +22,6 @@ export const ToolReducer = (state = initialState, action) => {
       return {
         ...state,
         actives: [...action.payload.actives],
-        countActive: action.payload.count,
       };
     case Types.ADD_NEW_TOOL:
       return {
@@ -42,18 +41,6 @@ export const ToolReducer = (state = initialState, action) => {
         selectedTools: state.selectedTools.filter(
           (e) => e.tool_id !== action.payload
         ),
-      };
-
-    case Types.ACTIVES_LOADED:
-      return {
-        ...state,
-        actives: [...action.payload.actives],
-      };
-
-    case Types.ACTIVES_DELETE:
-      return {
-        ...state,
-        ...action.payload,
       };
 
     default:

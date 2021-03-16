@@ -25,9 +25,9 @@ export const activesToolsLoaded = () => {
     try {
       const resp = await FetchConsult(`herramientas/activas`);
       const body = await resp.json();
-
+      console.log(body)
       if (body.status === "success") {
-        dispatch(activesLoaded(body));
+        dispatch(activesLoaded(body.actives));
       } else {
         Swal.fire("Error", body.msg, "error");
       }
@@ -78,18 +78,17 @@ export function registerTool(toolFormValues) {
   };
 }
 
-export const deleteBulk = (collaborator_id, data) => {
+export const removeTools = (data) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
-        `herramientas/eliminar-activos/${collaborator_id}`,
+        `herramientas/eliminar-activos`,
         { tools: data },
         "DELETE"
       );
       const body = await resp.json();
       if (body.status === "success") {
         dispatch(activesToolsLoaded());
-        dispatch(deleteActivesSuccess());
         Swal.fire("Eliminados", body.msg, "success");
       } else {
         Swal.fire("Error", body.msg, "error");
@@ -120,9 +119,6 @@ export const addToolSuccess = () => ({
   type: Types.ADD_NEW_TOOL,
 });
 
-export const deleteActivesSuccess = () => ({
-  type: Types.ACTIVES_DELETE,
-});
 
 const toolLoaded = (tools) => ({
   type: Types.TOOLS_LOADED,

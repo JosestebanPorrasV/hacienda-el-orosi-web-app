@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { uiCloseModalAddLend } from "./UIAction";
 import { collaboratorClearActive } from "./CollaboratorAction";
 
-export const lendsStartLoading = (status = "active", page) => {
+export const lendsStartLoading = (status = "active", page = 1) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
@@ -45,7 +45,7 @@ export const lendsByCollaboratorLoading = (document_id, page) => {
   };
 };
 
-export const FeesByLendStartLoading = (lendId) => {
+export const FeeByLendLoading = (lendId) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
@@ -68,16 +68,16 @@ export const deleteOneLend = (id) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
-        `recursos-humanos/eliminar-prestamo/${id}`,
-        { },
+        `recursos-humanos/eliminar-prestamo`,
+        { lendId: id },
         "DELETE"
       );
+
       const body = await resp.json();
-
+      console.log(id);
       if (body.status === "success") {
-        await Swal.fire("Eliminado", body.msg, "success");
+        Swal.fire("Eliminado", body.msg, "success");
 
-        await dispatch(deleteOneLendSuccess());
         await dispatch(lendsStartLoading());
       } else {
         Swal.fire("Error", body.msg, "error");
@@ -195,10 +195,6 @@ export const changeFeeSuccess = (lend) => ({
 const lendsLoaded = (lends) => ({
   type: Types.LENDS_LOADED,
   payload: lends,
-});
-
-export const deleteOneLendSuccess = () => ({
-  type: Types.LEND_DELETED,
 });
 
 export const lendSetActive = (lend) => ({

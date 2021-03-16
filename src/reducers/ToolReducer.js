@@ -43,6 +43,12 @@ export const ToolReducer = (state = initialState, action) => {
         ),
       };
 
+    case Types.CLEAN_SELECT_TOOLS:
+      return {
+        ...state,
+        selectedTools: [],
+      };
+
     default:
       return state;
   }

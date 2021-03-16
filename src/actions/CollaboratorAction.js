@@ -2,11 +2,11 @@ import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 
-export const CollaboratorsLoading = (status = "active", page) => {
+export const CollaboratorsLoading = (status = "active") => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
-        `recursos-humanos/colaboradores/${status}/${page}`
+        `recursos-humanos/colaboradores/${status}`
       );
       const body = await resp.json();
 

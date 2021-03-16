@@ -8,10 +8,9 @@ import {
   deleteOneLend,
   lendClearActive,
   lendsByCollaboratorLoading,
-  lendSetActive,
   lendsStartLoading,
   changeFee,
-  FeesByLendStartLoading,
+  FeeByLendLoading,
 } from "../../actions/LendAction";
 import { ModalFee } from "./ModalFee";
 import { uiOpenModalFee, uiOpenModalAddLend } from "../../actions/UIAction";
@@ -42,35 +41,8 @@ export const LendScreen = () => {
     dispatch(lendsByCollaboratorLoading(document_id));
   };
 
-  const getLendsCancel = () => {
-    dispatch(lendsStartLoading("cancel"));
-  };
-  const getLendsActive = () => {
-    dispatch(lendsStartLoading("active"));
-  };
-
-  const onSelectLendOneDelete = (lend) => {
-    dispatch(lendSetActive(lend));
-    oneDeleteLend(lend);
-  };
-
-  const onSelectLendFeeByCollaborator = (lend) => {
-    onSelectLend(lend);
-    dispatch(FeesByLendStartLoading(lend._id));
-  };
-
-  const onSelectAddNewFee = (lend) => {
-    dispatch(lendSetActive(lend));
-    lendAddFee(lend);
-  };
-
-  const onSelectChangeFee = (lend) => {
-    dispatch(lendSetActive(lend));
-    lendChangeFee(lend);
-  };
-
   const onSelectLend = (lend) => {
-    dispatch(lendSetActive(lend));
+    dispatch(FeeByLendLoading(lend._id));
     openModalFee();
   };
 
@@ -157,13 +129,13 @@ export const LendScreen = () => {
             <span>Realizar prestamo</span>
           </button>
           <button
-            onClick={() => getLendsActive()}
+            onClick={() => dispatch(lendsStartLoading("active"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-chart-line"
           >
             <span>Listar activos</span>
           </button>
           <button
-            onClick={() => getLendsCancel()}
+            onClick={() => dispatch(lendsStartLoading("cancel"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-strikethrough"
           >
             <span>Listar cancelados</span>
@@ -318,7 +290,7 @@ export const LendScreen = () => {
                         </th>
                         <th className="py-3 px-3">
                           <button
-                            onClick={() => onSelectChangeFee(lend)}
+                            onClick={() => lendChangeFee(lend)}
                             hidden={lend.status === "cancel"}
                           >
                             <i className="fas fa-edit text-xl text-yellow-400" />
@@ -339,7 +311,7 @@ export const LendScreen = () => {
                         </th>
                         <th className="py-3 px-3">
                           <button
-                            onClick={() => onSelectAddNewFee(lend)}
+                            onClick={() => lendAddFee(lend)}
                             hidden={lend.status === "cancel"}
                             className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
@@ -348,7 +320,7 @@ export const LendScreen = () => {
                             <i className="fas fa-plus"></i>
                           </button>
                           <button
-                            onClick={() => onSelectLendFeeByCollaborator(lend)}
+                            onClick={() => onSelectLend(lend)}
                             className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-green-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}
@@ -356,7 +328,7 @@ export const LendScreen = () => {
                             <i className="far fa-eye"></i>
                           </button>
                           <button
-                            onClick={() => onSelectLendOneDelete(lend)}
+                            onClick={() => oneDeleteLend(lend)}
                             hidden={lend.status === "cancel"}
                             className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"

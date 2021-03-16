@@ -3,10 +3,10 @@ import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 import { uiCloseModalAddTool } from "./../actions/UIAction";
 
-export const toolsStartLoading = (status = "stock", page) => {
+export const toolsLoading = (status = "stock") => {
   return async (dispatch) => {
     try {
-      const resp = await FetchConsult(`herramientas/ver/${status}/${page}`);
+      const resp = await FetchConsult(`herramientas/ver/${status}`);
       const body = await resp.json();
 
       if (body.status === "success") {
@@ -64,7 +64,7 @@ export function registerTool(toolFormValues) {
     const body = await resp.json();
     if (body.status === "success") {
       await dispatch(addToolSuccess());
-      await dispatch(toolsStartLoading());
+      await dispatch(toolsLoading());
       await dispatch(uiCloseModalAddTool());
       await Swal.fire({
         icon: "success",
@@ -90,6 +90,7 @@ export const removeTools = (data) => {
       if (body.status === "success") {
         dispatch(activesToolsLoaded());
         Swal.fire("Eliminados", body.msg, "success");
+        dispatch(toolsLoading());
       } else {
         Swal.fire("Error", body.msg, "error");
       }
@@ -113,6 +114,10 @@ export const addToSelectedTools = (tool) => ({
 export const removeInSelectedTools = (tool_id) => ({
   type: Types.REMOVE_IN_SELECT_TOOLS,
   payload: tool_id,
+});
+
+export const cleanSelectedTools = () => ({
+  type: Types.CLEAN_SELECT_TOOLS,
 });
 
 export const addToolSuccess = () => ({

@@ -90,9 +90,7 @@ export const ModalLend = () => {
                         />
                         <button
                           hidden={!document_id}
-                          onClick={() =>
-                            dispatch(searchCollaborator(document_id))
-                          }
+                          onClick={() => dispatch(document_id && searchCollaborator(document_id)) }
                           className="bg-blue-500 text-white active:bg-blue-600 uppercase text-sm px-2 py-1 rounded-b shadow hover:bg-blue-900 outline-none focus:outline-none mr-1 mb-1"
                           type="button"
                           style={{ transition: "all .15s ease" }}

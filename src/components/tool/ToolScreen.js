@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import {
   toolsStartLoading, //BYSTATUS
   removeTools,
+  toolsLoading, //BYSTATUS
+  deleteBulk,
 } from "../../actions/ToolAction";
 import { uiOpenModalAddTool } from "../../actions/UIAction";
 import { UseForm } from "../../hooks/UseForm";
@@ -19,7 +21,7 @@ export const ToolScreen = () => {
   const { currentCollaborator } = useSelector((state) => state.collaborator);
 
   useEffect(() => {
-    dispatch(toolsStartLoading());
+    dispatch(toolsLoading());
   }, [dispatch]);
 
   const [formValues, handleInputChange] = UseForm({
@@ -29,8 +31,11 @@ export const ToolScreen = () => {
 
   const { filter, document_id } = formValues;
 
+  const getActivesTools = () => {
+    dispatch(toolsLoading("active"));
+  };
   const getToolsInStock = () => {
-    dispatch(toolsStartLoading("stock"));
+    dispatch(toolsLoading("stock"));
   };
 
   const OpenModalAddTool = () => {

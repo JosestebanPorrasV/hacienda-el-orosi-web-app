@@ -22,14 +22,14 @@ export const DashboardRoutes = () => {
         />
         <Route
           exact
-          path="/listar-colaboradores"
+          path="/colaboradores"
           component={CollaboratorScreen}
         />
-        <Route exact path="/listar-prestamos" component={LendScreen} />
-        <Route exact path="/listar-contratos" component={ContractScreen} />
-        <Route exact path="/listar-herramientas" component={ToolScreen} />
-        <Route exact path="/listar-activos" component={ActiveScreen} />
-        <Redirect to="/listar-colaboradores" />
+        <Route exact path="/prestamos" component={LendScreen} />
+        <Route exact path="/contratos" component={ContractScreen} />
+        <Route exact path="/herramientas" component={ToolScreen} />
+        <Route exact path="/herramientas-activas" component={ActiveScreen} />
+        <Redirect to="/colaboradores" />
       </Switch>
     </Router>
   );

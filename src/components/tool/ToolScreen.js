@@ -2,13 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
-import { Link } from "react-router-dom";
 
 import {
-  toolsStartLoading, //BYSTATUS
   removeTools,
-  toolsLoading, //BYSTATUS
-  deleteBulk,
+  toolsLoading,
 } from "../../actions/ToolAction";
 import { uiOpenModalAddTool } from "../../actions/UIAction";
 import { UseForm } from "../../hooks/UseForm";
@@ -17,7 +14,9 @@ import { ModalTool } from "./ModalTool";
 
 export const ToolScreen = () => {
   const dispatch = useDispatch();
-  const { tools, actives, count, toolsState } = useSelector((state) => state.tool);
+  const { tools, actives, count, toolsState } = useSelector(
+    (state) => state.tool
+  );
   const { currentCollaborator } = useSelector((state) => state.collaborator);
 
   useEffect(() => {
@@ -26,23 +25,14 @@ export const ToolScreen = () => {
 
   const [formValues, handleInputChange] = UseForm({
     filter: "",
-    document_id: "",
   });
 
-  const { filter, document_id } = formValues;
-
-  const getActivesTools = () => {
-    dispatch(toolsLoading("active"));
-  };
-  const getToolsInStock = () => {
-    dispatch(toolsLoading("stock"));
-  };
+  const { filter } = formValues;
 
   const OpenModalAddTool = () => {
     dispatch(uiOpenModalAddTool());
   };
 
-  
   const deleteInBulk = () => {
     Swal.fire({
       title: "¿Estas seguro?",
@@ -53,15 +43,14 @@ export const ToolScreen = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Si, eliminar de activos",
       cancelButtonText: "Cancelar",
-    })
-    .then((result) => {
+    }).then((result) => {
       if (result.value) {
         if (actives.length > 0) {
           dispatch(removeTools(currentCollaborator._id, actives));
         } else {
           console.log("primero dale check a algun registro");
         }
-      } 
+      }
     });
   };
 
@@ -69,9 +58,7 @@ export const ToolScreen = () => {
     <>
       <div className="bg-indigo-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
-          <button
-            className="bg-indigo-900 hover:bg-gray-800 text-white font-bold py-2 px-4 border-b-4 border-gray-900 hover:border-indigo-200 rounded"
-          >
+          <button className="bg-indigo-900 hover:bg-gray-800 text-white font-bold py-2 px-4 border-b-4 border-gray-900 hover:border-indigo-200 rounded">
             HERRAMIENTAS
           </button>
           <p className="text-blue-100 opacity-70">
@@ -86,19 +73,33 @@ export const ToolScreen = () => {
             <i className="fas fa-plus-circle"></i>
             <span className="text-white font-bold">Agregar Herramienta</span>
           </button>
-          <Link
-            to="/listar-activos"
+          <button
+            onClick={() => dispatch(toolsLoading("active"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
           >
             <i className="fas fa-chart-line"></i>
             <span className="text-white font-bold">Listar activas</span>
-          </Link>
+          </button>
           <button
-            onClick={() => getToolsInStock()}
+            onClick={() => dispatch(toolsLoading("stock"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
           >
             <i className="fas fa-toolbox"></i>
             <span className="text-white font-bold">Listar En Bodega</span>
+          </button>
+          <button
+            onClick={() => dispatch(toolsLoading("repair"))}
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
+          >
+            <i className="fas fa-toolbox"></i>
+            <span className="text-white font-bold">Listar En reparacion</span>
+          </button>
+          <button
+            onClick={() => dispatch(toolsLoading("low"))}
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
+          >
+            <i className="fas fa-toolbox"></i>
+            <span className="text-white font-bold">De baja</span>
           </button>
         </nav>
       </div>
@@ -127,7 +128,7 @@ export const ToolScreen = () => {
           value={filter}
           onChange={handleInputChange}
         />
-         <span
+        <span
           className={`${
             toolsState === "active"
               ? "bg-green-200 text-green-600"
@@ -170,7 +171,7 @@ export const ToolScreen = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-grey-600 divide-solid text-blue-100 text-opacity-80 whitespace-nowrap">
+                  <tbody className="text-blue-100 text-opacity-80 whitespace-nowrap">
                     {results.map((tool) => (
                       <tr key={tool._id}>
                         <th className="py-3 px-3">

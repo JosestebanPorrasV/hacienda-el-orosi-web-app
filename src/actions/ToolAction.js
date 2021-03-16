@@ -116,6 +116,10 @@ export const removeInSelectedTools = (tool_id) => ({
   payload: tool_id,
 });
 
+export const cleanSelectedTools = () => ({
+  type: Types.CLEAN_SELECT_TOOLS,
+});
+
 export const addToolSuccess = () => ({
   type: Types.ADD_NEW_TOOL,
 });

@@ -51,7 +51,6 @@ export const CollaboratorScreen = () => {
     dispatch(uiOpenModalInfoCollaborator());
   };
 
-
   const { filter } = formValues;
 
   let dateNow = new Date();
@@ -90,7 +89,7 @@ export const CollaboratorScreen = () => {
         </nav>
       </div>
 
-      <div className="mt-8 overflow-x-auto bg-gray-700 rounded-lg">
+      <div className="mt-8 bg-gray-700 rounded-lg">
         <span className="pl-4 pt-2 text-lg flex space-x-4">
           {"Fecha actual: " +
             dateNow.getDate() +
@@ -133,145 +132,149 @@ export const CollaboratorScreen = () => {
         >
           <i className="fas fa-box-open"></i> {`total: ${countCollaborators}`}
         </span>
-        <SearchResults
-          value={filter}
-          data={collaborators}
-          renderResults={(results) => (
-            <table className="text-center items-center w-full">
-              <thead className="bg-gray-800 flex text-white w-full">
-                <tr className="flex w-full ">
-                  <th
-                    className="p-4 w-1/4"
-                    hidden={
-                      collaboratorsState === "inactive" || !collaboratorsState
-                    }
-                  >
-                    <i className="fas fa-check"></i> Asistencia
-                  </th>
-                  <th className="p-4 w-1/4" hidden={collaboratorsState}>
-                    <i className="fas fa-signal"></i> Estado
-                  </th>
-                  <th className="p-4 w-1/4">
-                    <i className="fas fa-user"></i> Nombre
-                  </th>
-                  <th className="p-4 w-1/4">
-                    <i className="fas fa-user"></i> Apellido
-                  </th>
-                  <th className="p-4 w-1/4">
-                    <i className="fas fa-id-card"></i> Cedula
-                  </th>
-                  <th className="p-4 w-1/4">
-                    <i className="fas fa-user-lock"></i> Datos personales
-                  </th>
-                  <th
-                    className="p-4 w-1/4 pr-10"
-                    hidden={
-                      collaboratorsState === "inactive" || !collaboratorsState
-                    }
-                  >
-                    <i className="fas fa-caret-square-down"></i> Acciones
-                  </th>
-
-                  <th
-                    className="p-4 w-1/4 pr-10"
-                    hidden={
-                      collaboratorsState === "active" || !collaboratorsState
-                    }
-                  >
-                    <i className="fas fa-caret-square-down"></i> Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody
-                className="text-blue-100 flex flex-col justify-between overflow-y-scroll w-full"
-                style={{ height: "50vh" }}
-              >
-                {results.map((collaborator) => (
-                  <tr className="flex w-full" key={collaborator._id}>
+        <div className=" overflow-x-auto ">
+          <SearchResults
+            value={filter}
+            data={collaborators}
+            renderResults={(results) => (
+              <table className="text-center items-center text-sm w-full">
+                <thead className="bg-gray-800 flex text-white w-full">
+                  <tr className="flex w-full">
                     <th
                       className="p-4 w-1/4"
                       hidden={
                         collaboratorsState === "inactive" || !collaboratorsState
                       }
                     >
-                      <label className="inline-flex items-center mt-3 ">
-                        <input
-                          type="checkbox"
-                          className="form-checkbox h-5 w-5"
-                          defaultChecked={false}
-                        />
-                      </label>
+                      <i className="fas fa-check"></i> Asistencia
                     </th>
                     <th className="p-4 w-1/4" hidden={collaboratorsState}>
-                      <span
-                        className={` ${
-                          collaborator.status === "active"
-                            ? "bg-green-200 text-green-600"
-                            : "bg-red-200 text-red-600"
-                        }  text-xs rounded-full px-3 py-1 w-26 inline-block text-center uppercase`}
-                      >
-                        {collaborator.status === "active"
-                          ? "Activo"
-                          : "Cancelado"}
-                      </span>
-                    </th>
-
-                    <th className="p-4 w-1/4">
-                      {collaborator
-                        ? `${collaborator.name}`
-                        : "No existe colaborador"}
+                      <i className="fas fa-signal"></i> Estado
                     </th>
                     <th className="p-4 w-1/4">
-                      {collaborator
-                        ? `${collaborator.surname}`
-                        : "No existe colaborador"}
+                      <i className="fas fa-user"></i> Nombre
                     </th>
                     <th className="p-4 w-1/4">
-                      {collaborator.document_id
-                        ? collaborator.document_id
-                        : "No existe colaborador"}
+                      <i className="fas fa-user"></i> Apellido
                     </th>
                     <th className="p-4 w-1/4">
-                      <button
-                        onClick={() => onSelectCollaborator(collaborator)}
-                        className="bg-blue-600 text-white  font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-400 hover:text-white outline-none"
-                        type="button"
-                      >
-                        <i className="far fa-eye"></i> ver
-                      </button>
+                      <i className="fas fa-id-card"></i> Cedula
+                    </th>
+                    <th className="p-4 w-1/4">
+                      <i className="fas fa-user-lock"></i> Datos personales
                     </th>
                     <th
                       className="p-4 w-1/4"
                       hidden={
                         collaboratorsState === "inactive" || !collaboratorsState
                       }
-                      onClick={() =>
-                        dispatch(collaboratorSetActive(collaborator))
-                      }
                     >
-                      <Dropdown />
+                      <i className="fas fa-caret-square-down"></i> Acciones
                     </th>
 
                     <th
-                      className="p-4 w-1/4"
+                      className="p-4 w-1/4 pr-10"
                       hidden={
                         collaboratorsState === "active" || !collaboratorsState
                       }
                     >
-                      <button
-                        onClick={() => onSelectCollaborator(collaborator)}
-                        className="bg-green-400 text-green-900  font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-green-400 hover:text-white outline-none"
-                        type="button"
-                      >
-                        <i className="fas fa-user-plus"></i> contratar
-                      </button>
+                      <i className="fas fa-caret-square-down"></i> Acciones
                     </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        />
+                </thead>
+                <tbody
+                  className="text-blue-100 flex flex-col justify-between overflow-y-scroll w-full"
+                  style={{ height: "50vh" }}
+                >
+                  {results.map((collaborator) => (
+                    <tr className="flex w-full" key={collaborator._id}>
+                      <th
+                        className="p-4 w-1/4"
+                        hidden={
+                          collaboratorsState === "inactive" ||
+                          !collaboratorsState
+                        }
+                      >
+                        <label className="inline-flex items-center mt-3 ">
+                          <input
+                            type="checkbox"
+                            className="form-checkbox h-5 w-5"
+                            defaultChecked={false}
+                          />
+                        </label>
+                      </th>
+                      <th className="p-4 w-1/4" hidden={collaboratorsState}>
+                        <span
+                          className={` ${
+                            collaborator.status === "active"
+                              ? "bg-green-200 text-green-600"
+                              : "bg-red-200 text-red-600"
+                          }  text-xs rounded-full px-3 py-1 w-26 inline-block text-center uppercase`}
+                        >
+                          {collaborator.status === "active"
+                            ? "Activo"
+                            : "Cancelado"}
+                        </span>
+                      </th>
+
+                      <th className="p-4 w-1/4">
+                        {collaborator
+                          ? `${collaborator.name}`
+                          : "No existe colaborador"}
+                      </th>
+                      <th className="p-4 w-1/4">
+                        {collaborator
+                          ? `${collaborator.surname}`
+                          : "No existe colaborador"}
+                      </th>
+                      <th className="p-4 w-1/4">
+                        {collaborator.document_id
+                          ? collaborator.document_id
+                          : "No existe colaborador"}
+                      </th>
+                      <th className="p-4 w-1/4">
+                        <button
+                          onClick={() => onSelectCollaborator(collaborator)}
+                          className="bg-blue-600 text-white  font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-400 hover:text-white outline-none"
+                          type="button"
+                        >
+                          <i className="far fa-eye"></i> ver
+                        </button>
+                      </th>
+                      <th
+                        className="p-4 w-1/4"
+                        hidden={
+                          collaboratorsState === "inactive" ||
+                          !collaboratorsState
+                        }
+                        onClick={() =>
+                          dispatch(collaboratorSetActive(collaborator))
+                        }
+                      >
+                        <Dropdown />
+                      </th>
+
+                      <th
+                        className="p-4 w-1/4"
+                        hidden={
+                          collaboratorsState === "active" || !collaboratorsState
+                        }
+                      >
+                        <button
+                          onClick={() => onSelectCollaborator(collaborator)}
+                          className="bg-green-400 text-green-900  font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-green-400 hover:text-white outline-none"
+                          type="button"
+                        >
+                          <i className="fas fa-user-plus"></i> contratar
+                        </button>
+                      </th>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          />
+        </div>
       </div>
 
       <ModalCollaborator />

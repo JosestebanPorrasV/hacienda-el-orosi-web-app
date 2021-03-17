@@ -44,23 +44,6 @@ export const activesToolsLoaded = () => {
   };
 };
 
-export const activeToolByCollaboratorLoading = (collaboratorId) => {
-  //No borrar
-  return async (dispatch) => {
-    await TopLoaderService.start();
-    try {
-      const resp = await FetchConsult(
-        `herramientas/activas/colaborador/${collaboratorId}`
-      );
-      const body = await resp.json();
-      console.log(body);
-      await TopLoaderService.end();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
 export function registerTool(toolFormValues) {
   return async (dispatch) => {
     await TopLoaderService.start();
@@ -111,6 +94,34 @@ export const removeTools = (data) => {
         await dispatch(cleanSelectedActives());
 
         await Swal.fire("Eliminados", body.msg, "success");
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const registerActives = (data) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(
+        `herramientas/registrar-activos`,
+        { tools: data },
+        "POST"
+      );
+      const body = await resp.json();
+
+      if (body.status === "success") {
+        await dispatch(toolsLoading());
+        await dispatch(cleanSelectedTools());
+        await dispatch(toolsLoading());
+
+        await Swal.fire("Todo bien", body.msg, "success");
         await TopLoaderService.end();
       } else {
         await Swal.fire("Error", body.msg, "error");

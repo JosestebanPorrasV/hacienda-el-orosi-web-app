@@ -28,6 +28,7 @@ export const CollaboratorsLoading = (status = "active") => {
 
 export const searchCollaborator = (document_id) => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     try {
       const resp = await FetchConsult(
         `recursos-humanos/ver-colaborador/${document_id}`
@@ -35,8 +36,10 @@ export const searchCollaborator = (document_id) => {
       const body = await resp.json();
       if (body.status === "success") {
         await dispatch(collaboratorSetActive(body.collaborator));
+        await TopLoaderService.end();
       } else {
-        Swal.fire("Error", body.msg, "warning");
+        await Swal.fire("Error", body.msg, "warning");
+        await TopLoaderService.end();
       }
     } catch (error) {
       console.log(error);
@@ -46,6 +49,7 @@ export const searchCollaborator = (document_id) => {
 
 export function registerCollaborator(collaboratorFormValues) {
   return async (dispatch) => {
+    await TopLoaderService.start();
     const resp = await FetchConsult(
       "recursos-humanos/registrar-colaborador",
       {
@@ -71,13 +75,16 @@ export function registerCollaborator(collaboratorFormValues) {
         showConfirmButton: false,
         timer: 2000,
       });
+      await TopLoaderService.end();
     } else {
       Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
     }
   };
 }
 export function editOneCollaborator(collaborator_id, collaborator) {
   return async (dispatch) => {
+    await TopLoaderService.start();
     const resp = await FetchConsult(
       `recursos-humanos/actualizar-colaborador/${collaborator_id}`,
       {
@@ -101,8 +108,10 @@ export function editOneCollaborator(collaborator_id, collaborator) {
         showConfirmButton: false,
         timer: 2000,
       });
+      await TopLoaderService.end();
     } else {
       Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
     }
   };
 }

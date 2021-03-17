@@ -1,9 +1,11 @@
 import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
+import TopLoaderService from "top-loader-service";
 
 export const paymentStartLoading = (page_) => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     try {
       const resp = await FetchConsult(
         `recursos-humanos/pagos/realizados/${page_}`
@@ -12,9 +14,11 @@ export const paymentStartLoading = (page_) => {
       const body = await resp.json();
 
       if (body.status === "success") {
-        dispatch(paymentLoaded(body.payments));
+        await dispatch(paymentLoaded(body.payments));
+        await TopLoaderService.end();
       } else {
-        Swal.fire("Error", body.msg, "error");
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
       }
     } catch (error) {
       console.log(error);

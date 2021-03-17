@@ -3,18 +3,22 @@ import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 import { uiCloseModalAddLend } from "./UIAction";
 import { collaboratorClearActive } from "./CollaboratorAction";
+import TopLoaderService from "top-loader-service";
 
 export const lendsStartLoading = (status = "active", page = 1) => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     try {
       const resp = await FetchConsult(
         `recursos-humanos/prestamos/${status}/${page}`
       );
       const body = await resp.json();
       if (body.status === "success") {
-        dispatch(lendsLoaded(body.lends));
+        await dispatch(lendsLoaded(body.lends));
+        await TopLoaderService.end();
       } else {
-        Swal.fire("Error", body.msg, "error");
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
       }
     } catch (error) {
       console.log(error);
@@ -24,6 +28,7 @@ export const lendsStartLoading = (status = "active", page = 1) => {
 
 export const lendsByCollaboratorLoading = (document_id, page) => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     try {
       if (document_id <= 0 || undefined) {
         return Swal.fire("Error", "Escribir cedula", "warning");
@@ -35,9 +40,11 @@ export const lendsByCollaboratorLoading = (document_id, page) => {
       const body = await resp.json();
       if (body.status === "success") {
         await dispatch(lendsByCollaboratorLoaded(body.lends));
+        await TopLoaderService.end();
       } else {
-        Swal.fire("Error", body.msg, "warning");
         await dispatch(lendsStartLoading());
+        await Swal.fire("Error", body.msg, "warning");
+        await TopLoaderService.end();
       }
     } catch (error) {
       console.log(error);
@@ -47,6 +54,7 @@ export const lendsByCollaboratorLoading = (document_id, page) => {
 
 export const FeeByLendLoading = (lendId) => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     try {
       const resp = await FetchConsult(
         `recursos-humanos/historial-cuotas/${lendId}`
@@ -54,9 +62,11 @@ export const FeeByLendLoading = (lendId) => {
       const body = await resp.json();
 
       if (body.status === "success") {
-        dispatch(feesLoaded(body));
+        await dispatch(feesLoaded(body));
+        await TopLoaderService.end();
       } else {
-        Swal.fire("Error", body.msg, "warning");
+        await Swal.fire("Error", body.msg, "warning");
+        await TopLoaderService.end();
       }
     } catch (error) {
       console.log(error);
@@ -66,6 +76,7 @@ export const FeeByLendLoading = (lendId) => {
 
 export const deleteOneLend = (id) => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     try {
       const resp = await FetchConsult(
         `recursos-humanos/eliminar-prestamo`,
@@ -76,11 +87,13 @@ export const deleteOneLend = (id) => {
       const body = await resp.json();
       console.log(id);
       if (body.status === "success") {
-        Swal.fire("Eliminado", body.msg, "success");
+        await Swal.fire("Eliminado", body.msg, "success");
 
         await dispatch(lendsStartLoading());
+        await TopLoaderService.end();
       } else {
-        Swal.fire("Error", body.msg, "error");
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
       }
     } catch (error) {
       console.log(error);
@@ -90,6 +103,7 @@ export const deleteOneLend = (id) => {
 
 export function registerLend(collaborator_id, lendFormValues) {
   return async (dispatch) => {
+    await TopLoaderService.start();
     const resp = await FetchConsult(
       "recursos-humanos/realizar-prestamo",
       {
@@ -113,14 +127,17 @@ export function registerLend(collaborator_id, lendFormValues) {
         timer: 2000,
       });
       await dispatch(uiCloseModalAddLend());
+      await TopLoaderService.end();
     } else {
-      Swal.fire("Error", body.msg, "error");
+      await Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
     }
   };
 }
 
 export function addFee(lend) {
   return async (dispatch) => {
+    await TopLoaderService.start();
     const resp = await FetchConsult(
       "recursos-humanos/registrar-cuota",
       { collaborator_id: lend.collaborator._id, lend_id: lend._id },
@@ -137,14 +154,17 @@ export function addFee(lend) {
         showConfirmButton: false,
         timer: 2000,
       });
+      await TopLoaderService.end();
     } else {
-      Swal.fire("Error", body.msg, "error");
+      await Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
     }
   };
 }
 
 export function changeFee(lend, newFee) {
   return async (dispatch) => {
+    await TopLoaderService.start();
     if (lend.amount <= newFee || newFee < 5000) {
       await dispatch(lendClearActive());
       return Swal.fire(
@@ -171,8 +191,10 @@ export function changeFee(lend, newFee) {
         showConfirmButton: false,
         timer: 2000,
       });
+      await TopLoaderService.end();
     } else {
-      Swal.fire("Error", body.msg, "error");
+      await Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
     }
   };
 }

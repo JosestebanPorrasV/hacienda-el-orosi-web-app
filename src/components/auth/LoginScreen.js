@@ -8,6 +8,8 @@ import { UseForm } from "../../hooks/UseForm";
 import { startLogin } from "../../actions/AuthAction";
 import { Link } from "react-router-dom";
 
+import 'top-loader-service/TopLoaderService.css'
+
 export const LoginScreen = () => {
   const dispatch = useDispatch();
 

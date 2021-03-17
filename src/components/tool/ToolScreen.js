@@ -48,7 +48,7 @@ export const ToolScreen = () => {
         if (actives.length > 0) {
           dispatch(removeTools(currentCollaborator._id, actives));
         } else {
-          console.log("primero dale check a algun registro");
+          Swal.fire("Cuidado", "Primero dale check a algun registro", "error");
         }
       }
     });

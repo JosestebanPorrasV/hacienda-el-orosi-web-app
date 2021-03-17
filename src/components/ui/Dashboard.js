@@ -4,7 +4,7 @@ import { Navbar } from "./Navbar";
 import { DashboardRoutes } from "../../routers/DashboardRoutes";
 import { Sidebar } from "./Sidebar";
 import { NavbarInfo } from "./NavbarInfo";
-import 'top-loader-service/TopLoaderService.css'
+import '../../assets/css/TopLoaderService.css'
 
 export const Dashboard = () => {
   return (

@@ -7,12 +7,12 @@ import {
   addToolSelected,
   toolsLoading,
   removeInSelectedTools,
-  activeToolByCollaboratorLoading,
   cleanSelectedTools,
+  registerActives,
 } from "../../actions/ToolAction";
 import { collaboratorClearActive } from "../../actions/CollaboratorAction";
-
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const ModalActive = () => {
   const dispatch = useDispatch();
@@ -36,11 +36,8 @@ export const ModalActive = () => {
 
   useEffect(() => {
     dispatch(toolsLoading());
-    if (currentCollaborator) {
-      dispatch(activeToolByCollaboratorLoading(currentCollaborator._id));
-    }
-  }, [dispatch, currentCollaborator]);
-
+  }, [dispatch]);
+  
   const selectTool = (tool) => {
     let validate = true;
     for (let index = 0; index < selectedTools.length; index++) {
@@ -58,6 +55,27 @@ export const ModalActive = () => {
         })
       );
     }
+  };
+
+  const addActives = () => {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "Las herramientas se asiganaran a este colaborador",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#1E3A8A",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, asignar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        if (selectedTools.length > 0) {
+          dispatch(registerActives(selectedTools));
+        } else {
+          Swal.fire("Cuidado", "Primero asigna herramientas", "error");
+        }
+      }
+    });
   };
 
   return (
@@ -255,7 +273,7 @@ export const ModalActive = () => {
                             />
                           </section>
                           <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">
-                            <span className="text-green-500 inline-flex items-center">
+                            <Link to="/herramientas-activas" className="text-green-500 inline-flex items-center">
                               Ir a Activos
                               <svg
                                 className="w-4 h-4 ml-2"
@@ -269,7 +287,7 @@ export const ModalActive = () => {
                                 <path d="M5 12h14"></path>
                                 <path d="M12 5l7 7-7 7"></path>
                               </svg>
-                            </span>
+                            </Link>
                             <span className="text-gray-400 mr-3 inline-flex items-center ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
                               <svg
                                 className="w-4 h-4 mr-1"
@@ -292,7 +310,7 @@ export const ModalActive = () => {
                                 className="bg-green-600 text-white active:bg-green-600 font-bold uppercase text-sm py-2 rounded shadow hover:bg-green-700 hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                                 type="button"
                                 style={{ transition: "all .15s ease" }}
-                                onClick={() => closeModal()}
+                                onClick={() => addActives()}
                               >
                                 CONFIRMAR
                               </button>

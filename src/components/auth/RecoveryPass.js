@@ -9,7 +9,7 @@ import { verifyRecoveryKey } from "../../actions/AuthAction";
 import { changePass } from "../../actions/AuthAction";
 import { Link } from "react-router-dom";
 
-import 'top-loader-service/TopLoaderService.css'
+import '../../assets/css/TopLoaderService.css'
 
 export const RecoveryPass = () => {
   const dispatch = useDispatch();

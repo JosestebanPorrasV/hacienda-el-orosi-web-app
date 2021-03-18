@@ -13,6 +13,11 @@ export const PaymentReducer = (state = initialState, action) => {
         payments: [...action.payload.payments],
         count: action.payload.count,
       };
+    case Types.REGISTER_PRESENCE_SUCCESS:
+      return {
+        ...state,
+        ...action.payload,
+      };
     default:
       return state;
   }

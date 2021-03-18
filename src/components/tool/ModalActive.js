@@ -146,7 +146,7 @@ export const ModalActive = () => {
                   <section className="text-gray-600 body-font overflow-hidden">
                     <div className="container px-5 mx-auto">
                       <div className="flex flex-wrap">
-                        <div className="p-12 md:w-1/2 flex flex-col items-center">
+                        <div className="p-12 md:w-1/2 flex flex-col items-center w-full">
                           <span className="inline-block py-1 px-2 rounded bg-gray-200 text-gray-500 text-xl font-medium tracking-widest">
                             EN BODEGA
                           </span>

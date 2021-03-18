@@ -4,6 +4,7 @@ import { uiOpenModalAddLend } from "../../actions/UIAction";
 import {
   uiOpenModalActive,
   uiOpenModalCollaborator,
+  uiOpenModalPayment,
 } from "../../actions/UIAction";
 
 export const Dropdown = () => {
@@ -23,8 +24,8 @@ export const Dropdown = () => {
       </button>
       <div className="dropdown-menu absolute hidden text-gray-700 z-50 bg-gray-200 w-full">
         <button
-          className="py-2 font-semibold  block w-full hover:bg-blue-700 hover:text-white"
-          onClick={() => dispatch(uiOpenModalCollaborator())}
+          onClick={() => dispatch(uiOpenModalPayment())}
+          className="py-2 px-2 font-semibold block w-full hover:bg-blue-700 hover:text-white "
         >
           <i className="fas fa-money-bill-wave"></i> Pagos
         </button>

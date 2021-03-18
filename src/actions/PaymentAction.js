@@ -26,7 +26,32 @@ export const paymentStartLoading = (page_) => {
   };
 };
 
-export function registerTodayPresence(collaborator_id, total_overtime = 0 ) {
+export const presenceByCollaboratorLoading = (collaboratorId) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(
+        `recursos-humanos/colaborador/dias-pendientes/${collaboratorId}`
+      );
+      
+      const body = await resp.json();
+
+      console.log(body);
+
+      if (body.status === "success") {
+        await dispatch(presenceByCollaboratorLoaded(body));
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export function registerTodayPresence(collaborator_id, total_overtime = 0) {
   return async (dispatch) => {
     await TopLoaderService.start();
     const resp = await FetchConsult(
@@ -57,6 +82,11 @@ export function registerTodayPresence(collaborator_id, total_overtime = 0 ) {
 
 const registerPresence = () => ({
   type: Types.REGISTER_PRESENCE_SUCCESS,
+});
+
+const presenceByCollaboratorLoaded = (presenceDay) => ({
+  type: Types.PRESENCE_DAY_BY_COLLABORATOR_LOADED,
+  payload: presenceDay,
 });
 
 const paymentLoaded = (payments) => ({

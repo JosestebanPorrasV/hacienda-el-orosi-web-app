@@ -2,6 +2,8 @@ import { Types } from "../types/Types";
 
 const initialState = {
   payments: [],
+  presenceDayByCollaborator: [],
+  totalOvertimeByCollaborator: 0,
   count: 0,
 };
 
@@ -12,6 +14,12 @@ export const PaymentReducer = (state = initialState, action) => {
         ...state,
         payments: [...action.payload.payments],
         count: action.payload.count,
+      };
+    case Types.PRESENCE_DAY_BY_COLLABORATOR_LOADED:
+      return {
+        ...state,
+        presenceDayByCollaborator: [...action.payload.pending_days],
+        totalOvertimeByCollaborator: action.payload.total_overtime,
       };
     case Types.REGISTER_PRESENCE_SUCCESS:
       return {

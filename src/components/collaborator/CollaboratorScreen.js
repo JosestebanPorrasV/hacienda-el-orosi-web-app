@@ -19,6 +19,7 @@ import { ModalActive } from "../tool/ModalActive";
 import { ModalCollaborator } from "./ModalCollaborator";
 import Swal from "sweetalert2";
 import { registerTodayPresence } from "../../actions/PaymentAction";
+import { PaymentModal } from "../payment/PaymentModal";
 
 export const CollaboratorScreen = () => {
   const dispatch = useDispatch();
@@ -305,6 +306,7 @@ export const CollaboratorScreen = () => {
       <ModalInfo />
       <ModalLend />
       <ModalActive />
+      <PaymentModal/>
     </>
   );
 };

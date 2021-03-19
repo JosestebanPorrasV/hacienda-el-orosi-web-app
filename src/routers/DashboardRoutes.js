@@ -11,7 +11,6 @@ import { LendScreen } from "../components/lend/LendScreen";
 import { ContractScreen } from "../components/contract/ContractScreen";
 import { ToolScreen } from "../components/tool/ToolScreen";
 import { ActiveScreen } from "../components/tool/ActiveScreen";
-import { PaymentScreen } from "../components/payment/PaymentScreen";
 
 export const DashboardRoutes = () => {
   return (

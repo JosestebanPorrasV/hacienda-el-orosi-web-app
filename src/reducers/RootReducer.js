@@ -8,6 +8,7 @@ import { PaymentReducer } from "./PaymentReducer";
 import { LendReducer } from "./LendReducer";
 import { ContractReducer } from "./ContractReducer";
 import { ToolReducer } from "./ToolReducer";
+import { JobReducer } from "./JobReducer";
 
 export const rootReducer = combineReducers({
   auth: AuthReducer,
@@ -18,4 +19,5 @@ export const rootReducer = combineReducers({
   payment: PaymentReducer,
   contract: ContractReducer,
   tool: ToolReducer,
+  job: JobReducer,
 });

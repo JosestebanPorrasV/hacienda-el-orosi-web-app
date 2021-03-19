@@ -9,6 +9,7 @@ const initialState = {
   modalAddToolOpen: false,
   modalActiveOpen: false,
   modalCollaboratorInfoOpen: false,
+  modalPaymentOpen: false,
 };
 
 export const UIReducer = (state = initialState, action) => {
@@ -24,27 +25,27 @@ export const UIReducer = (state = initialState, action) => {
         menuOpen: false,
       };
 
-      case Types.UI_OPEN_MODAL_ADMINISTRATOR:
-        return {
-          ...state,
-          modalAdministratorOpen: true,
-        };
+    case Types.UI_OPEN_MODAL_ADMINISTRATOR:
+      return {
+        ...state,
+        modalAdministratorOpen: true,
+      };
     case Types.UI_CLOSE_MODAL_ADMINISTRATOR:
-        return {
-          ...state,
-          modalAdministratorOpen: false,
-        };
+      return {
+        ...state,
+        modalAdministratorOpen: false,
+      };
 
     case Types.UI_OPEN_MODAL_COLLABORATOR:
-        return {
-          ...state,
-          modalCollaboratorOpen: true,
-        };
+      return {
+        ...state,
+        modalCollaboratorOpen: true,
+      };
     case Types.UI_CLOSE_MODAL_COLLABORATOR:
-        return {
-          ...state,
-          modalCollaboratorOpen: false,
-        };
+      return {
+        ...state,
+        modalCollaboratorOpen: false,
+      };
 
     case Types.UI_OPEN_MODAL_COLLABORATOR_INFO:
       return {
@@ -99,6 +100,17 @@ export const UIReducer = (state = initialState, action) => {
       return {
         ...state,
         modalActiveOpen: false,
+      };
+
+    case Types.UI_OPEN_MODAL_PAYMENT:
+      return {
+        ...state,
+        modalPaymentOpen: true,
+      };
+    case Types.UI_CLOSE_MODAL_PAYMENT:
+      return {
+        ...state,
+        modalPaymentOpen: false,
       };
 
     default:

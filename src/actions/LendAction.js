@@ -26,7 +26,7 @@ export const lendsStartLoading = (status = "active", page = 1) => {
   };
 };
 
-export const lendsByCollaboratorLoading = (document_id, page) => {
+export const lendsByCollaboratorLoading = (document_id, page = 1 ) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {

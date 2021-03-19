@@ -1,14 +1,15 @@
 import React from "react";
 import Swal from "sweetalert2";
-import bgLogin from "../../assets/bglogin4.jpg";
+import bgLogin from "../../assets/bgLogin.jpg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { UseForm } from "../../hooks/UseForm";
-import { FooterSmall } from "../ui/FooterSmall";
 import { setRecoveryKey } from "../../actions/AuthAction";
 import { verifyRecoveryKey } from "../../actions/AuthAction";
 import { changePass } from "../../actions/AuthAction";
 import { Link } from "react-router-dom";
+
+import '../../assets/css/TopLoaderService.css'
 
 export const RecoveryPass = () => {
   const dispatch = useDispatch();
@@ -61,7 +62,7 @@ export const RecoveryPass = () => {
             src="https://dummyimage.com/720x600"
           />
           <div className="w-full md:w-2/3 flex flex-col mb-16 items-center text-center bg-black bg-opacity-70 rounded-2xl md:p-4">
-            <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-yellow-600">
+            <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-200">
               Sistema de recuperacion
             </h1>
             <form
@@ -154,7 +155,7 @@ export const RecoveryPass = () => {
 
               <button
                 type="submit"
-                className="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg"
+                className="inline-flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg"
               >
                 Enviar
               </button>
@@ -168,14 +169,13 @@ export const RecoveryPass = () => {
             )}
 
             <Link
-              className=" text-white bg-yellow-600 border-0 py-2 px-6 m-8 focus:outline-none hover:bg-green-600 rounded text-lg"
+              className="bg-white text-black border-0 py-2 px-6 m-8 focus:outline-none hover:bg-gray-600 hover:text-white rounded text-lg"
               to="/ingresar"
             >
               Regresar
             </Link>
           </div>
         </div>
-        <FooterSmall />
       </section>
     );
   }

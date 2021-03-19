@@ -8,8 +8,12 @@ import {
 import { CollaboratorScreen } from "../components/collaborator/CollaboratorScreen";
 import { AdministratorScreen } from "../components/administrator/AdministratorScreen";
 import { LendScreen } from "../components/lend/LendScreen";
-import { LendHistoryScreen } from "../components/lend/LendHistoryScreen";
 import { ContractScreen } from "../components/contract/ContractScreen";
+import { ToolScreen } from "../components/tool/ToolScreen";
+import { ActiveScreen } from "../components/tool/ActiveScreen";
+import { JobScreen } from "../components/job/JobScreen";
+import { PaymentScreen } from "../components/payment/PaymentScreen";
+
 
 export const DashboardRoutes = () => {
   return (
@@ -22,13 +26,16 @@ export const DashboardRoutes = () => {
         />
         <Route
           exact
-          path="/listar-colaboradores"
+          path="/colaboradores"
           component={CollaboratorScreen}
         />
-        <Route exact path="/listar-prestamos" component={LendScreen} />
-        <Route exact path="/prestamo-historial" component={LendHistoryScreen} />
-        <Route exact path="/listar-contratos" component={ContractScreen} />
-        <Redirect to="/listar-colaboradores" />
+        <Route exact path="/pagos" component={PaymentScreen} />
+        <Route exact path="/prestamos" component={LendScreen} />
+        <Route exact path="/contratos" component={ContractScreen} />
+        <Route exact path="/herramientas" component={ToolScreen} />
+        <Route exact path="/herramientas-activas" component={ActiveScreen} />
+        <Route exact path="/trabajos" component={JobScreen} />
+        <Redirect to="/colaboradores" />
       </Switch>
     </Router>
   );

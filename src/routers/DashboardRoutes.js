@@ -11,7 +11,9 @@ import { LendScreen } from "../components/lend/LendScreen";
 import { ContractScreen } from "../components/contract/ContractScreen";
 import { ToolScreen } from "../components/tool/ToolScreen";
 import { ActiveScreen } from "../components/tool/ActiveScreen";
+import { JobScreen } from "../components/job/JobScreen";
 import { PaymentScreen } from "../components/payment/PaymentScreen";
+
 
 export const DashboardRoutes = () => {
   return (
@@ -32,6 +34,7 @@ export const DashboardRoutes = () => {
         <Route exact path="/contratos" component={ContractScreen} />
         <Route exact path="/herramientas" component={ToolScreen} />
         <Route exact path="/herramientas-activas" component={ActiveScreen} />
+        <Route exact path="/trabajos" component={JobScreen} />
         <Redirect to="/colaboradores" />
       </Switch>
     </Router>

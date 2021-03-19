@@ -17,6 +17,9 @@ import { Dropdown } from "./Dropdown";
 import { ModalLend } from "../lend/ModalLend";
 import { ModalActive } from "../tool/ModalActive";
 import { ModalCollaborator } from "./ModalCollaborator";
+import Swal from "sweetalert2";
+import { registerTodayPresence } from "../../actions/PaymentAction";
+import { PaymentModal } from "../payment/PaymentModal";
 
 export const CollaboratorScreen = () => {
   const dispatch = useDispatch();
@@ -49,6 +52,29 @@ export const CollaboratorScreen = () => {
 
   const openModalInfo = () => {
     dispatch(uiOpenModalInfoCollaborator());
+  };
+
+  const registerPresence = async (collaborator) => {
+    const total_overtime = await Swal.fire({
+      title: "Registrar dia laboral ",
+      input: "number",
+      inputLabel: "Horas extras",
+      inputPlaceholder: "Escriba",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, registrar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (total_overtime.isConfirmed) {
+      dispatch(
+        registerTodayPresence(
+          collaborator._id,
+          !total_overtime.value ? 0 : total_overtime.value
+        )
+      );
+    }
   };
 
   const { filter } = formValues;
@@ -195,13 +221,12 @@ export const CollaboratorScreen = () => {
                           !collaboratorsState
                         }
                       >
-                        <label className="inline-flex items-center mt-3 ">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox h-5 w-5"
-                            defaultChecked={false}
-                          />
-                        </label>
+                        <button
+                          onClick={() => registerPresence(collaborator)}
+                          className="px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+                        >
+                          <i className="far fa-calendar-check"></i> Registar dia
+                        </button>
                       </th>
                       <th className="p-4 w-1/4" hidden={collaboratorsState}>
                         <span
@@ -281,6 +306,7 @@ export const CollaboratorScreen = () => {
       <ModalInfo />
       <ModalLend />
       <ModalActive />
+      <PaymentModal/>
     </>
   );
 };

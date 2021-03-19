@@ -3,11 +3,19 @@ import { Types } from "../types/Types";
 export const uiOpenMenu = () => ({ type: Types.UI_OPEN_MENU });
 export const uiCloseMenu = () => ({ type: Types.UI_CLOSE_MENU });
 
-export const uiOpenModalAdministrator = () => ({ type: Types.UI_OPEN_MODAL_ADMINISTRATOR });
-export const uiCloseModalAdministrator = () => ({ type: Types.UI_CLOSE_MODAL_ADMINISTRATOR });
+export const uiOpenModalAdministrator = () => ({
+  type: Types.UI_OPEN_MODAL_ADMINISTRATOR,
+});
+export const uiCloseModalAdministrator = () => ({
+  type: Types.UI_CLOSE_MODAL_ADMINISTRATOR,
+});
 
-export const uiOpenModalCollaborator = () => ({ type: Types.UI_OPEN_MODAL_COLLABORATOR });
-export const uiCloseModalCollaborator = () => ({ type: Types.UI_CLOSE_MODAL_COLLABORATOR });
+export const uiOpenModalCollaborator = () => ({
+  type: Types.UI_OPEN_MODAL_COLLABORATOR,
+});
+export const uiCloseModalCollaborator = () => ({
+  type: Types.UI_CLOSE_MODAL_COLLABORATOR,
+});
 
 export const uiOpenModalFee = () => ({ type: Types.UI_OPEN_MODAL_FEES });
 export const uiCloseModalFee = () => ({ type: Types.UI_CLOSE_MODAL_FEES });
@@ -31,6 +39,13 @@ export const uiOpenModalInfoCollaborator = () => ({
 });
 export const uiCloseModalInfoCollaborator = () => ({
   type: Types.UI_CLOSE_MODAL_COLLABORATOR_INFO,
+});
+
+export const uiOpenModalPayment = () => ({
+  type: Types.UI_OPEN_MODAL_PAYMENT,
+});
+export const uiCloseModalPayment = () => ({
+  type: Types.UI_CLOSE_MODAL_PAYMENT,
 });
 
 export const uiOpenModalActive = () => ({ type: Types.UI_OPEN_MODAL_ACTIVES });

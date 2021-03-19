@@ -26,6 +26,69 @@ export const paymentStartLoading = (page_) => {
   };
 };
 
+export const presenceByCollaboratorLoading = (collaboratorId) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(
+        `recursos-humanos/colaborador/dias-pendientes/${collaboratorId}`
+      );
+      
+      const body = await resp.json();
+
+      console.log(body);
+
+      if (body.status === "success") {
+        await dispatch(presenceByCollaboratorLoaded(body));
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export function registerTodayPresence(collaborator_id, total_overtime = 0) {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    const resp = await FetchConsult(
+      `recursos-humanos/registrar/dia-laboral/${collaborator_id}`,
+      { total_overtime: total_overtime },
+      "POST"
+    );
+
+    const body = await resp.json();
+
+    if (body.status === "success") {
+      await dispatch(registerPresence());
+
+      await Swal.fire({
+        icon: "success",
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      await TopLoaderService.end();
+    } else {
+      await Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
+    }
+  };
+}
+
+const registerPresence = () => ({
+  type: Types.REGISTER_PRESENCE_SUCCESS,
+});
+
+const presenceByCollaboratorLoaded = (presenceDay) => ({
+  type: Types.PRESENCE_DAY_BY_COLLABORATOR_LOADED,
+  payload: presenceDay,
+});
+
 const paymentLoaded = (payments) => ({
   type: Types.PAYMENT_LOADED,
   payload: payments,

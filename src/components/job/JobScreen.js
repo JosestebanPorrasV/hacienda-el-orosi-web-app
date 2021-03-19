@@ -34,7 +34,7 @@ export const JobScreen = () => {
             to="/herramientas"
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
           >
-            <i className="fas fa-arrow-circle-left"></i>
+            <i class="fas fa-plus-circle"></i>
             <span className="text-white font-bold">Agregar Trabajo</span>
           </Link>
         </nav>
@@ -68,16 +68,16 @@ export const JobScreen = () => {
                       <th className="py-2 px-3">
                         <i className="fas fa-user"></i> Trabajo
                       </th>
-                      <th className="py-2 px-3">
+                      <th className="p-5 w-1/6">
                         <i className="fas fa-wrench"></i> Horas
                       </th>
-                      <th className="py-2 px-3">
+                      <th className="p-5 w-1/6">
                         <i class="far fa-money-bill-alt"></i> Hora extra
                       </th>
-                      <th className="py-2 px-3">
+                      <th className="p-5 w-1/6">
                         <i class="far fa-money-bill-alt"></i> Precio dia
                       </th>
-                      <th className="py-2 px-3">
+                      <th className="py-2 px-5">
                         <i className="fas fa-id-card"></i> Descripcion
                       </th>
                     </tr>
@@ -86,9 +86,9 @@ export const JobScreen = () => {
                     {results.map((job) => (
                       <tr key={job._id}>
                         <th className="py-5 px-3">{`${job.name_job}`}</th>
-                        <th className="py-3 px-3">{job.work_hours}</th>
-                        <th className="py-3 px-3">{job.price_extra_hours}</th>
-                        <th className="py-3 px-3">{job.price_day}</th>
+                        <th className="py-3 px-3">{job.work_hours} horas</th>
+                        <th className="py-3 px-3">₡{job.price_extra_hours}</th>
+                        <th className="py-3 px-3">₡{job.price_day}</th>
                         <th className="whitespace-pre-line">
                           {job.description}
                         </th>

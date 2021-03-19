@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
+import { Link } from "react-router-dom"; 
 
 import {
   collaboratorSetActive,
@@ -86,6 +87,13 @@ export const CollaboratorScreen = () => {
           <button className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35 fas fa-cloud-download-alt">
             <span>Descargar Activos</span>
           </button>
+
+          <Link
+            to="/trabajos"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35 fas fa-building"
+          >
+            <span>Trabajos</span>
+          </Link>
         </nav>
       </div>
 
@@ -152,10 +160,10 @@ export const CollaboratorScreen = () => {
                       <i className="fas fa-signal"></i> Estado
                     </th>
                     <th className="p-4 w-1/4">
-                      <i className="fas fa-user"></i> Nombre
+                      <i className="fas fa-user"></i> Nombre completo
                     </th>
                     <th className="p-4 w-1/4">
-                      <i className="fas fa-user"></i> Apellido
+                      <i className="fas fa-user"></i> Trabajo
                     </th>
                     <th className="p-4 w-1/4">
                       <i className="fas fa-id-card"></i> Cedula
@@ -219,12 +227,12 @@ export const CollaboratorScreen = () => {
 
                       <th className="p-4 w-1/4">
                         {collaborator
-                          ? `${collaborator.name}`
+                          ? `${collaborator.name} ${collaborator.surname}`
                           : "No existe colaborador"}
                       </th>
                       <th className="p-4 w-1/4">
                         {collaborator
-                          ? `${collaborator.surname}`
+                          ? `${collaborator.job.name_job}`
                           : "No existe colaborador"}
                       </th>
                       <th className="p-4 w-1/4">

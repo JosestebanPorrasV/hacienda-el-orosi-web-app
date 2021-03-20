@@ -11,10 +11,11 @@ import {
 } from "../../actions/JobAction";
 import { UseForm } from "../../hooks/UseForm";
 import Swal from "sweetalert2";
+import { uiOpenModalJob } from "../../actions/UIAction";
 
 export const JobScreen = () => {
   const dispatch = useDispatch();
-  const { jobs } = useSelector((state) => state.job);
+  const { jobs, currentJob } = useSelector((state) => state.job);
 
   useEffect(() => {
     dispatch(JobsLoaded());
@@ -31,9 +32,13 @@ export const JobScreen = () => {
     deleteJob(jobId);
   };
 
-  const onSelectEditJob = (jobId) => {
+  const onSelectAddEditJob = (jobId) => {
     dispatch(jobSetActive(jobId));
-    <ModalJob />;
+    openModalJob();
+  };
+
+  const openModalJob = () => {
+    dispatch(uiOpenModalJob());
   };
 
   const deleteJob = (job) => {
@@ -65,7 +70,15 @@ export const JobScreen = () => {
           </p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
-          <ModalJob />
+          <button
+            onClick={() => onSelectAddEditJob()}
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-purple-200 rounded-lg hover:bg-gray-900 w-35"
+          >
+            <i className="fas fa-plus-circle"></i>
+            <span className="text-indigo-600 hover:text-indigo-200 font-bold">
+              Agregar Trabajo
+            </span>
+          </button>
         </nav>
       </div>
 
@@ -82,7 +95,7 @@ export const JobScreen = () => {
           onChange={handleInputChange}
         />
         <span className="bg-green-200 text-yellow-900 md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase">
-          <i class="fas fa-file-contract"></i> {`total: ${jobs.length}`}
+          <i className="fas fa-file-contract"></i> {`total: ${jobs.length}`}
         </span>
 
         <div className="overflow-x-auto py-4">
@@ -95,10 +108,10 @@ export const JobScreen = () => {
                   <thead className="bg-gray-600">
                     <tr className="bg-gray-600 text-white text-lg">
                       <th className="py-2 px-5">
-                        <i class="fas fa-user-clock"></i> Trabajo
+                        <i className="fas fa-user-clock"></i> Trabajo
                       </th>
                       <th className="p-5 w-1/6">
-                        <i class="fas fa-clock"></i> Horas
+                        <i className="fas fa-clock"></i> Horas
                       </th>
                       <th className="p-5 w-1/6">
                         <i className="far fa-money-bill-alt"></i> Precio dia
@@ -110,7 +123,7 @@ export const JobScreen = () => {
                         <i className="fas fa-info-circle"></i> Descripcion
                       </th>
                       <th className="py-2 px-12">
-                        <i class="far fa-caret-square-down"></i> Acciones
+                        <i className="far fa-caret-square-down"></i> Acciones
                       </th>
                     </tr>
                   </thead>
@@ -126,8 +139,8 @@ export const JobScreen = () => {
                         </th>
                         <th className="py-3 px-3">
                           <button
-                            onClick={() => onSelectEditJob(job)}
-                            className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
+                            onClick={() => onSelectAddEditJob(job)}
+                            className="bg-blue-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}
                           >
@@ -151,6 +164,7 @@ export const JobScreen = () => {
           </div>
         </div>
       </div>
+      <ModalJob />
     </>
   );
 };

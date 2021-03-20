@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { registerJob, editOneJob } from "../../actions/JobAction";
+import {
+  registerJob,
+  editOneJob,
+  jobClearActive,
+} from "../../actions/JobAction";
+
+import { uiCloseModalJob } from "../../actions/UIAction";
 
 export const ModalJob = () => {
   const dispatch = useDispatch();
 
   const { currentJob } = useSelector((state) => state.job);
-
-  const [showModal, setShowModal] = React.useState(false);
+  const { modalJobOpen } = useSelector((state) => state.ui);
 
   const initEvent = {
     name_job: "",
@@ -44,7 +49,8 @@ export const ModalJob = () => {
   };
 
   const closeModal = () => {
-    setShowModal(false);
+    dispatch(uiCloseModalJob());
+    dispatch(jobClearActive());
     clearForm();
   };
 
@@ -59,22 +65,14 @@ export const ModalJob = () => {
       dispatch(editOneJob(currentJob._id, formValues));
     } else {
       dispatch(registerJob(formValues));
+  
     }
     closeModal();
   };
 
   return (
     <>
-      <button
-        onClick={() => setShowModal(true)}
-        className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-purple-200 rounded-lg hover:bg-gray-900 w-35"
-      >
-        <i className="fas fa-plus-circle"></i>
-        <span className="text-indigo-600 hover:text-indigo-200 font-bold">
-          Agregar Trabajo
-        </span>
-      </button>
-      {showModal ? (
+      {modalJobOpen ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto my-6 mx-auto max-w-6xl">
@@ -84,7 +82,7 @@ export const ModalJob = () => {
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                   <h3
                     className={`${
-                        currentJob ? "text-yellow-400" : "text-green-400"
+                      currentJob ? "text-yellow-400" : "text-green-400"
                     } text-3xl font-semibold mb-2`}
                   >
                     {`${
@@ -204,10 +202,10 @@ export const ModalJob = () => {
                       className={`${
                         currentJob
                           ? "bg-yellow-400 text-white active:bg-yellow-600 hover:bg-yellow-900"
-                          : "bg-green-400 text-white active:bg-green-600 hover:bg-green-900" 
+                          : "bg-green-400 text-white active:bg-green-600 hover:bg-green-900"
                       } font-bold uppercase text-sm px-6 py-3 rounded shadow outline-none focus:outline-none mr-1 mb-1"
                       `}
-                     type="submit"
+                      type="submit"
                       style={{ transition: "all .15s ease" }}
                     >
                       {currentJob ? "Modificar" : "Añadir"}

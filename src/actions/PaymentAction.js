@@ -81,11 +81,12 @@ export const presenceByCollaboratorLoading = () => {
   };
 };
 
-export function registerTodayPresence(collaborator_id, total_overtime = 0) {
+export function registerTodayPresence(collaborator, total_overtime = 0) {
   return async (dispatch) => {
     await TopLoaderService.start();
+
     const resp = await FetchConsult(
-      `recursos-humanos/registrar/dia-laboral/${collaborator_id}`,
+      `recursos-humanos/registrar/dia-laboral/${collaborator._id}`,
       { total_overtime: total_overtime },
       "POST"
     );
@@ -94,6 +95,10 @@ export function registerTodayPresence(collaborator_id, total_overtime = 0) {
 
     if (body.status === "success") {
       await dispatch(registerPresence());
+
+  
+      collaborator["validatePresence"] = true;
+      dispatch(validatePresenceCollaborator(collaborator));
       await Swal.fire({
         icon: "success",
         title: body.msg,
@@ -108,6 +113,11 @@ export function registerTodayPresence(collaborator_id, total_overtime = 0) {
     }
   };
 }
+
+const validatePresenceCollaborator = (collaborator) => ({
+  type: Types.VALIDATE_PRESENCE_COLLABORATOR,
+  payload: collaborator,
+});
 
 const registerPresence = () => ({
   type: Types.REGISTER_PRESENCE_SUCCESS,

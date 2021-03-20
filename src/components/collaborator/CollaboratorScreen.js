@@ -72,7 +72,7 @@ export const CollaboratorScreen = () => {
     if (total_overtime.isConfirmed) {
       dispatch(
         registerTodayPresence(
-          collaborator._id,
+          collaborator,
           !total_overtime.value ? 0 : total_overtime.value
         )
       );
@@ -231,11 +231,13 @@ export const CollaboratorScreen = () => {
                         }
                       >
                         <button
+                          hidden={collaborator.validatePresence}
                           onClick={() => registerPresence(collaborator)}
                           className="px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
                         >
                           <i className="far fa-calendar-check"></i> Registar dia
                         </button>
+                        
                       </th>
                       <th className="p-4 w-1/4" hidden={collaboratorsState}>
                         <span

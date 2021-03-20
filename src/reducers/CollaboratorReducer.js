@@ -33,6 +33,14 @@ export const CollaboratorReducer = (state = initialState, action) => {
         ...state,
         currentCollaborator: null,
       };
+
+    case Types.VALIDATE_PRESENCE_COLLABORATOR:
+      return {
+        ...state,
+        collaborators: state.collaborators.map((e) =>
+          e._id === action.payload._id ? action.payload : e
+        ),
+      };
     default:
       return state;
   }

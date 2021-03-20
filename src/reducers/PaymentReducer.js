@@ -26,6 +26,12 @@ export const PaymentReducer = (state = initialState, action) => {
         ...state,
         ...action.payload,
       };
+    case Types.CLEAN_PRESENCE_DAY_BY_COLLABORATOR:
+      return {
+        ...state,
+        presenceDayByCollaborator: [],
+      };
+
     default:
       return state;
   }

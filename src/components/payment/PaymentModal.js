@@ -6,8 +6,10 @@ import { UseForm } from "../../hooks/UseForm";
 
 import { collaboratorClearActive } from "../../actions/CollaboratorAction";
 import { Link } from "react-router-dom";
-import { lendsByCollaboratorLoading } from "../../actions/LendAction";
-import { presenceByCollaboratorLoading } from "../../actions/PaymentAction";
+import {
+  paymentRegister,
+  presenceByCollaboratorLoading,
+} from "../../actions/PaymentAction";
 
 export const PaymentModal = () => {
   const dispatch = useDispatch();
@@ -21,6 +23,10 @@ export const PaymentModal = () => {
     totalOvertimeByCollaborator,
   } = useSelector((state) => state.payment);
 
+  useEffect(() => {
+    dispatch(presenceByCollaboratorLoading());
+  }, [dispatch]);
+
   const closeModal = () => {
     dispatch(uiCloseModalPayment());
     dispatch(collaboratorClearActive());
@@ -33,12 +39,26 @@ export const PaymentModal = () => {
 
   const { filter1, filter2 } = formValues;
 
-  useEffect(() => {
-    if (currentCollaborator) {
-      dispatch(presenceByCollaboratorLoading(currentCollaborator._id));
-      dispatch(lendsByCollaboratorLoading(currentCollaborator.document_id));
-    }
-  }, [dispatch, currentCollaborator]);
+  const paymentReg = {
+    collaborator_job_name: currentCollaborator.job.name_job,
+    total_days_worked:
+      presenceDayByCollaborator.length > 0
+        ? presenceDayByCollaborator.length
+        : 0,
+    total_hours_worked:
+      presenceDayByCollaborator.length * currentCollaborator.job.work_hours,
+    total_extra_hours_price:
+      totalOvertimeByCollaborator * currentCollaborator.job.price_extra_hours,
+
+    extra_hours_price: currentCollaborator.job.price_extra_hours,
+    price_day: currentCollaborator ? currentCollaborator.job.price_day : 0,
+
+    net_salary:
+      presenceDayByCollaborator.length * currentCollaborator.job.price_day,
+    total_salary:
+      presenceDayByCollaborator.length * currentCollaborator.job.price_day +
+      totalOvertimeByCollaborator * currentCollaborator.job.price_extra_hours,
+  };
 
   return (
     <>
@@ -50,7 +70,7 @@ export const PaymentModal = () => {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none bg-hwite">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blue-100  text-green-900 rounded-t">
-                  <h3 className="text-2xl font-semibold">{`Pagar a ${currentCollaborator.name} ${currentCollaborator.surname} Ced: ${currentCollaborator.document_id}`}</h3>
+                  <h3 className="text-2xl font-semibold"> Realizar pago</h3>
                   <button
                     className="p-1 ml-auto border-0 text-white float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => closeModal()}
@@ -61,8 +81,41 @@ export const PaymentModal = () => {
                   </button>
                 </div>
                 {/*body*/}
-                <div className="relative p-6 h full">
-                  <section className="text-gray-600  body-font overflow-hidden">
+                <section className="text-gray-600 body-font">
+                  <div className="container px-5 py-4 mx-auto">
+                    <div className="flex flex-wrap -m-4 text-center">
+                      <div className="p-4 sm:w-1/4 w-1/2">
+                        <p className="leading-relaxed">Nombre</p>
+                        <h2 className="title-font font-medium sm:text-2xl text-2xl text-gray-900">
+                          {`${currentCollaborator.name} ${currentCollaborator.surname}`}
+                        </h2>
+                      </div>
+                      <div className="p-4 sm:w-1/4 w-1/2">
+                        <p className="leading-relaxed">Cedula</p>
+                        <h2 className="title-font font-medium sm:text-2xl text-2xl text-gray-900">
+                          {`${currentCollaborator.document_id}`}
+                        </h2>
+                      </div>
+                      <div className="p-4 sm:w-1/4 w-1/2">
+                        <p className="leading-relaxed">Trabajo</p>
+                        <h2 className="title-font font-medium sm:text-2xl text-2xl text-gray-900">
+                          {`${currentCollaborator.job.name_job}`}
+                        </h2>
+                      </div>
+                      <div className="p-4 sm:w-1/4 w-1/2">
+                        <p className="leading-relaxed">Precio del dia</p>
+                        <h2 className="title-font font-medium sm:text-2xl text-2xl text-gray-900">
+                          {`${new Intl.NumberFormat("en-EN").format(
+                            currentCollaborator.job.price_day
+                          )}`}
+                          ₡
+                        </h2>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <div className="relative  pl-4 pr-4 border-t border-gray-200 w-full">
+                  <section className="text-gray-600  body-font py-4 overflow-hidden">
                     <div className="container px-5 mx-auto">
                       <div className="flex flex-wrap">
                         <div className="pr-1 md:w-1/2 flex flex-col items-center w-full">
@@ -258,17 +311,21 @@ export const PaymentModal = () => {
                       DESGLOSE SE PAGO
                     </h1>
 
-                    <div className="flex border-t border-gray-200 py-2">
-                      <span className="text-gray-500">Dias laborados</span>
+                    <div className="flex py-2">
+                      <span className="text-gray-500">Horas laboradas</span>
                       <span className="ml-auto text-gray-900">
-                        {" "}
-                        {presenceDayByCollaborator.length}
+                        {paymentReg.total_hours_worked}
                       </span>
                     </div>
                     <div className="flex border-t border-gray-200 py-2">
-                      <span className="text-gray-500">Horas laboradas</span>
-                      <span className="ml-auto text-gray-900">48</span>
+                      <span className="text-gray-500">
+                        Horas de trabajo por dia
+                      </span>
+                      <span className="ml-auto text-gray-900">
+                        {currentCollaborator.job.work_hours}
+                      </span>
                     </div>
+
                     <div className="flex border-t border-gray-200 py-2">
                       <span className="text-gray-500">
                         Cantidad de horas extras
@@ -277,24 +334,58 @@ export const PaymentModal = () => {
                         {totalOvertimeByCollaborator}
                       </span>
                     </div>
+
                     <div className="flex border-t-2 border-yellow-700 py-2">
                       <span className="text-gray-900">
-                        Total de horas extra
+                        Precio de hora extra
                       </span>
-                      <span className="ml-auto text-gray-900">+50,000</span>
+                      <span className="ml-auto text-gray-900">
+                        {new Intl.NumberFormat("en-EN").format(
+                          currentCollaborator.job.price_extra_hours
+                        )}
+                        ₡
+                      </span>
                     </div>
+
+                    <div className="flex border-t border-gray-200 py-2">
+                      <span className="text-gray-900">
+                        Total de horas extras
+                      </span>
+                      <span className="ml-auto text-gray-900">
+                        +
+                        {new Intl.NumberFormat("en-EN").format(
+                          paymentReg.total_extra_hours_price
+                        )}
+                        ₡
+                      </span>
+                    </div>
+
                     <div className="flex border-t border-gray-200 py-2">
                       <span className="text-gray-900">Salario bruto:</span>
-                      <span className="ml-auto text-gray-900">158,000</span>
+                      <span className="ml-auto text-gray-900">
+                        {new Intl.NumberFormat("en-EN").format(
+                          paymentReg.net_salary
+                        )}
+                        ₡
+                      </span>
                     </div>
 
                     <div className="flex border-t border-b mb-6 border-gray-200 py-2">
                       <span className="text-gray-900">Salario Total: </span>
-                      <span className="ml-auto text-gray-900">120,000</span>
+                      <span className="ml-auto text-gray-900">
+                        {new Intl.NumberFormat("en-EN").format(
+                          paymentReg.total_salary
+                        )}
+                        ₡
+                      </span>
                     </div>
 
-                    <div className="flex">
-                      <button className="flex ml-auto text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded">
+                    <div className="flex pb-2">
+                      <button
+                        disabled={paymentReg.total_salary === 0}
+                        onClick={() => dispatch(paymentRegister(paymentReg))}
+                        className="flex ml-auto text-lg text-white bg-green-500 border-0 py-2 px-3 focus:outline-none hover:bg-green-600 rounded"
+                      >
                         Realizar pago
                       </button>
                     </div>

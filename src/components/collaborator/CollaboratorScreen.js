@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 
 import {
   collaboratorSetActive,
@@ -28,6 +28,7 @@ export const CollaboratorScreen = () => {
   const { collaborators, collaboratorsState, countCollaborators } = useSelector(
     (state) => state.collaborator
   );
+  const { currentCollaborator } = useSelector((state) => state.collaborator);
 
   useEffect(() => {
     dispatch(CollaboratorsLoading());
@@ -71,7 +72,7 @@ export const CollaboratorScreen = () => {
     if (total_overtime.isConfirmed) {
       dispatch(
         registerTodayPresence(
-          collaborator._id,
+          collaborator,
           !total_overtime.value ? 0 : total_overtime.value
         )
       );
@@ -171,7 +172,7 @@ export const CollaboratorScreen = () => {
             value={filter}
             data={collaborators}
             renderResults={(results) => (
-              <table className="text-center items-center text-sm w-full">
+              <table className="text-center items-center w-full">
                 <thead className="bg-gray-800 flex text-white w-full">
                   <tr className="flex w-full">
                     <th
@@ -230,11 +231,13 @@ export const CollaboratorScreen = () => {
                         }
                       >
                         <button
+                          hidden={collaborator.validatePresence}
                           onClick={() => registerPresence(collaborator)}
                           className="px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
                         >
                           <i className="far fa-calendar-check"></i> Registar dia
                         </button>
+                        
                       </th>
                       <th className="p-4 w-1/4" hidden={collaboratorsState}>
                         <span
@@ -251,20 +254,12 @@ export const CollaboratorScreen = () => {
                       </th>
 
                       <th className="p-4 w-1/4">
-                        {collaborator
-                          ? `${collaborator.name} ${collaborator.surname}`
-                          : "No existe colaborador"}
+                        {`${collaborator.name} ${collaborator.surname}`}
                       </th>
                       <th className="p-4 w-1/4">
-                        {collaborator
-                          ? `${collaborator.job.name_job}`
-                          : "No existe colaborador"}
+                        {`${collaborator.job.name_job}`}
                       </th>
-                      <th className="p-4 w-1/4">
-                        {collaborator.document_id
-                          ? collaborator.document_id
-                          : "No existe colaborador"}
-                      </th>
+                      <th className="p-4 w-1/4">{collaborator.document_id}</th>
                       <th className="p-4 w-1/4">
                         <button
                           onClick={() => onSelectCollaborator(collaborator)}
@@ -314,7 +309,8 @@ export const CollaboratorScreen = () => {
       <ModalInfo />
       <ModalLend />
       <ModalActive />
-      <PaymentModal/>
+
+      {currentCollaborator && <PaymentModal />}
     </>
   );
 };

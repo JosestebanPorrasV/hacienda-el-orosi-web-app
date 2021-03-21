@@ -17,6 +17,9 @@ export const uiCloseModalCollaborator = () => ({
   type: Types.UI_CLOSE_MODAL_COLLABORATOR,
 });
 
+export const uiOpenModalJob = () => ({ type: Types.UI_OPEN_MODAL_JOBS });
+export const uiCloseModalJob = () => ({ type: Types.UI_CLOSE_MODAL_JOBS });
+
 export const uiOpenModalFee = () => ({ type: Types.UI_OPEN_MODAL_FEES });
 export const uiCloseModalFee = () => ({ type: Types.UI_CLOSE_MODAL_FEES });
 

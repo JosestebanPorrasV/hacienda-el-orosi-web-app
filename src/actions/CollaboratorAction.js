@@ -13,7 +13,7 @@ export const CollaboratorsLoading = (status = "active") => {
       );
       const body = await resp.json();
 
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(collaboratorsLoaded(body.collaborators));
         await TopLoaderService.end();
       } else {
@@ -34,7 +34,7 @@ export const searchCollaborator = (document_id) => {
         `recursos-humanos/ver-colaborador/${document_id}`
       );
       const body = await resp.json();
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(collaboratorSetActive(body.collaborator));
         await TopLoaderService.end();
       } else {
@@ -65,7 +65,7 @@ export function registerCollaborator(collaboratorFormValues) {
     );
 
     const body = await resp.json();
-    if (body.status === "success") {
+    if (body.status) {
       await dispatch(addCollaboratorSuccess());
       await dispatch(CollaboratorsLoading());
       await dispatch(collaboratorClearActive());
@@ -99,7 +99,7 @@ export function editOneCollaborator(collaborator_id, collaborator) {
       "PUT"
     );
     const body = await resp.json();
-    if (body.status === "success") {
+    if (body.status) {
       await dispatch(CollaboratorsLoading());
       await dispatch(collaboratorClearActive());
       await Swal.fire({

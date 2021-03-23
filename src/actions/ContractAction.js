@@ -10,7 +10,7 @@ export const contractsLoading = () => {
       const resp = await FetchConsult(`recursos-humanos/ver-contratos/active`);
       const body = await resp.json();
 
-      if (body.status === "success") {
+      if (body.status) {
         await  dispatch(contractsLoaded(body));
         await TopLoaderService.end();
       } else {

@@ -18,7 +18,7 @@ export const paymentRegister = (paymentReg) => {
 
       const body = await resp.json();
 
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(cleanPresenceByCollaborator());
         await TopLoaderService.end();
       } else {
@@ -41,7 +41,7 @@ export const paymentStartLoading = (page_) => {
 
       const body = await resp.json();
 
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(paymentLoaded(body.payments));
         await TopLoaderService.end();
       } else {
@@ -65,7 +65,7 @@ export const presenceByCollaboratorLoading = () => {
 
       const body = await resp.json();
 
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(presenceByCollaboratorLoaded(body));
         await dispatch(
           lendsByCollaboratorLoading(currentCollaborator.document_id)
@@ -93,10 +93,9 @@ export function registerTodayPresence(collaborator, total_overtime = 0) {
 
     const body = await resp.json();
 
-    if (body.status === "success") {
+    if (body.status) {
       await dispatch(registerPresence());
 
-  
       collaborator["validatePresence"] = true;
       dispatch(validatePresenceCollaborator(collaborator));
       await Swal.fire({

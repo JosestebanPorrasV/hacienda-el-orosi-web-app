@@ -15,7 +15,7 @@ import { uiOpenModalJob } from "../../actions/UIAction";
 
 export const JobScreen = () => {
   const dispatch = useDispatch();
-  const { jobs, currentJob } = useSelector((state) => state.job);
+  const { jobs } = useSelector((state) => state.job);
 
   useEffect(() => {
     dispatch(JobsLoaded());

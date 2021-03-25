@@ -40,11 +40,7 @@ export const Sidebar = () => {
             </p>
             <p className="mb-1 font-bold text-sm text-blue-200">
               <i className="fas fa-briefcase pr-1"></i>
-              {role === "GENERAL_ROLE"
-                ? "Dueño"
-                : role === "RESOURCES_ROLE"
-                ? "Recursos Humanos"
-                : "Encargado de Ganado"}
+              {role}
             </p>
           </div>
           <div className="border-solid border border-blue-200"></div>
@@ -100,15 +96,15 @@ export const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/"
+                to="/animales"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
               >
                 <span className="flex-1">
-                  <i className="fas fa-horse pr-4"></i>Ganado
+                  <i className="fas fa-horse pr-4"></i>Animales
                 </span>
               </Link>
             </li>
-            <li hidden={role !== "GENERAL_ROLE"}>
+            <li hidden={role !== "Dueño"}>
               <Link
                 to="/listar-administradores"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"

@@ -3,19 +3,20 @@ import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 import TopLoaderService from "top-loader-service";
 
-export const contractsLoading = () => {
+export const animalsByTypeLoading = (type = "Vaca lechera", page = 1) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`recursos-humanos/ver-contratos/active`);
-      const body = await resp.json();
+      const resp = await FetchConsult(`gestion-animal/tipo/${type}/${page}`);
 
+      const body = await resp.json();
+      
       if (body.status) {
-        await  dispatch(contractsLoaded(body));
+        await dispatch(animalsLoaded(body.animals));
         await TopLoaderService.end();
       } else {
-        await TopLoaderService.end();
         await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
       }
     } catch (error) {
       console.log(error);
@@ -23,7 +24,7 @@ export const contractsLoading = () => {
   };
 };
 
-const contractsLoaded = (contracts) => ({
-  type: Types.CONTRACTS_ACTIVES_LOADED,
-  payload: contracts,
+const animalsLoaded = (animals) => ({
+  type: Types.ANIMALS_LOADED,
+  payload: animals,
 });

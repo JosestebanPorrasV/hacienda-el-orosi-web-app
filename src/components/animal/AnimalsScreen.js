@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { animalsByTypeLoading } from "../../actions/AnimalAction";
 import SearchResults from "react-filter-search";
 import { UseForm } from "../../hooks/UseForm";
-import { Link } from "react-router-dom";
 
 export const AnimalsScreen = () => {
   const dispatch = useDispatch();
+  const [openTab, setOpenTab] = React.useState(1);
+
   const { animals, animalsState, animalsType, total } = useSelector(
     (state) => state.animal
   );
@@ -18,9 +19,12 @@ export const AnimalsScreen = () => {
 
   const [formValues, handleInputChange] = UseForm({
     filter: "",
+    filterInWeight: "",
+    filterMilk: "",
+    filterCalving: "",
   });
 
-  const { filter } = formValues;
+  const { filter, filterInWeight, filterMilk, filterCalving } = formValues;
 
   return (
     <>
@@ -50,36 +54,69 @@ export const AnimalsScreen = () => {
         </h2>
 
         <div>
-          <select className="bg-gray-200 text-gray-700 font-bold text-xl py-2 px-2 rounded-lg inline-flex  group-hover:bg-green-600 group-hover:text-white uppercase">
-            <option className="pt-6 bg-gray-300 text-gray-700 font-semibold">
+          <select
+            onChange={(e) => dispatch(animalsByTypeLoading(e.target.value))}
+            className="bg-gray-200 text-gray-700 font-bold text-xl py-2 px-2 rounded-lg inline-flex  group-hover:bg-green-600 group-hover:text-white uppercase"
+          >
+            <option
+              value="Ganado estabulado"
+              className="pt-6 bg-gray-300 text-base text-gray-700 font-semibold"
+            >
               Ganado estabulado
             </option>
-            <option className="bg-gray-300 text-gray-700 font-semibold">
-              Vaca lechera
+            <option
+              value="Vaca lechera"
+              className="bg-gray-300 text-base text-gray-700 font-semibold"
+            >
+              Vacas lecheras
             </option>
-            <option className="bg-gray-300 text-gray-700 font-semibold">
-              Vaca de cria
+            <option
+              value="Vaca de cria"
+              className="bg-gray-300 text-base text-gray-700 font-semibold"
+            >
+              Vacas de cria
             </option>
-            <option className="bg-gray-300 text-gray-700 font-semibold">
-              Toro padrote
+            <option
+              value="Toro padrote"
+              className="bg-gray-300 text-base text-gray-700 font-semibold"
+            >
+              Toros padrote
             </option>
-            <option className="bg-gray-300 text-gray-700 font-semibold">
-              Ternero
+            <option
+              value="Ternero"
+              className="bg-gray-300 text-base text-gray-700 font-semibold"
+            >
+              Terneros
             </option>
-            <option className="bg-gray-300 text-gray-700 font-semibold">
-              Novilla
+            <option
+              value="Novilla"
+              className="bg-gray-300 text-base text-gray-700 font-semibold"
+            >
+              Novillas
             </option>
-            <option className="bg-gray-300 text-gray-700 font-semibold">
-              Caballo
+            <option
+              value="Caballo"
+              className="bg-gray-300 text-base text-gray-700 font-semibold"
+            >
+              Caballos
             </option>
-            <option className="bg-gray-300 text-gray-700 font-semibold">
-              Mula
+            <option
+              value="Mula"
+              className="bg-gray-300 text-base text-gray-700 font-semibold"
+            >
+              Mulas
             </option>
-            <option className="bg-gray-300 text-gray-700 font-semibold">
-              Yegua
+            <option
+              value="Yegua"
+              className="bg-gray-300 text-base text-gray-700 font-semibold"
+            >
+              Yeguas
             </option>
-            <option className="bg-gray-300 text-gray-700 font-semibold">
-              Burro
+            <option
+              value="Burro"
+              className="bg-gray-300 text-base text-gray-700 font-semibold"
+            >
+              Burros
             </option>
           </select>
         </div>
@@ -105,7 +142,11 @@ export const AnimalsScreen = () => {
           renderResults={(results) => (
             <div>
               {results.map((animal) => (
-                <section className="bg-gray-700 body-font mb-6 rounded-lg overflow-hidden">
+                <section
+                  className="bg-gray-700 body-font mb-6 rounded-lg overflow-hidden "
+                  role="tablist"
+                  key={animal._id}
+                >
                   <div className="container px-5 py-4 mx-auto">
                     <div className="lg:w-4/5 mx-auto flex flex-wrap">
                       <div className="lg:w-1/2 w-full lg:pr-10 lg:py-1 mb-2 lg:mb-0">
@@ -117,38 +158,74 @@ export const AnimalsScreen = () => {
                           </span>
                         </h1>
                         <div className="flex mb-4">
-                          <Link
-                            to="/"
-                            className="flex-grow border-b-2 border-green-500 py-2 text-lg px-1"
+                          <a
+                            className={`flex-grow border-b-2 ${
+                              openTab === 1 && `border-green-500`
+                            } py-2 px-1`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setOpenTab(1);
+                            }}
+                            data-toggle="tab"
+                            href="#link1"
+                            role="tablist"
                           >
                             Informacion
-                          </Link>
-                          <Link
-                            to="/"
-                            hidden={animal.gender === "Hembra"}
-                            className="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1"
+                          </a>
+                          <a
+                            className={`flex-grow border-b-2 ${
+                              openTab === 2 && `border-green-500`
+                            } py-2 px-1`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setOpenTab(2);
+                            }}
+                            data-toggle="tab"
+                            href="#link2"
+                            role="tablist"
                           >
-                            Registro de peso
-                          </Link>
-                          <Link
-                            to="/"
+                            Peso
+                          </a>
+                          <a
                             hidden={
                               animal.gender === "Macho" &&
                               animal.gender !== "Vaca lechera"
                             }
-                            className="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1"
+                            className={`flex-grow border-b-2 ${
+                              openTab === 3 && `border-green-500`
+                            } py-2 px-1`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setOpenTab(3);
+                            }}
+                            data-toggle="tab"
+                            href="#link3"
+                            role="tablist"
                           >
                             Leche
-                          </Link>
-                          <Link
-                            to="/"
+                          </a>
+                          <a
                             hidden={animal.gender === "Macho"}
-                            className="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1"
+                            className={`flex-grow border-b-2 ${
+                              openTab === 4 && `border-green-500`
+                            } py-2 px-1`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setOpenTab(4);
+                            }}
+                            data-toggle="tab"
+                            href="#link4"
+                            role="tablist"
                           >
                             Partos
-                          </Link>
+                          </a>
                         </div>
-                        <div className="overflow-y-auto h-72 bg-gray-600 rounded-lg">
+                        <div
+                          className={`overflow-y-auto h-72 bg-gray-600 rounded-lg ${
+                            openTab === 1 ? "block" : "hidden"
+                          }`}
+                          id="link1"
+                        >
                           <div className="flex py-2">
                             <span className="ml-2">Estado</span>
                             <span className="ml-auto mr-2">
@@ -161,10 +238,7 @@ export const AnimalsScreen = () => {
                               {animal.date_admission}
                             </span>
                           </div>
-                          <div className="flex border-t border-gray-200 py-2">
-                            <span className="ml-2">Registrado por</span>
-                            <span className="ml-auto mr-2">{`${animal.administrator.name} ${animal.administrator.surname}`}</span>
-                          </div>
+
                           <div
                             className={`flex border-t border-gray-200 py-2 ${
                               !animal.race && "hidden"
@@ -264,13 +338,155 @@ export const AnimalsScreen = () => {
                             </span>
                           </div>
                         </div>
+                        <div
+                          className={`overflow-y-auto h-72 bg-gray-800 rounded-lg ${
+                            openTab === 2 ? "block" : "hidden"
+                          }`}
+                          id="link2"
+                        >
+                          <input
+                            type="text"
+                            name="filterInWeight"
+                            className="h-6 p-2 w-full placeholder-blue-800 text-black mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
+                            placeholder="Buscar por ..."
+                            value={filterInWeight}
+                            onChange={handleInputChange}
+                          />
+                          <SearchResults
+                            value={filterInWeight}
+                            data={animal.weight}
+                            renderResults={(results) => (
+                              <div>
+                                {results.map((weight) => (
+                                  <div
+                                    key={weight._id}
+                                    className="rounded-lg m-1 text-sm  bg-gray-600"
+                                  >
+                                    <div className="flex">
+                                      <span className="ml-2">Fecha</span>
+                                      <span className="ml-auto mr-2">
+                                        {weight.date}
+                                      </span>
+                                    </div>
+                                    <div className="flex border-t border-gray-400">
+                                      <span className="ml-2">Peso</span>
+                                      <span className="ml-auto mr-2">
+                                        {weight.weight} kg
+                                      </span>
+                                    </div>
+                                    <div className="flex border-t ml-2 mr-2 border-gray-400">
+                                      {weight.observations}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          />
+                        </div>
+
+                        <div
+                          className={`overflow-y-auto h-72 bg-gray-800 rounded-lg ${
+                            openTab === 3 ? "block" : "hidden"
+                          }`}
+                          id="link3"
+                        >
+                          <input
+                            type="text"
+                            name="filterMilk"
+                            className="h-6 p-2 w-full placeholder-blue-800 text-black mb-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
+                            placeholder="Buscar por ..."
+                            value={filterMilk}
+                            onChange={handleInputChange}
+                          />
+                          <SearchResults
+                            value={filterMilk}
+                            data={animal.milk}
+                            renderResults={(results) => (
+                              <div>
+                                {results.map((milk) => (
+                                  <div
+                                    key={milk._id}
+                                    className="rounded-lg m-2 text-sm  bg-gray-600"
+                                  >
+                                    <div className="flex">
+                                      <span className="ml-2">Fecha</span>
+                                      <span className="ml-auto mr-2">
+                                        {milk.registration_date}
+                                      </span>
+                                    </div>
+                                    <div className="flex border-t border-gray-400">
+                                      <span className="ml-2">Litros</span>
+                                      <span className="ml-auto mr-2">
+                                        {milk.liters}L
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          />
+                        </div>
+
+                        <div
+                          className={`overflow-y-auto h-72 bg-gray-800 rounded-lg ${
+                            openTab === 4 ? "block" : "hidden"
+                          }`}
+                          id="link4"
+                        >
+                          <input
+                            type="text"
+                            name="filterCalving"
+                            className="h-6 p-2 w-full placeholder-blue-800 text-black mb-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
+                            placeholder="Buscar por ..."
+                            value={filterCalving}
+                            onChange={handleInputChange}
+                          />
+                          <SearchResults
+                            value={filterCalving}
+                            data={animal.calving}
+                            renderResults={(results) => (
+                              <div>
+                                {results.map((calving) => (
+                                  <div
+                                    key={calving._id}
+                                    className="rounded-lg m-2 text-sm  bg-gray-600"
+                                  >
+                                    <div className="flex">
+                                      <span className="ml-2">Fecha</span>
+                                      <span className="ml-auto mr-2">
+                                        {calving.date}
+                                      </span>
+                                    </div>
+                                    <div className="flex border-t border-gray-400">
+                                      <span className="ml-2">Parto</span>
+                                      <span className="ml-auto mr-2">
+                                        {calving.calving_number}
+                                      </span>
+                                    </div>
+                                    <div className="flex ml-2 border-t border-gray-400">
+                                      {calving.complications}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          />
+                        </div>
                         <div className="flex pt-4">
-                          <span className="title-font font-medium text-2xl ">
-                            $58.00
+                          <span hidden={openTab !== 2} className="title-font">
+                            {`Total de registros: ${animal.weight.length}`}
                           </span>
-                          <button className="flex ml-auto text-white font-semibold bg-yellow-600 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">
-                            Editar
-                          </button>
+                          <span hidden={openTab !== 3} className="title-font">
+                            {`Total de registros: ${animal.milk.length}`}
+                          </span>
+                          <span hidden={openTab !== 4} className="title-font">
+                            {`Total de partos: ${animal.calving.length}`}
+                          </span>
+                          <div hidden={openTab !== 1}>
+                            <button className="flex ml-auto text-white font-semibold bg-yellow-600 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">
+                              Editar
+                            </button>
+                          </div>
                         </div>
                       </div>
                       <img

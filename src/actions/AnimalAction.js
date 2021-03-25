@@ -3,7 +3,7 @@ import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 import TopLoaderService from "top-loader-service";
 
-export const animalsByTypeLoading = (type = "Ganado estabulado", page = 1) => {
+export const animalsByTypeLoading = (type = "Vaca lechera", page = 1) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {

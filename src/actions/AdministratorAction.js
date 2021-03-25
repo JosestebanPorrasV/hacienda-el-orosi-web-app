@@ -9,7 +9,7 @@ export const AdministratorsLoading = () => {
     try {
       const resp = await FetchConsult("/administradores");
       const body = await resp.json();
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(administratorsLoaded(body));
         await TopLoaderService.end();
       } else {
@@ -39,7 +39,7 @@ export function registerAdministrator(administratorFormValues) {
     );
 
     const body = await resp.json();
-    if (body.status === "success") {
+    if (body.status) {
       await dispatch(addAdministratorSuccess());
       await dispatch(AdministratorsLoading());
       await dispatch(administratorClearActive());
@@ -62,7 +62,7 @@ export function changeRole(user_id, role) {
     await TopLoaderService.start();
     const resp = await FetchConsult(`/cambiar-rol/${user_id}`, { role }, "PUT");
     const body = await resp.json();
-    if (body.status === "success") {
+    if (body.status) {
       await dispatch(AdministratorsLoading());
       await dispatch(administratorClearActive());
       await TopLoaderService.end();

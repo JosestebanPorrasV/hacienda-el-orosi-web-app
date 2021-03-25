@@ -14,7 +14,7 @@ export const startLogin = (document_id, password) => {
     );
     const body = await resp.json();
 
-    if (body.status === "success") {
+    if (body.status) {
       localStorage.setItem("identity", JSON.stringify(body.user));
       localStorage.setItem("token", JSON.stringify(body.token));
       localStorage.setItem("token-init-date", new Date().getTime());
@@ -42,7 +42,7 @@ export const setRecoveryKey = (email, status) => {
     const resp = await FetchConsult(`recuperar/cuenta/${email}`);
     const body = await resp.json();
 
-    if (body.status === "success") {
+    if (body.status) {
       await Swal.fire("Correo registrado", body.msg, "success");
 
       await dispatch(
@@ -65,7 +65,7 @@ export const verifyRecoveryKey = (email, code, status) => {
     const resp = await FetchConsult(`verificar/codigo/${email}/${code}`);
     const body = await resp.json();
 
-    if (body.status === "success") {
+    if (body.status) {
       Swal.fire("Ultimo paso", body.msg, "success");
 
       await dispatch(
@@ -91,7 +91,7 @@ export const changePass = (email, password, status) => {
     );
     const body = await resp.json();
 
-    if (body.status === "success") {
+    if (body.status) {
       await Swal.fire("Muchas gracias", body.msg, "success");
 
       await dispatch(changePassword());
@@ -115,7 +115,7 @@ export const startChecking = () => {
     const resp = await FetchConsult("informacion-administrador");
     const body = await resp.json();
 
-    if (body.status === "success") {
+    if (body.status) {
       localStorage.setItem("identity", JSON.stringify(body.user));
       localStorage.setItem("token-init-date", new Date().getTime());
 

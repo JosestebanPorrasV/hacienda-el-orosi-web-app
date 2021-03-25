@@ -9,19 +9,19 @@ import {
 
 import { uiCloseModalJob } from "../../actions/UIAction";
 
+const initEvent = {
+  name_job: "",
+  description: "",
+  work_hours: "",
+  price_extra_hours: "",
+  price_day: "",
+};
+
 export const ModalJob = () => {
   const dispatch = useDispatch();
 
   const { currentJob } = useSelector((state) => state.job);
   const { modalJobOpen } = useSelector((state) => state.ui);
-
-  const initEvent = {
-    name_job: "",
-    description: "",
-    work_hours: "",
-    price_extra_hours: "",
-    price_day: "",
-  };
 
   const [formValues, setFormValues] = useState(initEvent);
 
@@ -65,7 +65,6 @@ export const ModalJob = () => {
       dispatch(editOneJob(currentJob._id, formValues));
     } else {
       dispatch(registerJob(formValues));
-  
     }
     closeModal();
   };

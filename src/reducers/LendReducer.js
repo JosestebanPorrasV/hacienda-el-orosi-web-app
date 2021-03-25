@@ -55,7 +55,7 @@ export const LendReducer = (state = initialState, action) => {
         ...state,
         currentLend: null,
       };
-      
+
     case Types.ADD_FEE_SUCCESS:
       return {
         ...state,

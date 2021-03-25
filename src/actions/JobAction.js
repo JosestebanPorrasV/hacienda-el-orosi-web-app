@@ -8,7 +8,7 @@ export const JobsLoaded = () => {
       const resp = await FetchConsult(`recursos-humanos/ver-trabajos`);
       const body = await resp.json();
 
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(jobsLoaded(body));
       } else {
         await Swal.fire("Error", body.msg, "error");
@@ -34,7 +34,7 @@ export function registerJob(jobFormValues) {
     );
 
     const body = await resp.json();
-    if (body.status === "success") {
+    if (body.status) {
       await dispatch(addJobSuccess());
       await dispatch(JobsLoaded());
       await Swal.fire({
@@ -50,33 +50,33 @@ export function registerJob(jobFormValues) {
 }
 
 export function editOneJob(job_id, job) {
-    return async (dispatch) => {
-      const resp = await FetchConsult(
-        `recursos-humanos/actualizar-trabajo/${job_id}`,
-        {
-            name_job: job.name_job,
-            description: job.description,
-            work_hours: job.work_hours,
-            price_extra_hours: job.price_extra_hours,
-            price_day: job.price_day,
-        },
-        "PUT"
-      );
-      const body = await resp.json();
-      if (body.status === "success") {
-        await dispatch(JobsLoaded());
-        await dispatch(jobClearActive());
-        await Swal.fire({
-          icon: "success",
-          title: body.msg,
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      } else {
-        Swal.fire("Error", body.msg, "error");
-      }
-    };
-  }
+  return async (dispatch) => {
+    const resp = await FetchConsult(
+      `recursos-humanos/actualizar-trabajo/${job_id}`,
+      {
+        name_job: job.name_job,
+        description: job.description,
+        work_hours: job.work_hours,
+        price_extra_hours: job.price_extra_hours,
+        price_day: job.price_day,
+      },
+      "PUT"
+    );
+    const body = await resp.json();
+    if (body.status) {
+      await dispatch(JobsLoaded());
+      await dispatch(jobClearActive());
+      await Swal.fire({
+        icon: "success",
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    } else {
+      Swal.fire("Error", body.msg, "error");
+    }
+  };
+}
 
 export const oneJobDelete = (jobId) => {
   return async (dispatch) => {
@@ -88,7 +88,7 @@ export const oneJobDelete = (jobId) => {
       );
 
       const body = await resp.json();
-      if (body.status === "success") {
+      if (body.status) {
         await Swal.fire("Eliminado", body.msg, "success");
 
         await dispatch(deleteOneJob(jobId));

@@ -13,7 +13,7 @@ export const lendsStartLoading = (status = "active", page = 1) => {
         `recursos-humanos/prestamos/${status}/${page}`
       );
       const body = await resp.json();
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(lendsLoaded(body.lends));
         await TopLoaderService.end();
       } else {
@@ -26,7 +26,7 @@ export const lendsStartLoading = (status = "active", page = 1) => {
   };
 };
 
-export const lendsByCollaboratorLoading = (document_id, page = 1 ) => {
+export const lendsByCollaboratorLoading = (document_id, page = 1) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
@@ -38,7 +38,7 @@ export const lendsByCollaboratorLoading = (document_id, page = 1 ) => {
         `recursos-humanos/colaborador/prestamos/${document_id}/${page}`
       );
       const body = await resp.json();
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(lendsByCollaboratorLoaded(body.lends));
         await TopLoaderService.end();
       } else {
@@ -61,7 +61,7 @@ export const FeeByLendLoading = (lendId) => {
       );
       const body = await resp.json();
 
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(feesLoaded(body));
         await TopLoaderService.end();
       } else {
@@ -86,7 +86,7 @@ export const deleteOneLend = (id) => {
 
       const body = await resp.json();
       console.log(id);
-      if (body.status === "success") {
+      if (body.status) {
         await Swal.fire("Eliminado", body.msg, "success");
 
         await dispatch(lendsStartLoading());
@@ -116,7 +116,7 @@ export function registerLend(collaborator_id, lendFormValues) {
 
     const body = await resp.json();
 
-    if (body.status === "success") {
+    if (body.status) {
       await dispatch(collaboratorClearActive());
       await dispatch(addLendSuccess(body.lend));
       await dispatch(lendsStartLoading());
@@ -145,7 +145,7 @@ export function addFee(lend) {
     );
 
     const body = await resp.json();
-    if (body.status === "success") {
+    if (body.status) {
       await dispatch(addFeeSuccess(body.lend));
       await dispatch(lendsStartLoading());
       await Swal.fire({
@@ -182,7 +182,7 @@ export function changeFee(lend, newFee) {
 
     const body = await resp.json();
 
-    if (body.status === "success") {
+    if (body.status) {
       await dispatch(changeFeeSuccess(body.lend));
 
       await Swal.fire({

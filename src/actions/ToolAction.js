@@ -11,7 +11,7 @@ export const toolsLoading = (status = "stock") => {
       const resp = await FetchConsult(`herramientas/ver/${status}`);
       const body = await resp.json();
 
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(toolLoaded(body.tools));
         await TopLoaderService.end();
       } else {
@@ -31,7 +31,7 @@ export const activesToolsLoaded = () => {
       const resp = await FetchConsult(`herramientas/activas`);
       const body = await resp.json();
 
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(activesLoaded(body.actives));
         await TopLoaderService.end();
       } else {
@@ -57,7 +57,7 @@ export function registerTool(toolFormValues) {
     );
 
     const body = await resp.json();
-    if (body.status === "success") {
+    if (body.status) {
       await dispatch(addToolSuccess());
       await dispatch(toolsLoading());
       await dispatch(uiCloseModalAddTool());
@@ -86,7 +86,7 @@ export const removeTools = (data) => {
       );
       const body = await resp.json();
 
-      if (body.status === "success") {
+      if (body.status) {
         data.forEach(async function (element) {
           await dispatch(removeInActives(element.active_id));
         });
@@ -116,7 +116,7 @@ export const registerActives = (data) => {
       );
       const body = await resp.json();
 
-      if (body.status === "success") {
+      if (body.status) {
         await dispatch(toolsLoading());
         await dispatch(cleanSelectedTools());
         await dispatch(toolsLoading());

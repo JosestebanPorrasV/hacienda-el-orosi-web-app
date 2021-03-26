@@ -10,6 +10,7 @@ import { uiCloseModalCollaborator } from "../../actions/UIAction";
 
 const initEvent = {
   document_id: "",
+  job: "",
   nationality: "",
   name: "",
   surname: "",
@@ -32,6 +33,7 @@ export const ModalCollaborator = () => {
   const [formValues, setFormValues] = useState(initEvent);
   const {
     document_id,
+    job,
     nationality,
     name,
     surname,

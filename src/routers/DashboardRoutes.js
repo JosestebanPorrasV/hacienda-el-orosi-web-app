@@ -14,6 +14,8 @@ import { ActiveScreen } from "../components/tool/ActiveScreen";
 import { JobScreen } from "../components/job/JobScreen";
 import { PaymentScreen } from "../components/payment/PaymentScreen";
 import { AnimalsScreen } from "../components/animal/AnimalsScreen";
+import { DietScreen } from "../components/diet/DietScreen";
+import { AlimentScreen } from "../components/diet/AlimentScreen";
 
 export const DashboardRoutes = () => {
   return (
@@ -32,6 +34,8 @@ export const DashboardRoutes = () => {
         <Route exact path="/herramientas-activas" component={ActiveScreen} />
         <Route exact path="/trabajos" component={JobScreen} />
         <Route exact path="/animales" component={AnimalsScreen} />
+        <Route exact path="/dieta" component={DietScreen} />
+        <Route exact path="/alimento" component={AlimentScreen} />
         <Redirect to="/colaboradores" />
       </Switch>
     </Router>

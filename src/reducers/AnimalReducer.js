@@ -19,6 +19,30 @@ export const AnimalReducer = (state = initialState, action) => {
         total: action.payload.total,
       };
 
+    case Types.REGISTER_MILK_SUCCESS:
+      return {
+        ...state,
+        animals: state.animals.map((e) =>
+          e._id === action.payload._id ? action.payload : e
+        ),
+      };
+
+    case Types.REGISTER_WEIGHT_SUCCESS:
+      return {
+        ...state,
+        animals: state.animals.map((e) =>
+          e._id === action.payload._id ? action.payload : e
+        ),
+      };
+
+    case Types.REGISTER_CALVING_SUCCESS:
+      return {
+        ...state,
+        animals: state.animals.map((e) =>
+          e._id === action.payload._id ? action.payload : e
+        ),
+      };
+
     default:
       return state;
   }

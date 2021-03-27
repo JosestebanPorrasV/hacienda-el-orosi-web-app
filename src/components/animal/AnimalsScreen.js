@@ -1,13 +1,21 @@
 import React, { useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
-import { animalsByTypeLoading } from "../../actions/AnimalAction";
+import {
+  animalsByTypeLoading,
+  regMilk,
+  regWeight,
+} from "../../actions/AnimalAction";
 import SearchResults from "react-filter-search";
 import { UseForm } from "../../hooks/UseForm";
+import Swal from "sweetalert2";
+const moment = require("moment");
 
 export const AnimalsScreen = () => {
   const dispatch = useDispatch();
   const [openTab, setOpenTab] = React.useState(1);
+
+  let dateNow = new Date();
 
   const { animals, animalsState, animalsType, total } = useSelector(
     (state) => state.animal
@@ -25,6 +33,59 @@ export const AnimalsScreen = () => {
   });
 
   const { filter, filterInWeight, filterMilk, filterCalving } = formValues;
+
+  const registerMilk = async (animalID) => {
+    const { value: formValues } = await Swal.fire({
+      title: "Registrar litros de leche",
+      html:
+        ` <label className="text-gray-700 text-bold">Litros</label>` +
+        '<input id="swal-input1" class="swal2-input">',
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, registrar",
+      cancelButtonText: "Cancelar",
+      focusConfirm: false,
+      preConfirm: () => {
+        return document.getElementById("swal-input1").value;
+      },
+    });
+
+    if (formValues) {
+      dispatch(
+        regMilk(animalID, formValues, moment(dateNow).format("YYYY-MM-DD"))
+      );
+    }
+  };
+
+  const registerWeight = async (animalID) => {
+    const { value: formValues } = await Swal.fire({
+      title: "Registrar litros de leche",
+      html:
+        ` <label className="text-gray-700 text-bold">Peso</label> <br/>` +
+        '<input id="swal-input1" type="number" class="swal2-input"> <br/>' +
+        ` <label className="text-gray-700 text-bold">Observaciones</label> <br/>` +
+        '<input id="swal-input2" type="textarea" class="swal2-input">',
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, registrar",
+      cancelButtonText: "Cancelar",
+      focusConfirm: false,
+      preConfirm: () => {
+        return [
+          document.getElementById("swal-input1").value,
+          document.getElementById("swal-input2").value,
+        ];
+      },
+    });
+
+    if (formValues) {
+      dispatch(
+        regWeight(animalID, formValues, moment(dateNow).format("YYYY-MM-DD"))
+      );
+    }
+  };
 
   return (
     <>
@@ -473,18 +534,48 @@ export const AnimalsScreen = () => {
                           />
                         </div>
                         <div className="flex pt-4">
-                          <span hidden={openTab !== 2} className="title-font">
-                            {`Total de registros: ${animal.weight.length}`}
+                          <span
+                            hidden={openTab !== 2}
+                            className="text-semibold"
+                          >
+                            {`Registros: ${animal.weight.length}`}
                           </span>
-                          <span hidden={openTab !== 3} className="title-font">
-                            {`Total de registros: ${animal.milk.length}`}
+                          <span
+                            hidden={openTab !== 3}
+                            className="text-semibold"
+                          >
+                            {`Registros: ${animal.milk.length}`}
                           </span>
-                          <span hidden={openTab !== 4} className="title-font">
-                            {`Total de partos: ${animal.calving.length}`}
+                          <span
+                            hidden={openTab !== 4}
+                            className="text-semibold"
+                          >
+                            {`Registros: ${animal.calving.length}`}
                           </span>
-                          <div hidden={openTab !== 1}>
-                            <button className="flex ml-auto text-white font-semibold bg-yellow-600 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">
+                          <div hidden={openTab !== 1} className="ml-auto">
+                            <button className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded">
                               Editar
+                            </button>
+                          </div>
+                          <div hidden={openTab !== 2} className="ml-auto">
+                            <button
+                              onClick={() => registerWeight(animal._id)}
+                              className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded"
+                            >
+                              Registrar peso
+                            </button>
+                          </div>
+                          <div hidden={openTab !== 3} className="ml-auto">
+                            <button
+                              onClick={() => registerMilk(animal._id)}
+                              className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded"
+                            >
+                              Registrar leche
+                            </button>
+                          </div>
+                          <div hidden={openTab !== 4} className="ml-auto">
+                            <button className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded">
+                              Registrar parto
                             </button>
                           </div>
                         </div>

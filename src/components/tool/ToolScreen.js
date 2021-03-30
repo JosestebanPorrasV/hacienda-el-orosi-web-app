@@ -74,28 +74,28 @@ export const ToolScreen = () => {
             <span className="text-white font-bold">Agregar Herramienta</span>
           </button>
           <button
-            onClick={() => dispatch(toolsLoading("active"))}
+            onClick={() => dispatch(toolsLoading("Activo"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
           >
             <i className="fas fa-chart-line"></i>
             <span className="text-white font-bold">Listar activas</span>
           </button>
           <button
-            onClick={() => dispatch(toolsLoading("stock"))}
+            onClick={() => dispatch(toolsLoading("En bodega"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
           >
             <i className="fas fa-toolbox"></i>
             <span className="text-white font-bold">Listar En Bodega</span>
           </button>
           <button
-            onClick={() => dispatch(toolsLoading("repair"))}
+            onClick={() => dispatch(toolsLoading("En reparacion"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
           >
             <i className="fas fa-toolbox"></i>
             <span className="text-white font-bold">Listar En reparacion</span>
           </button>
           <button
-            onClick={() => dispatch(toolsLoading("low"))}
+            onClick={() => dispatch(toolsLoading("De baja"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
           >
             <i className="fas fa-toolbox"></i>
@@ -107,18 +107,16 @@ export const ToolScreen = () => {
       <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
         <h2
           className={`${
-            toolsState === "active"
+            toolsState === "Activo"
               ? "text-green-400"
-              : toolsState === "stock"
+              : toolsState === "En bodega"
               ? "text-red-200"
               : "text-yellow-400"
           } text-xl font-bold mb-2`}
-        >{`HERRAMIENTAS ${
-          toolsState === "active"
-            ? "ACTIVAS"
-            : toolsState === "stock"
-            ? "EN BODEGA"
-            : "REGISTRADAS"
+        >{`Herramientas ${
+          toolsState === "Activo"
+            ? "Activas"
+            : toolsState 
         }`}</h2>
         <input
           type="text"
@@ -130,9 +128,9 @@ export const ToolScreen = () => {
         />
         <span
           className={`${
-            toolsState === "active"
+            toolsState === "Activo"
               ? "bg-green-200 text-green-600"
-              : toolsState === "stock"
+              : toolsState === "En bodega"
               ? "bg-red-200 text-gray-600"
               : "bg-yellow-200 text-yellow-600"
           } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
@@ -159,13 +157,7 @@ export const ToolScreen = () => {
                       <th className="py-2 px-3">
                         <i className="far fa-calendar-alt"></i> Registrada
                       </th>
-                      <th
-                        hidden={toolsState === "active"}
-                        className="py-2 px-3"
-                      >
-                        <i className="fas fa-prescription-bottle"></i> Litros
-                      </th>
-
+                     
                       <th className="py-2 px-3">
                         <i className="fas fa-cash-register"></i> Activos
                       </th>
@@ -177,27 +169,21 @@ export const ToolScreen = () => {
                         <th className="py-3 px-3">
                           <span
                             className={` ${
-                              tool.status === "active"
+                              tool.status === "Activo"
                                 ? "bg-green-200 text-green-600"
                                 : "bg-red-200 text-gray-600"
                             }  text-xs rounded-full px-3 py-1 w-26 inline-block text-center uppercase`}
                           >
-                            {tool.status === "active" ? "Activo" : "Bodega"}
+                            {tool.status}
                           </span>
                         </th>
                         <th className="py-3 px-3">{tool.name}</th>
                         <th className="py-3 px-3">{tool.active_num}</th>
                         <th className="py-3 px-3">{tool.date}</th>
-                        <th
-                          hidden={tool.status === "active"}
-                          className="py-3 px-3"
-                        >
-                          {tool.liters}
-                        </th>
                         <th className="py-3 px-3">
                           <button
                             className={`${
-                              tool.status === "stock"
+                              tool.status === "En bodega"
                                 ? "bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
                                 : "hidden"
                             }`}
@@ -207,7 +193,7 @@ export const ToolScreen = () => {
                             <i className="fas fa-plus"></i>
                           </button>
                           <button
-                            hidden={tool.status === "stock"}
+                            hidden={tool.status === "En bodega"}
                             onClick={() => deleteInBulk()}
                             className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"

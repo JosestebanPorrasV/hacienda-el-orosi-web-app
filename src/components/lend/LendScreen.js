@@ -129,13 +129,13 @@ export const LendScreen = () => {
             <span>Realizar prestamo</span>
           </button>
           <button
-            onClick={() => dispatch(lendsStartLoading("active"))}
+            onClick={() => dispatch(lendsStartLoading("Activo"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-chart-line"
           >
             <span>Listar activos</span>
           </button>
           <button
-            onClick={() => dispatch(lendsStartLoading("cancel"))}
+            onClick={() => dispatch(lendsStartLoading("Cancelado"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-strikethrough"
           >
             <span>Listar cancelados</span>
@@ -145,9 +145,9 @@ export const LendScreen = () => {
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-cloud-download-alt"
             table="table-lends"
             filename={`Prestamos${
-              lendsState === "active"
+              lendsState === "Activo"
                 ? "_activos"
-                : lendsState === "cancel"
+                : lendsState === "Cancelado"
                 ? "_cancelados"
                 : `_ced_${document_id}`
             }-${
@@ -159,9 +159,9 @@ export const LendScreen = () => {
             }`}
             sheet="Prestamos"
             buttonText={`Descargar ${
-              lendsState === "active"
+              lendsState === "Activo"
                 ? "activos"
-                : lendsState === "cancel"
+                : lendsState === "Cancelado"
                 ? "cancelados"
                 : "prestamos"
             }`}
@@ -190,16 +190,16 @@ export const LendScreen = () => {
       <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
         <h2
           className={`${
-            lendsState === "active"
+            lendsState === "Activo"
               ? "text-green-400"
-              : lendsState === "cancel"
+              : lendsState === "Cancelado"
               ? "text-red-400"
               : "text-yellow-400"
           } text-xl font-bold mb-2`}
         >{`PRESTAMOS ${
-          lendsState === "active"
+          lendsState === "Activo"
             ? "ACTIVOS"
-            : lendsState === "cancel"
+            : lendsState === "Cancelado"
             ? "CANCELADOS"
             : "REGISTRADOS"
         }`}</h2>
@@ -213,9 +213,9 @@ export const LendScreen = () => {
         />
         <span
           className={`${
-            lendsState === "active"
+            lendsState === "Activo"
               ? "bg-green-200 text-green-600"
-              : lendsState === "cancel"
+              : lendsState === "Cancelado"
               ? "bg-red-200 text-red-600"
               : "bg-yellow-200 text-yellow-600"
           } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
@@ -263,12 +263,12 @@ export const LendScreen = () => {
                         <th className="py-3 px-3" hidden={lendsState}>
                           <span
                             className={` ${
-                              lend.status === "active"
+                              lend.status === "Activo"
                                 ? "bg-green-200 text-green-600"
                                 : "bg-red-200 text-red-600"
                             }  text-xs rounded-full px-3 py-1 w-26 inline-block text-center uppercase`}
                           >
-                            {lend.status === "active" ? "Activo" : "Cancelado"}
+                            {lend.status === "Activo" ? "Activo" : "Cancelado"}
                           </span>
                         </th>
 
@@ -291,7 +291,7 @@ export const LendScreen = () => {
                         <th className="py-3 px-3">
                           <button
                             onClick={() => lendChangeFee(lend)}
-                            hidden={lend.status === "cancel"}
+                            hidden={lend.status === "Cancelado"}
                           >
                             <i className="fas fa-edit text-xl text-yellow-400" />
                           </button>
@@ -299,20 +299,20 @@ export const LendScreen = () => {
                         </th>
                         <th
                           className="py-3 px-3"
-                          hidden={lend.status === "cancel"}
+                          hidden={lend.status === "Cancelado"}
                         >
                           {new Intl.NumberFormat("en-EN").format(lend.amount)}
                         </th>
                         <th
                           className="py-3 px-3"
-                          hidden={lend.status === "active"}
+                          hidden={lend.status === "Activo"}
                         >
                           <i className="fas fa-check-circle"></i>
                         </th>
                         <th className="py-3 px-3">
                           <button
                             onClick={() => lendAddFee(lend)}
-                            hidden={lend.status === "cancel"}
+                            hidden={lend.status === "Cancelado"}
                             className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}
@@ -329,7 +329,7 @@ export const LendScreen = () => {
                           </button>
                           <button
                             onClick={() => oneDeleteLend(lend)}
-                            hidden={lend.status === "cancel"}
+                            hidden={lend.status === "Cancelado"}
                             className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}

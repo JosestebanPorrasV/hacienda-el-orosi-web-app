@@ -100,13 +100,13 @@ export const CollaboratorScreen = () => {
             <span>Contratar nuevo</span>
           </button>
           <button
-            onClick={() => dispatch(CollaboratorsLoading("active"))}
+            onClick={() => dispatch(CollaboratorsLoading("Activo"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35 fas fa-chart-line"
           >
             <span>Listar activos</span>
           </button>
           <button
-            onClick={() => dispatch(CollaboratorsLoading("inactive"))}
+            onClick={() => dispatch(CollaboratorsLoading("Inactivo"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35 fas fa-stop-circle"
           >
             <span>Listar inactivos</span>
@@ -135,16 +135,16 @@ export const CollaboratorScreen = () => {
         </span>
         <h2
           className={`p-4 ${
-            collaboratorsState === "active"
+            collaboratorsState === "Activo"
               ? "text-green-400"
-              : collaboratorsState === "inactive"
+              : collaboratorsState === "Inactivo"
               ? "text-red-400"
               : "text-yellow-400"
           } text-xl font-bold mb-2`}
         >{`COLABORADORES ${
-          collaboratorsState === "active"
+          collaboratorsState === "Activo"
             ? "ACTIVOS"
-            : collaboratorsState === "inactive"
+            : collaboratorsState === "Inactivo"
             ? "INACTIVOS"
             : "REGISTRADOS"
         }`}</h2>
@@ -158,9 +158,9 @@ export const CollaboratorScreen = () => {
         />
         <span
           className={`${
-            collaboratorsState === "active"
+            collaboratorsState === "Activo"
               ? "bg-green-200 text-green-600"
-              : collaboratorsState === "inactive"
+              : collaboratorsState === "Inactivo"
               ? "bg-red-200 text-red-600"
               : "bg-yellow-200 text-yellow-600"
           } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
@@ -178,7 +178,7 @@ export const CollaboratorScreen = () => {
                     <th
                       className="p-4 w-1/4"
                       hidden={
-                        collaboratorsState === "inactive" || !collaboratorsState
+                        collaboratorsState === "Inactivo" || !collaboratorsState
                       }
                     >
                       <i className="fas fa-check"></i> Asistencia
@@ -201,7 +201,7 @@ export const CollaboratorScreen = () => {
                     <th
                       className="p-4 w-1/4"
                       hidden={
-                        collaboratorsState === "inactive" || !collaboratorsState
+                        collaboratorsState === "Inactivo" || !collaboratorsState
                       }
                     >
                       <i className="fas fa-caret-square-down"></i> Acciones
@@ -210,7 +210,7 @@ export const CollaboratorScreen = () => {
                     <th
                       className="p-4 w-1/4 pr-10"
                       hidden={
-                        collaboratorsState === "active" || !collaboratorsState
+                        collaboratorsState === "Activo" || !collaboratorsState
                       }
                     >
                       <i className="fas fa-caret-square-down"></i> Acciones
@@ -226,7 +226,7 @@ export const CollaboratorScreen = () => {
                       <th
                         className="p-4 w-1/4"
                         hidden={
-                          collaboratorsState === "inactive" ||
+                          collaboratorsState === "Inactivo" ||
                           !collaboratorsState
                         }
                       >
@@ -242,12 +242,12 @@ export const CollaboratorScreen = () => {
                       <th className="p-4 w-1/4" hidden={collaboratorsState}>
                         <span
                           className={` ${
-                            collaborator.status === "active"
+                            collaborator.status === "Activo"
                               ? "bg-green-200 text-green-600"
                               : "bg-red-200 text-red-600"
                           }  text-xs rounded-full px-3 py-1 w-26 inline-block text-center uppercase`}
                         >
-                          {collaborator.status === "active"
+                          {collaborator.status === "Activo"
                             ? "Activo"
                             : "Cancelado"}
                         </span>
@@ -272,7 +272,7 @@ export const CollaboratorScreen = () => {
                       <th
                         className="p-4 w-1/4"
                         hidden={
-                          collaboratorsState === "inactive" ||
+                          collaboratorsState === "Inactivo" ||
                           !collaboratorsState
                         }
                         onClick={() =>
@@ -285,7 +285,7 @@ export const CollaboratorScreen = () => {
                       <th
                         className="p-4 w-1/4"
                         hidden={
-                          collaboratorsState === "active" || !collaboratorsState
+                          collaboratorsState === "Activo" || !collaboratorsState
                         }
                       >
                         <button

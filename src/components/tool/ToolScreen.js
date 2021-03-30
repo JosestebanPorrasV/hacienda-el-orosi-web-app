@@ -1,20 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Component } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
+import { createPopper } from "@popperjs/core";
 
 import {
   removeTools,
   toolsLoading,
+  changeStatus,
 } from "../../actions/ToolAction";
-import { uiOpenModalAddTool } from "../../actions/UIAction";
+import {
+  uiOpenModalAddTool,
+  uiOpenModalAddActive,
+} from "../../actions/UIAction";
 import { UseForm } from "../../hooks/UseForm";
 import Swal from "sweetalert2";
 import { ModalTool } from "./ModalTool";
+import { ModalAddActive } from "./ModalAddActive";
 
 export const ToolScreen = () => {
   const dispatch = useDispatch();
-  const { tools, actives, count, toolsState } = useSelector(
+  const { tools, actives, count, toolsState, currentTool } = useSelector(
     (state) => state.tool
   );
   const { currentCollaborator } = useSelector((state) => state.collaborator);
@@ -29,8 +35,33 @@ export const ToolScreen = () => {
 
   const { filter } = formValues;
 
-  const OpenModalAddTool = () => {
-    dispatch(uiOpenModalAddTool());
+  const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
+  const btnDropdownRef = React.createRef();
+  const popoverDropdownRef = React.createRef();
+  const openDropdownPopover = () => {
+    createPopper(btnDropdownRef.current, popoverDropdownRef.current, {
+      placement: "bottom-start",
+    });
+    setDropdownPopoverShow(true);
+  };
+  const closeDropdownPopover = () => {
+    setDropdownPopoverShow(false);
+  };
+
+  const ToolChangeStatus = async (tool_id, status) => {
+    const { value: currentTool } = await Swal.fire({
+      title: "Cambiar estado",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, cambiar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (currentTool) {
+      dispatch(changeStatus(tool_id, status));
+    } else {
+    }
   };
 
   const deleteInBulk = () => {
@@ -58,16 +89,14 @@ export const ToolScreen = () => {
     <>
       <div className="bg-indigo-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
-          <button className="bg-indigo-900 hover:bg-gray-800 text-white font-bold py-2 px-4 border-b-4 border-gray-900 hover:border-indigo-200 rounded">
-            HERRAMIENTAS
-          </button>
+          <h2 className="text-2xl">HERRAMIENTAS</h2>
           <p className="text-blue-100 opacity-70">
             Funcionalidades principales
           </p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
-            onClick={() => OpenModalAddTool()}
+            onClick={() => dispatch(uiOpenModalAddTool())}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
           >
             <i className="fas fa-plus-circle"></i>
@@ -110,13 +139,11 @@ export const ToolScreen = () => {
             toolsState === "Activo"
               ? "text-green-400"
               : toolsState === "En bodega"
-              ? "text-red-200"
+              ? "text-gray-200"
               : "text-yellow-400"
           } text-xl font-bold mb-2`}
         >{`Herramientas ${
-          toolsState === "Activo"
-            ? "Activas"
-            : toolsState 
+          toolsState === "Activo" ? "Activas" : toolsState
         }`}</h2>
         <input
           type="text"
@@ -131,7 +158,7 @@ export const ToolScreen = () => {
             toolsState === "Activo"
               ? "bg-green-200 text-green-600"
               : toolsState === "En bodega"
-              ? "bg-red-200 text-gray-600"
+              ? "bg-gray-200 text-gray-600"
               : "bg-yellow-200 text-yellow-600"
           } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
         >
@@ -157,7 +184,7 @@ export const ToolScreen = () => {
                       <th className="py-2 px-3">
                         <i className="far fa-calendar-alt"></i> Registrada
                       </th>
-                     
+
                       <th className="py-2 px-3">
                         <i className="fas fa-cash-register"></i> Activos
                       </th>
@@ -166,16 +193,50 @@ export const ToolScreen = () => {
                   <tbody className="text-blue-100 text-opacity-80 whitespace-nowrap">
                     {results.map((tool) => (
                       <tr key={tool._id}>
-                        <th className="py-3 px-3">
-                          <span
-                            className={` ${
-                              tool.status === "Activo"
-                                ? "bg-green-200 text-green-600"
-                                : "bg-red-200 text-gray-600"
-                            }  text-xs rounded-full px-3 py-1 w-26 inline-block text-center uppercase`}
+                        <th className="py-3 px-3" hidden={toolsState === "De baja" || toolsState === "Activo"}>
+                          <button
+                            className={
+                              "text-white font-bold bg-blue-600 uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 "
+                            }
+                            type="button"
+                            ref={btnDropdownRef}
+                            onClick={() => {
+                              dropdownPopoverShow
+                                ? closeDropdownPopover()
+                                : openDropdownPopover();
+                            }}
                           >
                             {tool.status}
-                          </span>
+                          </button>
+                          <div
+                            ref={popoverDropdownRef}
+                            className={
+                              (dropdownPopoverShow ? "block " : "hidden ") +
+                              "text-base bg-gray-900 z-50 py-2 list-none text-left rounded shadow-lg mt-1"
+                            }
+                            style={{ minWidth: "12rem" }}
+                          >
+                            <a
+                              className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent " 
+                              
+                              onClick={() => ToolChangeStatus(tool._id, "En bodega")}
+                            >
+                              En bodega
+                            </a>
+                            <a
+                                className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent " 
+                              onClick={() =>ToolChangeStatus(tool._id, "En reparacion")}
+                            >
+                              En reparacion
+                            </a>
+                            <a
+                               className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent " 
+                              onClick={() => ToolChangeStatus(tool._id, "De baja")}
+                            >
+                              De baja
+                            </a>
+                           
+                          </div>
                         </th>
                         <th className="py-3 px-3">{tool.name}</th>
                         <th className="py-3 px-3">{tool.active_num}</th>
@@ -187,6 +248,7 @@ export const ToolScreen = () => {
                                 ? "bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
                                 : "hidden"
                             }`}
+                            onClick={() => dispatch(uiOpenModalAddActive())}
                             type="button"
                             style={{ transition: "all .15s ease" }}
                           >
@@ -213,6 +275,7 @@ export const ToolScreen = () => {
       </div>
 
       <ModalTool />
+      <ModalAddActive />
     </>
   );
 };

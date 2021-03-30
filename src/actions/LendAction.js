@@ -5,7 +5,7 @@ import { uiCloseModalAddLend } from "./UIAction";
 import { collaboratorClearActive } from "./CollaboratorAction";
 import TopLoaderService from "top-loader-service";
 
-export const lendsStartLoading = (status = "active", page = 1) => {
+export const lendsStartLoading = (status = "Activo", page = 1) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {

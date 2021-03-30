@@ -7,7 +7,7 @@ export const contractsLoading = () => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`recursos-humanos/ver-contratos/active`);
+      const resp = await FetchConsult(`recursos-humanos/ver-contratos/Activo`);
       const body = await resp.json();
 
       if (body.status) {

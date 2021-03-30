@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { uiCloseModalAddTool } from "./../actions/UIAction";
 import TopLoaderService from "top-loader-service";
 
-export const toolsLoading = (status = "stock") => {
+export const toolsLoading = (status = "En bodega") => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {

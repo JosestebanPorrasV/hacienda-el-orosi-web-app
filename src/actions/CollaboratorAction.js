@@ -3,7 +3,7 @@ import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 import TopLoaderService from "top-loader-service";
 
-export const CollaboratorsLoading = (status = "active") => {
+export const CollaboratorsLoading = (status = "Activo") => {
   return async (dispatch) => {
     await TopLoaderService.start();
 

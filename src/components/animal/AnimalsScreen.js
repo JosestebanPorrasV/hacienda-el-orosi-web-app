@@ -10,6 +10,7 @@ import SearchResults from "react-filter-search";
 import { UseForm } from "../../hooks/UseForm";
 import Swal from "sweetalert2";
 const moment = require("moment");
+import { Link } from "react-router-dom";
 
 export const AnimalsScreen = () => {
   const dispatch = useDispatch();
@@ -100,9 +101,11 @@ export const AnimalsScreen = () => {
           <button className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-hand-holding-usd">
             <span>Realizar algo</span>
           </button>
-          <button className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-chart-line">
-            <span>Listar algo</span>
-          </button>
+          <Link 
+           to="/dieta"
+          className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-seedling">
+            <span>Listar Dietas </span>
+          </Link>
           <button className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-800 rounded-lg hover:bg-gray-800 w-35 fas fa-strikethrough">
             <span>Listar algo2</span>
           </button>

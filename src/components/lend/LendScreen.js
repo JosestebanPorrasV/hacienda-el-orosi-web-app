@@ -62,7 +62,7 @@ export const LendScreen = () => {
       inputPlaceholder: "Ingrese",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#A0A0A0",
       confirmButtonText: "Si, cambiar",
       cancelButtonText: "Cancelar",
     });
@@ -81,7 +81,7 @@ export const LendScreen = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#A0A0A0",
       confirmButtonText: "Si, eliminar",
       cancelButtonText: "Cancelar",
     }).then((result) => {
@@ -100,7 +100,7 @@ export const LendScreen = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#A0A0A0",
       confirmButtonText: "Si, agregar",
       cancelButtonText: "Cancelar",
     }).then((result) => {

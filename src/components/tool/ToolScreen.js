@@ -8,6 +8,7 @@ import {
   removeTools,
   toolsLoading,
   changeStatus,
+  addActiveSelected,
 } from "../../actions/ToolAction";
 import {
   uiOpenModalAddTool,
@@ -35,6 +36,11 @@ export const ToolScreen = () => {
 
   const { filter } = formValues;
 
+  const addOneToolActive = (tool) => {
+    dispatch(addActiveSelected(tool));
+    dispatch(uiOpenModalAddActive())
+  };
+
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
   const btnDropdownRef = React.createRef();
   const popoverDropdownRef = React.createRef();
@@ -53,7 +59,7 @@ export const ToolScreen = () => {
       title: "Cambiar estado",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#A0A0A0",
       confirmButtonText: "Si, cambiar",
       cancelButtonText: "Cancelar",
     });
@@ -71,7 +77,7 @@ export const ToolScreen = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#A0A0A0",
       confirmButtonText: "Si, eliminar de activos",
       cancelButtonText: "Cancelar",
     }).then((result) => {
@@ -248,7 +254,7 @@ export const ToolScreen = () => {
                                 ? "bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
                                 : "hidden"
                             }`}
-                            onClick={() => dispatch(uiOpenModalAddActive())}
+                            onClick={() => addOneToolActive(tool)}
                             type="button"
                             style={{ transition: "all .15s ease" }}
                           >

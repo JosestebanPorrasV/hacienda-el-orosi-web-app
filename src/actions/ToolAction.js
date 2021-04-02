@@ -115,9 +115,7 @@ export function registerOneActiveTool(tools) {
 
     const body = await resp.json();
     if (body.status) {
-      await dispatch(addToSelectedTools());
-      await dispatch(toolsLoading());
-      await dispatch(uiCloseModalAddTool());
+      await dispatch(addToSelectedTools(body.tool));
       await Swal.fire({
         icon: "success",
         title: body.msg,

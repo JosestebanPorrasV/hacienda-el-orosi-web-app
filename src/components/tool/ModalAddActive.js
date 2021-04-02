@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uiCloseModalAddActive } from "../../actions/UIAction";
 import {
-  removeInSelectedTools,
+  removeInSelectedActives,
   registerOneActiveTool,
 } from "../../actions/ToolAction";
 import {
@@ -14,7 +14,7 @@ export const ModalAddActive = () => {
   const dispatch = useDispatch();
 
   const { modalAddActiveOpen } = useSelector((state) => state.ui);
-  const { currentTool } = useSelector((state) => state.tool);
+  const { selectedActives } = useSelector((state) => state.tool);
 
   const closeModal = () => {
     dispatch(uiCloseModalAddActive());
@@ -23,16 +23,22 @@ export const ModalAddActive = () => {
 
   const clearForm = () => {
     dispatch(collaboratorClearActive());
-    dispatch(removeInSelectedTools());
+    dispatch(removeInSelectedActives());
   };
 
   const initEvent = {
     collaborator_id: "",
+    name: "",
+    active_num: "",
   };
 
   const [formValues, setFormValues] = useState(initEvent);
 
-  const { collaborator_id } = formValues;
+  const { collaborator_id, name, active_num } = formValues;
+
+  useEffect(() => {
+      setFormValues(selectedActives);
+  }, [selectedActives, setFormValues]);
 
   const handleInputChange = ({ target }) => {
     setFormValues({
@@ -43,10 +49,10 @@ export const ModalAddActive = () => {
 
   const handleAddOneActive = async (e) => {
     e.preventDefault();
-    await dispatch(registerOneActiveTool(currentTool._id));
+    await dispatch(registerOneActiveTool(selectedActives._id));
     await clearForm();
   };
-
+  console.log(selectedActives._id);
   return (
     <>
       {modalAddActiveOpen ? (
@@ -82,48 +88,48 @@ export const ModalAddActive = () => {
                         </label>
                         <input
                           disabled={true}
-                          value={currentTool && currentTool.active_num}
+                          value={selectedActives.active_num}
                           name="active_num"
                           type="number"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
+                        
                       </div>
 
                       <div>
                         <label
                           className="text-gray-700 dark:text-gray-200"
-                          htmlFor="nameTool"
+                          htmlFor="name"
                         >
                           Nombre de la herramienta
                         </label>
                         <input
                           disabled={true}
-                          value={currentTool && currentTool.name}
-                          id="nameTool"
+                          value={name}
+                          onChange={handleInputChange}
+                          id="name"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
-
                       <div>
                         <label
                           className="text-gray-700 dark:text-gray-200"
-                          htmlFor="document_id"
+                          htmlFor="collaborator_id"
                         >
                           Cedula del colaborador
                         </label>
                         <input
                           required
-                          value={collaborator_id ? collaborator_id.document_id: ''}
-                          onChange={handleAddOneActive}
-                          name="document_id"
+                          value={collaborator_id}
+                          onChange={handleInputChange}
+                          name="collaborator_id"
                           type="number"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border-2 border-blue-500  dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                           placeholder="Requerido"
                         />
                         <button
-                          hidden={!collaborator_id}
-                          onClick={() => dispatch(collaborator_id.document_id && searchCollaborator(collaborator_id.document_id)) }
+                          onClick={() => dispatch(searchCollaborator(collaborator_id)) }
                           className="bg-blue-500 text-white active:bg-blue-600 uppercase text-sm px-2 py-1 rounded-b shadow hover:bg-blue-900 outline-none focus:outline-none mr-1 mb-1"
                           type="button"
                           style={{ transition: "all .15s ease" }}
@@ -168,9 +174,18 @@ export const ModalAddActive = () => {
                     className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                     type="button"
                     style={{ transition: "all .15s ease" }}
+                    onClick={() => handleAddOneActive()}
+                  >
+                    Asignar
+                  </button>
+
+                  <button
+                    className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
+                    type="button"
+                    style={{ transition: "all .15s ease" }}
                     onClick={() => closeModal()}
                   >
-                    Volver
+                    Regresar
                   </button>
                 </div>
               </div>

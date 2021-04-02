@@ -28,17 +28,11 @@ export const ModalAddActive = () => {
 
   const initEvent = {
     collaborator_id: "",
-    name: "",
-    active_num: "",
   };
 
   const [formValues, setFormValues] = useState(initEvent);
 
-  const { collaborator_id, name, active_num } = formValues;
-
-  useEffect(() => {
-      setFormValues(selectedActives);
-  }, [selectedActives, setFormValues]);
+  const { collaborator_id } = formValues;
 
   const handleInputChange = ({ target }) => {
     setFormValues({
@@ -52,7 +46,6 @@ export const ModalAddActive = () => {
     await dispatch(registerOneActiveTool(selectedActives._id));
     await clearForm();
   };
-  console.log(selectedActives._id);
   return (
     <>
       {modalAddActiveOpen ? (
@@ -88,12 +81,11 @@ export const ModalAddActive = () => {
                         </label>
                         <input
                           disabled={true}
-                          value={selectedActives.active_num}
+                          value={selectedActives[0].active_num}
                           name="active_num"
                           type="number"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
-                        
                       </div>
 
                       <div>
@@ -105,7 +97,7 @@ export const ModalAddActive = () => {
                         </label>
                         <input
                           disabled={true}
-                          value={name}
+                          value={selectedActives[0].name}
                           onChange={handleInputChange}
                           id="name"
                           type="text"

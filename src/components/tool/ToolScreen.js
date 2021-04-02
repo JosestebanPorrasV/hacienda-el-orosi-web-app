@@ -38,7 +38,7 @@ export const ToolScreen = () => {
 
   const addOneToolActive = (tool) => {
     dispatch(addActiveSelected(tool));
-    dispatch(uiOpenModalAddActive())
+    dispatch(uiOpenModalAddActive());
   };
 
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
@@ -199,53 +199,47 @@ export const ToolScreen = () => {
                   <tbody className="text-blue-100 text-opacity-80 whitespace-nowrap">
                     {results.map((tool) => (
                       <tr key={tool._id}>
-                        <th className="py-3 px-3" hidden={toolsState === "De baja" || toolsState === "Activo"}>
-                          <button
-                            className={
-                              "text-white font-bold bg-blue-600 uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 "
-                            }
-                            type="button"
-                            ref={btnDropdownRef}
-                            onClick={() => {
-                              dropdownPopoverShow
-                                ? closeDropdownPopover()
-                                : openDropdownPopover();
-                            }}
-                          >
-                            {tool.status}
-                          </button>
-                          <div
-                            ref={popoverDropdownRef}
-                            className={
-                              (dropdownPopoverShow ? "block " : "hidden ") +
-                              "text-base bg-gray-900 z-50 py-2 list-none text-left rounded shadow-lg mt-1"
-                            }
-                            style={{ minWidth: "12rem" }}
-                          >
-                            <a
-                              className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent " 
-                              
-                              onClick={() => ToolChangeStatus(tool._id, "En bodega")}
-                            >
-                              En bodega
-                            </a>
-                            <a
-                                className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent " 
-                              onClick={() =>ToolChangeStatus(tool._id, "En reparacion")}
-                            >
-                              En reparacion
-                            </a>
-                            <a
-                               className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent " 
-                              onClick={() => ToolChangeStatus(tool._id, "De baja")}
-                            >
-                              De baja
-                            </a>
-                           
+                        <th
+                          className="py-3 px-3"
+                          hidden={
+                            toolsState === "De baja" || toolsState === "Activo"
+                          }
+                        >
+                          <div className="flex flex-col text-center w-full mt-6 mb-6">
+                            <div>
+                              <select
+                                onChange={(e) =>
+                                  dispatch(
+                                    changeStatus(tool._id, e.target.value)
+                                  )
+                                }
+                                className="bg-blue-500 text-gray-100 font-bold text-xs py-2 px-2 rounded-lg inline-flex  group-hover:bg-blue-600 group-hover:text-white uppercase"
+                              >
+                                <option
+                                  value="En bodega"
+                                  className="pt-6 bg-gray-300 text-base text-gray-700 font-semibold"
+                                >
+                                  En bodega
+                                </option>
+                                <option
+                                  value="En reparacion"
+                                  className="bg-gray-300 text-base text-gray-700 font-semibold"
+                                >
+                                  En reparacion
+                                </option>
+                                <option
+                                  value="De baja"
+                                  className="bg-gray-300 text-base text-gray-700 font-semibold"
+                                >
+                                  De baja
+                                </option>
+                              </select>
+                            </div>
                           </div>
                         </th>
+
                         <th className="py-3 px-3">{tool.name}</th>
-                        <th className="py-3 px-3">{tool.active_num}</th>
+                        <th className="py-3 px-3">#{tool.active_num}</th>
                         <th className="py-3 px-3">{tool.date}</th>
                         <th className="py-3 px-3">
                           <button

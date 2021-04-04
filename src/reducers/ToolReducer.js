@@ -19,6 +19,19 @@ export const ToolReducer = (state = initialState, action) => {
         count: action.payload.count,
         toolsState: action.payload.toolsState,
       };
+
+      case Types.TOOL_SET_ACTIVE:
+        return {
+          ...state,
+          currentTool: action.payload,
+        };
+  
+      case Types.TOOL_CLEAR_ACTIVE:
+        return {
+          ...state,
+          currentTool: null,
+        };
+
     case Types.ACTIVES_LOADED:
       return {
         ...state,

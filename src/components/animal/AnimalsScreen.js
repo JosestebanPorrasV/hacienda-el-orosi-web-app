@@ -9,7 +9,7 @@ import {
 import SearchResults from "react-filter-search";
 import { UseForm } from "../../hooks/UseForm";
 import Swal from "sweetalert2";
-const moment = require("moment");
+import {moment} from "moment";
 import { Link } from "react-router-dom";
 
 export const AnimalsScreen = () => {

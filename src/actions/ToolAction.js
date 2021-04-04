@@ -78,44 +78,16 @@ export function changeStatus(tool_id, status) {
   return async (dispatch) => {
     await TopLoaderService.start();
     const resp = await FetchConsult(
-      `recursos-humanos/cambiar-estado/${tool_id}`,
+      `herramientas/cambiar-estado/${tool_id}`,
       { status },
       "PUT"
     );
 
     const body = await resp.json();
-
     if (body.status) {
+
       await dispatch(changeStatusSuccess(body.tool));
 
-      await Swal.fire({
-        icon: "success",
-        title: body.msg,
-        showConfirmButton: false,
-        timer: 2000,
-      });
-      await TopLoaderService.end();
-    } else {
-      await Swal.fire("Error", body.msg, "error");
-      await TopLoaderService.end();
-    }
-  };
-}
-
-export function registerOneActiveTool(tools) {
-  return async (dispatch) => {
-    await TopLoaderService.start();
-    const resp = await FetchConsult(
-      "herramientas/registrar-activos",
-      {
-        tools,
-      },
-      "POST"
-    );
-
-    const body = await resp.json();
-    if (body.status) {
-      await dispatch(addToSelectedTools(body.tool));
       await Swal.fire({
         icon: "success",
         title: body.msg,
@@ -187,6 +159,15 @@ export const registerActives = (data) => {
     }
   };
 };
+
+export const toolSetActive = (tool) => ({
+  type: Types.TOOL_SET_ACTIVE,
+  payload: tool,
+});
+
+export const toolClearActive = () => ({
+  type: Types.TOOL_CLEAR_ACTIVE,
+});
 
 export const addToolSelected = (tool) => {
   return async (dispatch) => {

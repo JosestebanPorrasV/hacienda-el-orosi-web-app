@@ -171,36 +171,35 @@ export const ToolScreen = () => {
           <i className="fas fa-tools"></i> {`total: ${count}`}
         </span>
 
-        <div className="overflow-x-auto py-4">
-          <div className="align-middle inline-block min-w-full overflow-hidden">
+        <div className="overflow-x-auto">
             <SearchResults
               value={filter}
               data={tools}
               renderResults={(results) => (
-                <table id="table-tools" className="min-w-full">
-                  <thead className="bg-gray-600">
-                    <tr className="bg-gray-600 text-white text-lg">
-                      <th className="py-2 px-3">
+                <table className="text-center items-center w-full ">
+                  <thead className="bg-gray-600 flex text-white w-full">
+                    <tr className="flex w-full text-lg">
+                      <th className="py-2 px-12">
                         <i className="fas fa-signal"></i> Estado
                       </th>
-                      <th className="py-2 px-3">
+                      <th className="py-2 px-12">
                         <i className="fas fa-wrench"></i> Herramienta
                       </th>
-                      <th className="py-2 px-3"># Codigo</th>
-                      <th className="py-2 px-3">
+                      <th className="py-2 px-12"># Codigo</th>
+                      <th className="py-2 px-12">
                         <i className="far fa-calendar-alt"></i> Registrada
                       </th>
-
-                      <th className="py-2 px-3">
+                      <th className="py-2 px-12">
                         <i className="fas fa-cash-register"></i> Activos
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="text-blue-100 text-opacity-80 whitespace-nowrap">
+                  <tbody className="text-blue-100 flex flex-col justify-between overflow-y-scroll w-full"
+                  style={{ height: "50vh" }} >
                     {results.map((tool) => (
-                      <tr key={tool._id}>
+                      <tr className="flex w-full" key={tool._id}>
                         <th
-                          className="py-3 px-3"
+                          className="py-2 px-16"
                           hidden={
                             toolsState === "De baja" || toolsState === "Activo"
                           }
@@ -238,10 +237,10 @@ export const ToolScreen = () => {
                           </div>
                         </th>
 
-                        <th className="py-3 px-3">{tool.name}</th>
-                        <th className="py-3 px-3">#{tool.active_num}</th>
-                        <th className="py-3 px-3">{tool.date}</th>
-                        <th className="py-3 px-3">
+                        <th className="py-2 px-12">{tool.name}</th>
+                        <th className="py-2 px-20">#{tool.active_num}</th>
+                        <th className="py-2 px-12">{tool.date}</th>
+                        <th className="py-2 px-20">
                           <button
                             className={`${
                               tool.status === "En bodega"
@@ -270,7 +269,6 @@ export const ToolScreen = () => {
                 </table>
               )}
             />
-          </div>
         </div>
       </div>
 

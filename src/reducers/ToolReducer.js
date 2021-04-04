@@ -76,6 +76,14 @@ export const ToolReducer = (state = initialState, action) => {
         selectedActives: [],
       };
 
+      case Types.TOOL_CHANGE_STATUS:
+        return {
+          ...state,
+          tools: state.tools.map((e) =>
+            e._id === action.payload._id ? action.payload : e
+          ),
+        };
+
     default:
       return state;
   }

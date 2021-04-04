@@ -48,7 +48,7 @@ export const JobScreen = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#A0A0A0",
       confirmButtonText: "Si, eliminar!!",
       cancelButtonText: "Cancelar",
     }).then((result) => {
@@ -140,7 +140,7 @@ export const JobScreen = () => {
                         <th className="py-3 px-3">
                           <button
                             onClick={() => onSelectAddEditJob(job)}
-                            className="bg-blue-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
+                            className="bg-yellow-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-yellow-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}
                           >

@@ -43,7 +43,7 @@ export const ActiveScreen = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#A0A0A0",
       confirmButtonText: "Si, eliminar de activos",
       cancelButtonText: "Cancelar",
     }).then((result) => {

@@ -9,6 +9,7 @@ const initialState = {
   modalAddLendOpen: false,
   modalAddToolOpen: false,
   modalActiveOpen: false,
+  modalAddActiveOpen: false,
   modalCollaboratorInfoOpen: false,
   modalPaymentOpen: false,
 };
@@ -113,6 +114,16 @@ export const UIReducer = (state = initialState, action) => {
         ...state,
         modalActiveOpen: false,
       };
+      case Types.UI_OPEN_MODAL_ADD_ACTIVE:
+        return {
+          ...state,
+          modalAddActiveOpen: true,
+        };
+      case Types.UI_CLOSE_MODAL_ADD_ACTIVE:
+        return {
+          ...state,
+          modalAddActiveOpen: false,
+        };
 
     case Types.UI_OPEN_MODAL_PAYMENT:
       return {

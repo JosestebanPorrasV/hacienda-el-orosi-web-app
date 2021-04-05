@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Component } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
@@ -6,18 +6,25 @@ import SearchResults from "react-filter-search";
 import {
   removeTools,
   toolsLoading,
+  changeStatus,
+  toolSetActive,
 } from "../../actions/ToolAction";
-import { uiOpenModalAddTool } from "../../actions/UIAction";
+import {
+  uiOpenModalAddTool,
+  uiOpenModalAddActive,
+} from "../../actions/UIAction";
 import { UseForm } from "../../hooks/UseForm";
 import Swal from "sweetalert2";
 import { ModalTool } from "./ModalTool";
+import { ModalAddActive } from "./ModalAddActive";
 
 export const ToolScreen = () => {
   const dispatch = useDispatch();
-  const { tools, actives, count, toolsState } = useSelector(
+  const { tools, actives, count, toolsState, currentTool } = useSelector(
     (state) => state.tool
   );
   const { currentCollaborator } = useSelector((state) => state.collaborator);
+
 
   useEffect(() => {
     dispatch(toolsLoading());
@@ -29,8 +36,9 @@ export const ToolScreen = () => {
 
   const { filter } = formValues;
 
-  const OpenModalAddTool = () => {
-    dispatch(uiOpenModalAddTool());
+  const addOneToolActive = (tool) => {
+    dispatch(uiOpenModalAddActive());
+    dispatch(toolSetActive(tool));
   };
 
   const deleteInBulk = () => {
@@ -40,7 +48,7 @@ export const ToolScreen = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#A0A0A0",
       confirmButtonText: "Si, eliminar de activos",
       cancelButtonText: "Cancelar",
     }).then((result) => {
@@ -58,16 +66,14 @@ export const ToolScreen = () => {
     <>
       <div className="bg-indigo-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
-          <button className="bg-indigo-900 hover:bg-gray-800 text-white font-bold py-2 px-4 border-b-4 border-gray-900 hover:border-indigo-200 rounded">
-            HERRAMIENTAS
-          </button>
+          <h2 className="text-2xl">HERRAMIENTAS</h2>
           <p className="text-blue-100 opacity-70">
             Funcionalidades principales
           </p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
-            onClick={() => OpenModalAddTool()}
+            onClick={() => dispatch(uiOpenModalAddTool())}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
           >
             <i className="fas fa-plus-circle"></i>
@@ -106,18 +112,14 @@ export const ToolScreen = () => {
 
       <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
         <h2
-          className={`${
-            toolsState === "Activo"
+          className={`${toolsState === "Activo"
               ? "text-green-400"
               : toolsState === "En bodega"
-              ? "text-red-200"
-              : "text-yellow-400"
-          } text-xl font-bold mb-2`}
-        >{`Herramientas ${
-          toolsState === "Activo"
-            ? "Activas"
-            : toolsState 
-        }`}</h2>
+                ? "text-gray-200"
+                : "text-yellow-400"
+            } text-xl font-bold mb-2`}
+        >{`Herramientas ${toolsState === "Activo" ? "Activas" : toolsState
+          }`}</h2>
         <input
           type="text"
           name="filter"
@@ -127,92 +129,118 @@ export const ToolScreen = () => {
           onChange={handleInputChange}
         />
         <span
-          className={`${
-            toolsState === "Activo"
+          className={`${toolsState === "Activo"
               ? "bg-green-200 text-green-600"
               : toolsState === "En bodega"
-              ? "bg-red-200 text-gray-600"
-              : "bg-yellow-200 text-yellow-600"
-          } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
+                ? "bg-gray-200 text-gray-600"
+                : "bg-yellow-200 text-yellow-600"
+            } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
         >
           <i className="fas fa-tools"></i> {`total: ${count}`}
         </span>
 
-        <div className="overflow-x-auto py-4">
-          <div className="align-middle inline-block min-w-full overflow-hidden">
-            <SearchResults
-              value={filter}
-              data={tools}
-              renderResults={(results) => (
-                <table id="table-tools" className="min-w-full">
-                  <thead className="bg-gray-600">
-                    <tr className="bg-gray-600 text-white text-lg">
-                      <th className="py-2 px-3">
-                        <i className="fas fa-signal"></i> Estado
+        <div className="overflow-x-auto">
+          <SearchResults
+            value={filter}
+            data={tools}
+            renderResults={(results) => (
+              <table className="text-center items-center w-full ">
+                <thead className="bg-gray-600 flex text-white w-full">
+                  <tr className="flex w-full text-lg">
+                    <th className="py-2 px-12">
+                      <i className="fas fa-signal"></i> Estado
                       </th>
-                      <th className="py-2 px-3">
-                        <i className="fas fa-wrench"></i> Herramienta
+                    <th className="py-2 px-12">
+                      <i className="fas fa-wrench"></i> Herramienta
                       </th>
-                      <th className="py-2 px-3"># Codigo</th>
-                      <th className="py-2 px-3">
-                        <i className="far fa-calendar-alt"></i> Registrada
+                    <th className="py-2 px-12"># Codigo</th>
+                    <th className="py-2 px-12">
+                      <i className="far fa-calendar-alt"></i> Registrada
                       </th>
-                     
-                      <th className="py-2 px-3">
-                        <i className="fas fa-cash-register"></i> Activos
+                    <th className="py-2 px-12">
+                      <i className="fas fa-cash-register"></i> Activos
+                      </th>
+                  </tr>
+                </thead>
+                <tbody className="text-blue-100 flex flex-col justify-between overflow-y-scroll w-full"
+                  style={{ height: "50vh" }} >
+                  {results.map((tool) => (
+                    <tr className="flex w-full" key={tool._id}>
+                      <th
+                        className="py-2 px-16"
+                        hidden={
+                          toolsState === "De baja" || toolsState === "Activo"
+                        }
+                      >
+                        <div className="flex flex-col text-center w-full mt-6 mb-6">
+                          <div>
+                            <select
+                              onChange={(e) =>
+                                dispatch(
+                                  changeStatus(tool._id, e.target.value)
+                                )
+                              }
+                              className="bg-blue-500 text-gray-100 font-bold text-xs py-2 px-2 rounded-lg inline-flex  group-hover:bg-blue-600 group-hover:text-white uppercase"
+                            >
+                              <option
+                                value="En bodega"
+                                className="pt-6 bg-gray-300 text-base text-gray-700 font-semibold"
+                              >
+                                En bodega
+                                </option>
+                              <option
+                                value="En reparacion"
+                                className="bg-gray-300 text-base text-gray-700 font-semibold"
+                              >
+                                En reparacion
+                                </option>
+                              <option
+                                value="De baja"
+                                className="bg-gray-300 text-base text-gray-700 font-semibold"
+                              >
+                                De baja
+                                </option>
+                            </select>
+                          </div>
+                        </div>
+                      </th>
+
+                      <th className="py-2 px-12">{tool.name}</th>
+                      <th className="py-2 px-20">#{tool.active_num}</th>
+                      <th className="py-2 px-12">{tool.date}</th>
+                      <th className="py-2 px-20">
+                        <button
+                          className={`${tool.status === "En bodega"
+                              ? "bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
+                              : "hidden"
+                            }`}
+                          onClick={() => addOneToolActive(tool)}
+                          type="button"
+                          style={{ transition: "all .15s ease" }}
+                        >
+                          <i className="fas fa-plus"></i>
+                        </button>
+                        <button
+                          hidden={tool.status === "En bodega"}
+                          onClick={() => deleteInBulk()}
+                          className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
+                          type="button"
+                          style={{ transition: "all .15s ease" }}
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                        </button>
                       </th>
                     </tr>
-                  </thead>
-                  <tbody className="text-blue-100 text-opacity-80 whitespace-nowrap">
-                    {results.map((tool) => (
-                      <tr key={tool._id}>
-                        <th className="py-3 px-3">
-                          <span
-                            className={` ${
-                              tool.status === "Activo"
-                                ? "bg-green-200 text-green-600"
-                                : "bg-red-200 text-gray-600"
-                            }  text-xs rounded-full px-3 py-1 w-26 inline-block text-center uppercase`}
-                          >
-                            {tool.status}
-                          </span>
-                        </th>
-                        <th className="py-3 px-3">{tool.name}</th>
-                        <th className="py-3 px-3">{tool.active_num}</th>
-                        <th className="py-3 px-3">{tool.date}</th>
-                        <th className="py-3 px-3">
-                          <button
-                            className={`${
-                              tool.status === "En bodega"
-                                ? "bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
-                                : "hidden"
-                            }`}
-                            type="button"
-                            style={{ transition: "all .15s ease" }}
-                          >
-                            <i className="fas fa-plus"></i>
-                          </button>
-                          <button
-                            hidden={tool.status === "En bodega"}
-                            onClick={() => deleteInBulk()}
-                            className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
-                            type="button"
-                            style={{ transition: "all .15s ease" }}
-                          >
-                            <i className="fas fa-trash-alt"></i>
-                          </button>
-                        </th>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            />
-          </div>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          />
         </div>
       </div>
 
       <ModalTool />
+      { currentTool && <ModalAddActive />}
     </>
   );
 };

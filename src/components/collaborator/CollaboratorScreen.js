@@ -64,7 +64,7 @@ export const CollaboratorScreen = () => {
       inputPlaceholder: "Escriba",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#A0A0A0",
       confirmButtonText: "Si, registrar",
       cancelButtonText: "Cancelar",
     });

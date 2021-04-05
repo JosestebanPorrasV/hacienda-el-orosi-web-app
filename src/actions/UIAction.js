@@ -55,3 +55,9 @@ export const uiOpenModalActive = () => ({ type: Types.UI_OPEN_MODAL_ACTIVES });
 export const uiCloseModalActive = () => ({
   type: Types.UI_CLOSE_MODAL_ACTIVES,
 });
+export const uiOpenModalAddActive = () => ({ 
+  type: Types.UI_OPEN_MODAL_ADD_ACTIVE,
+});
+export const uiCloseModalAddActive = () => ({
+  type: Types.UI_CLOSE_MODAL_ADD_ACTIVE,
+});

@@ -19,6 +19,19 @@ export const ToolReducer = (state = initialState, action) => {
         count: action.payload.count,
         toolsState: action.payload.toolsState,
       };
+
+      case Types.TOOL_SET_ACTIVE:
+        return {
+          ...state,
+          currentTool: action.payload,
+        };
+  
+      case Types.TOOL_CLEAR_ACTIVE:
+        return {
+          ...state,
+          currentTool: null,
+        };
+
     case Types.ACTIVES_LOADED:
       return {
         ...state,
@@ -75,6 +88,14 @@ export const ToolReducer = (state = initialState, action) => {
         ...state,
         selectedActives: [],
       };
+
+      case Types.TOOL_CHANGE_STATUS:
+        return {
+          ...state,
+          tools: state.tools.map((e) =>
+            e._id === action.payload._id ? action.payload : e
+          ),
+        };
 
     default:
       return state;

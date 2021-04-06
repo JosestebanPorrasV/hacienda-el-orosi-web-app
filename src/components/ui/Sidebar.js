@@ -125,6 +125,16 @@ export const Sidebar = () => {
                 </span>
               </Link>
             </li>
+            <li>
+              <Link
+                to="/contratos"
+                className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
+              >
+                <span className="flex-1">
+                  <i className="fas fa-donate pr-4"></i>Contratos
+                </span>
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>

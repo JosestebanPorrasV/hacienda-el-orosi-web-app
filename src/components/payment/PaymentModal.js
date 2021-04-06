@@ -40,7 +40,7 @@ export const PaymentModal = () => {
   const { filter1, filter2 } = formValues;
 
   const paymentReg = {
-    collaborator_job_name: currentCollaborator.job.name_job,
+    collaborator_job_name: currentCollaborator.job.name,
     total_days_worked:
       presenceDayByCollaborator.length > 0
         ? presenceDayByCollaborator.length
@@ -99,7 +99,7 @@ export const PaymentModal = () => {
                       <div className="p-4 sm:w-1/4 w-1/2">
                         <p className="leading-relaxed">Trabajo</p>
                         <h2 className="title-font font-medium sm:text-2xl text-2xl text-gray-900">
-                          {`${currentCollaborator.job.name_job}`}
+                          {`${currentCollaborator.job.name}`}
                         </h2>
                       </div>
                       <div className="p-4 sm:w-1/4 w-1/2">

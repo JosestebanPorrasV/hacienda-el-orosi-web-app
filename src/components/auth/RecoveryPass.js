@@ -80,7 +80,7 @@ export const RecoveryPass = () => {
               {recoveryState === 0 && (
                 <div className="relative mr-4 lg:w-full xl:w-1/2 w-2/4 md:w-full text-left">
                   <label
-                    htmlFor="email"
+            
                     className="leading-7 text-sm text-white"
                   >
                     Correo electronico
@@ -88,7 +88,6 @@ export const RecoveryPass = () => {
                   <input
                     required
                     type="email"
-                    id="email"
                     name="email"
                     className="w-full bg-gray-100 bg-opacity-50 rounded focus:ring-2 focus:ring-green-200 focus:bg-white border border-gray-300 focus:border-green-500 text-base outline-none text-black py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                     value={email}

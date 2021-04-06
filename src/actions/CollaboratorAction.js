@@ -54,6 +54,7 @@ export function registerCollaborator(collaboratorFormValues) {
       "recursos-humanos/registrar-colaborador",
       {
         document_id: collaboratorFormValues.document_id,
+        job: collaboratorFormValues.job,
         nationality: collaboratorFormValues.nationality,
         name: collaboratorFormValues.name,
         surname: collaboratorFormValues.surname,
@@ -66,9 +67,8 @@ export function registerCollaborator(collaboratorFormValues) {
 
     const body = await resp.json();
     if (body.status) {
-      await dispatch(addCollaboratorSuccess());
-      await dispatch(CollaboratorsLoading());
-      await dispatch(collaboratorClearActive());
+      await dispatch(addCollaboratorSuccess(body.collaborator));
+      await dispatch(collaboratorSetActive(body.collaborator));
       await Swal.fire({
         icon: "success",
         title: body.msg,
@@ -82,19 +82,24 @@ export function registerCollaborator(collaboratorFormValues) {
     }
   };
 }
-export function editOneCollaborator(collaborator_id, collaborator) {
+export function editOneCollaborator(
+  collaborator_id,
+  job_id,
+  collaboratorFormValues
+) {
   return async (dispatch) => {
     await TopLoaderService.start();
     const resp = await FetchConsult(
       `recursos-humanos/actualizar-colaborador/${collaborator_id}`,
       {
-        document_id: collaborator.document_id,
-        nationality: collaborator.nationality,
-        name: collaborator.name,
-        surname: collaborator.surname,
-        direction: collaborator.direction,
-        tel: collaborator.tel,
-        cel: collaborator.cel,
+        document_id: collaboratorFormValues.document_id,
+        nationality: collaboratorFormValues.nationality,
+        job: job_id,
+        name: collaboratorFormValues.name,
+        surname: collaboratorFormValues.surname,
+        direction: collaboratorFormValues.direction,
+        tel: collaboratorFormValues.tel,
+        cel: collaboratorFormValues.cel,
       },
       "PUT"
     );
@@ -123,8 +128,9 @@ export const collaboratorSetActive = (collaborator) => ({
 export const collaboratorClearActive = () => ({
   type: Types.COLLABORATOR_CLEAR_ACTIVE,
 });
-export const addCollaboratorSuccess = () => ({
+export const addCollaboratorSuccess = (collaborator) => ({
   type: Types.ADD_NEW_COLLABORATOR,
+  payload: collaborator,
 });
 
 const collaboratorsLoaded = (collaborators) => ({

@@ -29,14 +29,7 @@ export const ModalAdministrator = () => {
   };
 
   const [formValues, setFormValues] = useState(initEvent);
-  const {
-    document_id,
-    password,
-    email,
-    name,
-    surname,
-    role,
-  } = formValues;
+  const { document_id, password, email, name, surname, role } = formValues;
 
   useEffect(() => {
     if (currentAdministrator) {
@@ -98,10 +91,7 @@ export const ModalAdministrator = () => {
                   <section className="max-w-4xl p-6 mx-auto bg-white dark:bg-gray-800">
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="icon_prefix"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200">
                           Cedula
                         </label>
                         <input
@@ -109,16 +99,12 @@ export const ModalAdministrator = () => {
                           value={document_id}
                           name="document_id"
                           onChange={handleInputChange}
-                          id="icon_prefix"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="icon_prefix"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200">
                           Correo electronico
                         </label>
                         <input
@@ -126,16 +112,12 @@ export const ModalAdministrator = () => {
                           value={email}
                           name="email"
                           onChange={handleInputChange}
-                          id="icon_prefix"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="icon_prefix"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200">
                           contraseña
                         </label>
                         <input
@@ -143,16 +125,12 @@ export const ModalAdministrator = () => {
                           value={password}
                           name="password"
                           onChange={handleInputChange}
-                          id="icon_prefix"
                           type="password"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="icon_prefix"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200">
                           Nombre
                         </label>
                         <input
@@ -160,16 +138,12 @@ export const ModalAdministrator = () => {
                           value={name}
                           name="name"
                           onChange={handleInputChange}
-                          id="icon_prefix"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="icon_prefix"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200">
                           Apellidos
                         </label>
                         <input
@@ -177,16 +151,12 @@ export const ModalAdministrator = () => {
                           value={surname}
                           name="surname"
                           onChange={handleInputChange}
-                          id="icon_prefix"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="icon_prefix"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200">
                           Role
                         </label>
                         <input
@@ -194,12 +164,10 @@ export const ModalAdministrator = () => {
                           value={role}
                           name="role"
                           onChange={handleInputChange}
-                          id="icon_prefix"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
-                      
                     </div>
                   </section>
                   {/*footer*/}

@@ -12,29 +12,38 @@ export const JobReducer = (state = initialState, action) => {
         ...state,
         jobs: [...action.payload.jobs],
       };
-      case Types.DELETE_JOB:
+
+    case Types.ADD_JOB:
       return {
         ...state,
-        jobs: state.jobs.filter((e) => e._id !== action.payload),
+        jobs: [...state.jobs, action.payload],
       };
 
-      case Types.ADD_JOB:
+    case Types.UPDATED_JOB:
       return {
         ...state,
-        ...action.payload,
+        jobs: state.jobs.map((e) =>
+          e._id === action.payload._id ? action.payload : e
+        ),
       };
 
-      case Types.JOB_SET_ACTIVE:
-        return {
-          ...state,
-          currentJob: action.payload,
-        };
-  
-      case Types.JOB_CLEAR_ACTIVE:
-        return {
-          ...state,
-          currentJob: null,
-        };
+    case Types.DELETE_JOB:
+      return {
+        ...state,
+        jobs: state.jobs.filter((e) => e._id !== action.payload._id),
+      };
+
+    case Types.JOB_SET_ACTIVE:
+      return {
+        ...state,
+        currentJob: action.payload,
+      };
+
+    case Types.JOB_CLEAR_ACTIVE:
+      return {
+        ...state,
+        currentJob: null,
+      };
 
     default:
       return state;

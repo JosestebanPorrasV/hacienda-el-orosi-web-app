@@ -218,7 +218,7 @@ export const CollaboratorScreen = () => {
                   </tr>
                 </thead>
                 <tbody
-                  className="text-blue-100 flex flex-col justify-between overflow-y-scroll w-full"
+                  className="text-blue-100 flex-col justify-between overflow-y-scroll w-full"
                   style={{ height: "50vh" }}
                 >
                   {results.map((collaborator) => (
@@ -237,7 +237,6 @@ export const CollaboratorScreen = () => {
                         >
                           <i className="far fa-calendar-check"></i> Registar dia
                         </button>
-                        
                       </th>
                       <th className="p-4 w-1/4" hidden={collaboratorsState}>
                         <span
@@ -257,7 +256,7 @@ export const CollaboratorScreen = () => {
                         {`${collaborator.name} ${collaborator.surname}`}
                       </th>
                       <th className="p-4 w-1/4">
-                        {`${collaborator.job.name_job}`}
+                        {`${collaborator.job.name}`}
                       </th>
                       <th className="p-4 w-1/4">{collaborator.document_id}</th>
                       <th className="p-4 w-1/4">
@@ -270,7 +269,7 @@ export const CollaboratorScreen = () => {
                         </button>
                       </th>
                       <th
-                        className="p-4 w-1/4"
+                        className="p-4 w-1/4 "
                         hidden={
                           collaboratorsState === "Inactivo" ||
                           !collaboratorsState

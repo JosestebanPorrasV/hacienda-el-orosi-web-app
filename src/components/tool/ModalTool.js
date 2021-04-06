@@ -65,10 +65,7 @@ export const ModalTool = () => {
                   <section className="max-w-4xl p-6 mx-auto bg-white dark:bg-gray-800">
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="icon_prefix"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200">
                           Nombre de la herramienta
                         </label>
                         <input
@@ -76,13 +73,11 @@ export const ModalTool = () => {
                           name="name"
                           value={name}
                           onChange={handleInputChange}
-                          id="icon_prefix"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                           placeholder="Requerido"
                         />
                       </div>
-
                     </div>
                   </section>
                   {/*footer*/}
@@ -112,5 +107,4 @@ export const ModalTool = () => {
       ) : null}
     </>
   );
-
 };

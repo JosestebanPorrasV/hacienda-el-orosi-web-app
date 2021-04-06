@@ -57,8 +57,7 @@ export function registerTool(toolFormValues) {
 
     const body = await resp.json();
     if (body.status) {
-      await dispatch(addToolSuccess());
-      await dispatch(toolsLoading());
+      await dispatch(addToolSuccess(body.tool));
       await dispatch(uiCloseModalAddTool());
       await Swal.fire({
         icon: "success",
@@ -219,8 +218,9 @@ export const cleanSelectedActives = () => ({
   type: Types.CLEAN_SELECT_ACTIVES,
 });
 
-export const addToolSuccess = () => ({
+export const addToolSuccess = (tool) => ({
   type: Types.ADD_NEW_TOOL,
+  payload: tool,
 });
 
 const toolLoaded = (tools) => ({

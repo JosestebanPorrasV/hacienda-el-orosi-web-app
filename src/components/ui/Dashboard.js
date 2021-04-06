@@ -13,8 +13,7 @@ export const Dashboard = () => {
         <Navbar />
         <Sidebar />
 
-        <div className="flex-1 flex flex-col bg-gray-800 py-4 lg:py-8 px-4 lg:px-6 xl:px-8 overflow-hidden">
-          <NavbarInfo />
+        <div className="flex-1 flex flex-col bg-gray-800  px-4 lg:px-6 xl:px-8 overflow-hidden">
           <div className="flex-1 py-4 lg:py-6">
             <div className="max-w-screen-2xl mx-auto">
               <DashboardRoutes />

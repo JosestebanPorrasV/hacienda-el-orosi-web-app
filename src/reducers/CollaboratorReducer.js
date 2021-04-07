@@ -5,6 +5,7 @@ const initialState = {
   countCollaborators: 0,
   collaboratorsState: null,
   currentCollaborator: null,
+  liquidate: false,
 };
 
 export const CollaboratorReducer = (state = initialState, action) => {
@@ -19,7 +20,7 @@ export const CollaboratorReducer = (state = initialState, action) => {
     case Types.ADD_NEW_COLLABORATOR:
       return {
         ...state,
-        ...action.payload,
+        collaborators: [...state.collaborators, action.payload],
       };
 
     case Types.COLLABORATOR_SET_ACTIVE:
@@ -32,6 +33,18 @@ export const CollaboratorReducer = (state = initialState, action) => {
       return {
         ...state,
         currentCollaborator: null,
+      };
+
+    case Types.LIQUIDATE_SET_ACTIVE:
+      return {
+        ...state,
+        liquidate: true,
+      };
+
+    case Types.LIQUIDATE_CLEAR_ACTIVE:
+      return {
+        ...state,
+        liquidate: false,
       };
 
     case Types.VALIDATE_PRESENCE_COLLABORATOR:

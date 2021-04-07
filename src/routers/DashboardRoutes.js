@@ -16,8 +16,14 @@ import { PaymentScreen } from "../components/payment/PaymentScreen";
 import { AnimalsScreen } from "../components/animal/AnimalsScreen";
 import { DietScreen } from "../components/diet/DietScreen";
 import { AlimentScreen } from "../components/diet/AlimentScreen";
+import { Contract } from "../components/collaborator/contracts/ContractReport";
+import { useSelector } from "react-redux";
+import { ReportsCollaboratorScreen } from "../components/collaborator/ReportsCollaboratorsScreen";
 
 export const DashboardRoutes = () => {
+  const { currentCollaborator, collaborators } = useSelector(
+    (state) => state.collaborator
+  );
   return (
     <Router>
       <Switch>
@@ -27,6 +33,18 @@ export const DashboardRoutes = () => {
           component={AdministratorScreen}
         />
         <Route exact path="/colaboradores" component={CollaboratorScreen} />
+        {currentCollaborator && (
+          <Route exact path="/contrato/:collaborator" component={Contract} />
+        )}
+
+        {collaborators.length !== 0 && (
+          <Route
+            exact
+            path="/reportes/colaboradores/:collaborator"
+            component={ReportsCollaboratorScreen}
+          />
+        )}
+
         <Route exact path="/pagos" component={PaymentScreen} />
         <Route exact path="/prestamos" component={LendScreen} />
         <Route exact path="/contratos" component={ContractScreen} />

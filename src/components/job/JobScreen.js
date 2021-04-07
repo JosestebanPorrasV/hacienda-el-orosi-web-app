@@ -27,9 +27,9 @@ export const JobScreen = () => {
 
   const { filter } = formValues;
 
-  const onSelectJobOneDelete = (jobId) => {
-    dispatch(jobSetActive(jobId));
-    deleteJob(jobId);
+  const onSelectJobOneDelete = (job) => {
+    dispatch(jobSetActive(job));
+    deleteJob(job);
   };
 
   const onSelectAddEditJob = (jobId) => {
@@ -53,7 +53,7 @@ export const JobScreen = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        dispatch(oneJobDelete(job._id));
+        dispatch(oneJobDelete(job));
       } else {
         dispatch(jobClearActive());
       }
@@ -94,7 +94,7 @@ export const JobScreen = () => {
           value={filter}
           onChange={handleInputChange}
         />
-        <span className="bg-green-200 text-yellow-900 md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase">
+        <span className="bg-green-200 text-green-900 md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase">
           <i className="fas fa-file-contract"></i> {`total: ${jobs.length}`}
         </span>
 
@@ -130,10 +130,18 @@ export const JobScreen = () => {
                   <tbody className="text-blue-100 text-opacity-80">
                     {results.map((job) => (
                       <tr key={job._id}>
-                        <th className="py-5 px-8">{`${job.name_job}`}</th>
+                        <th className="py-5 px-8">{`${job.name}`}</th>
                         <th className="py-3 px-3">{job.work_hours} horas</th>
-                        <th className="py-3 px-3">₡{job.price_day}</th>
-                        <th className="py-3 px-3">₡{job.price_extra_hours}</th>
+                        <th className="py-3 px-3">
+                          {new Intl.NumberFormat("en-EN").format(job.price_day)}
+                          ₡
+                        </th>
+                        <th className="py-3 px-3">
+                  
+                          {new Intl.NumberFormat("en-EN").format(
+                            job.price_extra_hours
+                          )}₡
+                        </th>
                         <th className="whitespace-pre-line">
                           {job.description}
                         </th>

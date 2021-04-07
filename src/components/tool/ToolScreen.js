@@ -1,14 +1,13 @@
-import React, { useEffect, Component } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
-import { createPopper } from "@popperjs/core";
 
 import {
   removeTools,
   toolsLoading,
   changeStatus,
-  addActiveSelected,
+  toolSetActive,
 } from "../../actions/ToolAction";
 import {
   uiOpenModalAddTool,
@@ -37,37 +36,8 @@ export const ToolScreen = () => {
   const { filter } = formValues;
 
   const addOneToolActive = (tool) => {
-    dispatch(addActiveSelected(tool));
     dispatch(uiOpenModalAddActive());
-  };
-
-  const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
-  const btnDropdownRef = React.createRef();
-  const popoverDropdownRef = React.createRef();
-  const openDropdownPopover = () => {
-    createPopper(btnDropdownRef.current, popoverDropdownRef.current, {
-      placement: "bottom-start",
-    });
-    setDropdownPopoverShow(true);
-  };
-  const closeDropdownPopover = () => {
-    setDropdownPopoverShow(false);
-  };
-
-  const ToolChangeStatus = async (tool_id, status) => {
-    const { value: currentTool } = await Swal.fire({
-      title: "Cambiar estado",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#A0A0A0",
-      confirmButtonText: "Si, cambiar",
-      cancelButtonText: "Cancelar",
-    });
-
-    if (currentTool) {
-      dispatch(changeStatus(tool_id, status));
-    } else {
-    }
+    dispatch(toolSetActive(tool));
   };
 
   const deleteInBulk = () => {
@@ -93,85 +63,85 @@ export const ToolScreen = () => {
 
   return (
     <>
-      <div className="bg-indigo-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
+      <div className="bg-gradient-to-r from-blue-300 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
-          <h2 className="text-2xl">HERRAMIENTAS</h2>
-          <p className="text-blue-100 opacity-70">
+          <h2 className="text-2xl text-blue-900">HERRAMIENTAS</h2>
+          <p className="text-blue-900 opacity-90">
             Funcionalidades principales
           </p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
             onClick={() => dispatch(uiOpenModalAddTool())}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-blue-800 w-35"
           >
             <i className="fas fa-plus-circle"></i>
             <span className="text-white font-bold">Agregar Herramienta</span>
           </button>
           <button
             onClick={() => dispatch(toolsLoading("Activo"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-blue-800 w-35"
           >
             <i className="fas fa-chart-line"></i>
             <span className="text-white font-bold">Listar activas</span>
           </button>
           <button
             onClick={() => dispatch(toolsLoading("En bodega"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-blue-800 w-35"
           >
             <i className="fas fa-toolbox"></i>
             <span className="text-white font-bold">Listar En Bodega</span>
           </button>
           <button
             onClick={() => dispatch(toolsLoading("En reparacion"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-blue-800 w-35"
           >
             <i className="fas fa-toolbox"></i>
             <span className="text-white font-bold">Listar En reparacion</span>
           </button>
           <button
             onClick={() => dispatch(toolsLoading("De baja"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-blue-800 w-35"
           >
             <i className="fas fa-toolbox"></i>
             <span className="text-white font-bold">De baja</span>
           </button>
         </nav>
       </div>
+      {tools.length !== 0 ? (
+        <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
+          <h2
+            className={`${
+              toolsState === "Activo"
+                ? "text-green-400"
+                : toolsState === "En bodega"
+                ? "text-gray-200"
+                : "text-yellow-400"
+            } text-xl font-bold mb-2`}
+          >{`Herramientas ${
+            toolsState === "Activo" ? "Activas" : toolsState
+          }`}</h2>
+          <input
+            type="text"
+            name="filter"
+            className="rounded-t-lg w-1/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
+            placeholder="Filtrar por ..."
+            value={filter}
+            onChange={handleInputChange}
+          />
+          <span
+            className={`${
+              toolsState === "Activo"
+                ? "bg-green-200 text-green-600"
+                : toolsState === "En bodega"
+                ? "bg-gray-200 text-gray-600"
+                : "bg-yellow-200 text-yellow-600"
+            } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
+          >
+            <i className="fas fa-tools"></i> {`total: ${count}`}
+          </span>
 
-      <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
-        <h2
-          className={`${
-            toolsState === "Activo"
-              ? "text-green-400"
-              : toolsState === "En bodega"
-              ? "text-gray-200"
-              : "text-yellow-400"
-          } text-xl font-bold mb-2`}
-        >{`Herramientas ${
-          toolsState === "Activo" ? "Activas" : toolsState
-        }`}</h2>
-        <input
-          type="text"
-          name="filter"
-          className="rounded-t-lg w-1/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-          placeholder="Filtrar por ..."
-          value={filter}
-          onChange={handleInputChange}
-        />
-        <span
-          className={`${
-            toolsState === "Activo"
-              ? "bg-green-200 text-green-600"
-              : toolsState === "En bodega"
-              ? "bg-gray-200 text-gray-600"
-              : "bg-yellow-200 text-yellow-600"
-          } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
-        >
-          <i className="fas fa-tools"></i> {`total: ${count}`}
-        </span>
-
-        <div className="overflow-x-auto">
+          <div className="overflow-x-auto">
             <SearchResults
               value={filter}
               data={tools}
@@ -194,8 +164,10 @@ export const ToolScreen = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="text-blue-100 flex flex-col justify-between overflow-y-scroll w-full"
-                  style={{ height: "50vh" }} >
+                  <tbody
+                    className="text-blue-100 flex flex-col justify-between overflow-y-scroll w-full"
+                    style={{ height: "50vh" }}
+                  >
                     {results.map((tool) => (
                       <tr className="flex w-full" key={tool._id}>
                         <th
@@ -269,11 +241,15 @@ export const ToolScreen = () => {
                 </table>
               )}
             />
+          </div>
         </div>
-      </div>
-
+      ) : (
+        <span className="ml-2 text-gray-400 whitespace-nowrap italic">
+          - ( No se encontraron herramientas ) -
+        </span>
+      )}
       <ModalTool />
-      <ModalAddActive />
+      {currentTool && <ModalAddActive />}
     </>
   );
 };

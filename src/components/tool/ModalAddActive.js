@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { uiCloseModalAddActive } from "../../actions/UIAction";
 import {
   removeInSelectedActives,
-  registerOneActiveTool,
+  registerActives,
 } from "../../actions/ToolAction";
 import {
   collaboratorClearActive,
@@ -14,7 +14,8 @@ export const ModalAddActive = () => {
   const dispatch = useDispatch();
 
   const { modalAddActiveOpen } = useSelector((state) => state.ui);
-  const { selectedActives } = useSelector((state) => state.tool);
+  const { currentCollaborator } = useSelector( (state) => state.collaborator );
+  const { currentTool } = useSelector((state) => state.tool);
 
   const closeModal = () => {
     dispatch(uiCloseModalAddActive());
@@ -41,9 +42,8 @@ export const ModalAddActive = () => {
     });
   };
 
-  const handleAddOneActive = async (e) => {
-    e.preventDefault();
-    await dispatch(registerOneActiveTool(selectedActives._id));
+  const handleAddOneActive = async () => {
+    await dispatch(registerActives( [{"collaborator_id" : currentCollaborator._id, "tool_id" :currentTool._id }] ));
     await clearForm();
   };
   return (
@@ -81,7 +81,7 @@ export const ModalAddActive = () => {
                         </label>
                         <input
                           disabled={true}
-                          value={selectedActives[0].active_num}
+                          value={currentTool.active_num}
                           name="active_num"
                           type="number"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
@@ -97,7 +97,7 @@ export const ModalAddActive = () => {
                         </label>
                         <input
                           disabled={true}
-                          value={selectedActives[0].name}
+                          value={currentTool.name}
                           onChange={handleInputChange}
                           id="name"
                           type="text"
@@ -147,11 +147,7 @@ export const ModalAddActive = () => {
                         </label>
                         <input
                           disabled={true}
-                          value={
-                            collaborator_id
-                              ? `${collaborator_id.name} ${collaborator_id.surname}`
-                              : ""
-                          }
+                          value={  currentCollaborator &&  `${currentCollaborator.name} ${currentCollaborator.surname}` }
                           id="nameCollaborator"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"

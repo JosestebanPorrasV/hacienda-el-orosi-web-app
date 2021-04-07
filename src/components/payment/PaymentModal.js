@@ -157,43 +157,52 @@ export const PaymentModal = () => {
                                 onChange={handleInputChange}
                               />
                             </div>
-
-                            <SearchResults
-                              value={filter1}
-                              data={presenceDayByCollaborator}
-                              renderResults={(results) => (
-                                <div className="static inset-x-0 px-6 overflow-y-auto bg-white border border-gray-300 rounded-b-lg h-52 divide-y-2 divide-fuchsia-600">
-                                  {results.map((presenceDay, index) => (
-                                    <div
-                                      className="md:flex  pb-4 pt-4"
-                                      key={presenceDay._id}
-                                    >
-                                      <span className="ml-2 text-pink-900 whitespace-nowrap">
-                                        <i className="far fa-hand-point-right"></i>{" "}
-                                        {index + 1}
-                                      </span>
-
-                                      <span className="ml-2 text-blue-800 whitespace-nowrap">
-                                        <i className="fas fa-calendar-day"></i>{" "}
-                                        Dia:
-                                        <span className="ml-2  text-gray-400">
-                                          {presenceDay.date}
+                            {presenceDayByCollaborator.length !== 0 ? (
+                              <SearchResults
+                                value={filter1}
+                                data={presenceDayByCollaborator}
+                                renderResults={(results) => (
+                                  <div className="static inset-x-0 px-6 overflow-y-auto bg-white border border-gray-300 rounded-b-lg h-52 divide-y-2 divide-fuchsia-600">
+                                    {results.map((presenceDay, index) => (
+                                      <div
+                                        className="md:flex  pb-4 pt-4"
+                                        key={presenceDay._id}
+                                      >
+                                        <span className="ml-2  text-gray-400 whitespace-nowrap">
+                                          <i className="far fa-hand-point-right"></i>{" "}
+                                          {index + 1} =
                                         </span>
-                                      </span>
 
-                                      <span className="ml-2 text-green-800 whitespace-nowrap">
-                                        Horas extras:
-                                        <span className="ml-2  text-gray-400">
-                                          {new Intl.NumberFormat(
-                                            "en-EN"
-                                          ).format(presenceDay.total_overtime)}
+                                        <span className="ml-2 text-red-800 whitespace-nowrap">
+                                          <i className="fas fa-calendar-day"></i>{" "}
+                                          Dia:
+                                          <span className="ml-2  text-red-80">
+                                            {presenceDay.date}
+                                          </span>
                                         </span>
-                                      </span>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            />
+
+                                        <span className="ml-2 text-gray-500 whitespace-nowrap">
+                                          Horas extras:
+                                          <span className="ml-2 text-gray-500">
+                                            {new Intl.NumberFormat(
+                                              "en-EN"
+                                            ).format(
+                                              presenceDay.total_overtime
+                                            )}
+                                          </span>
+                                        </span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              />
+                            ) : (
+                              <div className="static inset-x-0  bg-white border border-gray-300 rounded-b-lg h-52 italic">
+                                <span className="ml-2 text-gray-400 whitespace-nowrap">
+                                  - ( Sin dias pendientes de pago ) -
+                                </span>
+                              </div>
+                            )}
                           </section>
                           <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 w-full">
                             <Link
@@ -246,49 +255,56 @@ export const PaymentModal = () => {
                                 onChange={handleInputChange}
                               />
                             </div>
+                            {lends.length !== 0 ? (
+                              <SearchResults
+                                value={filter2}
+                                data={lends}
+                                renderResults={(results) => (
+                                  <div className="static inset-x-0 px-6 overflow-y-auto bg-white border border-gray-300 rounded-b-lg  divide-y-2 divide-fuchsia-600 h-52">
+                                    {results.map((activeLend, index) => (
+                                      <div
+                                        className="md:flex  pb-4 pt-4"
+                                        key={activeLend._id}
+                                      >
+                                        <span className="ml-2 text-gray-400 whitespace-nowrap">
+                                          <i className="fas fa-hand-point-right"></i>{" "}
+                                          {index + 1}
+                                        </span>
 
-                            <SearchResults
-                              value={filter2}
-                              data={lends}
-                              renderResults={(results) => (
-                                <div className="static inset-x-0 px-6 overflow-y-auto bg-white border border-gray-300 rounded-b-lg  divide-y-2 divide-fuchsia-600 h-52">
-                                  {results.map((activeLend, index) => (
-                                    <div
-                                      className="md:flex  pb-4 pt-4"
-                                      key={activeLend._id}
-                                    >
-                                      <span className="ml-2 text-pink-900 whitespace-nowrap">
-                                        <i className="fas fa-hand-point-right"></i>{" "}
-                                        {index + 1}
-                                      </span>
-
-                                      <span className="ml-2 text-green-800 whitespace-nowrap">
-                                        Monto actual:
-                                        <span className="ml-2  text-gray-400">
-                                          {new Intl.NumberFormat(
-                                            "en-EN"
-                                          ).format(activeLend.amount)}
+                                        <span className="ml-2 text-blue-800 whitespace-nowrap">
+                                          Monto actual:
+                                          <span className="ml-2 text-gray-700">
+                                            {new Intl.NumberFormat(
+                                              "en-EN"
+                                            ).format(activeLend.amount)}
+                                          </span>
                                         </span>
-                                      </span>
-                                      <span className="ml-2 text-red-800 whitespace-nowrap">
-                                        Cuota:
-                                        <span className="ml-2  text-gray-400">
-                                          {new Intl.NumberFormat(
-                                            "en-EN"
-                                          ).format(activeLend.fee)}
+                                        <span className="ml-2 text-blue-800 whitespace-nowrap">
+                                          Cuota:
+                                          <span className="ml-2 text-gray-700">
+                                            {new Intl.NumberFormat(
+                                              "en-EN"
+                                            ).format(activeLend.fee)}
+                                          </span>
                                         </span>
-                                      </span>
-                                      <span className="ml-2 text-blue-800 whitespace-nowrap">
-                                        <i className="fas fa-calendar-day"></i>
-                                        <span className="ml-2  text-gray-400">
-                                          {activeLend.date_issued}
+                                        <span className="ml-2 text-blue-800 whitespace-nowrap">
+                                          <i className="fas fa-calendar-day"></i>
+                                          <span className="ml-2  text-gray-700">
+                                            {activeLend.date_issued}
+                                          </span>
                                         </span>
-                                      </span>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            />
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              />
+                            ) : (
+                              <div className="static inset-x-0  bg-white border border-gray-300 rounded-b-lg h-52 italic">
+                                <span className="ml-2 text-gray-400 whitespace-nowrap">
+                                  - ( Sin prestamos activos ) -
+                                </span>
+                              </div>
+                            )}
                           </section>
                           <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">
                             <Link

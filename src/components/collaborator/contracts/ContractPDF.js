@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   logo: {
-    width: 90,
-    height: 150,
+    width: 70,
+    height: 120,
   },
 });
 

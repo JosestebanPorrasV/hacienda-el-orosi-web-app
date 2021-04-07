@@ -47,7 +47,11 @@ export const searchCollaborator = (document_id) => {
   };
 };
 
-export function registerCollaborator(collaboratorFormValues) {
+export function registerCollaborator(
+  collaboratorFormValues,
+  date_admission,
+  dispatch_date
+) {
   return async (dispatch) => {
     await TopLoaderService.start();
     const resp = await FetchConsult(
@@ -61,6 +65,8 @@ export function registerCollaborator(collaboratorFormValues) {
         direction: collaboratorFormValues.direction,
         tel: collaboratorFormValues.tel,
         cel: collaboratorFormValues.cel,
+        date_admission: date_admission,
+        dispatch_date: dispatch_date,
       },
       "POST"
     );
@@ -85,8 +91,11 @@ export function registerCollaborator(collaboratorFormValues) {
 export function editOneCollaborator(
   collaborator_id,
   job_id,
-  collaboratorFormValues
+  collaboratorFormValues,
+  date_admission,
+  dispatch_date
 ) {
+  console.log(date_admission, dispatch_date);
   return async (dispatch) => {
     await TopLoaderService.start();
     const resp = await FetchConsult(
@@ -100,6 +109,8 @@ export function editOneCollaborator(
         direction: collaboratorFormValues.direction,
         tel: collaboratorFormValues.tel,
         cel: collaboratorFormValues.cel,
+        date_admission: date_admission,
+        dispatch_date: dispatch_date,
       },
       "PUT"
     );
@@ -127,6 +138,13 @@ export const collaboratorSetActive = (collaborator) => ({
 });
 export const collaboratorClearActive = () => ({
   type: Types.COLLABORATOR_CLEAR_ACTIVE,
+});
+
+export const liquidateSetActive = () => ({
+  type: Types.LIQUIDATE_SET_ACTIVE,
+});
+export const liquidateCleanActive = () => ({
+  type: Types.LIQUIDATE_CLEAR_ACTIVE,
 });
 export const addCollaboratorSuccess = (collaborator) => ({
   type: Types.ADD_NEW_COLLABORATOR,

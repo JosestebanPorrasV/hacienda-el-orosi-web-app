@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
    
     titleContainer:{
         flexDirection: 'row',
-        marginTop: 1,
     },
     reportTitle:{
         color: '#065f46',

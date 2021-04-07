@@ -9,6 +9,12 @@ import { JobsLoaded } from "../../actions/JobAction";
 import { uiCloseModalCollaborator } from "../../actions/UIAction";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import { registerLocale } from "react-datepicker";
+import es from "date-fns/locale/es";
+import "react-datepicker/dist/react-datepicker.css";
+
+registerLocale("es", es);
 
 const initEvent = {
   document_id: "",
@@ -23,24 +29,20 @@ const initEvent = {
 
 export const ModalCollaborator = () => {
   const dispatch = useDispatch();
+  const [date_admission, setDate_admission] = useState();
+  const [dispatch_date, setDispatch_date] = useState();
 
   const { modalCollaboratorOpen } = useSelector((state) => state.ui);
   const { currentCollaborator } = useSelector((state) => state.collaborator);
   const { jobs } = useSelector((state) => state.job);
 
   useEffect(() => {
-    dispatch(JobsLoaded());
     if (currentCollaborator) {
       setFormValues(currentCollaborator);
     } else {
       setFormValues(initEvent);
     }
   }, [dispatch, currentCollaborator]);
-
-  const closeModal = () => {
-    dispatch(collaboratorClearActive());
-    dispatch(uiCloseModalCollaborator());
-  };
 
   const [formValues, setFormValues] = useState(initEvent);
   const {
@@ -69,16 +71,22 @@ export const ModalCollaborator = () => {
         editOneCollaborator(
           currentCollaborator._id,
           !job ? currentCollaborator.job._id : job,
-          formValues
+          formValues,
+          date_admission ? date_admission : currentCollaborator.date_admission,
+          dispatch_date ? dispatch_date : currentCollaborator.dispatch_date
         )
       );
-      closeModal();
+      dispatch(uiCloseModalCollaborator());
+      dispatch(collaboratorClearActive());
     } else {
       if (!job) {
         return Swal.fire("Error", "Por favor elige un trabjo", "warning");
       }
-      dispatch(registerCollaborator(formValues));
+      dispatch(registerCollaborator(formValues, date_admission, dispatch_date));
     }
+
+    setDate_admission(null);
+    setDispatch_date(null);
   };
 
   return (
@@ -97,13 +105,13 @@ export const ModalCollaborator = () => {
                     } text-xl font-bold mb-2`}
                   >{`${
                     currentCollaborator
-                      ? "Editar datos del colaborador"
+                      ? "Editar contrato del colaborador"
                       : "Contratar colaborador"
                   }`}</h5>
                   <hr />
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black  float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => closeModal()}
+                    onClick={() => dispatch(uiCloseModalCollaborator())}
                   >
                     <span className="bg-transparent text-black  h-6 w-6 text-2xl block outline-none focus:outline-none">
                       ×
@@ -112,8 +120,34 @@ export const ModalCollaborator = () => {
                 </div>
                 {/*body*/}
                 <form onSubmit={handleSubmitForm}>
-                  <section className="max-w-4xl p-6 mx-auto bg-white dark:bg-gray-800">
-                    <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                  <section className="max-w-4xl p-4 mx-auto bg-white dark:bg-gray-800">
+                    <div className="grid grid-cols-1 gap-4  sm:grid-cols-2">
+                      <div hidden={!currentCollaborator}>
+                        <label className="text-gray-700 dark:text-gray-200">
+                          Registrado el:
+                        </label>
+                        <input
+                          defaultValue={
+                            currentCollaborator &&
+                            currentCollaborator.date_admission
+                          }
+                          className="text-gray-700"
+                        />
+                      </div>
+
+                      <div hidden={!currentCollaborator}>
+                        <label className="text-gray-700 dark:text-gray-200">
+                          Finaliza el:
+                        </label>
+                        <input
+                          defaultValue={
+                            currentCollaborator &&
+                            currentCollaborator.dispatch_date
+                          }
+                          className="text-gray-700"
+                        />
+                      </div>
+
                       <div>
                         <label className="text-gray-700 dark:text-gray-200">
                           Cedula
@@ -123,11 +157,15 @@ export const ModalCollaborator = () => {
                           value={document_id}
                           name="document_id"
                           onChange={handleInputChange}
-                          type="text"
+                          type="number"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
-                      <div>
+                      <div
+                        onClick={() =>
+                          jobs.length === 0 && dispatch(JobsLoaded())
+                        }
+                      >
                         <label
                           className="text-gray-700 dark:text-gray-200"
                           htmlFor="tel"
@@ -135,7 +173,6 @@ export const ModalCollaborator = () => {
                           Trabajo
                         </label>
                         <Link
-                          target="_blank"
                           to="/trabajos"
                           className="ml-2 text-blue-500 inline-flex items-center"
                         >
@@ -158,9 +195,9 @@ export const ModalCollaborator = () => {
                           onChange={handleInputChange}
                           name="job"
                           required
-                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md"
                         >
-                          <option value="DEFAULT" disabled hidden>
+                          <option value="DEFAULT">
                             {currentCollaborator
                               ? currentCollaborator.job.name
                               : "Elegir"}
@@ -169,13 +206,14 @@ export const ModalCollaborator = () => {
                             <option
                               key={option._id}
                               value={option._id}
-                              className="text-gray-700 font-semibold"
+                              className="text-gray-700 rounded-lg font-semibold"
                             >
                               {option.name}
                             </option>
                           ))}
                         </select>
                       </div>
+
                       <div>
                         <label className="text-gray-700 dark:text-gray-200">
                           Nacionalidad
@@ -262,6 +300,37 @@ export const ModalCollaborator = () => {
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
+                      <div>
+                        <label className="text-gray-700 dark:text-gray-200">
+                          {`${
+                            currentCollaborator
+                              ? "Cambiar ficha inicial"
+                              : "Fecha inicial"
+                          }`}
+                        </label>
+                        <DatePicker
+                          locale="es"
+                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                          selected={date_admission}
+                          onChange={(date) => setDate_admission(date)}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-gray-700 dark:text-gray-200">
+                          {`${
+                            currentCollaborator
+                              ? "Cambiar ficha final"
+                              : "Fecha final"
+                          }`}
+                        </label>
+                        <DatePicker
+                          locale="es"
+                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                          selected={dispatch_date}
+                          onChange={(date) => setDispatch_date(date)}
+                        />
+                      </div>
 
                       <div hidden={!currentCollaborator}>
                         <Link
@@ -269,7 +338,7 @@ export const ModalCollaborator = () => {
                             currentCollaborator &&
                             `${currentCollaborator.name}-${currentCollaborator.surname}`
                           }`}
-                          className="px-4 py-2  font-medium tracking-wide text-white transition-colors duration-200 transform bg-green-600 rounded-md dark:bg-gray-800 hover:bg-green-500 dark:hover:bg-gray-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-gray-700"
+                          className="text-blue-900 font-semibold inline-flex items-center hover:underline"
                         >
                           <i className="fas fa-file-contract"></i> Ver contrato
                         </Link>
@@ -283,11 +352,16 @@ export const ModalCollaborator = () => {
                       className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
                       type="button"
                       style={{ transition: "all .15s ease" }}
-                      onClick={() => closeModal()}
+                      onClick={() => dispatch(uiCloseModalCollaborator())}
                     >
                       Regresar
                     </button>
                     <button
+                      disabled={
+                        !currentCollaborator &&
+                        !dispatch_date &&
+                        !date_admission
+                      }
                       className={`${
                         currentCollaborator
                           ? "bg-yellow-400 text-white active:bg-yellow-600 hover:bg-yellow-900"
@@ -297,7 +371,7 @@ export const ModalCollaborator = () => {
                       type="submit"
                       style={{ transition: "all .15s ease" }}
                     >
-                      {currentCollaborator ? "Modificar" : "Registrar"}
+                      {currentCollaborator ? "Modificar" : "Contratar"}
                     </button>
                   </div>
                 </form>

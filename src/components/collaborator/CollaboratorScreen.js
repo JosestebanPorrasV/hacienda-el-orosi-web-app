@@ -14,13 +14,13 @@ import {
   uiOpenModalInfoCollaborator,
   uiOpenModalCollaborator,
 } from "../../actions/UIAction";
-import { Dropdown } from "./Dropdown";
 import { ModalLend } from "../lend/ModalLend";
 import { ModalActive } from "../tool/ModalActive";
 import { ModalCollaborator } from "./ModalCollaborator";
 import Swal from "sweetalert2";
 import { registerTodayPresence } from "../../actions/PaymentAction";
 import { PaymentModal } from "../payment/PaymentModal";
+import ModalMenu from "./ModalMenu";
 
 export const CollaboratorScreen = () => {
   const dispatch = useDispatch();
@@ -28,6 +28,10 @@ export const CollaboratorScreen = () => {
   const { collaborators, collaboratorsState, countCollaborators } = useSelector(
     (state) => state.collaborator
   );
+  const { modalPaymentOpen, modalActiveOpen } = useSelector(
+    (state) => state.ui
+  );
+
   const { currentCollaborator } = useSelector((state) => state.collaborator);
 
   useEffect(() => {
@@ -37,15 +41,6 @@ export const CollaboratorScreen = () => {
   const [formValues, handleInputChange] = UseForm({
     filter: "",
   });
-
-  const onSelectAddUpdateCollaborator = (collaborator) => {
-    dispatch(collaboratorSetActive(collaborator));
-    openModalCollaborator();
-  };
-
-  const openModalCollaborator = () => {
-    dispatch(uiOpenModalCollaborator());
-  };
 
   const onSelectCollaborator = (collaborator) => {
     dispatch(collaboratorSetActive(collaborator));
@@ -94,7 +89,7 @@ export const CollaboratorScreen = () => {
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0 text-lg text-gray-200">
           <button
-            onClick={() => onSelectAddUpdateCollaborator()}
+            onClick={() => dispatch(uiOpenModalCollaborator())}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-700 w-35 fas fa-user-plus"
           >
             <span>Contratar nuevo</span>
@@ -233,9 +228,9 @@ export const CollaboratorScreen = () => {
                         <button
                           hidden={collaborator.validatePresence}
                           onClick={() => registerPresence(collaborator)}
-                          className="px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+                          className="px-4 py-2 text-sm font-medium tracking-wide text-white transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
                         >
-                          <i className="far fa-calendar-check"></i> Registar dia
+                          <i className="far fa-calendar-check"></i> Registar día
                         </button>
                       </th>
                       <th className="p-4 w-1/4" hidden={collaboratorsState}>
@@ -274,11 +269,8 @@ export const CollaboratorScreen = () => {
                           collaboratorsState === "Inactivo" ||
                           !collaboratorsState
                         }
-                        onClick={() =>
-                          dispatch(collaboratorSetActive(collaborator))
-                        }
                       >
-                        <Dropdown />
+                        <ModalMenu collaborator={collaborator} />
                       </th>
 
                       <th
@@ -303,13 +295,11 @@ export const CollaboratorScreen = () => {
           />
         </div>
       </div>
-
+      {currentCollaborator && <ModalInfo />}
+      {currentCollaborator && <ModalLend />}
+      {currentCollaborator && modalActiveOpen && <ModalActive />}
+      {currentCollaborator && modalPaymentOpen && <PaymentModal />}
       <ModalCollaborator />
-      <ModalInfo />
-      <ModalLend />
-      <ModalActive />
-
-      {currentCollaborator && <PaymentModal />}
     </>
   );
 };

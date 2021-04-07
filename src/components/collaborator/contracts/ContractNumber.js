@@ -4,7 +4,6 @@ import { Text, View, StyleSheet } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
   contractNoContainer: {
     flexDirection: "row",
-    marginTop: 10,
     justifyContent: "flex-end",
   },
   contractDateContainer: {
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
     fontStyle: "bold",
   },
   label: {
-    width: 60,
+    width: 120,
   },
 });
 
@@ -26,11 +25,15 @@ const ContractNumber = ({ contract }) => (
       <Text style={styles.label}>Contrato:</Text>
       <Text
         style={styles.contractDate}
-      >{`No_  ${contract.contract_number}`}</Text>
+      >{`     ${contract.contract_number}`}</Text>
     </View>
     <View style={styles.contractDateContainer}>
-      <Text style={styles.label}>Fecha: </Text>
+      <Text style={styles.label}>Fecha inicial: </Text>
       <Text>{contract.date_admission}</Text>
+    </View>
+    <View style={styles.contractDateContainer}>
+      <Text style={styles.label}>Fecha de expiracion: </Text>
+      <Text>{contract.dispatch_date}</Text>
     </View>
   </Fragment>
 );

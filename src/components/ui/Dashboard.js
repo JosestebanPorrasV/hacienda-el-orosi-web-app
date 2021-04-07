@@ -3,7 +3,7 @@ import { Navbar } from "./Navbar";
 
 import { DashboardRoutes } from "../../routers/DashboardRoutes";
 import { Sidebar } from "./Sidebar";
-import { NavbarInfo } from "./NavbarInfo";
+//import { NavbarInfo } from "./NavbarInfo";
 import '../../assets/css/TopLoaderService.css'
 
 export const Dashboard = () => {

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 import {
   addFee,
@@ -21,7 +20,6 @@ import { ModalLend } from "./ModalLend";
 
 export const LendScreen = () => {
   const dispatch = useDispatch();
-  let dateNow = new Date();
 
   const { lends, count, lendsState } = useSelector((state) => state.lend);
 
@@ -140,32 +138,6 @@ export const LendScreen = () => {
           >
             <span>Listar cancelados</span>
           </button>
-
-          <ReactHTMLTableToExcel
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-gray-800 w-35 fas fa-cloud-download-alt"
-            table="table-lends"
-            filename={`Prestamos${
-              lendsState === "Activo"
-                ? "_activos"
-                : lendsState === "Cancelado"
-                ? "_cancelados"
-                : `_ced_${document_id}`
-            }-${
-              dateNow.getDate() +
-              "_" +
-              (dateNow.getMonth() + 1) +
-              "_" +
-              dateNow.getFullYear()
-            }`}
-            sheet="Prestamos"
-            buttonText={`Descargar ${
-              lendsState === "Activo"
-                ? "activos"
-                : lendsState === "Cancelado"
-                ? "cancelados"
-                : "prestamos"
-            }`}
-          />
         </nav>
       </div>
       {lends.length !== 0 ? (

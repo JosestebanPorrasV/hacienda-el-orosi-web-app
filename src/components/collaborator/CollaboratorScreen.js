@@ -104,8 +104,10 @@ export const CollaboratorScreen = () => {
           >
             <span>Listar inactivos</span>
           </button>
-          <Link
-            to={`/reportes/colaboradores/${collaboratorsState}`}
+          <a
+            href={`https://hacienda-el-orosi-bucket.s3.amazonaws.com/reporte-colaboradores-${
+              collaboratorsState === "Activo" ? "activos" : "inactivos"
+            }.pdf`}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-red-600 w-35 fas fa-cloud-download-alt"
           >
             <span>
@@ -118,7 +120,7 @@ export const CollaboratorScreen = () => {
                   : null
               }`}
             </span>
-          </Link>
+          </a>
 
           <Link
             to="/trabajos"

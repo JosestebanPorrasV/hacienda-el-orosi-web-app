@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { collaboratorClearActive } from "../../actions/CollaboratorAction";
 
 import { uiCloseModalInfoCollaborator } from "../../actions/UIAction";
@@ -43,7 +44,7 @@ export const ModalInfo = () => {
                         Fecha de ingreso
                       </h3>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                      {currentCollaborator.date_admission}
+                        {currentCollaborator.date_admission}
                       </p>
                     </div>
                     <div className="block py-1">
@@ -51,7 +52,7 @@ export const ModalInfo = () => {
                         Direccion fisica
                       </h3>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                      {currentCollaborator.direction}
+                        {currentCollaborator.direction}
                       </p>
                     </div>
                     <div className="block py-1">
@@ -59,24 +60,33 @@ export const ModalInfo = () => {
                         Nacionalidad
                       </h3>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                      {currentCollaborator.nationality}
+                        {currentCollaborator.nationality}
                       </p>
                     </div>
                     <div className="block py-1">
-                      <h3 className="font-medium text-gray-700">
-                        Telefono
-                      </h3>
+                      <h3 className="font-medium text-gray-700">Telefono</h3>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                      {currentCollaborator.tel}
+                        {currentCollaborator.tel}
                       </p>
                     </div>
                     <div className="block py-1">
-                      <h3 className="font-medium text-gray-700">
-                        Celular
-                      </h3>
+                      <h3 className="font-medium text-gray-700">Celular</h3>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                      {currentCollaborator.cel}
+                        {currentCollaborator.cel}
                       </p>
+                    </div>
+
+                    <div className="block py-1" hidden={!currentCollaborator}>
+                      <Link
+                        to={`/contrato/${
+                          currentCollaborator &&
+                          `${currentCollaborator.name}-${currentCollaborator.surname}`
+                        }`}
+                        className="text-blue-900 font-semibold inline-flex items-center hover:underline"
+                      >
+                        <i className="fas fa-file-contract mr-1"></i> Ver
+                        contrato
+                      </Link>
                     </div>
                   </div>
                 </div>

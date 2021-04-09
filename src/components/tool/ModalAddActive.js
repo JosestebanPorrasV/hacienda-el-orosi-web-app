@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uiCloseModalAddActive } from "../../actions/UIAction";
 import {
@@ -14,7 +14,7 @@ export const ModalAddActive = () => {
   const dispatch = useDispatch();
 
   const { modalAddActiveOpen } = useSelector((state) => state.ui);
-  const { currentCollaborator } = useSelector( (state) => state.collaborator );
+  const { currentCollaborator } = useSelector((state) => state.collaborator);
   const { currentTool } = useSelector((state) => state.tool);
 
   const closeModal = () => {
@@ -43,7 +43,11 @@ export const ModalAddActive = () => {
   };
 
   const handleAddOneActive = async () => {
-    await dispatch(registerActives( [{"collaborator_id" : currentCollaborator._id, "tool_id" :currentTool._id }] ));
+    await dispatch(
+      registerActives([
+        { collaborator_id: currentCollaborator._id, tool_id: currentTool._id },
+      ])
+    );
     await clearForm();
   };
   return (
@@ -121,7 +125,9 @@ export const ModalAddActive = () => {
                           placeholder="Requerido"
                         />
                         <button
-                          onClick={() => dispatch(searchCollaborator(collaborator_id)) }
+                          onClick={() =>
+                            dispatch(searchCollaborator(collaborator_id))
+                          }
                           className="bg-blue-500 text-white active:bg-blue-600 uppercase text-sm px-2 py-1 rounded-b shadow hover:bg-blue-900 outline-none focus:outline-none mr-1 mb-1"
                           type="button"
                           style={{ transition: "all .15s ease" }}
@@ -147,7 +153,10 @@ export const ModalAddActive = () => {
                         </label>
                         <input
                           disabled={true}
-                          value={  currentCollaborator &&  `${currentCollaborator.name} ${currentCollaborator.surname}` }
+                          value={
+                            currentCollaborator &&
+                            `${currentCollaborator.name} ${currentCollaborator.surname}`
+                          }
                           id="nameCollaborator"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"

@@ -135,7 +135,7 @@ export const AdministratorScreen = () => {
                             type="button"
                             style={{ transition: "all .15s ease" }}
                           >
-                            {administrator.role === "GENERAL_ROLE" ? (
+                            {administrator.role === "Dueño" ? (
                               <i className="fas fa-user-slash"></i>
                             ) : (
                               <i className="fas fa-trash-alt"></i>

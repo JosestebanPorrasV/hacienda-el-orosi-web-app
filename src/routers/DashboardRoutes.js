@@ -5,7 +5,6 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import { CollaboratorScreen } from "../components/collaborator/CollaboratorScreen";
 import { AdministratorScreen } from "../components/administrator/AdministratorScreen";
 import { LendScreen } from "../components/lend/LendScreen";
 import { ContractScreen } from "../components/contract/ContractScreen";
@@ -16,6 +15,7 @@ import { PaymentScreen } from "../components/payment/PaymentScreen";
 import { AnimalsScreen } from "../components/animal/AnimalsScreen";
 import { DietScreen } from "../components/diet/DietScreen";
 import { AlimentScreen } from "../components/diet/AlimentScreen";
+import { CollaboratorScreen } from "../components/collaborator/CollaboratorScreen";
 
 export const DashboardRoutes = () => {
   return (
@@ -27,6 +27,7 @@ export const DashboardRoutes = () => {
           component={AdministratorScreen}
         />
         <Route exact path="/colaboradores" component={CollaboratorScreen} />
+
         <Route exact path="/pagos" component={PaymentScreen} />
         <Route exact path="/prestamos" component={LendScreen} />
         <Route exact path="/contratos" component={ContractScreen} />

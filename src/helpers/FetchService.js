@@ -3,7 +3,15 @@ const baseUrl = process.env.REACT_APP_API_URL;
 const FetchConsult = (endpoint, data, method = "GET") => {
   const url = `${baseUrl}/${endpoint}`;
   const token = localStorage.getItem("token") || "";
-  
+
+  if (method === "GET") {
+    return fetch(url, {
+      method,
+      headers: {
+        Authorization: token,
+      },
+    });
+  } else {
     return fetch(url, {
       method,
       headers: {
@@ -12,7 +20,7 @@ const FetchConsult = (endpoint, data, method = "GET") => {
       },
       body: JSON.stringify(data),
     });
-  
+  }
 };
 
 export { FetchConsult };

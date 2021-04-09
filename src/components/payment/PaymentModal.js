@@ -4,19 +4,23 @@ import { uiCloseModalPayment } from "../../actions/UIAction";
 import SearchResults from "react-filter-search";
 import { UseForm } from "../../hooks/UseForm";
 
-import { collaboratorClearActive } from "../../actions/CollaboratorAction";
+import { liquidateCleanActive } from "../../actions/CollaboratorAction";
 import { Link } from "react-router-dom";
 import {
   paymentRegister,
   presenceByCollaboratorLoading,
+  cleanPresenceByCollaborator,
 } from "../../actions/PaymentAction";
+import Swal from "sweetalert2";
 
 export const PaymentModal = () => {
   const dispatch = useDispatch();
 
   const { modalPaymentOpen } = useSelector((state) => state.ui);
 
-  const { currentCollaborator } = useSelector((state) => state.collaborator);
+  const { currentCollaborator, liquidate } = useSelector(
+    (state) => state.collaborator
+  );
   const { lends, count } = useSelector((state) => state.lend);
   const {
     presenceDayByCollaborator,
@@ -29,7 +33,8 @@ export const PaymentModal = () => {
 
   const closeModal = () => {
     dispatch(uiCloseModalPayment());
-    dispatch(collaboratorClearActive());
+    dispatch(cleanPresenceByCollaborator());
+    dispatch(liquidateCleanActive());
   };
 
   const [formValues, handleInputChange] = UseForm({
@@ -40,7 +45,7 @@ export const PaymentModal = () => {
   const { filter1, filter2 } = formValues;
 
   const paymentReg = {
-    collaborator_job_name: currentCollaborator.job.name_job,
+    collaborator_job_name: currentCollaborator.job.name,
     total_days_worked:
       presenceDayByCollaborator.length > 0
         ? presenceDayByCollaborator.length
@@ -60,17 +65,36 @@ export const PaymentModal = () => {
       totalOvertimeByCollaborator * currentCollaborator.job.price_extra_hours,
   };
 
+  const registerPayment = () => {
+    Swal.fire({
+      title: "¿Realizara pago?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#A0A0A0",
+      confirmButtonText: "Si, agregar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(paymentRegister(paymentReg));
+      } else {
+      }
+    });
+  };
+
   return (
     <>
       {modalPaymentOpen ? (
         <>
           <div className="absolute inset-0  z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-6xl">
+            <div className="relative w-auto mx-auto max-w-6xl">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none bg-hwite">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none bg-white">
                 {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-blue-100  text-green-900 rounded-t">
-                  <h3 className="text-2xl font-semibold"> Realizar pago</h3>
+                <div className="flex items-start justify-between p-2 text-green-800 rounded-t">
+                  <h3 className="text-2xl font-semibold">
+                    {liquidate ? "Liquidar colaborador" : "Realizar pago"}
+                  </h3>
                   <button
                     className="p-1 ml-auto border-0 text-white float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => closeModal()}
@@ -81,30 +105,30 @@ export const PaymentModal = () => {
                   </button>
                 </div>
                 {/*body*/}
-                <section className="text-gray-600 body-font">
-                  <div className="container px-5 py-4 mx-auto">
+                <section className="text-green-700 body-font border-t border-gray-200">
+                  <div className="container px-5 py-2 mx-auto">
                     <div className="flex flex-wrap -m-4 text-center">
                       <div className="p-4 sm:w-1/4 w-1/2">
                         <p className="leading-relaxed">Nombre</p>
-                        <h2 className="title-font font-medium sm:text-2xl text-2xl text-gray-900">
+                        <h2 className="title-font font-medium sm:text-2xl text-2xl text-gray-700">
                           {`${currentCollaborator.name} ${currentCollaborator.surname}`}
                         </h2>
                       </div>
                       <div className="p-4 sm:w-1/4 w-1/2">
                         <p className="leading-relaxed">Cedula</p>
-                        <h2 className="title-font font-medium sm:text-2xl text-2xl text-gray-900">
+                        <h2 className="title-font font-medium sm:text-xl text-2xl text-gray-700">
                           {`${currentCollaborator.document_id}`}
                         </h2>
                       </div>
                       <div className="p-4 sm:w-1/4 w-1/2">
                         <p className="leading-relaxed">Trabajo</p>
-                        <h2 className="title-font font-medium sm:text-2xl text-2xl text-gray-900">
-                          {`${currentCollaborator.job.name_job}`}
+                        <h2 className="title-font font-medium sm:text-xl text-2xl text-gray-700">
+                          {`${currentCollaborator.job.name}`}
                         </h2>
                       </div>
                       <div className="p-4 sm:w-1/4 w-1/2">
                         <p className="leading-relaxed">Precio del dia</p>
-                        <h2 className="title-font font-medium sm:text-2xl text-2xl text-gray-900">
+                        <h2 className="title-font font-medium sm:text-2xl text-xl text-gray-700">
                           {`${new Intl.NumberFormat("en-EN").format(
                             currentCollaborator.job.price_day
                           )}`}
@@ -119,10 +143,10 @@ export const PaymentModal = () => {
                     <div className="container px-5 mx-auto">
                       <div className="flex flex-wrap">
                         <div className="pr-1 md:w-1/2 flex flex-col items-center w-full">
-                          <span className="inline-block py-1 px-2 rounded bg-gray-200 text-white-500 text-lg font-medium tracking-widest">
+                          <span className="inline-block py-1 px-2 rounded-t bg-gray-200 text-white-500 text-lg font-medium tracking-widest">
                             Dias pendientes de pago
                           </span>
-                          <section className="relative w-full pt-4">
+                          <section className="relative w-full">
                             <div className="relative">
                               <input
                                 type="text"
@@ -133,43 +157,52 @@ export const PaymentModal = () => {
                                 onChange={handleInputChange}
                               />
                             </div>
-
-                            <SearchResults
-                              value={filter1}
-                              data={presenceDayByCollaborator}
-                              renderResults={(results) => (
-                                <div className="static inset-x-0 px-6 overflow-y-auto bg-white border border-gray-300 rounded-b-lg h-52 divide-y-2 divide-fuchsia-600">
-                                  {results.map((presenceDay, index) => (
-                                    <div
-                                      className="md:flex  pb-4 pt-4"
-                                      key={presenceDay._id}
-                                    >
-                                      <span className="ml-2 text-pink-900 whitespace-nowrap">
-                                        <i className="far fa-hand-point-right"></i>{" "}
-                                        {index + 1}
-                                      </span>
-
-                                      <span className="ml-2 text-blue-800 whitespace-nowrap">
-                                        <i className="fas fa-calendar-day"></i>{" "}
-                                        Dia:
-                                        <span className="ml-2  text-gray-400">
-                                          {presenceDay.date}
+                            {presenceDayByCollaborator.length !== 0 ? (
+                              <SearchResults
+                                value={filter1}
+                                data={presenceDayByCollaborator}
+                                renderResults={(results) => (
+                                  <div className="static inset-x-0 px-6 overflow-y-auto bg-white border border-gray-300 rounded-b-lg h-52 divide-y-2 divide-fuchsia-600">
+                                    {results.map((presenceDay, index) => (
+                                      <div
+                                        className="md:flex  pb-4 pt-4"
+                                        key={presenceDay._id}
+                                      >
+                                        <span className="ml-2  text-gray-400 whitespace-nowrap">
+                                          <i className="far fa-hand-point-right"></i>{" "}
+                                          {index + 1} =
                                         </span>
-                                      </span>
 
-                                      <span className="ml-2 text-green-800 whitespace-nowrap">
-                                        Horas extras:
-                                        <span className="ml-2  text-gray-400">
-                                          {new Intl.NumberFormat(
-                                            "en-EN"
-                                          ).format(presenceDay.total_overtime)}
+                                        <span className="ml-2 text-red-800 whitespace-nowrap">
+                                          <i className="fas fa-calendar-day"></i>{" "}
+                                          Dia:
+                                          <span className="ml-2  text-red-80">
+                                            {presenceDay.date}
+                                          </span>
                                         </span>
-                                      </span>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            />
+
+                                        <span className="ml-2 text-gray-500 whitespace-nowrap">
+                                          Horas extras:
+                                          <span className="ml-2 text-gray-500">
+                                            {new Intl.NumberFormat(
+                                              "en-EN"
+                                            ).format(
+                                              presenceDay.total_overtime
+                                            )}
+                                          </span>
+                                        </span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              />
+                            ) : (
+                              <div className="static inset-x-0  bg-white border border-gray-300 rounded-b-lg h-52 italic">
+                                <span className="ml-2 text-gray-400 whitespace-nowrap">
+                                  - ( Sin dias pendientes de pago ) -
+                                </span>
+                              </div>
+                            )}
                           </section>
                           <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 w-full">
                             <Link
@@ -208,10 +241,10 @@ export const PaymentModal = () => {
                           </div>
                         </div>
                         <div className="pl-1 md:w-1/2 flex flex-col items-center w-full ">
-                          <span className="inline-block py-1 px-2 rounded bg-gray-200 text-white-500 text-lg font-medium tracking-widest">
+                          <span className="inline-block py-1 px-2 rounded-t bg-gray-200 text-white-500 text-lg font-medium tracking-widest">
                             Prestamos activos
                           </span>
-                          <section className="relative w-full pt-4">
+                          <section className="relative w-full">
                             <div className="relative">
                               <input
                                 type="text"
@@ -222,54 +255,61 @@ export const PaymentModal = () => {
                                 onChange={handleInputChange}
                               />
                             </div>
+                            {lends.length !== 0 ? (
+                              <SearchResults
+                                value={filter2}
+                                data={lends}
+                                renderResults={(results) => (
+                                  <div className="static inset-x-0 px-6 overflow-y-auto bg-white border border-gray-300 rounded-b-lg  divide-y-2 divide-fuchsia-600 h-52">
+                                    {results.map((activeLend, index) => (
+                                      <div
+                                        className="md:flex  pb-4 pt-4"
+                                        key={activeLend._id}
+                                      >
+                                        <span className="ml-2 text-gray-400 whitespace-nowrap">
+                                          <i className="fas fa-hand-point-right"></i>{" "}
+                                          {index + 1}
+                                        </span>
 
-                            <SearchResults
-                              value={filter2}
-                              data={lends}
-                              renderResults={(results) => (
-                                <div className="static inset-x-0 px-6 overflow-y-auto bg-white border border-gray-300 rounded-b-lg  divide-y-2 divide-fuchsia-600 h-52">
-                                  {results.map((activeLend, index) => (
-                                    <div
-                                      className="md:flex  pb-4 pt-4"
-                                      key={activeLend._id}
-                                    >
-                                      <span className="ml-2 text-pink-900 whitespace-nowrap">
-                                        <i className="fas fa-hand-point-right"></i>{" "}
-                                        {index + 1}
-                                      </span>
-
-                                      <span className="ml-2 text-green-800 whitespace-nowrap">
-                                        Monto actual:
-                                        <span className="ml-2  text-gray-400">
-                                          {new Intl.NumberFormat(
-                                            "en-EN"
-                                          ).format(activeLend.amount)}
+                                        <span className="ml-2 text-blue-800 whitespace-nowrap">
+                                          Monto actual:
+                                          <span className="ml-2 text-gray-700">
+                                            {new Intl.NumberFormat(
+                                              "en-EN"
+                                            ).format(activeLend.amount)}
+                                          </span>
                                         </span>
-                                      </span>
-                                      <span className="ml-2 text-red-800 whitespace-nowrap">
-                                        Cuota:
-                                        <span className="ml-2  text-gray-400">
-                                          {new Intl.NumberFormat(
-                                            "en-EN"
-                                          ).format(activeLend.fee)}
+                                        <span className="ml-2 text-blue-800 whitespace-nowrap">
+                                          Cuota:
+                                          <span className="ml-2 text-gray-700">
+                                            {new Intl.NumberFormat(
+                                              "en-EN"
+                                            ).format(activeLend.fee)}
+                                          </span>
                                         </span>
-                                      </span>
-                                      <span className="ml-2 text-blue-800 whitespace-nowrap">
-                                        <i className="fas fa-calendar-day"></i>
-                                        <span className="ml-2  text-gray-400">
-                                          {activeLend.date_issued}
+                                        <span className="ml-2 text-blue-800 whitespace-nowrap">
+                                          <i className="fas fa-calendar-day"></i>
+                                          <span className="ml-2  text-gray-700">
+                                            {activeLend.date_issued}
+                                          </span>
                                         </span>
-                                      </span>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            />
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              />
+                            ) : (
+                              <div className="static inset-x-0  bg-white border border-gray-300 rounded-b-lg h-52 italic">
+                                <span className="ml-2 text-gray-400 whitespace-nowrap">
+                                  - ( Sin prestamos activos ) -
+                                </span>
+                              </div>
+                            )}
                           </section>
                           <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">
                             <Link
                               to="/prestamos"
-                              className="text-green-500 inline-flex items-center"
+                              className="text-green-500 font-semibold inline-flex items-center hover:underline"
                             >
                               Ver prestamos
                               <svg
@@ -307,7 +347,7 @@ export const PaymentModal = () => {
                   </section>
 
                   <div className="w-full">
-                    <h1 className="text-blue-900 text-lg title-font font-medium mb-4">
+                    <h1 className="text-blue-900 text-lg title-font font-medium ">
                       DESGLOSE SE PAGO
                     </h1>
 
@@ -382,25 +422,23 @@ export const PaymentModal = () => {
 
                     <div className="flex pb-2">
                       <button
-                        disabled={paymentReg.total_salary === 0}
-                        onClick={() => dispatch(paymentRegister(paymentReg))}
-                        className="flex ml-auto text-lg text-white bg-green-500 border-0 py-2 px-3 focus:outline-none hover:bg-green-600 rounded"
+                        className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
+                        type="button"
+                        style={{ transition: "all .15s ease" }}
+                        onClick={() => closeModal()}
+                      >
+                        Volver
+                      </button>
+                      <button
+                        onClick={() => registerPayment()}
+                        className={`flex ml-auto text-lg text-white ${
+                          paymentReg.total_salary === 0 && "hidden"
+                        } bg-green-500 border-0 py-2 px-3 focus:outline-none hover:bg-green-600 rounded`}
                       >
                         Realizar pago
                       </button>
                     </div>
                   </div>
-                </div>
-                {/*footer*/}
-                <div className="flex items-center justify-end p-4 border-t border-solid border-gray-300 rounded-b">
-                  <button
-                    className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
-                    type="button"
-                    style={{ transition: "all .15s ease" }}
-                    onClick={() => closeModal()}
-                  >
-                    Volver
-                  </button>
                 </div>
               </div>
             </div>

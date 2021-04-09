@@ -112,6 +112,9 @@ export function registerTodayPresence(collaborator, total_overtime = 0) {
     }
   };
 }
+export const cleanPresenceByCollaborator = () => ({
+  type: Types.CLEAN_PRESENCE_DAY_BY_COLLABORATOR,
+});
 
 const validatePresenceCollaborator = (collaborator) => ({
   type: Types.VALIDATE_PRESENCE_COLLABORATOR,
@@ -120,10 +123,6 @@ const validatePresenceCollaborator = (collaborator) => ({
 
 const registerPresence = () => ({
   type: Types.REGISTER_PRESENCE_SUCCESS,
-});
-
-const cleanPresenceByCollaborator = () => ({
-  type: Types.CLEAN_PRESENCE_DAY_BY_COLLABORATOR,
 });
 
 const presenceByCollaboratorLoaded = (presenceDay) => ({

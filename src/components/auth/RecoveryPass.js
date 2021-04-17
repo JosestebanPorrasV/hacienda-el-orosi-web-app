@@ -9,12 +9,14 @@ import { verifyRecoveryKey } from "../../actions/AuthAction";
 import { changePass } from "../../actions/AuthAction";
 import { Link } from "react-router-dom";
 
-import '../../assets/css/TopLoaderService.css'
+import "../../assets/css/TopLoaderService.css";
 
 export const RecoveryPass = () => {
   const dispatch = useDispatch();
 
   const { findMail, recoveryState } = useSelector((state) => state.auth);
+
+  const administrator = localStorage.getItem("identity") || "";
 
   const [formRecoveryValues, handleRecoveryInputChange] = UseForm({
     email: "",
@@ -53,17 +55,20 @@ export const RecoveryPass = () => {
     return (
       <section
         className="m-0 p-0 box-border relative h-screen w-full text-white bg-cover bg-center"
-        style={{ backgroundImage: `url(${bgLogin})` }}
+        style={{ backgroundImage: `url(${!administrator && bgLogin})` }}
       >
         <div className="container mx-auto flex flex-col px-5 justify-center items-center">
-          <img
-            className="lg:w-2/6 md:w-3/6 w-5/6 mb-4 mt-4 object-cover object-center rounded"
-            alt="hero"
-            src="https://dummyimage.com/720x600"
-          />
+          {!administrator && (
+            <img
+              className="lg:w-2/6 md:w-3/6 w-5/6 mb-4 mt-4 object-cover object-center rounded"
+              alt="hero"
+              src="https://dummyimage.com/720x600"
+            />
+          )}
+
           <div className="w-full md:w-2/3 flex flex-col mb-16 items-center text-center bg-black bg-opacity-70 rounded-2xl md:p-4">
             <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-200">
-              Sistema de recuperacion
+             {administrator ? "Cambiar contraseña" : "Sistema de recuperacion"} 
             </h1>
             <form
               onSubmit={(() => {
@@ -79,10 +84,7 @@ export const RecoveryPass = () => {
             >
               {recoveryState === 0 && (
                 <div className="relative mr-4 lg:w-full xl:w-1/2 w-2/4 md:w-full text-left">
-                  <label
-            
-                    className="leading-7 text-sm text-white"
-                  >
+                  <label className="leading-7 text-sm text-white">
                     Correo electronico
                   </label>
                   <input
@@ -169,7 +171,7 @@ export const RecoveryPass = () => {
 
             <Link
               className="bg-white text-black border-0 py-2 px-6 m-8 focus:outline-none hover:bg-gray-600 hover:text-white rounded text-lg"
-              to="/ingresar"
+              to= {administrator ? "/administradores": "/ingresar" }
             >
               Regresar
             </Link>

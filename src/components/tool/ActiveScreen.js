@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 export const ActiveScreen = () => {
   const dispatch = useDispatch();
   const { actives, selectedActives } = useSelector((state) => state.tool);
+  const { role } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(activesToolsLoaded());
@@ -58,7 +59,7 @@ export const ActiveScreen = () => {
       <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
         <Link
           to="/herramientas"
-          className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-indigo-900 rounded-lg hover:bg-gray-800 w-35"
+          className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-500 w-35"
         >
           <i className="fas fa-arrow-circle-left"></i>
           <span className="text-white font-bold">Ir a Herramientas</span>
@@ -81,7 +82,7 @@ export const ActiveScreen = () => {
             <i className="fas fa-tools"></i> {`total: ${actives.length}`}
           </span>
 
-          <div className="overflow-x-auto py-4">
+          <div className="overflow-x-auto">
             <button
               onClick={() => removeManyTool()}
               className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
@@ -100,7 +101,7 @@ export const ActiveScreen = () => {
                   <table className="min-w-full">
                     <thead className="bg-gray-600">
                       <tr className="bg-gray-600 text-white text-lg">
-                        <th className="py-2 px-4">
+                        <th hidden={role === "Encargado del ganado"} className="py-2 px-4">
                           <i className="fas fa-check"></i> Marcar
                         </th>
                         <th className="p-4 w-1/4">
@@ -121,7 +122,7 @@ export const ActiveScreen = () => {
                     <tbody className="text-blue-100 text-opacity-80 whitespace-nowrap">
                       {results.map((active) => (
                         <tr key={active._id}>
-                          <th className="py-3 px-2">
+                          <th hidden={role === "Encargado del ganado"} className="py-3 px-2">
                             <label className="inline-flex items-center mt-3 ">
                               <input
                                 type="checkbox"

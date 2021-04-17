@@ -57,27 +57,32 @@ export function registerAdministrator(administratorFormValues) {
   };
 }
 
-export function changeRole(user_id, role) {
+export const deleteAdmin = (admin) => {
   return async (dispatch) => {
     await TopLoaderService.start();
-    const resp = await FetchConsult(`/cambiar-rol/${user_id}`, { role }, "PUT");
-    const body = await resp.json();
-    if (body.status) {
-      await dispatch(AdministratorsLoading());
-      await dispatch(administratorClearActive());
-      await TopLoaderService.end();
-      await Swal.fire({
-        icon: "success",
-        title: body.msg,
-        showConfirmButton: false,
-        timer: 2000,
-      });
-    } else {
-      await Swal.fire("Error", body.msg, "error");
-      await TopLoaderService.end();
+    try {
+      const resp = await FetchConsult(
+        `remover-administrador/${admin._id}`,
+        { _id: admin._id },
+        "DELETE"
+      );
+
+      const body = await resp.json();
+      if (body.status) {
+        await Swal.fire("Eliminado", body.msg, "success");
+
+        await dispatch(deleteAdministrator(body.administrator));
+
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
-}
+};
 
 export const administratorSetActive = (administrator) => ({
   type: Types.ADMINISTRATOR_SET_ACTIVE,
@@ -92,6 +97,10 @@ export const addAdministratorSuccess = () => ({
   type: Types.ADD_NEW_ADMINISTRATOR,
 });
 
+export const deleteAdministrator = (admin) => ({
+  type: Types.DELETE_ADMINISTRATOR,
+  payload: admin,
+});
 const administratorsLoaded = (administrators) => ({
   type: Types.ADMINISTRATORS_LOADED,
   payload: administrators,

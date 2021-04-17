@@ -210,7 +210,7 @@ export const ToolScreen = () => {
                         </th>
 
                         <th className="py-2 px-12">{tool.name}</th>
-                        <th className="py-2 px-20">#{tool.active_num}</th>
+                        <th className="py-2 px-20">{tool.active_num}</th>
                         <th className="py-2 px-12">{tool.date}</th>
                         <th className="py-2 px-20">
                           <button

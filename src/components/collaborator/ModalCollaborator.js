@@ -79,7 +79,7 @@ export const ModalCollaborator = () => {
       dispatch(uiCloseModalCollaborator());
       dispatch(collaboratorClearActive());
     } else {
-      if (!job) {
+      if (!job || job === "DEFAULT") {
         return Swal.fire("Error", "Por favor elige un trabjo", "warning");
       }
       dispatch(registerCollaborator(formValues, date_admission, dispatch_date));
@@ -93,8 +93,8 @@ export const ModalCollaborator = () => {
     <>
       {modalCollaboratorOpen ? (
         <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-sm">
+          <div className="justify-center items-center  overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-auto my-6 mx-auto max-w-6xl">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
@@ -191,10 +191,9 @@ export const ModalCollaborator = () => {
                           </svg>
                         </Link>
                         <select
-                          defaultValue={!job && "DEFAULT"}
+                          value={job}
                           onChange={handleInputChange}
                           name="job"
-                          required
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md"
                         >
                           <option value="DEFAULT">
@@ -304,9 +303,10 @@ export const ModalCollaborator = () => {
                         <label className="text-gray-700 dark:text-gray-200">
                           {`${
                             currentCollaborator
-                              ? "Cambiar ficha inicial"
+                              ? "Cambiar fecha inicial"
                               : "Fecha inicial"
                           }`}
+                          <br />
                         </label>
                         <DatePicker
                           locale="es"
@@ -323,6 +323,7 @@ export const ModalCollaborator = () => {
                               ? "Cambiar ficha final"
                               : "Fecha final"
                           }`}
+                          <br />
                         </label>
                         <DatePicker
                           locale="es"

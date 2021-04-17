@@ -16,6 +16,7 @@ import { uiOpenModalJob } from "../../actions/UIAction";
 export const JobScreen = () => {
   const dispatch = useDispatch();
   const { jobs } = useSelector((state) => state.job);
+  const { role } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(JobsLoaded());
@@ -62,20 +63,20 @@ export const JobScreen = () => {
 
   return (
     <>
-      <div className="bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900  rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
+      <div className={`${
+          role === "Encargado del ganado" && "hidden"
+      } bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900  rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12`}>
         <div>
           <h2 className="text-2xl">TRABAJOS DE LA HACIENDA</h2>
-          <p className="text-blue-100 opacity-70">
-            Funcionalidades principales
-          </p>
+
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
             onClick={() => onSelectAddEditJob()}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-purple-200 rounded-lg hover:bg-gray-900 w-35"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-800 w-35"
           >
             <i className="fas fa-plus-circle"></i>
-            <span className="text-indigo-600 hover:text-indigo-200 font-bold">
+            <span className="text-gray-200 font-bold">
               Agregar Trabajo
             </span>
           </button>
@@ -84,9 +85,6 @@ export const JobScreen = () => {
       {jobs.length !== 0 ? (
         <>
           <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
-            <h2 className="text-green-400 text-xl font-bold mb-2">
-              LISTA DE TRABAJOS
-            </h2>
             <input
               type="text"
               name="filter"
@@ -123,9 +121,8 @@ export const JobScreen = () => {
                           <th className="py-2 px-5">
                             <i className="fas fa-info-circle"></i> Descripcion
                           </th>
-                          <th className="py-2 px-12">
-                            <i className="far fa-caret-square-down"></i>{" "}
-                            Acciones
+                          <th hidden={role === "Encargado del ganado"} className="py-2 px-12">
+                            <i className="far fa-caret-square-down"></i> Acciones
                           </th>
                         </tr>
                       </thead>
@@ -151,7 +148,7 @@ export const JobScreen = () => {
                             <th className="whitespace-pre-line">
                               {job.description}
                             </th>
-                            <th className="py-3 px-3">
+                            <th hidden={role === "Encargado del ganado"} className="py-3 px-3">
                               <button
                                 onClick={() => onSelectAddEditJob(job)}
                                 className="bg-yellow-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-yellow-600 outline-none focus:outline-none mr-1 mb-1"

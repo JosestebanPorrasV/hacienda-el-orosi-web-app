@@ -19,6 +19,12 @@ export const AdministratorReducer = (state = initialState, action) => {
         ...action.payload,
       };
 
+      case Types.DELETE_ADMINISTRATOR:
+        return {
+          ...state,
+          administrators: state.administrators.filter((e) => e._id !== action.payload._id),
+        };
+
     case Types.ADMINISTRATOR_SET_ACTIVE:
       return {
         ...state,

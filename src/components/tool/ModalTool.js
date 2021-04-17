@@ -63,7 +63,7 @@ export const ModalTool = () => {
                 {/*body*/}
                 <form onSubmit={handleRegisterTool}>
                   <section className="max-w-4xl p-6 mx-auto bg-white dark:bg-gray-800">
-                    <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                   
                       <div>
                         <label className="text-gray-700 dark:text-gray-200">
                           Nombre de la herramienta
@@ -78,7 +78,7 @@ export const ModalTool = () => {
                           placeholder="Requerido"
                         />
                       </div>
-                    </div>
+         
                   </section>
                   {/*footer*/}
                   <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">

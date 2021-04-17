@@ -80,52 +80,49 @@ export default function ModalMenu({ collaborator }) {
                 </div>
                 {/*body*/}
 
-                <div className="bg-gray-800 w-80">
-                  <button
-                    onClick={() => dispatch(uiOpenModalPayment())}
-                    className="py-2 px-2 font-semibold block w-full hover:bg-blue-700 hover:text-white "
-                  >
-                    <i className="fas fa-money-bill-wave"></i> Pagos
-                  </button>
+                <button
+                  onClick={() => dispatch(uiOpenModalPayment())}
+                  className="py-2 px-2 font-semibold block w-full hover:bg-blue-700 hover:text-white "
+                >
+                  <i className="fas fa-money-bill-wave"></i> Pagos
+                </button>
 
-                  <button
-                    className="py-2 font-semibold  w-full hover:bg-blue-700 hover:text-white"
-                    onClick={() => liquidate()}
-                  >
-                    <i className="far fa-handshake"></i> Liquidar
-                  </button>
-                  <Link
-                    to={`/contrato/${
-                      currentCollaborator &&
-                      `${currentCollaborator.name}-${currentCollaborator.surname}`
-                    }`}
-                    className="py-2 font-semibold  block w-full hover:bg-blue-700 hover:text-white"
-                  >
-                    <i className="fas fa-file-contract"></i> Ver contrato
-                  </Link>
+                <button
+                  className="py-2 font-semibold  w-full hover:bg-blue-700 hover:text-white"
+                  onClick={() => liquidate()}
+                >
+                  <i className="far fa-handshake"></i> Liquidar
+                </button>
+                <Link
+                  to={`/contrato/${
+                    currentCollaborator &&
+                    `${currentCollaborator.name}-${currentCollaborator.surname}`
+                  }`}
+                  className="py-2 font-semibold  block w-full hover:bg-blue-700 hover:text-white"
+                >
+                  <i className="fas fa-file-contract"></i> Ver contrato
+                </Link>
 
-                  <button
-                    className="py-2 font-semibold  block w-full hover:bg-blue-700 hover:text-white"
-                    onClick={() => dispatch(uiOpenModalActive())}
-                  >
-                    <i className="fas fa-tools"></i> Herramientas
-                  </button>
+                <button
+                  className="py-2 font-semibold  block w-full hover:bg-blue-700 hover:text-white"
+                  onClick={() => dispatch(uiOpenModalActive())}
+                >
+                  <i className="fas fa-tools"></i> Herramientas
+                </button>
 
-                  <button
-                    className="py-2 font-semibold  block w-full hover:bg-blue-700 hover:text-white"
-                    onClick={() => dispatch(uiOpenModalCollaborator())}
-                  >
-                    <i className="fas fa-user-edit"></i> Editar Contrato
-                  </button>
+                <button
+                  className="py-2 font-semibold  block w-full hover:bg-blue-700 hover:text-white"
+                  onClick={() => dispatch(uiOpenModalCollaborator())}
+                >
+                  <i className="fas fa-user-edit"></i> Editar Contrato
+                </button>
 
-                  <button
-                    onClick={() => dispatch(uiOpenModalAddLend())}
-                    className="py-2 font-semibold block w-full hover:bg-blue-700 hover:text-white "
-                  >
-                    <i className="fas fa-hand-holding-usd"></i> Realizar
-                    prestemo
-                  </button>
-                </div>
+                <button
+                  onClick={() => dispatch(uiOpenModalAddLend())}
+                  className="py-2 font-semibold block w-full hover:bg-blue-700 hover:text-white "
+                >
+                  <i className="fas fa-hand-holding-usd"></i> Realizar prestemo
+                </button>
 
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 rounded-b">

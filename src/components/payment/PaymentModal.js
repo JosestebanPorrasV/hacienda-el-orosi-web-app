@@ -110,25 +110,25 @@ export const PaymentModal = () => {
                     <div className="flex flex-wrap -m-4 text-center">
                       <div className="p-4 sm:w-1/4 w-1/2">
                         <p className="leading-relaxed">Nombre</p>
-                        <h2 className="title-font font-medium sm:text-2xl text-2xl text-gray-700">
+                        <h2 className="title-font font-medium text-gray-700">
                           {`${currentCollaborator.name} ${currentCollaborator.surname}`}
                         </h2>
                       </div>
                       <div className="p-4 sm:w-1/4 w-1/2">
                         <p className="leading-relaxed">Cedula</p>
-                        <h2 className="title-font font-medium sm:text-xl text-2xl text-gray-700">
+                        <h2 className="title-font font-medium text-gray-700">
                           {`${currentCollaborator.document_id}`}
                         </h2>
                       </div>
                       <div className="p-4 sm:w-1/4 w-1/2">
                         <p className="leading-relaxed">Trabajo</p>
-                        <h2 className="title-font font-medium sm:text-xl text-2xl text-gray-700">
+                        <h2 className="title-font font-medium text-gray-700">
                           {`${currentCollaborator.job.name}`}
                         </h2>
                       </div>
                       <div className="p-4 sm:w-1/4 w-1/2">
                         <p className="leading-relaxed">Precio del dia</p>
-                        <h2 className="title-font font-medium sm:text-2xl text-xl text-gray-700">
+                        <h2 className="title-font font-medium text-gray-700">
                           {`${new Intl.NumberFormat("en-EN").format(
                             currentCollaborator.job.price_day
                           )}`}

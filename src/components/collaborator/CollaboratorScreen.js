@@ -5,6 +5,7 @@ import SearchResults from "react-filter-search";
 import { Link } from "react-router-dom";
 
 import {
+  collaboratorClearActive,
   collaboratorSetActive,
   CollaboratorsLoading,
 } from "../../actions/CollaboratorAction";
@@ -13,6 +14,7 @@ import { ModalInfo } from "./ModalInfo";
 import {
   uiOpenModalInfoCollaborator,
   uiOpenModalCollaborator,
+  uiOpenModalActive,
 } from "../../actions/UIAction";
 import { ModalLend } from "../lend/ModalLend";
 import { ModalActive } from "../tool/ModalActive";
@@ -31,6 +33,7 @@ export const CollaboratorScreen = () => {
   const { modalPaymentOpen, modalActiveOpen } = useSelector(
     (state) => state.ui
   );
+  const { role } = useSelector((state) => state.auth);
 
   const { currentCollaborator } = useSelector((state) => state.collaborator);
 
@@ -74,33 +77,47 @@ export const CollaboratorScreen = () => {
     }
   };
 
+  const contractCollaborator = () => {
+    dispatch(collaboratorClearActive());
+    dispatch(uiOpenModalCollaborator());
+  };
+
+  const showActiveModal = (collaborator) => {
+    dispatch(collaboratorSetActive(collaborator));
+    dispatch(uiOpenModalActive());
+  };
+
   const { filter } = formValues;
 
   let dateNow = new Date();
 
   return (
     <>
-      <div className="bg-gradient-to-r from-red-300 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
+      <div
+        className={`${
+          role === "Encargado del ganado" && "hidden"
+        } bg-gradient-to-r from-blue-200 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12`}
+      >
         <div>
-          <h2 className="text-2xl text-red-800">COLABORADORES</h2>
-          <p className="text-red-900 opacity-80">Funcionalidades principales</p>
+          <h2 className="text-2xl">COLABORADORES</h2>
+          <p className="text-gray-600">Funcionalidades principales</p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0 text-lg text-gray-200">
           <button
-            onClick={() => dispatch(uiOpenModalCollaborator())}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-red-600 w-35 fas fa-user-plus"
+            onClick={() => contractCollaborator()}
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700 w-35 fas fa-user-plus"
           >
             <span>Contratar nuevo</span>
           </button>
           <button
             onClick={() => dispatch(CollaboratorsLoading("Activo"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-red-600 w-35 fas fa-chart-line"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700  w-35 fas fa-chart-line"
           >
             <span>Listar activos</span>
           </button>
           <button
             onClick={() => dispatch(CollaboratorsLoading("Inactivo"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-red-600 w-35 fas fa-stop-circle"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg  hover:bg-gray-700  w-35 fas fa-stop-circle"
           >
             <span>Listar inactivos</span>
           </button>
@@ -108,7 +125,7 @@ export const CollaboratorScreen = () => {
             href={`https://hacienda-el-orosi-bucket.s3.amazonaws.com/reporte-colaboradores-${
               collaboratorsState === "Activo" ? "activos" : "inactivos"
             }.pdf`}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-red-600 w-35 fas fa-cloud-download-alt"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg  hover:bg-gray-700  w-35 fas fa-cloud-download-alt"
           >
             <span>
               {" "}
@@ -124,7 +141,7 @@ export const CollaboratorScreen = () => {
 
           <Link
             to="/trabajos"
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-red-600 w-35 fas fa-building"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700 w-35 fas fa-building"
           >
             <span>Trabajos</span>
           </Link>
@@ -185,11 +202,13 @@ export const CollaboratorScreen = () => {
                   <table className="text-center items-center w-full">
                     <thead className="bg-gray-800 flex text-white w-full">
                       <tr className="flex w-full">
+                        <div hidden={role === "Encargado del ganado"}></div>
                         <th
                           className="p-4 w-1/4"
                           hidden={
                             collaboratorsState === "Inactivo" ||
-                            !collaboratorsState
+                            !collaboratorsState ||
+                            role === "Encargado del ganado"
                           }
                         >
                           <i className="fas fa-check"></i> Asistencia
@@ -213,7 +232,8 @@ export const CollaboratorScreen = () => {
                           className="p-4 w-1/4"
                           hidden={
                             collaboratorsState === "Inactivo" ||
-                            !collaboratorsState
+                            !collaboratorsState ||
+                            role === "Encargado del ganado"
                           }
                         >
                           <i className="fas fa-caret-square-down"></i> Acciones
@@ -223,7 +243,8 @@ export const CollaboratorScreen = () => {
                           className="p-4 w-1/4 pr-10"
                           hidden={
                             collaboratorsState === "Activo" ||
-                            !collaboratorsState
+                            !collaboratorsState ||
+                            role === "Encargado del ganado"
                           }
                         >
                           <i className="fas fa-caret-square-down"></i> Acciones
@@ -240,7 +261,8 @@ export const CollaboratorScreen = () => {
                             className="p-4 w-1/4"
                             hidden={
                               collaboratorsState === "Inactivo" ||
-                              !collaboratorsState
+                              !collaboratorsState ||
+                              role === "Encargado del ganado"
                             }
                           >
                             <button
@@ -288,7 +310,8 @@ export const CollaboratorScreen = () => {
                             className="p-4 w-1/4 "
                             hidden={
                               collaboratorsState === "Inactivo" ||
-                              !collaboratorsState
+                              !collaboratorsState ||
+                              role === "Encargado del ganado"
                             }
                           >
                             <ModalMenu collaborator={collaborator} />
@@ -298,7 +321,8 @@ export const CollaboratorScreen = () => {
                             className="p-4 w-1/4"
                             hidden={
                               collaboratorsState === "Activo" ||
-                              !collaboratorsState
+                              !collaboratorsState ||
+                              role === "Encargado del ganado"
                             }
                           >
                             <button
@@ -307,6 +331,17 @@ export const CollaboratorScreen = () => {
                               type="button"
                             >
                               <i className="fas fa-user-plus"></i> contratar
+                            </button>
+                          </th>
+                          <th
+                            className="p-4 w-1/4"
+                            hidden={role !== "Encargado del ganado"}
+                          >
+                            <button
+                              className="py-2 font-semibold  block w-full hover:bg-blue-700 hover:text-white"
+                              onClick={() => showActiveModal(collaborator)}
+                            >
+                              <i className="fas fa-tools"></i> Herramientas
                             </button>
                           </th>
                         </tr>

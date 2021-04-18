@@ -82,6 +82,17 @@ export const Sidebar = () => {
                 </span>
               </Link>
             </li>
+            <li hidden={role !== "Encargado del ganado"}>
+              <Link
+                to="/trabajos"
+                className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
+              >
+                <span className="flex-1">
+                  <i className="fas fa-users pr-4"></i>
+                  Trabajos
+                </span>
+              </Link>
+            </li>
 
             <li>
               <Link
@@ -104,18 +115,8 @@ export const Sidebar = () => {
                 </span>
               </Link>
             </li>
-            <li hidden={role !== "Dueño"}>
-              <Link
-                to="/listar-administradores"
-                className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
-              >
-                <span className="flex-1">
-                  <i className="fas fa-hat-cowboy-side pr-4"></i>
-                  Administradores
-                </span>
-              </Link>
-            </li>
-            <li>
+
+            <li hidden={role === "Encargado del ganado"}>
               <Link
                 to="/prestamos"
                 className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
@@ -132,6 +133,17 @@ export const Sidebar = () => {
               >
                 <span className="flex-1">
                   <i className="fas fa-donate pr-4"></i>Contratos
+                </span>
+              </Link>
+            </li>
+            <li hidden={role !== "Dueño"}>
+              <Link
+                to="/administradores"
+                className="bg-green-900 hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-4 space-x-2 rounded-lg font-bold"
+              >
+                <span className="flex-1">
+                  <i className="fas fa-hat-cowboy-side pr-4"></i>
+                  Administradores
                 </span>
               </Link>
             </li>

@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { collaboratorClearActive } from "../../actions/CollaboratorAction";
 
 import { uiCloseModalInfoCollaborator } from "../../actions/UIAction";
@@ -74,19 +73,6 @@ export const ModalInfo = () => {
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                         {currentCollaborator.cel}
                       </p>
-                    </div>
-
-                    <div className="block py-1" hidden={!currentCollaborator}>
-                      <Link
-                        to={`/contrato/${
-                          currentCollaborator &&
-                          `${currentCollaborator.name}-${currentCollaborator.surname}`
-                        }`}
-                        className="text-blue-900 font-semibold inline-flex items-center hover:underline"
-                      >
-                        <i className="fas fa-file-contract mr-1"></i> Ver
-                        contrato
-                      </Link>
                     </div>
                   </div>
                 </div>

@@ -97,7 +97,7 @@ export const JobScreen = () => {
               <i className="fas fa-file-contract"></i> {`total: ${jobs.length}`}
             </span>
 
-            <div className="overflow-x-auto py-4">
+            <div className="overflow-x-auto">
               <div className="align-middle inline-block min-w-full overflow-hidden">
                 <SearchResults
                   value={filter}

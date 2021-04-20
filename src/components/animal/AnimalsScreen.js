@@ -2,25 +2,36 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   animalsByTypeLoading,
+  animalsLoading,
   regMilk,
   regWeight,
+  typeClearActive,
+  typeSetActive,
+  TypesLoading,
+  animalsByTypeAndStatusLoading,
+  animalSetActive,
+  searchSetActive,
+  animalClearActive,
 } from "../../actions/AnimalAction";
 import SearchResults from "react-filter-search";
 import { UseForm } from "../../hooks/UseForm";
 import Swal from "sweetalert2";
-import { moment } from "moment";
+import { uiOpenModalAnimal } from "../../actions/UIAction";
 import { Link } from "react-router-dom";
+import { ModalAnimal } from "./ModalAnimal";
+import moment from "moment";
 
 export const AnimalsScreen = () => {
   const dispatch = useDispatch();
-  const [openTab, setOpenTab] = React.useState(1);
+  const [openTab, setOpenTab] = React.useState(null);
 
-  let dateNow = new Date();
-
-  const { animals, total } = useSelector((state) => state.animal);
+  const { animals, animalsTypes, currentType } = useSelector(
+    (state) => state.animal
+  );
 
   useEffect(() => {
-    dispatch(animalsByTypeLoading());
+    dispatch(TypesLoading());
+    dispatch(animalsLoading());
   }, [dispatch]);
 
   const [formValues, handleInputChange] = UseForm({
@@ -37,7 +48,7 @@ export const AnimalsScreen = () => {
       title: "Registrar litros de leche",
       html:
         ` <label className="text-gray-700 text-bold">Litros</label>` +
-        '<input id="swal-input1" class="swal2-input">',
+        '<input id="swal-inputMilk" class="swal2-input">',
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
@@ -45,25 +56,25 @@ export const AnimalsScreen = () => {
       cancelButtonText: "Cancelar",
       focusConfirm: false,
       preConfirm: () => {
-        return document.getElementById("swal-input1").value;
+        return document.getElementById("swal-inputMilk").value;
       },
     });
 
     if (formValues) {
       dispatch(
-        regMilk(animalID, formValues, moment(dateNow).format("YYYY-MM-DD"))
+        regMilk(animalID, formValues, moment(new Date()).format("YYYY-MM-DD"))
       );
     }
   };
 
   const registerWeight = async (animalID) => {
     const { value: formValues } = await Swal.fire({
-      title: "Registrar litros de leche",
+      title: "Registrar peso",
       html:
         ` <label className="text-gray-700 text-bold">Peso</label> <br/>` +
-        '<input id="swal-input1" type="number" class="swal2-input"> <br/>' +
+        '<input id="swal-input1Weight" type="number" class="swal2-input"> <br/>' +
         ` <label className="text-gray-700 text-bold">Observaciones</label> <br/>` +
-        '<input id="swal-input2" type="textarea" class="swal2-input">',
+        '<input id="swal-inputObs" type="textarea" class="swal2-input">',
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
@@ -72,39 +83,74 @@ export const AnimalsScreen = () => {
       focusConfirm: false,
       preConfirm: () => {
         return [
-          document.getElementById("swal-input1").value,
-          document.getElementById("swal-input2").value,
+          document.getElementById("swal-input1Weight").value,
+          document.getElementById("swal-inputObs").value,
         ];
       },
     });
 
     if (formValues) {
       dispatch(
-        regWeight(animalID, formValues, moment(dateNow).format("YYYY-MM-DD"))
+        regWeight(animalID, formValues, moment(new Date()).format("YYYY-MM-DD"))
       );
     }
   };
 
+  const regAnimal = () => {
+    dispatch(typeClearActive());
+    dispatch(animalClearActive());
+    dispatch(uiOpenModalAnimal());
+  };
+
+  const editAnimal = (animal) => {
+    dispatch(typeSetActive(animal.type._id));
+    animal.daughter_of && dispatch(searchSetActive(animal.daughter_of));
+    dispatch(animalSetActive(animal));
+    dispatch(uiOpenModalAnimal());
+  };
+
+  const setTypeActive = (typeID) => {
+    dispatch(typeSetActive(typeID));
+    dispatch(animalsByTypeLoading(typeID));
+  };
   return (
     <>
-      <div className="bg-gradient-to-r from-green-400 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
+      <div className="bg-gradient-to-r from-green-400 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
           <h2 className="text-2xl text-green-900">ANIMALES</h2>
-          <p className="text-green-900 opacity-80">Funcionalidades principales</p>
+          <p className="text-green-900 opacity-80">
+            Funcionalidades principales
+          </p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0 text-lg text-gray-200">
-          <button className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35 fas fa-hand-holding-usd">
-            <span>Realizar algo</span>
+          <button
+            onClick={() => regAnimal()}
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
+          >
+            <span>Registrar animal</span>
           </button>
           <Link
-            to="/dieta"
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35 fas fa-seedling"
+            to="/tipos-de-animales"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
           >
-            <span>Listar Dietas </span>
+            <span>Tipos de animales</span>
           </Link>
-          <button className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35 fas fa-strikethrough">
-            <span>Listar algo2</span>
-          </button>
+          {currentType && (
+            <select
+              onChange={(e) =>
+                e.target.value !== "DEFAULT" &&
+                dispatch(
+                  animalsByTypeAndStatusLoading(currentType._id, e.target.value)
+                )
+              }
+              className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
+            >
+              <option value="DEFAULT">Ordenar por estado</option>
+              <option value="Vendido">Vendido</option>
+              <option value="En finca">En finca</option>
+              <option value="Activo">Activo</option>
+            </select>
+          )}
         </nav>
       </div>
 
@@ -115,69 +161,24 @@ export const AnimalsScreen = () => {
 
         <div>
           <select
-            onChange={(e) => dispatch(animalsByTypeLoading(e.target.value))}
-            className="bg-gray-200 text-gray-900 font-bold text-xl py-2 px-2 rounded-lg inline-flex  group-hover:bg-green-700 group-hover:text-white uppercase"
+            onChange={(e) =>
+              e.target.value === "DEFAULT"
+                ? dispatch(animalsLoading())
+                : setTypeActive(e.target.value)
+            }
+            name="types"
+            className="bg-gray-200 text-gray-900 font-bold  py-2 px-2 rounded-lg inline-flex  group-hover:bg-green-700 group-hover:text-white uppercase"
           >
-            <option
-              value="Ganado estabulado"
-              className="pt-6 bg-gray-300 text-base text-gray-700 font-semibold"
-            >
-              Ganado estabulado
-            </option>
-            <option
-              value="Vaca lechera"
-              className="bg-gray-300 text-base text-gray-700 font-semibold"
-            >
-              Vacas lecheras
-            </option>
-            <option
-              value="Vaca de cria"
-              className="bg-gray-300 text-base text-gray-700 font-semibold"
-            >
-              Vacas de cria
-            </option>
-            <option
-              value="Toro padrote"
-              className="bg-gray-300 text-base text-gray-700 font-semibold"
-            >
-              Toros padrote
-            </option>
-            <option
-              value="Ternero"
-              className="bg-gray-300 text-base text-gray-700 font-semibold"
-            >
-              Terneros
-            </option>
-            <option
-              value="Novilla"
-              className="bg-gray-300 text-base text-gray-700 font-semibold"
-            >
-              Novillas
-            </option>
-            <option
-              value="Caballo"
-              className="bg-gray-300 text-base text-gray-700 font-semibold"
-            >
-              Caballos
-            </option>
-            <option
-              value="Mula"
-              className="bg-gray-300 text-base text-gray-700 font-semibold"
-            >
-              Mulas
-            </option>
-            <option
-              value="Yegua"
-              className="bg-gray-300 text-base text-gray-700 font-semibold"
-            >
-              Yeguas
-            </option>
-            <option
-              value="Burro"
-              className="bg-gray-300 text-base text-gray-700 font-semibold"
-            >
-              Burros
-            </option>
+            <option value="DEFAULT">Todos</option>
+            {animalsTypes.map((option) => (
+              <option
+                key={option._id}
+                value={option._id}
+                className="bg-gray-300 text-base text-gray-700 font-semibold"
+              >
+                {option.name}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -188,24 +189,23 @@ export const AnimalsScreen = () => {
             type="text"
             name="filter"
             className="rounded-t-lg h-6 p-5 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-            placeholder="Filtrar por ..."
+            placeholder="Buscar"
             value={filter}
             onChange={handleInputChange}
           />
           <span
             className={`text-white md:ml-2 rounded-t-lg  inline-block text uppercase`}
           >
-            <i className="fas fa-box-open"></i> {`total: ${total}`}
+            <i className="fas fa-box-open"></i> {`total: ${animals.length}`}
           </span>
           <SearchResults
             value={filter}
             data={animals}
             renderResults={(results) => (
-              <div>
-                {results.map((animal) => (
+              <div className="h-screen overflow-y-auto">
+                {results.map((animal, index) => (
                   <section
                     className="bg-gray-700 body-font mb-6 rounded-lg overflow-hidden "
-                    role="tablist"
                     key={animal._id}
                   >
                     <div className="container px-5 py-4 mx-auto">
@@ -213,7 +213,8 @@ export const AnimalsScreen = () => {
                         <div className="lg:w-1/2 w-full lg:pr-10 lg:py-1 mb-2 lg:mb-0">
                           <h1 className="title-font font-bold">
                             <span
-                              className={`bg-green-200 text-green-700 rounded-full px-3 py-1 inline-block text-center uppercase`}
+                              className={`text-gray-200 rounded-full px-3 py-1 inline-block text-center uppercase`}
+                              style={{ backgroundColor: animal.plate_color }}
                             >
                               Numero de chapa: {animal.plate_number}
                             </span>
@@ -221,71 +222,99 @@ export const AnimalsScreen = () => {
                           <div className="flex mb-4">
                             <a
                               className={`flex-grow border-b-2 ${
-                                openTab === 1 && `border-green-500`
+                                openTab ===
+                                  `${
+                                    currentType ? currentType._id : animal._id
+                                  }/1` && `border-green-500`
                               } py-2 px-1`}
                               onClick={(e) => {
                                 e.preventDefault();
-                                setOpenTab(1);
+                                setOpenTab(null);
                               }}
                               data-toggle="tab"
-                              href="#link1"
-                              role="tablist"
+                              href={`${
+                                currentType ? currentType._id : animal._id
+                              }/1`}
                             >
                               Informacion
                             </a>
                             <a
                               className={`flex-grow border-b-2 ${
-                                openTab === 2 && `border-green-500`
+                                openTab ===
+                                  `${
+                                    currentType ? currentType._id : animal._id
+                                  }/2` && `border-green-500`
                               } py-2 px-1`}
                               onClick={(e) => {
                                 e.preventDefault();
-                                setOpenTab(2);
+                                setOpenTab(
+                                  `${
+                                    currentType ? currentType._id : animal._id
+                                  }/2`
+                                );
                               }}
                               data-toggle="tab"
-                              href="#link2"
-                              role="tablist"
+                              href={`${
+                                currentType ? currentType._id : animal._id
+                              }/2`}
                             >
                               Peso
                             </a>
                             <a
                               hidden={
-                                animal.gender === "Macho" &&
-                                animal.gender !== "Vaca lechera"
+                                animal.type.gender === "Macho" &&
+                                animal.type.gender !== "Vaca lechera"
                               }
                               className={`flex-grow border-b-2 ${
-                                openTab === 3 && `border-green-500`
+                                openTab ===
+                                  `$${
+                                    currentType ? currentType._id : animal._id
+                                  }/3` && `border-green-500`
                               } py-2 px-1`}
                               onClick={(e) => {
                                 e.preventDefault();
-                                setOpenTab(3);
+                                setOpenTab(
+                                  `${
+                                    currentType ? currentType._id : animal._id
+                                  }/3`
+                                );
                               }}
                               data-toggle="tab"
-                              href="#link3"
-                              role="tablist"
+                              href={`${
+                                currentType ? currentType._id : animal._id
+                              }/3`}
                             >
                               Leche
                             </a>
                             <a
-                              hidden={animal.gender === "Macho"}
+                              hidden={animal.type.gender === "Macho"}
                               className={`flex-grow border-b-2 ${
-                                openTab === 4 && `border-green-500`
+                                openTab ===
+                                  `${
+                                    currentType ? currentType._id : animal._id
+                                  }/4` && `border-green-500`
                               } py-2 px-1`}
                               onClick={(e) => {
                                 e.preventDefault();
-                                setOpenTab(4);
+                                setOpenTab(
+                                  `${
+                                    currentType ? currentType._id : animal._id
+                                  }/4`
+                                );
                               }}
                               data-toggle="tab"
-                              href="#link4"
-                              role="tablist"
+                              href={`${
+                                currentType ? currentType._id : animal._id
+                              }4`}
                             >
                               Partos
                             </a>
                           </div>
+
                           <div
                             className={`overflow-y-auto h-72 bg-gray-600 rounded-lg ${
-                              openTab === 1 ? "block" : "hidden"
+                              !openTab ? "block" : "hidden"
                             }`}
-                            id="link1"
                           >
                             <div className="flex py-2">
                               <span className="ml-2">Estado</span>
@@ -317,9 +346,12 @@ export const AnimalsScreen = () => {
                               }`}
                             >
                               <span className="ml-2">Foto de registro</span>
-                              <span className="ml-auto mr-2">
-                                {animal.photo_register}
-                              </span>
+                              <a
+                                className="ml-auto mr-2 hover:underline"
+                                href={animal.photo_register}
+                              >
+                                <span>DESCARGAR</span>
+                              </a>
                             </div>
 
                             <div
@@ -393,21 +425,21 @@ export const AnimalsScreen = () => {
                             </div>
 
                             <div
-                              className={`flex border-t border-gray-200 py-2 ${
-                                !animal.gender && "hidden"
-                              }`}
+                              className={`flex border-t border-gray-200 py-2`}
                             >
                               <span className="ml-2">Genero</span>
                               <span className="ml-auto mr-2">
-                                {animal.gender}
+                                {animal.type.gender}
                               </span>
                             </div>
                           </div>
                           <div
                             className={`overflow-y-auto h-72 bg-gray-800 rounded-lg ${
-                              openTab === 2 ? "block" : "hidden"
+                              openTab ===
+                              `${currentType ? currentType._id : animal._id}/2`
+                                ? "block"
+                                : "hidden"
                             }`}
-                            id="link2"
                           >
                             <input
                               type="text"
@@ -451,9 +483,11 @@ export const AnimalsScreen = () => {
 
                           <div
                             className={`overflow-y-auto h-72 bg-gray-800 rounded-lg ${
-                              openTab === 3 ? "block" : "hidden"
+                              openTab ===
+                              `${currentType ? currentType._id : animal._id}/3`
+                                ? "block"
+                                : "hidden"
                             }`}
-                            id="link3"
                           >
                             <input
                               type="text"
@@ -494,9 +528,11 @@ export const AnimalsScreen = () => {
 
                           <div
                             className={`overflow-y-auto h-72 bg-gray-800 rounded-lg ${
-                              openTab === 4 ? "block" : "hidden"
+                              openTab ===
+                              `${currentType ? currentType._id : animal._id}/4`
+                                ? "block"
+                                : "hidden"
                             }`}
-                            id="link4"
                           >
                             <input
                               type="text"
@@ -539,29 +575,55 @@ export const AnimalsScreen = () => {
                           </div>
                           <div className="flex pt-4">
                             <span
-                              hidden={openTab !== 2}
+                              hidden={
+                                openTab !==
+                                `${
+                                  currentType ? currentType._id : animal._id
+                                }/2`
+                              }
                               className="text-semibold"
                             >
                               {`Registros: ${animal.weight.length}`}
                             </span>
                             <span
-                              hidden={openTab !== 3}
+                              hidden={
+                                openTab !==
+                                `${
+                                  currentType ? currentType._id : animal._id
+                                }/3`
+                              }
                               className="text-semibold"
                             >
                               {`Registros: ${animal.milk.length}`}
                             </span>
                             <span
-                              hidden={openTab !== 4}
+                              hidden={
+                                openTab !==
+                                `${
+                                  currentType ? currentType._id : animal._id
+                                }/4`
+                              }
                               className="text-semibold"
                             >
                               {`Registros: ${animal.calving.length}`}
                             </span>
-                            <div hidden={openTab !== 1} className="ml-auto">
-                              <button className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded">
+                            <div hidden={openTab} className="ml-auto">
+                              <button
+                                onClick={() => editAnimal(animal)}
+                                className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded"
+                              >
                                 Editar
                               </button>
                             </div>
-                            <div hidden={openTab !== 2} className="ml-auto">
+                            <div
+                              hidden={
+                                openTab !==
+                                `${
+                                  currentType ? currentType._id : animal._id
+                                }/2`
+                              }
+                              className="ml-auto"
+                            >
                               <button
                                 onClick={() => registerWeight(animal._id)}
                                 className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded"
@@ -569,7 +631,15 @@ export const AnimalsScreen = () => {
                                 Registrar peso
                               </button>
                             </div>
-                            <div hidden={openTab !== 3} className="ml-auto">
+                            <div
+                              hidden={
+                                openTab !==
+                                `${
+                                  currentType ? currentType._id : animal._id
+                                }/3`
+                              }
+                              className="ml-auto"
+                            >
                               <button
                                 onClick={() => registerMilk(animal._id)}
                                 className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded"
@@ -577,7 +647,15 @@ export const AnimalsScreen = () => {
                                 Registrar leche
                               </button>
                             </div>
-                            <div hidden={openTab !== 4} className="ml-auto">
+                            <div
+                              hidden={
+                                openTab !==
+                                `${
+                                  currentType ? currentType._id : animal._id
+                                }/4`
+                              }
+                              className="ml-auto"
+                            >
                               <button className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded">
                                 Registrar parto
                               </button>
@@ -585,9 +663,15 @@ export const AnimalsScreen = () => {
                           </div>
                         </div>
                         <img
-                          alt="ecommerce"
+                          alt="Hacienda El Orosi"
                           className="lg:w-1/2 w-full lg:h-96 h-64 sm:mt-14 object-cover object-center rounded"
-                          src="https://picsum.photos/seed/cow/300/300"
+                          src={
+                            animal.photo
+                              ? animal.photo
+                              : `https://source.unsplash.com/random/800x600?sig=${
+                                  index + 1
+                                }`
+                          }
                         />
                       </div>
                     </div>
@@ -602,6 +686,8 @@ export const AnimalsScreen = () => {
           - ( No se encontraron animales registrados ) -
         </span>
       )}
+
+      <ModalAnimal />
     </>
   );
 };

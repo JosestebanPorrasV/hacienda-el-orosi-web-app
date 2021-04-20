@@ -115,7 +115,7 @@ export const AnimalsScreen = () => {
   };
   return (
     <>
-      <div className="bg-gradient-to-r from-green-400 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
+      <div className="bg-gradient-to-r from-green-400 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
           <h2 className="text-2xl text-green-900">ANIMALES</h2>
           <p className="text-green-900 opacity-80">
@@ -203,7 +203,7 @@ export const AnimalsScreen = () => {
             data={animals}
             renderResults={(results) => (
               <div className="h-screen overflow-y-auto">
-                {results.map((animal) => (
+                {results.map((animal, index) => (
                   <section
                     className="bg-gray-700 body-font mb-6 rounded-lg overflow-hidden "
                     key={animal._id}
@@ -346,9 +346,12 @@ export const AnimalsScreen = () => {
                               }`}
                             >
                               <span className="ml-2">Foto de registro</span>
-                              <span className="ml-auto mr-2">
-                                {animal.photo_register}
-                              </span>
+                              <a
+                                className="ml-auto mr-2 hover:underline"
+                                href={animal.photo_register}
+                              >
+                                <span>DESCARGAR</span>
+                              </a>
                             </div>
 
                             <div
@@ -660,9 +663,15 @@ export const AnimalsScreen = () => {
                           </div>
                         </div>
                         <img
-                          alt="ecommerce"
+                          alt="Hacienda El Orosi"
                           className="lg:w-1/2 w-full lg:h-96 h-64 sm:mt-14 object-cover object-center rounded"
-                          src="https://picsum.photos/seed/cow/300/300"
+                          src={
+                            animal.photo
+                              ? animal.photo
+                              : `https://source.unsplash.com/random/800x600?sig=${
+                                  index + 1
+                                }`
+                          }
                         />
                       </div>
                     </div>

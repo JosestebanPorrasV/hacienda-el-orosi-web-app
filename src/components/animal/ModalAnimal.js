@@ -33,6 +33,7 @@ const initEvent = {
   place_origin: "",
   name: "",
   next_due_date: "",
+  photo: undefined,
 };
 
 export const ModalAnimal = () => {
@@ -40,7 +41,7 @@ export const ModalAnimal = () => {
   const [date_admission, setDate_admission] = useState();
   const [next_due_date, setNext_due_date] = useState();
   const [check, setCheck] = useState(false);
-  const [imageSrc, setImageSrc] = useState();
+  const [imgReg, setImgReg] = useState();
 
   const { modalAnimalOpen } = useSelector((state) => state.ui);
   const {
@@ -69,6 +70,7 @@ export const ModalAnimal = () => {
     starting_weight,
     place_origin,
     name,
+    photo,
   } = formValues;
 
   const [formInput, handleChange] = UseForm({
@@ -78,8 +80,9 @@ export const ModalAnimal = () => {
   const { searchA } = formInput;
 
   const handleInputChange = ({ target }) => {
+    console.log(target);
     if (target.files) {
-      setImageSrc(URL.createObjectURL(target.files[0]));
+      setImgReg(URL.createObjectURL(target.files[0]));
       setFormValues({
         ...formValues,
         photo: target.files[0],
@@ -94,7 +97,6 @@ export const ModalAnimal = () => {
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    console.log(check);
     if (currentAnimal) {
       if (
         !currentType ||
@@ -166,6 +168,7 @@ export const ModalAnimal = () => {
     setCheck(false);
     dispatch(searchClearActive());
     dispatch(uiCloseModalAnimal());
+    setImgReg(null);
   };
 
   return (
@@ -481,46 +484,41 @@ export const ModalAnimal = () => {
                         </div>
                         <div className="pt-6">
                           <label className="text-gray-700 dark:text-gray-200">
-                            Foto de registro:
+                            Foto de registro (si la hay):
                           </label>
 
                           <ImageUpload
+                            name="photo"
                             handleImageSelect={handleInputChange}
-                            imageSrc={imageSrc}
-                            setImageSrc={setImageSrc}
-                            name="photo_registerI"
+                            imageSrc={imgReg}
+                            setImageSrc={setImgReg}
+                            value={photo}
                             style={{
                               marginTop: 10,
                               width: "100%",
-                              height: 300,
-                              background: "green",
+                              height: 315,
+                              background: "#CDEDD3",
                               display: "flex",
                               justifyContent: "center",
                               alignItems: "center",
                             }}
                           />
                         </div>
-                        <div className="pt-6">
-                          <label className="text-gray-700 dark:text-gray-200">
-                            Foto de perfil:
-                          </label>
-
-                          <ImageUpload
-                            handleImageSelect={handleInputChange}
-                            imageSrc={imageSrc}
-                            setImageSrc={setImageSrc}
-                            name="photo_registerI"
-                            style={{
-                              marginTop: 10,
-                              width: "100%",
-                              height: 300,
-                              background: "green",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                          />
-                        </div>
+                        {currentAnimal && currentAnimal.photo_register && (
+                          <div className="mt-6">
+                            <label className="text-gray-700 dark:text-gray-200">
+                              Foto actual de registro (click){" "}
+                              <i className="fas fa-cloud-download-alt"></i>
+                            </label>
+                            <a href={currentAnimal.photo_register}>
+                              <img
+                                alt="Hacienda El Orosi"
+                                className="lg:h-80 h-64 mt-3 object-cover object-center rounded"
+                                src={currentAnimal.photo_register}
+                              />
+                            </a>
+                          </div>
+                        )}
                       </>
                     )}
                   </div>

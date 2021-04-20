@@ -1,5 +1,5 @@
 import { Types } from "../types/Types";
-import { FetchConsult } from "../helpers/FetchService";
+import { FetchConsult, uploadImage } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 import TopLoaderService from "top-loader-service";
 
@@ -214,12 +214,15 @@ export function register(
     if (body.status) {
       await dispatch(animalClearActive());
       await dispatch(addAnimalSuccess(body.animal));
-      await Swal.fire({
-        icon: "success",
-        title: body.msg,
-        showConfirmButton: false,
-        timer: 2000,
-      });
+
+      if (valuesForm.photo) {
+        await dispatch(
+          uploadImage(valuesForm.photo, body.animal._id, "foto-de-registro")
+        );
+      } else {
+        await dispatch(updateAnimalSuccess(body.animal));
+      }
+
       await TopLoaderService.end();
     } else {
       await Swal.fire("Error", body.msg, "error");
@@ -260,14 +263,21 @@ export function update(
     const body = await resp.json();
     if (body.status) {
       await dispatch(animalClearActive());
-      await dispatch(updateAnimalSuccess(body.animal));
+      console.log(valuesForm);
+      if (valuesForm.photo) {
+        await dispatch(
+          uploadImg(valuesForm.photo, body.animal._id, "foto-de-registro")
+        );
+      } else {
+        await Swal.fire({
+          icon: "success",
+          title: body.msg,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        await dispatch(updateAnimalSuccess(body.animal));
+      }
 
-      await Swal.fire({
-        icon: "success",
-        title: body.msg,
-        showConfirmButton: false,
-        timer: 2000,
-      });
       await TopLoaderService.end();
     } else {
       await Swal.fire("Error", body.msg, "error");
@@ -275,6 +285,32 @@ export function update(
     }
   };
 }
+
+export const uploadImg = (image, animalID, url) => {
+  return async (dispatch) => {
+    let formData = new FormData();
+
+    formData.append("image", image);
+
+    const resp = await uploadImage(
+      `gestion-animal/subir/${url}/${animalID}/`,
+      formData
+    );
+    const body = await resp.json();
+
+    if (body.status) {
+      await Swal.fire({
+        icon: "success",
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      await dispatch(updateAnimalSuccess(body.animal));
+    } else {
+      await Swal.fire("Error", body.msg, "error");
+    }
+  };
+};
 
 export function regMilk(animalID, reg, date) {
   return async (dispatch) => {

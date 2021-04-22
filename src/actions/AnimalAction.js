@@ -217,7 +217,7 @@ export function register(
 
       if (valuesForm.photo) {
         await dispatch(
-          uploadImage(valuesForm.photo, body.animal._id, "foto-de-registro")
+          uploadImg(valuesForm.photo, body.animal._id, "foto-de-registro")
         );
       } else {
         await dispatch(updateAnimalSuccess(body.animal));
@@ -288,6 +288,8 @@ export function update(
 
 export const uploadImg = (image, animalID, url) => {
   return async (dispatch) => {
+    await TopLoaderService.start();
+
     let formData = new FormData();
 
     formData.append("image", image);
@@ -296,8 +298,9 @@ export const uploadImg = (image, animalID, url) => {
       `gestion-animal/subir/${url}/${animalID}/`,
       formData
     );
-    const body = await resp.json();
 
+    const body = await resp.json();
+    await dispatch(updateAnimalSuccess(body.animal));
     if (body.status) {
       await Swal.fire({
         icon: "success",
@@ -305,9 +308,10 @@ export const uploadImg = (image, animalID, url) => {
         showConfirmButton: false,
         timer: 2000,
       });
-      await dispatch(updateAnimalSuccess(body.animal));
+      await TopLoaderService.end();
     } else {
       await Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
     }
   };
 };

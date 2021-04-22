@@ -374,13 +374,15 @@ export const ModalAnimal = () => {
                           >
                             <option value="DEFAULT">Elegir</option>
 
-                            <option value="#FE0202">Rojo</option>
+                            <option value="#FFFFFF">Blanco</option>
+                            <option value="#EECA06">Amarillo</option>
+                            <option value="#C74C66">Salmon</option>
+                            <option value="#B0316E">Rojo Lila</option>
                             <option value="#FF6B02">Naranja</option>
+                            <option value="#DB885C">Naranja Oscuro</option>
                             <option value="#319404">verde</option>
                             <option value="#0367AB">Azul Cian</option>
                             <option value="#17277E">Azul Oscuro</option>
-                            <option value="#5F0272">Violeta</option>
-                            <option value="#B70661">Violeta Rojizo</option>
                             <option value="#F5075D">Magenta</option>
                           </select>
                         </div>

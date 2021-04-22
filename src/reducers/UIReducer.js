@@ -12,6 +12,8 @@ const initialState = {
   modalAddActiveOpen: false,
   modalCollaboratorInfoOpen: false,
   modalPaymentOpen: false,
+  modalDietOpen: false,
+  modalAlimentOpen: false,
 };
 
 export const UIReducer = (state = initialState, action) => {
@@ -60,16 +62,16 @@ export const UIReducer = (state = initialState, action) => {
         modalCollaboratorInfoOpen: false,
       };
 
-      case Types.UI_OPEN_MODAL_JOBS:
-        return {
-          ...state,
-          modalJobOpen: true,
-        };
-      case Types.UI_CLOSE_MODAL_JOBS:
-        return {
-          ...state,
-          modalJobOpen: false,
-        };
+    case Types.UI_OPEN_MODAL_JOBS:
+      return {
+        ...state,
+        modalJobOpen: true,
+      };
+    case Types.UI_CLOSE_MODAL_JOBS:
+      return {
+        ...state,
+        modalJobOpen: false,
+      };
 
     case Types.UI_OPEN_MODAL_FEES:
       return {
@@ -114,16 +116,16 @@ export const UIReducer = (state = initialState, action) => {
         ...state,
         modalActiveOpen: false,
       };
-      case Types.UI_OPEN_MODAL_ADD_ACTIVE:
-        return {
-          ...state,
-          modalAddActiveOpen: true,
-        };
-      case Types.UI_CLOSE_MODAL_ADD_ACTIVE:
-        return {
-          ...state,
-          modalAddActiveOpen: false,
-        };
+    case Types.UI_OPEN_MODAL_ADD_ACTIVE:
+      return {
+        ...state,
+        modalAddActiveOpen: true,
+      };
+    case Types.UI_CLOSE_MODAL_ADD_ACTIVE:
+      return {
+        ...state,
+        modalAddActiveOpen: false,
+      };
 
     case Types.UI_OPEN_MODAL_PAYMENT:
       return {
@@ -134,6 +136,28 @@ export const UIReducer = (state = initialState, action) => {
       return {
         ...state,
         modalPaymentOpen: false,
+      };
+
+    case Types.UI_OPEN_MODAL_DIET:
+      return {
+        ...state,
+        modalDietOpen: true,
+      };
+    case Types.UI_CLOSE_MODAL_DIET:
+      return {
+        ...state,
+        modalDietOpen: false,
+      };
+
+    case Types.UI_OPEN_MODAL_ALIMENT:
+      return {
+        ...state,
+        modalAlimentOpen: true,
+      };
+    case Types.UI_CLOSE_MODAL_ALIMENT:
+      return {
+        ...state,
+        modalAlimentOpen: false,
       };
 
     default:

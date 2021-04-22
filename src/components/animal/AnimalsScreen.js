@@ -20,6 +20,7 @@ import { uiOpenModalAnimal } from "../../actions/UIAction";
 import { Link } from "react-router-dom";
 import { ModalAnimal } from "./ModalAnimal";
 import moment from "moment";
+import UploadImgProfile from "./UploadImgProfile";
 
 export const AnimalsScreen = () => {
   const dispatch = useDispatch();
@@ -110,9 +111,11 @@ export const AnimalsScreen = () => {
   };
 
   const setTypeActive = (typeID) => {
+    dispatch(typeClearActive);
     dispatch(typeSetActive(typeID));
     dispatch(animalsByTypeLoading(typeID));
   };
+
   return (
     <>
       <div className="bg-gradient-to-r from-green-400 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
@@ -135,22 +138,6 @@ export const AnimalsScreen = () => {
           >
             <span>Tipos de animales</span>
           </Link>
-          {currentType && (
-            <select
-              onChange={(e) =>
-                e.target.value !== "DEFAULT" &&
-                dispatch(
-                  animalsByTypeAndStatusLoading(currentType._id, e.target.value)
-                )
-              }
-              className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
-            >
-              <option value="DEFAULT">Ordenar por estado</option>
-              <option value="Vendido">Vendido</option>
-              <option value="En finca">En finca</option>
-              <option value="Activo">Activo</option>
-            </select>
-          )}
         </nav>
       </div>
 
@@ -183,8 +170,25 @@ export const AnimalsScreen = () => {
         </div>
       </div>
 
+      {currentType && (
+        <select
+          onChange={(e) =>
+            e.target.value !== "DEFAULT" &&
+            dispatch(
+              animalsByTypeAndStatusLoading(currentType._id, e.target.value)
+            )
+          }
+          className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
+        >
+          <option value="DEFAULT">Ordenar por estado</option>
+          <option value="Vendido">Vendido</option>
+          <option value="En finca">En finca</option>
+          <option value="Activo">Activo</option>
+        </select>
+      )}
+      <br />
       {animals.length !== 0 ? (
-        <div className="mt-6">
+        <div className="mt-2">
           <input
             type="text"
             name="filter"
@@ -213,8 +217,8 @@ export const AnimalsScreen = () => {
                         <div className="lg:w-1/2 w-full lg:pr-10 lg:py-1 mb-2 lg:mb-0">
                           <h1 className="title-font font-bold">
                             <span
-                              className={`text-gray-200 rounded-full px-3 py-1 inline-block text-center uppercase`}
-                              style={{ backgroundColor: animal.plate_color }}
+                              className={`${animal.plate_color === "#FFFFFF" ? "text-gray-800" : "text-gray-200 "} rounded-full px-3 py-1 inline-block text-center uppercase`}
+                              style={{ backgroundColor: animal.plate_color}}
                             >
                               Numero de chapa: {animal.plate_number}
                             </span>
@@ -229,7 +233,11 @@ export const AnimalsScreen = () => {
                               } py-2 px-1`}
                               onClick={(e) => {
                                 e.preventDefault();
-                                setOpenTab(null);
+                                setOpenTab(
+                                  `${
+                                    currentType ? currentType._id : animal._id
+                                  }/1`
+                                );
                               }}
                               data-toggle="tab"
                               href={`${
@@ -243,7 +251,7 @@ export const AnimalsScreen = () => {
                                 openTab ===
                                   `${
                                     currentType ? currentType._id : animal._id
-                                  }/2` && `border-green-500`
+                                  }/2` && ` border-green-500`
                               } py-2 px-1`}
                               onClick={(e) => {
                                 e.preventDefault();
@@ -267,9 +275,9 @@ export const AnimalsScreen = () => {
                               }
                               className={`flex-grow border-b-2 ${
                                 openTab ===
-                                  `$${
+                                  `${
                                     currentType ? currentType._id : animal._id
-                                  }/3` && `border-green-500`
+                                  }/3` && ` border-green-500`
                               } py-2 px-1`}
                               onClick={(e) => {
                                 e.preventDefault();
@@ -305,7 +313,7 @@ export const AnimalsScreen = () => {
                               data-toggle="tab"
                               href={`${
                                 currentType ? currentType._id : animal._id
-                              }4`}
+                              }/4`}
                             >
                               Partos
                             </a>
@@ -662,17 +670,7 @@ export const AnimalsScreen = () => {
                             </div>
                           </div>
                         </div>
-                        <img
-                          alt="Hacienda El Orosi"
-                          className="lg:w-1/2 w-full lg:h-96 h-64 sm:mt-14 object-cover object-center rounded"
-                          src={
-                            animal.photo
-                              ? animal.photo
-                              : `https://source.unsplash.com/random/800x600?sig=${
-                                  index + 1
-                                }`
-                          }
-                        />
+                        <UploadImgProfile animal={animal} />
                       </div>
                     </div>
                   </section>

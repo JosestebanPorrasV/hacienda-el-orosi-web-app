@@ -17,16 +17,13 @@ import { DietScreen } from "../components/diet/DietScreen";
 import { AlimentScreen } from "../components/diet/AlimentScreen";
 import { CollaboratorScreen } from "../components/collaborator/CollaboratorScreen";
 import { RecoveryPass } from "../components/auth/RecoveryPass";
+import { TypesAnimalsScreen } from "../components/animal/TypesAnimalsScreen";
 
 export const DashboardRoutes = () => {
   return (
     <Router>
       <Switch>
-        <Route
-          exact
-          path="/administradores"
-          component={AdministratorScreen}
-        />
+        <Route exact path="/administradores" component={AdministratorScreen} />
         <Route exact path="/editar-cuenta" component={RecoveryPass} />
         <Route exact path="/colaboradores" component={CollaboratorScreen} />
 
@@ -37,6 +34,7 @@ export const DashboardRoutes = () => {
         <Route exact path="/herramientas-activas" component={ActiveScreen} />
         <Route exact path="/trabajos" component={JobScreen} />
         <Route exact path="/animales" component={AnimalsScreen} />
+        <Route exact path="/tipos-de-animales" component={TypesAnimalsScreen} />
         <Route exact path="/dieta" component={DietScreen} />
         <Route exact path="/alimento" component={AlimentScreen} />
         <Redirect to="/colaboradores" />

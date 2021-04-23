@@ -23,4 +23,17 @@ const FetchConsult = (endpoint, data, method = "GET") => {
   }
 };
 
-export { FetchConsult };
+const uploadImage = (endpoint, image) => {
+  const url = `${baseUrl}/${endpoint}`;
+  const token = localStorage.getItem("token") || "";
+
+  return fetch(url, {
+    method: "POST",
+    body: image,
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
+export { FetchConsult, uploadImage };

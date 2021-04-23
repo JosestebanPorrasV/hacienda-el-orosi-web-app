@@ -12,6 +12,7 @@ const initialState = {
   modalAddActiveOpen: false,
   modalCollaboratorInfoOpen: false,
   modalPaymentOpen: false,
+  modalAnimalOpen: false,
 };
 
 export const UIReducer = (state = initialState, action) => {
@@ -134,6 +135,17 @@ export const UIReducer = (state = initialState, action) => {
       return {
         ...state,
         modalPaymentOpen: false,
+      };
+
+    case Types.UI_OPEN_MODAL_ANIMAL:
+      return {
+        ...state,
+        modalAnimalOpen: true,
+      };
+    case Types.UI_CLOSE_MODAL_ANIMAL:
+      return {
+        ...state,
+        modalAnimalOpen: false,
       };
 
     default:

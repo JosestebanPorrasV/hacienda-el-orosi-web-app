@@ -136,8 +136,13 @@ export const collaboratorSetActive = (collaborator) => ({
   type: Types.COLLABORATOR_SET_ACTIVE,
   payload: collaborator,
 });
+
 export const collaboratorClearActive = () => ({
   type: Types.COLLABORATOR_CLEAR_ACTIVE,
+});
+export const addCollaboratorSuccess = (collaborator) => ({
+  type: Types.ADD_NEW_COLLABORATOR,
+  payload: collaborator,
 });
 
 export const liquidateSetActive = () => ({
@@ -146,11 +151,6 @@ export const liquidateSetActive = () => ({
 export const liquidateCleanActive = () => ({
   type: Types.LIQUIDATE_CLEAR_ACTIVE,
 });
-export const addCollaboratorSuccess = (collaborator) => ({
-  type: Types.ADD_NEW_COLLABORATOR,
-  payload: collaborator,
-});
-
 const collaboratorsLoaded = (collaborators) => ({
   type: Types.COLLABORATORS_LOADED,
   payload: collaborators,

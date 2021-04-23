@@ -202,7 +202,6 @@ export const CollaboratorScreen = () => {
                   <table className="text-center items-center w-full">
                     <thead className="bg-gray-800 flex text-white w-full">
                       <tr className="flex w-full">
-                        <div hidden={role === "Encargado del ganado"}></div>
                         <th
                           className="p-4 w-1/4"
                           hidden={

@@ -9,6 +9,7 @@ import {
   collaboratorClearActive,
   searchCollaborator,
 } from "../../actions/CollaboratorAction";
+import { UseForm } from "../../hooks/UseForm";
 
 export const ModalAddActive = () => {
   const dispatch = useDispatch();
@@ -27,20 +28,11 @@ export const ModalAddActive = () => {
     dispatch(removeInSelectedActives());
   };
 
-  const initEvent = {
+  const [formValues, handleInputChange] = UseForm({
     collaborator_id: "",
-  };
-
-  const [formValues, setFormValues] = useState(initEvent);
+  });
 
   const { collaborator_id } = formValues;
-
-  const handleInputChange = ({ target }) => {
-    setFormValues({
-      ...formValues,
-      [target.name]: target.value,
-    });
-  };
 
   const handleAddOneActive = async () => {
     await dispatch(
@@ -117,7 +109,7 @@ export const ModalAddActive = () => {
                         </label>
                         <input
                           required
-                          value={collaborator_id}
+                          value={ collaborator_id} 
                           onChange={handleInputChange}
                           name="collaborator_id"
                           type="number"
@@ -154,8 +146,8 @@ export const ModalAddActive = () => {
                         <input
                           disabled={true}
                           value={
-                            currentCollaborator &&
-                            `${currentCollaborator.name} ${currentCollaborator.surname}`
+                            currentCollaborator ?
+                            `${currentCollaborator.name} ${currentCollaborator.surname}` : ""
                           }
                           id="nameCollaborator"
                           type="text"
@@ -168,6 +160,7 @@ export const ModalAddActive = () => {
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
                   <button
+                    disabled={!currentCollaborator}
                     className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                     type="button"
                     style={{ transition: "all .15s ease" }}

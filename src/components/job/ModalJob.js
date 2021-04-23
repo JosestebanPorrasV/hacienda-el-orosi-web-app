@@ -10,7 +10,7 @@ import {
 import { uiCloseModalJob } from "../../actions/UIAction";
 
 const initEvent = {
-  name_job: "",
+  name: "",
   description: "",
   work_hours: "",
   price_extra_hours: "",
@@ -26,7 +26,7 @@ export const ModalJob = () => {
   const [formValues, setFormValues] = useState(initEvent);
 
   const {
-    name_job,
+    name,
     description,
     work_hours,
     price_extra_hours,
@@ -63,10 +63,11 @@ export const ModalJob = () => {
 
     if (currentJob) {
       dispatch(editOneJob(currentJob._id, formValues));
+      closeModal();
     } else {
       dispatch(registerJob(formValues));
     }
-    closeModal();
+
   };
 
   return (
@@ -81,7 +82,7 @@ export const ModalJob = () => {
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                   <h3
                     className={`${
-                      currentJob ? "text-yellow-400" : "text-green-400"
+                      currentJob ? "text-yellow-400" : "text-blue-400"
                     } text-3xl font-semibold mb-2`}
                   >
                     {`${
@@ -104,18 +105,14 @@ export const ModalJob = () => {
                   <section className="max-w-4xl p-6 mx-auto bg-white dark:bg-gray-800">
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="icon_prefix"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200">
                           Nombre del trabajo
                         </label>
                         <input
                           required
-                          name="name_job"
-                          value={name_job}
+                          name="name"
+                          value={name}
                           onChange={handleInputChange}
-                          id="icon_prefix"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                           placeholder="Requerido"
@@ -170,14 +167,10 @@ export const ModalJob = () => {
                         />
                       </div>
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="icon_prefix"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200">
                           Descripción del trabajo
                         </label>
                         <input
-                          id="icon_prefix"
                           name="description"
                           value={description}
                           onChange={handleInputChange}
@@ -190,7 +183,7 @@ export const ModalJob = () => {
                   {/*footer*/}
                   <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
                     <button
-                      className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none hover:text-red-900 focus:outline-none mr-1 mb-1"
+                      className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
                       type="button"
                       style={{ transition: "all .15s ease" }}
                       onClick={() => closeModal()}
@@ -201,8 +194,8 @@ export const ModalJob = () => {
                       className={`${
                         currentJob
                           ? "bg-yellow-400 text-white active:bg-yellow-600 hover:bg-yellow-900"
-                          : "bg-green-400 text-white active:bg-green-600 hover:bg-green-900"
-                      } font-bold uppercase text-sm px-6 py-3 rounded shadow outline-none focus:outline-none mr-1 mb-1"
+                          : "bg-blue-400 text-white active:bg-blue-600 hover:bg-blue-900"
+                      } font-bold uppercase text-sm px-6 py-3 rounded shadow  outline-none focus:outline-none mr-1 mb-1"
                       `}
                       type="submit"
                       style={{ transition: "all .15s ease" }}

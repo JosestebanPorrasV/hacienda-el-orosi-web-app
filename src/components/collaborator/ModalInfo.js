@@ -43,7 +43,7 @@ export const ModalInfo = () => {
                         Fecha de ingreso
                       </h3>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                      {currentCollaborator.date_admission}
+                        {currentCollaborator.date_admission}
                       </p>
                     </div>
                     <div className="block py-1">
@@ -51,7 +51,7 @@ export const ModalInfo = () => {
                         Direccion fisica
                       </h3>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                      {currentCollaborator.direction}
+                        {currentCollaborator.direction}
                       </p>
                     </div>
                     <div className="block py-1">
@@ -59,23 +59,19 @@ export const ModalInfo = () => {
                         Nacionalidad
                       </h3>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                      {currentCollaborator.nationality}
+                        {currentCollaborator.nationality}
                       </p>
                     </div>
                     <div className="block py-1">
-                      <h3 className="font-medium text-gray-700">
-                        Telefono
-                      </h3>
+                      <h3 className="font-medium text-gray-700">Telefono</h3>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                      {currentCollaborator.tel}
+                        {currentCollaborator.tel}
                       </p>
                     </div>
                     <div className="block py-1">
-                      <h3 className="font-medium text-gray-700">
-                        Celular
-                      </h3>
+                      <h3 className="font-medium text-gray-700">Celular</h3>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                      {currentCollaborator.cel}
+                        {currentCollaborator.cel}
                       </p>
                     </div>
                   </div>
@@ -83,7 +79,7 @@ export const ModalInfo = () => {
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
                   <button
-                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
+                    className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
                     type="button"
                     style={{ transition: "all .15s ease" }}
                     onClick={() => closeModal()}

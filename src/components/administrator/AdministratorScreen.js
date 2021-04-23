@@ -1,11 +1,17 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { AdministratorsLoading, administratorSetActive } from "../../actions/AdministratorAction";
+import {
+  AdministratorsLoading,
+  administratorClearActive,
+  deleteAdmin,
+} from "../../actions/AdministratorAction";
 import { UseForm } from "../../hooks/UseForm";
 import SearchResults from "react-filter-search";
 import { uiOpenModalAdministrator } from "../../actions/UIAction";
 import { ModalAdministrator } from "./ModalAdministrator";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const AdministratorScreen = () => {
   const dispatch = useDispatch();
@@ -22,39 +28,49 @@ export const AdministratorScreen = () => {
 
   const { filter } = formValues;
 
-  const onSelectAddChangeAdministrator = (administrator) => {
-    dispatch(administratorSetActive(administrator));
-    openModalAdministrator();
+  const addAdmin = () => {
+    dispatch(administratorClearActive());
+    dispatch(uiOpenModalAdministrator());
   };
 
-  const openModalAdministrator = () => {
-    dispatch(uiOpenModalAdministrator());
+  const removeAdmin = (admin) => {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "El administrador no se volerá a recuperar",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#A0A0A0",
+      confirmButtonText: "Si, eliminar!!",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteAdmin(admin));
+      } else {
+        dispatch(administratorClearActive());
+      }
+    });
   };
 
   return (
     <>
       <div className="bg-gradient-to-r from-blue-200 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
-        <div className="text-gray-900">
-          <h2 className="text-2xl">ADMINISTRADORES</h2>
-          <p className=" opacity-70">Funcionalidades principales</p>
-        </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
-          <button 
-          onClick={() => onSelectAddChangeAdministrator()}
-          className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35">
+          <button
+            onClick={() => addAdmin()}
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35"
+          >
             <i className="fas fa-plus-circle"></i>
             <span className="text-white font-bold">Agregar Administrador</span>
           </button>
-          <button className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35">
-            <i className="fas fa-address-book"></i>
-            <span className="text-white font-bold">Listar Administradores</span>
-          </button>
-          <button 
-          onClick={() => (openModalAdministrator())}
-          className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35">
-            <i className="fas fa-user-edit"></i>
-            <span className="text-white font-bold">Editar Gerente</span>
-          </button>
+
+          <Link
+            to="/editar-cuenta"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35"
+          >
+            <i className="fas fa-plus-circle"></i>
+            <span className="text-white font-bold">Cambiar contraseña</span>
+          </Link>
         </nav>
       </div>
 
@@ -74,7 +90,7 @@ export const AdministratorScreen = () => {
           <i className="fas fa-users"></i> {`total: ${administrators.length}`}
         </span>
 
-        <div className="overflow-x-auto py-4">
+        <div className="overflow-x-auto">
           <div className="align-middle inline-block min-w-full overflow-hidden">
             <SearchResults
               value={filter}
@@ -93,14 +109,14 @@ export const AdministratorScreen = () => {
                         <i className="fas fa-user"></i> Apellido
                       </th>
                       <th className="py-2 px-3">
-                        <i class="fas fa-envelope-square"></i> Correo
+                        <i className="fas fa-envelope-square"></i> Correo
                         Electronico
                       </th>
                       <th className="py-2 px-3">
-                        <i class="fas fa-user-tie"></i> Gerente
+                        <i className="fas fa-user-tie"></i> Gerente
                       </th>
                       <th className="py-2 px-3">
-                        <i className="fas fa-cash-register"></i> Acciones
+                        <i className="fas fa-cash-register"></i> Accion
                       </th>
                     </tr>
                   </thead>
@@ -114,32 +130,22 @@ export const AdministratorScreen = () => {
                         <th className="py-3 px-3">{administrator.surname}</th>
 
                         <th className="py-3 px-3">{administrator.email}</th>
-                        <th className="py-3 px-3">
-                          {administrator.role === "RESOURCES_ROLE"
-                            ? "Recursos Humanos"
-                            : administrator.role === "GENERAL_ROLE"
-                            ? "Dueño"
-                            : "Gestor de Ganado"}
+                        <th className="py-3 px-3">{administrator.role}</th>
+                        <th
+                          hidden={administrator.role !== "Dueño"}
+                          className="py-3 px-3 "
+                        >
+                          <i className="fas fa-user-slash"></i>
                         </th>
-
                         <th className="py-3 px-3">
                           <button
-                            className={`
-                            ${
-                              administrator.role === "GENERAL_ROLE"
-                                ? "bg-gray-500 "
-                                : "bg-red-500 hover:bg-red-600"
-                            }
-                           text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow outline-none focus:outline-none mr-1 mb-1`}
-                            disabled={true}
+                            hidden={administrator.role === "Dueño"}
+                            className="bg-red-500 hover:bg-red-700 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}
+                            onClick={() => removeAdmin(administrator)}
                           >
-                            {administrator.role === "GENERAL_ROLE" ? (
-                              <i className="fas fa-user-slash"></i>
-                            ) : (
-                              <i className="fas fa-trash-alt"></i>
-                            )}
+                            <i className="fas fa-trash-alt"></i>
                           </button>
                         </th>
                       </tr>
@@ -152,7 +158,7 @@ export const AdministratorScreen = () => {
         </div>
       </div>
 
-      <ModalAdministrator/>
+      <ModalAdministrator />
     </>
   );
 };

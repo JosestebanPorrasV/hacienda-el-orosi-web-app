@@ -23,6 +23,7 @@ export const AuthReducer = (state = initialState, action) => {
     case Types.LOGOUT:
       return {
         checking: false,
+        recoveryState: 0,
       };
 
     case Types.CHANGE_PASSWORD:

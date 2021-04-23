@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { uiCloseModalAddTool } from "./../actions/UIAction";
 import TopLoaderService from "top-loader-service";
 
-export const toolsLoading = (status = "stock") => {
+export const toolsLoading = (status = "En bodega") => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
@@ -51,16 +51,42 @@ export function registerTool(toolFormValues) {
       "herramientas/registrar",
       {
         name: toolFormValues.name,
-        liters: toolFormValues.liters,
       },
       "POST"
     );
 
     const body = await resp.json();
     if (body.status) {
-      await dispatch(addToolSuccess());
-      await dispatch(toolsLoading());
+      await dispatch(addToolSuccess(body.tool));
       await dispatch(uiCloseModalAddTool());
+      await Swal.fire({
+        icon: "success",
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      await TopLoaderService.end();
+    } else {
+      await Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
+    }
+  };
+}
+
+export function changeStatus(tool_id, status) {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    const resp = await FetchConsult(
+      `herramientas/cambiar-estado/${tool_id}`,
+      { status },
+      "PUT"
+    );
+
+    const body = await resp.json();
+    if (body.status) {
+
+      await dispatch(changeStatusSuccess(body.tool));
+
       await Swal.fire({
         icon: "success",
         title: body.msg,
@@ -133,6 +159,15 @@ export const registerActives = (data) => {
   };
 };
 
+export const toolSetActive = (tool) => ({
+  type: Types.TOOL_SET_ACTIVE,
+  payload: tool,
+});
+
+export const toolClearActive = () => ({
+  type: Types.TOOL_CLEAR_ACTIVE,
+});
+
 export const addToolSelected = (tool) => {
   return async (dispatch) => {
     dispatch(addToSelectedTools(tool));
@@ -170,6 +205,11 @@ export const removeInActives = (tool_id) => ({
   payload: tool_id,
 });
 
+export const changeStatusSuccess = (tool) => ({
+  type: Types.TOOL_CHANGE_STATUS,
+  payload: tool,
+});
+
 export const cleanSelectedTools = () => ({
   type: Types.CLEAN_SELECT_TOOLS,
 });
@@ -178,8 +218,9 @@ export const cleanSelectedActives = () => ({
   type: Types.CLEAN_SELECT_ACTIVES,
 });
 
-export const addToolSuccess = () => ({
+export const addToolSuccess = (tool) => ({
   type: Types.ADD_NEW_TOOL,
+  payload: tool,
 });
 
 const toolLoaded = (tools) => ({

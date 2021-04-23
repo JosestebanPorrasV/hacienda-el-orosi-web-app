@@ -9,8 +9,10 @@ const initialState = {
   modalAddLendOpen: false,
   modalAddToolOpen: false,
   modalActiveOpen: false,
+  modalAddActiveOpen: false,
   modalCollaboratorInfoOpen: false,
   modalPaymentOpen: false,
+  modalAnimalOpen: false,
 };
 
 export const UIReducer = (state = initialState, action) => {
@@ -59,16 +61,16 @@ export const UIReducer = (state = initialState, action) => {
         modalCollaboratorInfoOpen: false,
       };
 
-      case Types.UI_OPEN_MODAL_JOBS:
-        return {
-          ...state,
-          modalJobOpen: true,
-        };
-      case Types.UI_CLOSE_MODAL_JOBS:
-        return {
-          ...state,
-          modalJobOpen: false,
-        };
+    case Types.UI_OPEN_MODAL_JOBS:
+      return {
+        ...state,
+        modalJobOpen: true,
+      };
+    case Types.UI_CLOSE_MODAL_JOBS:
+      return {
+        ...state,
+        modalJobOpen: false,
+      };
 
     case Types.UI_OPEN_MODAL_FEES:
       return {
@@ -113,6 +115,16 @@ export const UIReducer = (state = initialState, action) => {
         ...state,
         modalActiveOpen: false,
       };
+    case Types.UI_OPEN_MODAL_ADD_ACTIVE:
+      return {
+        ...state,
+        modalAddActiveOpen: true,
+      };
+    case Types.UI_CLOSE_MODAL_ADD_ACTIVE:
+      return {
+        ...state,
+        modalAddActiveOpen: false,
+      };
 
     case Types.UI_OPEN_MODAL_PAYMENT:
       return {
@@ -123,6 +135,17 @@ export const UIReducer = (state = initialState, action) => {
       return {
         ...state,
         modalPaymentOpen: false,
+      };
+
+    case Types.UI_OPEN_MODAL_ANIMAL:
+      return {
+        ...state,
+        modalAnimalOpen: true,
+      };
+    case Types.UI_CLOSE_MODAL_ANIMAL:
+      return {
+        ...state,
+        modalAnimalOpen: false,
       };
 
     default:

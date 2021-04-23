@@ -10,7 +10,6 @@ import {
   cleanSelectedTools,
   registerActives,
 } from "../../actions/ToolAction";
-import { collaboratorClearActive } from "../../actions/CollaboratorAction";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -22,9 +21,8 @@ export const ModalActive = () => {
   const { tools, selectedTools, count } = useSelector((state) => state.tool);
 
   const closeModal = () => {
-    dispatch(uiCloseModalActive());
-    dispatch(collaboratorClearActive());
     dispatch(cleanSelectedTools());
+    dispatch(uiCloseModalActive());
   };
 
   const [formValues, handleInputChange] = UseForm({
@@ -37,7 +35,7 @@ export const ModalActive = () => {
   useEffect(() => {
     dispatch(toolsLoading());
   }, [dispatch]);
-  
+
   const selectTool = (tool) => {
     let validate = true;
     for (let index = 0; index < selectedTools.length; index++) {
@@ -64,7 +62,7 @@ export const ModalActive = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#1E3A8A",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#A0A0A0",
       confirmButtonText: "Si, asignar",
       cancelButtonText: "Cancelar",
     }).then((result) => {
@@ -146,11 +144,11 @@ export const ModalActive = () => {
                   <section className="text-gray-600 body-font overflow-hidden">
                     <div className="container px-5 mx-auto">
                       <div className="flex flex-wrap">
-                        <div className="p-12 md:w-1/2 flex flex-col items-center w-full">
-                          <span className="inline-block py-1 px-2 rounded bg-gray-200 text-gray-500 text-xl font-medium tracking-widest">
+                        <div className="p-6 md:w-1/2 flex flex-col items-center w-full">
+                          <span className="inline-block py-1 px-2 rounded-t bg-gray-200 text-gray-500 text-xl font-medium tracking-widest">
                             EN BODEGA
                           </span>
-                          <section className="relative w-full pt-4">
+                          <section className="relative w-full">
                             <div className="relative">
                               <input
                                 type="text"
@@ -221,11 +219,11 @@ export const ModalActive = () => {
                             </span>
                           </div>
                         </div>
-                        <div className="p-12 md:w-1/2 flex flex-col items-center w-full ">
-                          <span className="inline-block py-1 px-2 rounded bg-green-200 text-green-500 text-xl font-medium tracking-widest">
+                        <div className="p-6 md:w-1/2 flex flex-col items-center w-full ">
+                          <span className="inline-block py-1 px-2 rounded-t bg-green-200 text-green-500 text-xl font-medium tracking-widest">
                             PARA ASIGNAR
                           </span>
-                          <section className="relative w-full pt-4">
+                          <section className="relative w-full">
                             <div className="relative">
                               <input
                                 type="text"
@@ -273,7 +271,10 @@ export const ModalActive = () => {
                             />
                           </section>
                           <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">
-                            <Link to="/herramientas-activas" className="text-green-500 inline-flex items-center">
+                            <Link
+                              to="/herramientas-activas"
+                              className="text-green-500 inline-flex items-center"
+                            >
                               Ir a Activos
                               <svg
                                 className="w-4 h-4 ml-2"
@@ -327,7 +328,7 @@ export const ModalActive = () => {
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
                   <button
-                    className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
+                    className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
                     type="button"
                     style={{ transition: "all .15s ease" }}
                     onClick={() => closeModal()}

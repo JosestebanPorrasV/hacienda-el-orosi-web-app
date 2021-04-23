@@ -30,6 +30,7 @@ export const PaymentReducer = (state = initialState, action) => {
       return {
         ...state,
         presenceDayByCollaborator: [],
+        totalOvertimeByCollaborator: 0,
       };
 
     default:

@@ -8,6 +8,7 @@ import {
   toolsLoading,
   changeStatus,
   toolSetActive,
+  toolClearActive,
 } from "../../actions/ToolAction";
 import {
   uiOpenModalAddTool,
@@ -20,10 +21,9 @@ import { ModalAddActive } from "./ModalAddActive";
 
 export const ToolScreen = () => {
   const dispatch = useDispatch();
-  const { tools, actives, count, toolsState, currentTool } = useSelector(
+  const { tools, count, toolsState, currentTool } = useSelector(
     (state) => state.tool
   );
-  const { currentCollaborator } = useSelector((state) => state.collaborator);
 
   useEffect(() => {
     dispatch(toolsLoading());
@@ -40,7 +40,7 @@ export const ToolScreen = () => {
     dispatch(toolSetActive(tool));
   };
 
-  const deleteInBulk = () => {
+  const deleteInBulk = (tool) => {
     Swal.fire({
       title: "¿Estas seguro?",
       text: "La herramienta se regresara a Bodega",
@@ -48,15 +48,13 @@ export const ToolScreen = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#A0A0A0",
-      confirmButtonText: "Si, eliminar de activos",
+      confirmButtonText: "Si, regresar la herramienta",
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        if (actives.length > 0) {
-          dispatch(removeTools(currentCollaborator._id, actives));
-        } else {
-          Swal.fire("Cuidado", "Primero dale check a algun registro", "error");
-        }
+        dispatch(removeTools([{ tool_id: tool._id }]));
+      } else {
+        toolClearActive();
       }
     });
   };
@@ -116,7 +114,9 @@ export const ToolScreen = () => {
                 ? "text-green-400"
                 : toolsState === "En bodega"
                 ? "text-gray-200"
-                : "text-yellow-400"
+                : toolsState === "En reparacion"
+                ? "text-yellow-600"
+                : "text-red-400"
             } text-xl font-bold mb-2`}
           >{`Herramientas ${
             toolsState === "Activo" ? "Activas" : toolsState
@@ -135,7 +135,9 @@ export const ToolScreen = () => {
                 ? "bg-green-200 text-green-600"
                 : toolsState === "En bodega"
                 ? "bg-gray-200 text-gray-600"
-                : "bg-yellow-200 text-yellow-600"
+                : toolsState === "En reparacion"
+                ? "bg-yellow-200 text-yellow-600"
+                : "bg-red-200 text-red-600"
             } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
           >
             <i className="fas fa-tools"></i> {`total: ${count}`}
@@ -149,7 +151,10 @@ export const ToolScreen = () => {
                 <table className="text-center relative w-full">
                   <thead className="bg-gray-600">
                     <tr className="text-lg">
-                      <th className="sticky top-0 px-6 py-3" hidden={toolsState === "Activo"}>
+                      <th
+                        className="sticky top-0 px-6 py-3"
+                        hidden={toolsState !== "En bodega"}
+                      >
                         <i className="fas fa-signal"></i> Estado
                       </th>
                       <th className="sticky top-0 px-6 py-3">
@@ -159,8 +164,11 @@ export const ToolScreen = () => {
                       <th className="sticky top-0 px-6 py-3">
                         <i className="far fa-calendar-alt"></i> Registrada
                       </th>
-                      <th className="sticky top-0 px-6 py-3">
-                        <i className="fas fa-cash-register"></i> Activos
+                      <th
+                        className="sticky top-0 px-6 py-3"
+                        hidden={toolsState === "De baja"}
+                      >
+                        <i className="fas fa-cash-register"></i> Acciones
                       </th>
                     </tr>
                   </thead>
@@ -172,13 +180,12 @@ export const ToolScreen = () => {
                       <tr key={tool._id}>
                         <th
                           className="px-6 py-4 text-center"
-                          hidden={
-                            toolsState === "De baja" || toolsState === "Activo"
-                          }
+                          hidden={toolsState !== "En bodega"}
                         >
                           <div className="flex flex-col text-center w-full mt-6 mb-6">
                             <div>
                               <select
+                                value="value"
                                 onChange={(e) =>
                                   dispatch(
                                     changeStatus(tool._id, e.target.value)
@@ -210,7 +217,9 @@ export const ToolScreen = () => {
                         </th>
 
                         <th className="px-6 py-4 text-center">{tool.name}</th>
-                        <th className="px-6 py-4 text-center">{tool.active_num}</th>
+                        <th className="px-6 py-4 text-center">
+                          {tool.active_num}
+                        </th>
                         <th className="px-6 py-4 text-center">{tool.date}</th>
                         <th className="px-6 py-4 text-center">
                           <button
@@ -226,8 +235,11 @@ export const ToolScreen = () => {
                             <i className="fas fa-plus"></i>
                           </button>
                           <button
-                            hidden={tool.status === "En bodega"}
-                            onClick={() => deleteInBulk()}
+                            hidden={
+                              tool.status === "En bodega" ||
+                              tool.status === "De baja"
+                            }
+                            onClick={() => deleteInBulk(tool)}
                             className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}

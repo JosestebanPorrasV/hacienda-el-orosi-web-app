@@ -26,30 +26,36 @@ export const DietScreen = () => {
 
   return (
     <>
-      <div className="bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900  rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
+      <div className="bg-gradient-to-r from-green-400 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
-          <h2 className="text-2xl">DIETAS DE LA HACIENDA</h2>
-          <p className="text-blue-100 opacity-70">
+          <h2 className="text-2xl text-green-900">DIETAS DE LA HACIENDA</h2>
+          <p className="text-green-900 opacity-70">
             Funcionalidades principales
           </p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
+        <Link
+          to="/animales"
+            className="inline-flex flex-col justify-center items-center m-1 px-5 py-18 bg-green-900 rounded-lg hover:bg-green-700 w-35"
+          >
+            <i className="fas fa-arrow-circle-left"></i> 
+          </Link>
           <button
           onClick={() => dispatch(uiOpenModalDiet())}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-purple-200 rounded-lg hover:bg-gray-900 w-35"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
           >
             <i className="fas fa-plus-circle"></i>
-            <span className="text-indigo-600 hover:text-indigo-200 font-bold">
+            <span className="text-green-600 hover:text-indigo-200 font-bold">
               Agregar Dieta
             </span>
           </button>
           <Link
-          to="/alimento"
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-purple-200 rounded-lg hover:bg-gray-900 w-35"
+          to="/product"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
           >
             <i className="fas fa-leaf"></i>
-            <span className="text-indigo-600 hover:text-indigo-200 font-bold">
-              Listar Alimentos
+            <span className="text-green-600 hover:text-indigo-200 font-bold">
+              Listar Productos
             </span>
           </Link>
         </nav>
@@ -81,30 +87,18 @@ export const DietScreen = () => {
                   <thead className="bg-gray-600">
                     <tr className="bg-gray-600 text-white text-lg">
                       <th className="py-2 px-5">
-                      <i className="far fa-bookmark"></i> Etapa
+                      <i className="far fa-bookmark"></i> Nombre de la Dieta
                       </th>
                       <th className="p-5 w-1/4">
-                        <i className="fas fa-leaf"></i> Nombre de la Dieta
-                      </th>
-                      <th className="p-5 w-1/4">
-                        # Numero de chapa
-                      </th>
-                      <th className="py-2 px-5">
-                      <i className="fas fa-horse-head"></i> Animal
-                      </th>
-                      <th className="py-2 px-5">
-                      <i className="fas fa-suitcase"></i> Alimento
+                        <i className="fas fa-leaf"></i> Descripción
                       </th>
                     </tr>
                   </thead>
                   <tbody className="text-blue-100 text-opacity-80">
                     {results.map((diet) => (
                       <tr key={diet._id}>
-                        <th className="py-5 px-8">{`${diet.stage}`}</th>
                         <th className="py-5 px-8">{`${diet.diet_name}`}</th>
-                        <th className="py-3 px-3">#{diet.animal.plate_number}</th>
-                        <th className="py-3 px-3">{diet.animal.type_animal}</th>
-                        <th className="py-3 px-3">{diet.aliment.name_aliment}</th>
+                        <th className="py-5 px-8">{`${diet.description}`}</th>
                         <th className="whitespace-pre-line">
                           {diet.description}
                         </th>

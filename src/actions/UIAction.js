@@ -74,9 +74,9 @@ export const uiOpenModalDiet = () => ({
 export const uiCloseModalDiet = () => ({
   type: Types.UI_CLOSE_MODAL_DIET,
 });
-export const uiOpenModalAliment = () => ({
-  type: Types.UI_OPEN_MODAL_ALIMENT,
+export const uiOpenModalProduct = () => ({
+  type: Types.UI_OPEN_MODAL_PRODUCT,
 });
-export const uiCloseModalAliment = () => ({
-  type: Types.UI_CLOSE_MODAL_ALIMENT,
+export const uiCloseModalProduct = () => ({
+  type: Types.UI_CLOSE_MODAL_PRODUCT,
 });

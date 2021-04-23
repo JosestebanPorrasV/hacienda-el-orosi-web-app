@@ -2,14 +2,14 @@ import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import { uiCloseModalDiet } from "./UIAction";
 import Swal from "sweetalert2";
-import TopLoaderService from "top-loader-service"
+import TopLoaderService from "top-loader-service";
 
 export const DietsLoaded = () => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(`gestion-animal/listar-dietas`);
       const body = await resp.json();
-
+      console.log(body);
       if (body.status) {
         await dispatch(dietsLoaded(body));
       } else {
@@ -21,14 +21,15 @@ export const DietsLoaded = () => {
   };
 };
 
-export const AlimentsLoaded = () => {
+export const AlimentsLoaded = (page = 1) => {
   return async (dispatch) => {
     try {
-      const resp = await FetchConsult(`gestion-animal/listar-alimentos`);
+      const resp = await FetchConsult(
+        `gestion-animal/listar-alimentos/${page}`
+      );
       const body = await resp.json();
-
       if (body.status) {
-        await dispatch(alimentsLoaded(body));
+        await dispatch(alimentsLoaded(body.aliments));
       } else {
         await Swal.fire("Error", body.msg, "error");
       }
@@ -44,18 +45,15 @@ export function saveDiet(dietFormValues) {
     const resp = await FetchConsult(
       "gestion-animal/guardar-dieta",
       {
-        stage: dietFormValues.stage,
         diet_name: dietFormValues.diet_name,
-        animal: dietFormValues.animal,
-        aliment: dietFormValues.aliment,
+        description: dietFormValues.description,
       },
       "POST"
     );
 
     const body = await resp.json();
-
     if (body.status) {
-      await dispatch(addDietSuccess(body.diet));
+      await dispatch(addDietSuccess(body));
       await Swal.fire({
         icon: "success",
         title: body.msg,
@@ -74,13 +72,13 @@ export function saveDiet(dietFormValues) {
 export function addAliment(alimentFormValues) {
   return async (dispatch) => {
     await TopLoaderService.start();
+    console.log(alimentFormValues);
     const resp = await FetchConsult(
       "gestion-animal/agregar-alimento",
       {
-        name_aliment: alimentFormValues.name_aliment,
+        diet_id: alimentFormValues.diet_id,
+        product_id: alimentFormValues.product_id,
         quantity_supplied: alimentFormValues.quantity_supplied,
-        aliment_kg: alimentFormValues.aliment_kg,
-        price_aliment: alimentFormValues.price_aliment,
       },
       "POST"
     );
@@ -121,11 +119,11 @@ export const dietClearActive = () => ({
   type: Types.DIET_CLEAR_ACTIVE,
 });
 
-export const alimentSetActive = (aliment) => ({
+export const productSetActive = (aliment) => ({
   type: Types.ALIMENT_SET_ACTIVE,
   payload: aliment,
 });
-export const alimentClearActive = () => ({
+export const productClearActive = () => ({
   type: Types.ALIMENT_CLEAR_ACTIVE,
 });
 

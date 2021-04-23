@@ -11,7 +11,7 @@ export const ModalDiet = () => {
 
   const { modalDietOpen } = useSelector((state) => state.ui);
   const { currentDiet } = useSelector((state) => state.diet);
-
+  
   const closeModal = () => {
     dispatch(uiCloseModalDiet());
     clearForm();
@@ -23,15 +23,13 @@ export const ModalDiet = () => {
   };
 
   const initEvent = {
-    stage: "",
     diet_name: "",
-    animal: "",
-    aliment: "",
+    description: "",
   };
 
   const [formValues, setFormValues] = useState(initEvent);
 
-  const { stage, diet_name, animal, aliment } = formValues;
+  const { diet_name, description } = formValues;
 
   useEffect(() => {
     if (currentDiet) {
@@ -48,8 +46,7 @@ export const ModalDiet = () => {
     });
   };
 
-  const handleSaveDiet = async (e) => {
-    e.preventDefault();
+  const handleSaveDiet = async () => {
     await dispatch(saveDiet(formValues));
     await setFormValues(initEvent); 
   };
@@ -80,27 +77,10 @@ export const ModalDiet = () => {
                 <form onSubmit={handleSaveDiet}>
                   <section className="max-w-4xl mx-auto bg-white">
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                      <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="stage"
-                        >
-                          Etapa
-                        </label>
-                        <input
-                          required
-                          value={stage}
-                          name="stage"
-                          onChange={handleInputChange}
-                          type="text"
-                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                        />
-                      </div>
 
                       <div>
                         <label
                           className="text-gray-700 dark:text-gray-200"
-                          htmlFor="diet_name"
                         >
                          Nombre de la dieta
                         </label>
@@ -108,6 +88,7 @@ export const ModalDiet = () => {
                           required
                           value={diet_name}
                           onChange={handleInputChange}
+                          name="diet_name"
                           id="diet_name"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
@@ -117,36 +98,19 @@ export const ModalDiet = () => {
                       <div>
                         <label
                           className="text-gray-700 dark:text-gray-200"
-                          htmlFor="animal"
                         >
-                         Animal
+                         Descripción 
                         </label>
                         <input
                           required
-                          value={animal}
+                          value={description}
                           onChange={handleInputChange}
-                          id="animal"
+                          name="description"
+                          id="description"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
-
-                      <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="aliment"
-                        >
-                          Alimentos
-                        </label>
-                        <input
-                          required
-                          value={aliment}
-                          id="aliment"
-                          type="text"
-                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                        />
-                      </div>
-
                     </div>
                   </section>
                 </form>

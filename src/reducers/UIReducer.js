@@ -14,7 +14,7 @@ const initialState = {
   modalPaymentOpen: false,
   modalAnimalOpen: false,
   modalDietOpen: false,
-  modalAlimentOpen: false,
+  modalProductOpen: false,
 };
 
 export const UIReducer = (state = initialState, action) => {
@@ -159,15 +159,15 @@ export const UIReducer = (state = initialState, action) => {
         ...state,
         modalDietOpen: false,
       };
-    case Types.UI_OPEN_MODAL_ALIMENT:
+    case Types.UI_OPEN_MODAL_PRODUCT:
       return {
         ...state,
-        modalAlimentOpen: true,
+        modalProductOpen: true,
       };
-    case Types.UI_CLOSE_MODAL_ALIMENT:
+    case Types.UI_CLOSE_MODAL_PRODUCT:
       return {
         ...state,
-        modalAlimentOpen: false,
+        modalProductOpen: false,
       };
 
     default:

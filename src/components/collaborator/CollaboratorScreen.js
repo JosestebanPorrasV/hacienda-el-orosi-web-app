@@ -96,36 +96,36 @@ export const CollaboratorScreen = () => {
       <div
         className={`${
           role === "Encargado del ganado" && "hidden"
-        } bg-gradient-to-r from-blue-200 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12`}
+        } bg-gradient-to-r from-yellow-800 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12`}
       >
         <div>
           <h2 className="text-2xl">COLABORADORES</h2>
-          <p className="text-gray-600">Funcionalidades principales</p>
+          <p className="text-gray-50">Funcionalidades principales</p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0 text-lg text-gray-200">
           <button
             onClick={() => contractCollaborator()}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700 w-35 fas fa-user-plus"
           >
-            <span>Contratar nuevo</span>
+            <span>  Contratar nuevo</span>
           </button>
           <button
             onClick={() => dispatch(CollaboratorsLoading("Activo"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700  w-35 fas fa-chart-line"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700  w-35 fas fa-clipboard-check"
           >
-            <span>Listar activos</span>
+            <span>  Listar activos</span>
           </button>
           <button
             onClick={() => dispatch(CollaboratorsLoading("Inactivo"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg  hover:bg-gray-700  w-35 fas fa-stop-circle"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg  hover:bg-gray-700  w-35 fab fa-creative-commons-nd"
           >
-            <span>Listar inactivos</span>
+            <span> Listar inactivos</span>
           </button>
           <a
             href={`https://hacienda-el-orosi-bucket.s3.amazonaws.com/reporte-colaboradores-${
               collaboratorsState === "Activo" ? "activos" : "inactivos"
             }.pdf`}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg  hover:bg-gray-700  w-35 fas fa-cloud-download-alt"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg  hover:bg-gray-700  w-35 fas fa-file-medical-alt"
           >
             <span>
               {" "}
@@ -141,9 +141,9 @@ export const CollaboratorScreen = () => {
 
           <Link
             to="/trabajos"
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700 w-35 fas fa-building"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700 w-35 fas fa-handshake"
           >
-            <span>Trabajos</span>
+            <span> Trabajos</span>
           </Link>
         </nav>
       </div>
@@ -222,7 +222,7 @@ export const CollaboratorScreen = () => {
                           <i className="fas fa-user"></i> Trabajo
                         </th>
                         <th className="p-4 w-1/4">
-                          <i className="fas fa-id-card"></i> Cedula
+                          <i className="fas fa-id-card"></i> Cédula
                         </th>
                         <th className="p-4 w-1/4">
                           <i className="fas fa-user-lock"></i> Datos personales

@@ -124,19 +124,19 @@ export const LendScreen = () => {
             onClick={() => openModalAddLend()}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-800 w-35 fas fa-hand-holding-usd"
           >
-            <span>Realizar prestamo</span>
+            <span> Realizar prestamo</span>
           </button>
           <button
             onClick={() => dispatch(lendsStartLoading("Activo"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-gray-800 w-35 fas fa-chart-line"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-gray-800 w-35 fas fa-clipboard-check"
           >
-            <span>Listar activos</span>
+            <span> Listar activos</span>
           </button>
           <button
             onClick={() => dispatch(lendsStartLoading("Cancelado"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-gray-800 w-35 fas fa-strikethrough"
           >
-            <span>Listar cancelados</span>
+            <span> Listar cancelados</span>
           </button>
         </nav>
       </div>
@@ -211,7 +211,7 @@ export const LendScreen = () => {
                             <i className="fas fa-user"></i> Colaborador
                           </th>
                           <th className="py-2 px-3">
-                            <i className="fas fa-id-card"></i> Cedula
+                            <i className="fas fa-id-card"></i> Cédula
                           </th>
                           <th className="py-2 px-3">
                             <i className="fas fa-calendar-day"></i> Registrado

@@ -108,12 +108,12 @@ export const ActiveScreen = () => {
                           <i className="fas fa-user"></i> Nombre completo
                         </th>
                         <th className="py-2 px-4">
-                          <i className="fas fa-id-card"></i> Cedula
+                          <i className="fas fa-id-card"></i> Cédula
                         </th>
                         <th className="py-2 px-3">
                           <i className="fas fa-wrench"></i> Herramienta
                         </th>
-                        <th className="py-2 px-3"># Codigo</th>
+                        <th className="py-2 px-3"># Código</th>
                         <th className="py-2 px-3">
                           <i className="far fa-calendar-alt"></i> Registrada
                         </th>

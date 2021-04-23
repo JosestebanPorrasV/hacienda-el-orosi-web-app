@@ -2,11 +2,13 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
 import { Link } from "react-router-dom";
+import { ModalAliment } from "./ModalAliment";
 
 import {
   AlimentsLoaded,
 } from "../../actions/DietAction";
 import { UseForm } from "../../hooks/UseForm";
+import { uiOpenModalAliment } from "../../actions/UIAction";
 
 export const AlimentScreen = () => {
   const dispatch = useDispatch();
@@ -32,6 +34,15 @@ export const AlimentScreen = () => {
           </p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
+        <button
+          onClick={() => dispatch(uiOpenModalAliment())}
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-purple-200 rounded-lg hover:bg-gray-900 w-35"
+          >
+            <i className="fas fa-plus-circle"></i>
+            <span className="text-indigo-600 hover:text-indigo-200 font-bold">
+              Agregar Alimento
+            </span>
+          </button>
           <Link
           to="/dieta"
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-purple-200 rounded-lg hover:bg-gray-900 w-35"
@@ -44,7 +55,7 @@ export const AlimentScreen = () => {
           <button
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-purple-200 rounded-lg hover:bg-gray-900 w-35"
           >
-            <i class="fas fa-leaf"></i>
+            <i className="fas fa-leaf"></i>
             <span className="text-indigo-600 hover:text-indigo-200 font-bold">
               Listar Alimentos
             </span>
@@ -84,7 +95,10 @@ export const AlimentScreen = () => {
                         # Cantidad Suministrada
                       </th>
                       <th className="p-5 w-1/4">
-                      <i class="fas fa-horse-head"></i> Precio del Alimento
+                      <i className="fas fa-horse-head"></i> Peso del Alimento
+                      </th>
+                      <th className="p-5 w-1/4">
+                      <i className="fas fa-horse-head"></i> Precio del Alimento
                       </th>
                     </tr>
                   </thead>
@@ -93,6 +107,7 @@ export const AlimentScreen = () => {
                       <tr key={aliment._id}>
                         <th className="py-5 px-8">{`${aliment.name_aliment}`}</th>
                         <th className="py-5 px-8">{`${aliment.quantity_supplied}`}kg</th>
+                        <th className="py-5 px-8">{`${aliment.aliment_kg}`}kg</th>
                         <th className="py-3 px-3">₡{aliment.price_aliment}</th>
                     
                       </tr>
@@ -104,6 +119,7 @@ export const AlimentScreen = () => {
           </div>
         </div>
       </div>
+      <ModalAliment />
     </>
   );
 };

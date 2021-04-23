@@ -2,11 +2,13 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
 import { Link } from "react-router-dom";
+import { ModalDiet } from "./ModalDiet";
 
 import {
   DietsLoaded,
 } from "../../actions/DietAction";
 import { UseForm } from "../../hooks/UseForm";
+import { uiOpenModalDiet } from "../../actions/UIAction";
 
 export const DietScreen = () => {
   const dispatch = useDispatch();
@@ -33,6 +35,7 @@ export const DietScreen = () => {
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
+          onClick={() => dispatch(uiOpenModalDiet())}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-purple-200 rounded-lg hover:bg-gray-900 w-35"
           >
             <i className="fas fa-plus-circle"></i>
@@ -44,7 +47,7 @@ export const DietScreen = () => {
           to="/alimento"
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-purple-200 rounded-lg hover:bg-gray-900 w-35"
           >
-            <i class="fas fa-leaf"></i>
+            <i className="fas fa-leaf"></i>
             <span className="text-indigo-600 hover:text-indigo-200 font-bold">
               Listar Alimentos
             </span>
@@ -78,7 +81,7 @@ export const DietScreen = () => {
                   <thead className="bg-gray-600">
                     <tr className="bg-gray-600 text-white text-lg">
                       <th className="py-2 px-5">
-                      <i class="far fa-bookmark"></i> Etapa
+                      <i className="far fa-bookmark"></i> Etapa
                       </th>
                       <th className="p-5 w-1/4">
                         <i className="fas fa-leaf"></i> Nombre de la Dieta
@@ -87,10 +90,10 @@ export const DietScreen = () => {
                         # Numero de chapa
                       </th>
                       <th className="py-2 px-5">
-                      <i class="fas fa-horse-head"></i> Animal
+                      <i className="fas fa-horse-head"></i> Animal
                       </th>
                       <th className="py-2 px-5">
-                      <i class="fas fa-suitcase"></i> Alimento
+                      <i className="fas fa-suitcase"></i> Alimento
                       </th>
                     </tr>
                   </thead>
@@ -115,6 +118,7 @@ export const DietScreen = () => {
           </div>
         </div>
       </div>
+      <ModalDiet />
     </>
   );
 };

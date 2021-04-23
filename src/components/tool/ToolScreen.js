@@ -63,12 +63,10 @@ export const ToolScreen = () => {
 
   return (
     <>
-      <div className="bg-gradient-to-r from-blue-300 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
+      <div className="bg-gradient-to-r from-yellow-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
-          <h2 className="text-2xl text-blue-900">HERRAMIENTAS</h2>
-          <p className="text-blue-900 opacity-90">
-            Funcionalidades principales
-          </p>
+          <h2 className="text-2xl text-blue-50">HERRAMIENTAS</h2>
+          <p className="text-blue-50 opacity-90">Funcionalidades principales</p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
@@ -82,7 +80,7 @@ export const ToolScreen = () => {
             onClick={() => dispatch(toolsLoading("Activo"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-blue-800 w-35"
           >
-            <i className="fas fa-chart-line"></i>
+            <i className="fas fa-clipboard-check"></i>
             <span className="text-white font-bold">Listar activas</span>
           </button>
           <button
@@ -96,14 +94,14 @@ export const ToolScreen = () => {
             onClick={() => dispatch(toolsLoading("En reparacion"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-blue-800 w-35"
           >
-            <i className="fas fa-toolbox"></i>
+            <i class="fas fa-notes-medical"></i>
             <span className="text-white font-bold">Listar En reparacion</span>
           </button>
           <button
             onClick={() => dispatch(toolsLoading("De baja"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-blue-800 w-35"
           >
-            <i className="fas fa-toolbox"></i>
+            <i class="fas fa-heart-broken"></i>
             <span className="text-white font-bold">De baja</span>
           </button>
         </nav>
@@ -149,14 +147,17 @@ export const ToolScreen = () => {
                 <table className="text-center relative w-full">
                   <thead className="bg-gray-600">
                     <tr className="text-lg">
-                      <th className="sticky top-0 px-6 py-3" hidden={toolsState === "Activo"}>
+                      <th
+                        className="sticky top-0 px-6 py-3"
+                        hidden={toolsState === "Activo"}
+                      >
                         <i className="fas fa-signal"></i> Estado
                       </th>
                       <th className="sticky top-0 px-6 py-3">
                         <i className="fas fa-wrench"></i> Herramienta
                       </th>
-                      <th className="sticky top-0 px-6 py-3"># Codigo</th>
-                      <th className="sticky top-0 px-6 py-3">
+                      <th className="py-2 px-12"># Código</th>
+                      <th className="py-2 px-12">
                         <i className="far fa-calendar-alt"></i> Registrada
                       </th>
                       <th className="sticky top-0 px-6 py-3">
@@ -210,7 +211,9 @@ export const ToolScreen = () => {
                         </th>
 
                         <th className="px-6 py-4 text-center">{tool.name}</th>
-                        <th className="px-6 py-4 text-center">{tool.active_num}</th>
+                        <th className="px-6 py-4 text-center">
+                          {tool.active_num}
+                        </th>
                         <th className="px-6 py-4 text-center">{tool.date}</th>
                         <th className="px-6 py-4 text-center">
                           <button

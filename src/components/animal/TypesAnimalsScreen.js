@@ -124,7 +124,7 @@ export const TypesAnimalsScreen = () => {
                             <i className="fas fa-clock"></i> Nombre
                           </th>
                           <th className="p-5 w-1/6">
-                            <i className="far fa-money-bill-alt"></i> Genero
+                            <i className="far fa-money-bill-alt"></i> Género
                           </th>
                           <th
                             hidden={role === "Recursos Humanos"}

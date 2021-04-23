@@ -115,7 +115,7 @@ export const PaymentModal = () => {
                         </h2>
                       </div>
                       <div className="p-4 sm:w-1/4 w-1/2">
-                        <p className="leading-relaxed">Cedula</p>
+                        <p className="leading-relaxed">Cédula</p>
                         <h2 className="title-font font-medium text-gray-700">
                           {`${currentCollaborator.document_id}`}
                         </h2>
@@ -127,7 +127,7 @@ export const PaymentModal = () => {
                         </h2>
                       </div>
                       <div className="p-4 sm:w-1/4 w-1/2">
-                        <p className="leading-relaxed">Precio del dia</p>
+                        <p className="leading-relaxed">Precio del día</p>
                         <h2 className="title-font font-medium text-gray-700">
                           {`${new Intl.NumberFormat("en-EN").format(
                             currentCollaborator.job.price_day
@@ -144,7 +144,7 @@ export const PaymentModal = () => {
                       <div className="flex flex-wrap">
                         <div className="pr-1 md:w-1/2 flex flex-col items-center w-full">
                           <span className="inline-block py-1 px-2 rounded-t bg-gray-200 text-white-500 text-lg font-medium tracking-widest">
-                            Dias pendientes de pago
+                            Días pendientes de pago
                           </span>
                           <section className="relative w-full">
                             <div className="relative">
@@ -175,7 +175,7 @@ export const PaymentModal = () => {
 
                                         <span className="ml-2 text-red-800 whitespace-nowrap">
                                           <i className="fas fa-calendar-day"></i>{" "}
-                                          Dia:
+                                          Día:
                                           <span className="ml-2  text-red-80">
                                             {presenceDay.date}
                                           </span>
@@ -199,7 +199,7 @@ export const PaymentModal = () => {
                             ) : (
                               <div className="static inset-x-0  bg-white border border-gray-300 rounded-b-lg h-52 italic">
                                 <span className="ml-2 text-gray-400 whitespace-nowrap">
-                                  - ( Sin dias pendientes de pago ) -
+                                  - ( Sin días pendientes de pago ) -
                                 </span>
                               </div>
                             )}
@@ -359,7 +359,7 @@ export const PaymentModal = () => {
                     </div>
                     <div className="flex border-t border-gray-200 py-2">
                       <span className="text-gray-500">
-                        Horas de trabajo por dia
+                        Horas de trabajo por día
                       </span>
                       <span className="ml-auto text-gray-900">
                         {currentCollaborator.job.work_hours}

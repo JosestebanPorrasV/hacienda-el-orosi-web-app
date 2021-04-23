@@ -377,17 +377,15 @@ export function regWeight(animalID, reg, date) {
   };
 }
 
-export function regCalving(animalID, reg, date) {
+export function regCalving(animalID, date, complications) {
   return async (dispatch) => {
     await TopLoaderService.start();
-    console.log(animalID, reg, date);
-
+    console.log(animalID, date, complications);
     const resp = await FetchConsult(
-      `gestion-animal/${animalID}/registar-peso`,
+      `gestion-animal/registar-parto/animal/${animalID}`,
       {
-        weight: reg[0],
         date: date,
-        observations: reg[1],
+        complications: complications,
       },
       "POST"
     );

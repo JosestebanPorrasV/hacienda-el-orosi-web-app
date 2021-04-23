@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import { ModalAnimal } from "./ModalAnimal";
 import moment from "moment";
 import UploadImgProfile from "./UploadImgProfile";
+import RegisterCalving from "./RegisterCalving";
 
 export const AnimalsScreen = () => {
   const dispatch = useDispatch();
@@ -217,8 +218,12 @@ export const AnimalsScreen = () => {
                         <div className="lg:w-1/2 w-full lg:pr-10 lg:py-1 mb-2 lg:mb-0">
                           <h1 className="title-font font-bold">
                             <span
-                              className={`${animal.plate_color === "#FFFFFF" ? "text-gray-800" : "text-gray-200 "} rounded-full px-3 py-1 inline-block text-center uppercase`}
-                              style={{ backgroundColor: animal.plate_color}}
+                              className={`${
+                                animal.plate_color === "#FFFFFF"
+                                  ? "text-gray-800"
+                                  : "text-gray-200 "
+                              } rounded-full px-3 py-1 inline-block text-center uppercase`}
+                              style={{ backgroundColor: animal.plate_color }}
                             >
                               Numero de chapa: {animal.plate_number}
                             </span>
@@ -320,8 +325,11 @@ export const AnimalsScreen = () => {
                           </div>
 
                           <div
-                            className={`overflow-y-auto h-72 bg-gray-600 rounded-lg ${
-                              !openTab ? "block" : "hidden"
+                            className={`overflow-y-auto h-72 bg-gray-800 rounded-lg ${
+                              openTab ===
+                              `${currentType ? currentType._id : animal._id}/1`
+                                ? "block"
+                                : "hidden"
                             }`}
                           >
                             <div className="flex py-2">
@@ -546,7 +554,7 @@ export const AnimalsScreen = () => {
                               type="text"
                               name="filterCalving"
                               className="h-6 p-2 w-full placeholder-blue-800 text-black mb-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-                              placeholder="Buscar por ..."
+                              placeholder="Buscar"
                               value={filterCalving}
                               onChange={handleInputChange}
                             />
@@ -555,7 +563,7 @@ export const AnimalsScreen = () => {
                               data={animal.calving}
                               renderResults={(results) => (
                                 <div>
-                                  {results.map((calving) => (
+                                  {results.map((calving, index) => (
                                     <div
                                       key={calving._id}
                                       className="rounded-lg m-2 text-sm  bg-gray-600"
@@ -569,7 +577,7 @@ export const AnimalsScreen = () => {
                                       <div className="flex border-t border-gray-400">
                                         <span className="ml-2">Parto</span>
                                         <span className="ml-auto mr-2">
-                                          {calving.calving_number}
+                                          {index + 1}
                                         </span>
                                       </div>
                                       <div className="flex ml-2 border-t border-gray-400">
@@ -615,7 +623,15 @@ export const AnimalsScreen = () => {
                             >
                               {`Registros: ${animal.calving.length}`}
                             </span>
-                            <div hidden={openTab} className="ml-auto">
+                            <div
+                              hidden={
+                                openTab !==
+                                `${
+                                  currentType ? currentType._id : animal._id
+                                }/1`
+                              }
+                              className="ml-auto"
+                            >
                               <button
                                 onClick={() => editAnimal(animal)}
                                 className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded"
@@ -664,9 +680,7 @@ export const AnimalsScreen = () => {
                               }
                               className="ml-auto"
                             >
-                              <button className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded">
-                                Registrar parto
-                              </button>
+                              <RegisterCalving currentAnimal={animal} />
                             </div>
                           </div>
                         </div>

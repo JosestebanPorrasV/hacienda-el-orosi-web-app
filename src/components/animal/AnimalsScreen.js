@@ -139,6 +139,12 @@ export const AnimalsScreen = () => {
           >
             <span>Tipos de animales</span>
           </Link>
+          <Link
+            to="/dieta"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
+          >
+            <span>Tipos de dietas</span>
+          </Link>
         </nav>
       </div>
 

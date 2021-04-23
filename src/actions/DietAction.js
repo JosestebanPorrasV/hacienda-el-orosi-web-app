@@ -53,7 +53,7 @@ export function saveDiet(dietFormValues) {
 
     const body = await resp.json();
     if (body.status) {
-      await dispatch(addDietSuccess(body));
+      await dispatch(addDietSuccess(body.diet));
       await Swal.fire({
         icon: "success",
         title: body.msg,

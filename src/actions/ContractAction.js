@@ -1,17 +1,21 @@
 import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
+import TopLoaderService from "top-loader-service";
 
-export const contractLoading = () => {
+export const contractsLoading = () => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`recursos-humanos/ver-contratos/active`);
+      const resp = await FetchConsult(`recursos-humanos/ver-contratos/Activo`);
       const body = await resp.json();
 
-      if (body.status === "success") {
-        dispatch(contractsLoaded(body));
+      if (body.status) {
+        await  dispatch(contractsLoaded(body));
+        await TopLoaderService.end();
       } else {
-        Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
+        await Swal.fire("Error", body.msg, "error");
       }
     } catch (error) {
       console.log(error);

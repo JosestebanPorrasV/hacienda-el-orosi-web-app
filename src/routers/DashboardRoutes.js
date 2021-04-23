@@ -5,30 +5,39 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import { CollaboratorScreen } from "../components/collaborator/CollaboratorScreen";
 import { AdministratorScreen } from "../components/administrator/AdministratorScreen";
 import { LendScreen } from "../components/lend/LendScreen";
-import { LendHistoryScreen } from "../components/lend/LendHistoryScreen";
 import { ContractScreen } from "../components/contract/ContractScreen";
+import { ToolScreen } from "../components/tool/ToolScreen";
+import { ActiveScreen } from "../components/tool/ActiveScreen";
+import { JobScreen } from "../components/job/JobScreen";
+import { PaymentScreen } from "../components/payment/PaymentScreen";
+import { AnimalsScreen } from "../components/animal/AnimalsScreen";
+import { DietScreen } from "../components/diet/DietScreen";
+import { AlimentScreen } from "../components/diet/AlimentScreen";
+import { CollaboratorScreen } from "../components/collaborator/CollaboratorScreen";
+import { RecoveryPass } from "../components/auth/RecoveryPass";
+import { TypesAnimalsScreen } from "../components/animal/TypesAnimalsScreen";
 
 export const DashboardRoutes = () => {
   return (
     <Router>
       <Switch>
-        <Route
-          exact
-          path="/listar-administradores"
-          component={AdministratorScreen}
-        />
-        <Route
-          exact
-          path="/listar-colaboradores"
-          component={CollaboratorScreen}
-        />
-        <Route exact path="/listar-prestamos" component={LendScreen} />
-        <Route exact path="/prestamo-historial" component={LendHistoryScreen} />
-        <Route exact path="/listar-contratos" component={ContractScreen} />
-        <Redirect to="/listar-colaboradores" />
+        <Route exact path="/administradores" component={AdministratorScreen} />
+        <Route exact path="/editar-cuenta" component={RecoveryPass} />
+        <Route exact path="/colaboradores" component={CollaboratorScreen} />
+
+        <Route exact path="/pagos" component={PaymentScreen} />
+        <Route exact path="/prestamos" component={LendScreen} />
+        <Route exact path="/contratos" component={ContractScreen} />
+        <Route exact path="/herramientas" component={ToolScreen} />
+        <Route exact path="/herramientas-activas" component={ActiveScreen} />
+        <Route exact path="/trabajos" component={JobScreen} />
+        <Route exact path="/animales" component={AnimalsScreen} />
+        <Route exact path="/tipos-de-animales" component={TypesAnimalsScreen} />
+        <Route exact path="/dieta" component={DietScreen} />
+        <Route exact path="/alimento" component={AlimentScreen} />
+        <Redirect to="/colaboradores" />
       </Switch>
     </Router>
   );

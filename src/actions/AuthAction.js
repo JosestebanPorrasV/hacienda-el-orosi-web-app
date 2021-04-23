@@ -1,10 +1,12 @@
 import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
+import TopLoaderService from "top-loader-service";
 
 import Swal from "sweetalert2";
 
 export const startLogin = (document_id, password) => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     const resp = await FetchConsult(
       "ingresar",
       { document_id, password },
@@ -12,12 +14,12 @@ export const startLogin = (document_id, password) => {
     );
     const body = await resp.json();
 
-    if (body.status === "success") {
+    if (body.status) {
       localStorage.setItem("identity", JSON.stringify(body.user));
       localStorage.setItem("token", JSON.stringify(body.token));
       localStorage.setItem("token-init-date", new Date().getTime());
 
-      dispatch(
+      await dispatch(
         login({
           id: body.user.id,
           document_id: body.user.document_id,
@@ -27,52 +29,61 @@ export const startLogin = (document_id, password) => {
           role: body.user.role,
         })
       );
+      await TopLoaderService.end();
     } else {
-      Swal.fire("Error", body.msg, "error");
+      await Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
     }
   };
 };
 export const setRecoveryKey = (email, status) => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     const resp = await FetchConsult(`recuperar/cuenta/${email}`);
     const body = await resp.json();
 
-    if (body.status === "success") {
-      Swal.fire("Correo registrado", body.msg, "success");
+    if (body.status) {
+      await Swal.fire("Correo registrado", body.msg, "success");
 
-      dispatch(
+      await dispatch(
         recoveryStatus({
           recoveryState: status,
           findMail: email,
         })
       );
+      await TopLoaderService.end();
     } else {
-      Swal.fire("Error", body.msg, "error");
+      await Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
     }
   };
 };
 
 export const verifyRecoveryKey = (email, code, status) => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     const resp = await FetchConsult(`verificar/codigo/${email}/${code}`);
     const body = await resp.json();
 
-    if (body.status === "success") {
+    if (body.status) {
       Swal.fire("Ultimo paso", body.msg, "success");
 
-      dispatch(
+      await dispatch(
         recoveryStatus({
           recoveryState: status,
         })
       );
+      await TopLoaderService.end();
     } else {
-      Swal.fire("Error", body.msg, "error");
+      await Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
     }
   };
 };
 
 export const changePass = (email, password, status) => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     const resp = await FetchConsult(
       `/editar/cuenta/${email}`,
       { password },
@@ -80,16 +91,18 @@ export const changePass = (email, password, status) => {
     );
     const body = await resp.json();
 
-    if (body.status === "success") {
-      Swal.fire("Muchas gracias", body.msg, "success");
+    if (body.status) {
+      await Swal.fire("Muchas gracias", body.msg, "success");
 
-      dispatch(changePassword());
+      await dispatch(changePassword());
 
-      recoveryStatus({
+      await recoveryStatus({
         recoveryState: status,
       });
+      await TopLoaderService.end();
     } else {
-      Swal.fire("Error", body.msg, "error");
+      await Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
     }
   };
 };
@@ -98,14 +111,15 @@ const changePassword = () => ({ type: Types.CHANGE_PASSWORD });
 
 export const startChecking = () => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     const resp = await FetchConsult("informacion-administrador");
     const body = await resp.json();
 
-    if (body.status === "success") {
+    if (body.status) {
       localStorage.setItem("identity", JSON.stringify(body.user));
       localStorage.setItem("token-init-date", new Date().getTime());
 
-      dispatch(
+      await dispatch(
         login({
           id: body.user.id,
           document_id: body.user.document_id,
@@ -115,8 +129,10 @@ export const startChecking = () => {
           role: body.user.role,
         })
       );
+      await TopLoaderService.end();
     } else {
-      dispatch(checkingFinish());
+      await dispatch(checkingFinish());
+      await TopLoaderService.end();
     }
   };
 };
@@ -132,3 +148,5 @@ const login = (user) => ({
   type: Types.LOGIN,
   payload: user,
 });
+
+export const logout = () => ({ type: Types.LOGOUT });

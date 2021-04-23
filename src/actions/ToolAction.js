@@ -105,6 +105,7 @@ export const removeTools = (data) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
+      console.log(data);
       const resp = await FetchConsult(
         `herramientas/eliminar-activos`,
         { tools: data },

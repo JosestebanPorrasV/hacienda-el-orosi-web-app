@@ -81,7 +81,7 @@ export const ModalAddActive = () => {
                           className="text-gray-700 dark:text-gray-200"
                           htmlFor="active_num"
                         >
-                          Codigo de la herramienta
+                          Código de la herramienta
                         </label>
                         <input
                           disabled={true}
@@ -113,7 +113,7 @@ export const ModalAddActive = () => {
                           className="text-gray-700 dark:text-gray-200"
                           htmlFor="collaborator_id"
                         >
-                          Cedula del colaborador
+                          Cédula del colaborador
                         </label>
                         <input
                           required

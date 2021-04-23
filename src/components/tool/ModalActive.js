@@ -107,7 +107,7 @@ export const ModalActive = () => {
                           className="text-gray-700 dark:text-gray-200"
                           htmlFor="document_id"
                         >
-                          Cedula del colaborador
+                          Cédula del colaborador
                         </label>
                         <input
                           disabled={true}

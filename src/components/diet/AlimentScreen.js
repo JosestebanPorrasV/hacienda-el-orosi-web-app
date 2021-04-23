@@ -65,7 +65,7 @@ export const AlimentScreen = () => {
 
       <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
         <h2 className="text-green-400 text-xl font-bold mb-2">
-          LISTA DE ALIMENTOS
+          Listar Alimentos
         </h2>
         <input
           type="text"

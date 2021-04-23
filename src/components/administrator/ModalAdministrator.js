@@ -78,7 +78,7 @@ export const ModalAdministrator = () => {
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                       <div>
                         <label className="text-gray-700 dark:text-gray-200">
-                          Cedula
+                          Cédula
                         </label>
                         <input
                           required
@@ -91,7 +91,7 @@ export const ModalAdministrator = () => {
                       </div>
                       <div>
                         <label className="text-gray-700 dark:text-gray-200">
-                          Correo electronico
+                          Correo electrónico
                         </label>
                         <input
                           required

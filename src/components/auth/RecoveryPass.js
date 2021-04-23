@@ -85,7 +85,7 @@ export const RecoveryPass = () => {
               {recoveryState === 0 && (
                 <div className="relative mr-4 lg:w-full xl:w-1/2 w-2/4 md:w-full text-left">
                   <label className="leading-7 text-sm text-white">
-                    Correo electronico
+                    Correo electrónico
                   </label>
                   <input
                     required
@@ -104,7 +104,7 @@ export const RecoveryPass = () => {
                     htmlFor="code"
                     className="leading-7 text-sm text-white"
                   >
-                    Codigo recibido por correo
+                    Código recibido por correo
                   </label>
                   <input
                     required

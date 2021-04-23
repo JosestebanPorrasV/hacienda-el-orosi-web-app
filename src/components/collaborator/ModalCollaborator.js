@@ -150,7 +150,7 @@ export const ModalCollaborator = () => {
 
                       <div>
                         <label className="text-gray-700 dark:text-gray-200">
-                          Cedula
+                          Cédula
                         </label>
                         <input
                           required
@@ -254,7 +254,7 @@ export const ModalCollaborator = () => {
                       </div>
                       <div>
                         <label className="text-gray-700 dark:text-gray-200">
-                          Direccion
+                          Dirección
                         </label>
                         <input
                           required
@@ -270,7 +270,7 @@ export const ModalCollaborator = () => {
                           className="text-gray-700 dark:text-gray-200"
                           htmlFor="tel"
                         >
-                          Telefono
+                          Teléfono
                         </label>
                         <input
                           required

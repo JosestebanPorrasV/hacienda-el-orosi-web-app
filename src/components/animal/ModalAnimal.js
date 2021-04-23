@@ -215,7 +215,7 @@ export const ModalAnimal = () => {
 
                       {currentAnimal && currentAnimal.next_due_date && (
                         <div className="sm:w-1/4 w-1/2">
-                          <p className="leading-relaxed">proximo de parto</p>
+                          <p className="leading-relaxed">próximo de parto</p>
                           <h2 className="title-font font-medium text-gray-700">
                             {currentAnimal.next_due_date}
                           </h2>
@@ -388,7 +388,7 @@ export const ModalAnimal = () => {
                         </div>
                         <div>
                           <label className="text-gray-700 dark:text-gray-200">
-                            Numero de chapa
+                            Número de chapa
                           </label>
                           <input
                             value={plate_number}
@@ -417,7 +417,7 @@ export const ModalAnimal = () => {
 
                         <div>
                           <label className="text-gray-700 dark:text-gray-200">
-                            Proximo parto (Si aplica)
+                            Próximo parto (Si aplica)
                             <br />
                           </label>
                           <DatePicker

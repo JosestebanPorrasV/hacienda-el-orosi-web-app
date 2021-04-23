@@ -23,9 +23,9 @@ export const ContractScreen = () => {
             <tr className="bg-gray-800 text-gray-300">
             <th className="px-16 py-2"> Contratado </th>
               <th className="px-16 py-2"> Fecha de contrato </th>
-              <th className="px-16 py-2"> Dia de pago </th>
+              <th className="px-16 py-2"> Día de pago </th>
               <th className="px-16 py-2"> Precio </th>
-              <th className="px-16 py-2"> Telefono de contacto </th>
+              <th className="px-16 py-2"> Teléfono de contacto </th>
             </tr>
           </thead>
           <tbody className="bg-gray-200">

@@ -220,7 +220,7 @@ export const AnimalsScreen = () => {
                               className={`${animal.plate_color === "#FFFFFF" ? "text-gray-800" : "text-gray-200 "} rounded-full px-3 py-1 inline-block text-center uppercase`}
                               style={{ backgroundColor: animal.plate_color}}
                             >
-                              Numero de chapa: {animal.plate_number}
+                              Número de chapa: {animal.plate_number}
                             </span>
                           </h1>
                           <div className="flex mb-4">
@@ -244,7 +244,7 @@ export const AnimalsScreen = () => {
                                 currentType ? currentType._id : animal._id
                               }/1`}
                             >
-                              Informacion
+                              Información
                             </a>
                             <a
                               className={`flex-grow border-b-2 ${
@@ -377,7 +377,7 @@ export const AnimalsScreen = () => {
                                 !animal.next_due_date && "hidden"
                               }`}
                             >
-                              <span className="ml-2">Proximo parto</span>
+                              <span className="ml-2">Próximo parto</span>
                               <span className="ml-auto mr-2">
                                 {animal.next_due_date}
                               </span>
@@ -435,7 +435,7 @@ export const AnimalsScreen = () => {
                             <div
                               className={`flex border-t border-gray-200 py-2`}
                             >
-                              <span className="ml-2">Genero</span>
+                              <span className="ml-2">Género</span>
                               <span className="ml-auto mr-2">
                                 {animal.type.gender}
                               </span>

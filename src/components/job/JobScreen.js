@@ -113,13 +113,13 @@ export const JobScreen = () => {
                             <i className="fas fa-clock"></i> Horas
                           </th>
                           <th className="p-5 w-1/6">
-                            <i className="far fa-money-bill-alt"></i> Precio dia
+                            <i className="far fa-money-bill-alt"></i> Precio día
                           </th>
                           <th className="p-5 w-1/6">
                             <i className="far fa-money-bill-alt"></i> Hora extra
                           </th>
                           <th className="py-2 px-5">
-                            <i className="fas fa-info-circle"></i> Descripcion
+                            <i className="fas fa-info-circle"></i> Descripción
                           </th>
                           <th hidden={role === "Encargado del ganado"} className="py-2 px-12">
                             <i className="far fa-caret-square-down"></i> Acciones

@@ -50,7 +50,7 @@ export const DietScreen = () => {
             </span>
           </button>
           <Link
-          to="/product"
+          to="/producto"
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
           >
             <i className="fas fa-leaf"></i>
@@ -99,9 +99,6 @@ export const DietScreen = () => {
                       <tr key={diet._id}>
                         <th className="py-5 px-8">{`${diet.diet_name}`}</th>
                         <th className="py-5 px-8">{`${diet.description}`}</th>
-                        <th className="whitespace-pre-line">
-                          {diet.description}
-                        </th>
                     
                       </tr>
                     ))}

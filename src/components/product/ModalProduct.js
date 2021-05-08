@@ -6,33 +6,23 @@ import {
     productClearActive,
 } from "../../actions/ProductAction";
 
+const initEvent = {
+  name: "",
+  kilograms: "",
+  liters: "",
+  price: "",
+};
+
 export const ModalProduct = () => {
   const dispatch = useDispatch();
 
   const { modalProductOpen } = useSelector((state) => state.ui);
-  const { currentProduct } = useSelector((state) => state.diet);
-
-  const closeModal = () => {
-    dispatch(uiCloseModalProduct());
-    clearForm();
-  };
-
-  const clearForm = () => {
-    dispatch(productClearActive());
-    setFormValues(initEvent);
-  };
-
-  const initEvent = {
-    name: "",
-    kilograms: "",
-    liters: "",
-    price: "",
-  };
+  const { currentProduct } = useSelector((state) => state.product);
 
   const [formValues, setFormValues] = useState(initEvent);
 
   const { name, kilograms, liters, price } = formValues;
-
+ 
   useEffect(() => {
     if (currentProduct) {
       setFormValues(currentProduct);
@@ -46,6 +36,16 @@ export const ModalProduct = () => {
       ...formValues,
       [target.name]: target.value,
     });
+  };
+
+  const closeModal = () => {
+    dispatch(uiCloseModalProduct());
+    clearForm();
+  };
+
+  const clearForm = () => {
+    dispatch(productClearActive());
+    setFormValues(initEvent);
   };
 
   const handleAddProduct = async () => {

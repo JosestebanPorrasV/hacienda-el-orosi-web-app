@@ -14,7 +14,7 @@ import { JobScreen } from "../components/job/JobScreen";
 import { PaymentScreen } from "../components/payment/PaymentScreen";
 import { AnimalsScreen } from "../components/animal/AnimalsScreen";
 import { DietScreen } from "../components/diet/DietScreen";
-import { ProductScreen } from "../components/diet/ProductScreen";
+import { ProductScreen } from "../components/product/ProductScreen";
 import { CollaboratorScreen } from "../components/collaborator/CollaboratorScreen";
 import { RecoveryPass } from "../components/auth/RecoveryPass";
 import { TypesAnimalsScreen } from "../components/animal/TypesAnimalsScreen";
@@ -36,7 +36,7 @@ export const DashboardRoutes = () => {
         <Route exact path="/animales" component={AnimalsScreen} />
         <Route exact path="/tipos-de-animales" component={TypesAnimalsScreen} />
         <Route exact path="/dieta" component={DietScreen} />
-        <Route exact path="/product" component={ProductScreen} />
+        <Route exact path="/producto" component={ProductScreen} />
         <Redirect to="/colaboradores" />
       </Switch>
     </Router>

@@ -11,6 +11,7 @@ import { ToolReducer } from "./ToolReducer";
 import { JobReducer } from "./JobReducer";
 import { AnimalReducer } from "./AnimalReducer";
 import { DietReducer } from "./DietReducer";
+import { ProductReducer } from "./ProductReducer";
 
 export const rootReducer = combineReducers({
   auth: AuthReducer,
@@ -24,4 +25,5 @@ export const rootReducer = combineReducers({
   job: JobReducer,
   animal: AnimalReducer,
   diet: DietReducer,
+  product: ProductReducer,
 });

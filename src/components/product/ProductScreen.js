@@ -134,7 +134,7 @@ export const ProductScreen = () => {
                       <tr key={products._id}>
                         <th className="py-5 px-8">{`${products.name}`}</th>
                         <th className="py-5 px-8">
-                          {`${products.kilograms}`}kg
+                          {`${!products.kilograms ? 0 : products.kilograms}`}kg
                         </th>
                         <th className="py-5 px-8">
                           {`${!products.liters ? 0 : products.liters}`}lt
@@ -146,7 +146,7 @@ export const ProductScreen = () => {
                         >
                           <button
                             onClick={() =>
-                              onSelectProductOneDelete(products._id)
+                              onSelectProductOneDelete(products)
                             }
                             className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"

@@ -26,7 +26,7 @@ export const DietReducer = (state = initialState, action) => {
     case Types.ADD_NEW_DIET:
       return {
         ...state,
-        diets: [...state.diets, ...action.payload],
+        diets: [...state.diets, action.payload],
       };
 
     case Types.ADD_NEW_ALIMENT:

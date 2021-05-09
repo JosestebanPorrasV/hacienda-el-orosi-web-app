@@ -39,7 +39,6 @@ export function addProduct(productFormValues) {
     );
 
     const body = await resp.json();
-    console.log(body);
     if (body.status) {
       await dispatch(addProductSuccess(body.product));
      

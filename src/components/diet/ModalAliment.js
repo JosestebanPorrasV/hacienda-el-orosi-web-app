@@ -154,11 +154,11 @@ export const ModalAliment = () => {
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="text-center divide-y-2 divide-green-900 text-gray-700 whitespace-nowrap">
+                      <tbody className="text-center divide-y-2 divide-green-900 text-green-700 whitespace-nowrap">
                         {aliments.map((aliment) => (
                           <tr key={aliment._id}>
-                            <td className="py-3 px-6">{product}</td>
-                            <td className="py-3 px-6"> {quantity_supplied} </td>
+                            <td className="py-3 px-6">{aliment.product.name}</td>
+                            <td className="py-3 px-6"> {aliment.quantity_supplied} kg</td>
                             <td className="py-3 px-6">
                               <button
                                 className="bg-yellow-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-yellow-600 outline-none focus:outline-none mr-1 mb-1"

@@ -20,15 +20,15 @@ export const DietsLoaded = () => {
   };
 };
 
-export const AlimentsLoaded = (page = 1) => {
+export const AlimentsLoaded = (id, page = 1) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
-        `gestion-animal/listar-alimentos/${page}`
+        `gestion-animal/listar-alimentos/${id}/${page}`
       );
       const body = await resp.json();
       if (body.status) {
-        await dispatch(alimentsLoaded(body.aliments));
+        await dispatch(alimentsLoaded(body));
       } else {
         await Swal.fire("Error", body.msg, "error");
       }

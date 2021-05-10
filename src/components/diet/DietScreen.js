@@ -30,11 +30,10 @@ export const DietScreen = () => {
 
   const { filter } = formValues;
 
-  const onSelectAliment = () => {
-    //dispatch(AlimentsLoaded(dietID));
+  const onSelectAliment = (diet) => {
+    dispatch(AlimentsLoaded(diet._id));
     dispatch(uiOpenModalAliment());
   };
-
   const onSelectDeleteOneDiet = (diet) => {
     dispatch(dietSetActive(diet));
     deleteDiet(diet);
@@ -132,7 +131,7 @@ export const DietScreen = () => {
                           {diets.description}
                         </p>
                         <button
-                        onClick={() => onSelectAliment()} 
+                        onClick={() => onSelectAliment(diets)} 
                         className="mt-3 text-green-500 inline-flex items-center hover:text-blue-700">
                           Alimentos
                           <svg

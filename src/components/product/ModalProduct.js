@@ -6,33 +6,23 @@ import {
     productClearActive,
 } from "../../actions/ProductAction";
 
+const initEvent = {
+  name: "",
+  kilograms: "",
+  liters: "",
+  price: "",
+};
+
 export const ModalProduct = () => {
   const dispatch = useDispatch();
 
   const { modalProductOpen } = useSelector((state) => state.ui);
-  const { currentProduct } = useSelector((state) => state.diet);
-
-  const closeModal = () => {
-    dispatch(uiCloseModalProduct());
-    clearForm();
-  };
-
-  const clearForm = () => {
-    dispatch(productClearActive());
-    setFormValues(initEvent);
-  };
-
-  const initEvent = {
-    name: "",
-    kilograms: "",
-    liters: "",
-    price: "",
-  };
+  const { currentProduct } = useSelector((state) => state.product);
 
   const [formValues, setFormValues] = useState(initEvent);
 
   const { name, kilograms, liters, price } = formValues;
-
+ 
   useEffect(() => {
     if (currentProduct) {
       setFormValues(currentProduct);
@@ -46,6 +36,16 @@ export const ModalProduct = () => {
       ...formValues,
       [target.name]: target.value,
     });
+  };
+
+  const closeModal = () => {
+    dispatch(uiCloseModalProduct());
+    clearForm();
+  };
+
+  const clearForm = () => {
+    dispatch(productClearActive());
+    setFormValues(initEvent);
   };
 
   const handleAddProduct = async () => {
@@ -92,7 +92,7 @@ export const ModalProduct = () => {
                           name="name"
                           onChange={handleInputChange}
                           type="text"
-                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                          className="block w-full px-2 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
 
@@ -110,7 +110,7 @@ export const ModalProduct = () => {
                           onChange={handleInputChange}
                           id="kilograms"
                           type="number"
-                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                          className="block w-full px-3 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
                      
@@ -128,7 +128,7 @@ export const ModalProduct = () => {
                           onChange={handleInputChange}
                           id="liters"
                           type="number"
-                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                          className="block w-full px-3 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
 
@@ -146,7 +146,7 @@ export const ModalProduct = () => {
                           onChange={handleInputChange}
                           id="price"
                           type="number"
-                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                          className="block w-full px-3 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
 

@@ -9,7 +9,6 @@ export const DietsLoaded = () => {
     try {
       const resp = await FetchConsult(`gestion-animal/listar-dietas`);
       const body = await resp.json();
-      console.log(body);
       if (body.status) {
         await dispatch(dietsLoaded(body));
       } else {
@@ -60,7 +59,7 @@ export function saveDiet(dietFormValues) {
         showConfirmButton: false,
         timer: 2000,
       });
-      await dispatch(uiCloseModalDiet());
+
       await TopLoaderService.end();
     } else {
       await Swal.fire("Error", body.msg, "error");

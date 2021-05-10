@@ -4,14 +4,22 @@ import SearchResults from "react-filter-search";
 import { Link } from "react-router-dom";
 import { ModalProduct } from "./ModalProduct";
 
-import { ProductsLoaded } from "../../actions/ProductAction";
+import {
+  ProductsLoaded,
+  productClearActive,
+  oneProductDelete,
+  productSetActive,
+} from "../../actions/ProductAction";
+
 import { UseForm } from "../../hooks/UseForm";
 import { uiOpenModalProduct } from "../../actions/UIAction";
 import ReactPaginate from "react-paginate";
+import Swal from "sweetalert2";
 
 export const ProductScreen = () => {
   const dispatch = useDispatch();
-  const { products, count } = useSelector((state) => state.diet);
+  const { products, count } = useSelector((state) => state.product);
+  const { role } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(ProductsLoaded());
@@ -22,6 +30,30 @@ export const ProductScreen = () => {
   });
 
   const { filter } = formValues;
+
+  const onSelectProductOneDelete = (product) => {
+    dispatch(productSetActive(product));
+    deleteProduct(product);
+  };
+
+  const deleteProduct = (productId) => {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "El producto no se volerá a recuperar",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#A0A0A0",
+      confirmButtonText: "Si, eliminar!!",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(oneProductDelete(productId));
+      } else {
+        dispatch(productClearActive());
+      }
+    });
+  };
 
   return (
     <>
@@ -85,17 +117,15 @@ export const ProductScreen = () => {
                 <table className="min-w-full">
                   <thead className="bg-gray-600">
                     <tr className="bg-gray-600 text-white text-lg">
-                      <th className="p-5 w-1/4">
-                         Nombre del Producto
-                      </th>
+                      <th className="p-5 w-1/4">Nombre del Producto</th>
                       <th className="p-5 w-1/4">Kilogramos</th>
-                      <th className="p-5 w-1/4">
-                         Litros del
-                        Producto
-                      </th>
-                      <th className="p-5 w-1/4">
-                         Precio del
-                        Producto
+                      <th className="p-5 w-1/4">Litros del Producto</th>
+                      <th className="p-5 w-1/4">Precio del Producto</th>
+                      <th
+                        hidden={role === "Recursos Humanos"}
+                        className="p-5 w-1/4"
+                      >
+                        <i className="far fa-caret-square-down"></i> Acciones
                       </th>
                     </tr>
                   </thead>
@@ -104,12 +134,27 @@ export const ProductScreen = () => {
                       <tr key={products._id}>
                         <th className="py-5 px-8">{`${products.name}`}</th>
                         <th className="py-5 px-8">
-                          {`${products.kilograms}`}kg
+                          {`${!products.kilograms ? 0 : products.kilograms}`}kg
                         </th>
                         <th className="py-5 px-8">
                           {`${!products.liters ? 0 : products.liters}`}lt
                         </th>
                         <th className="py-3 px-3">₡{products.price}</th>
+                        <th
+                          hidden={role === "Recursos Humanos"}
+                          className="py-3 px-3"
+                        >
+                          <button
+                            onClick={() =>
+                              onSelectProductOneDelete(products)
+                            }
+                            className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
+                            type="button"
+                            style={{ transition: "all .15s ease" }}
+                          >
+                            <i className="fas fa-trash-alt"></i>
+                          </button>
+                        </th>
                       </tr>
                     ))}
                   </tbody>
@@ -137,10 +182,7 @@ export const ProductScreen = () => {
         nextClassName={
           "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900"
         }
-        onPageChange={
-          (data) =>
-                dispatch(ProductsLoaded( data.selected + 1))
-        }
+        onPageChange={(data) => dispatch(ProductsLoaded(data.selected + 1))}
         containerClassName={"sm:flex m-4 p-3"}
       />
       <ModalProduct />

@@ -5,14 +5,18 @@ import TopLoaderService from "top-loader-service"
 
 export const ProductsLoaded = ( page = 1) => {
   return async (dispatch) => {
+    await TopLoaderService.start();
     try {
-      
       const resp = await FetchConsult(`gestion-animal/listar-productos/${page}`);
       const body = await resp.json();
       if (body.status) {
         await dispatch(productsLoaded(body.products));
+
+        await TopLoaderService.end();
       } else {
         await Swal.fire("Error", body.msg, "error");
+
+        await TopLoaderService.end();
       }
     } catch (error) {
       console.log(error);
@@ -23,7 +27,6 @@ export const ProductsLoaded = ( page = 1) => {
 export function addProduct(productFormValues) {
   return async (dispatch) => {
     await TopLoaderService.start();
-    console.log(productFormValues);
     const resp = await FetchConsult(
       "gestion-animal/guardar-producto",
       {
@@ -38,6 +41,7 @@ export function addProduct(productFormValues) {
     const body = await resp.json();
     if (body.status) {
       await dispatch(addProductSuccess(body.product));
+     
       await Swal.fire({
         icon: "success",
         title: body.msg,
@@ -52,6 +56,36 @@ export function addProduct(productFormValues) {
     }
   };
 }
+
+export const oneProductDelete = ({_id}) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(
+        `gestion-animal/remover-producto/${_id}`,
+        {},
+        "DELETE"
+      );
+
+      const body = await resp.json();
+      if (body.status) {
+        await Swal.fire("Eliminado", body.msg, "success");
+
+        await dispatch(deleteOneProduct());
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const deleteOneProduct = () => ({
+  type: Types.DELETE_PRODUCT,
+});
 
 export const addProductSuccess = (product) => ({
   type: Types.ADD_NEW_PRODUCT,

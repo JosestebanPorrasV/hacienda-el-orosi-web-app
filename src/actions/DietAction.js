@@ -100,6 +100,36 @@ export function addAliment(alimentFormValues) {
   };
 }
 
+export const oneDietDelete = ({_id}) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(
+        `gestion-animal/remover-dieta/${_id}`,
+        {},
+        "DELETE"
+      );
+
+      const body = await resp.json();
+      if (body.status) {
+        await Swal.fire("Eliminado", body.msg, "success");
+
+        await dispatch(deleteOneDiet());
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const deleteOneDiet = () => ({
+  type: Types.DELETE_DIET,
+});
+
 export const addDietSuccess = (diet) => ({
   type: Types.ADD_NEW_DIET,
   payload: diet,
@@ -118,11 +148,11 @@ export const dietClearActive = () => ({
   type: Types.DIET_CLEAR_ACTIVE,
 });
 
-export const productSetActive = (aliment) => ({
+export const alimentSetActive = (aliment) => ({
   type: Types.ALIMENT_SET_ACTIVE,
   payload: aliment,
 });
-export const productClearActive = () => ({
+export const alimentClearActive = () => ({
   type: Types.ALIMENT_CLEAR_ACTIVE,
 });
 

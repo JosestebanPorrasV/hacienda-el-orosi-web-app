@@ -80,3 +80,9 @@ export const uiOpenModalProduct = () => ({
 export const uiCloseModalProduct = () => ({
   type: Types.UI_CLOSE_MODAL_PRODUCT,
 });
+export const uiOpenModalAliment = () => ({
+  type: Types.UI_OPEN_MODAL_ALIMENT,
+});
+export const uiCloseModalAliment = () => ({
+  type: Types.UI_CLOSE_MODAL_ALIMENT,
+});

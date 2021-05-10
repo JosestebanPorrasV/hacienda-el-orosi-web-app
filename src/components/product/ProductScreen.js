@@ -137,7 +137,7 @@ export const ProductScreen = () => {
                           {`${!products.kilograms ? 0 : products.kilograms}`}kg
                         </th>
                         <th className="py-5 px-8">
-                          {`${!products.liters ? 0 : products.liters}`}lt
+                         {`${!products.liters ? <i className="far fa-caret-square-down"/> : products.liters}`}
                         </th>
                         <th className="py-3 px-3">₡{products.price}</th>
                         <th

@@ -32,7 +32,14 @@ export const DietReducer = (state = initialState, action) => {
     case Types.ADD_NEW_ALIMENT:
       return {
         ...state,
-        aliments: [...state.aliments, ...action.payload],
+        aliments: [...state.aliments, action.payload],
+      };
+
+    case Types.DELETE_DIET:
+      return {
+        ...state,
+        diets: state.diets.filter((e) => e._id !== state.currentDiet._id),
+        currentDiet: null,
       };
 
     case Types.DIET_SET_ACTIVE:

@@ -101,22 +101,20 @@ export const ModalCollaborator = () => {
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                   <h5
                     className={`${
-                      currentCollaborator ? "text-yellow-400" : "text-blue-400"
+                      currentCollaborator ? "text-yellow-800" : "text-blue-800"
                     } text-xl font-bold mb-2`}
                   >{`${
-                    currentCollaborator
-                      ? "Editar contrato del colaborador"
-                      : "Contratar colaborador"
+                    currentCollaborator ? "Editar contrato" : "Contratar"
                   }`}</h5>
                   <hr />
                   <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black  float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => dispatch(uiCloseModalCollaborator())}
-                  >
-                    <span className="bg-transparent text-black  h-6 w-6 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
-                  </button>
+                      className="text-gray-500 font-bold text-3xl hover:text-gray-800"
+                      type="button"
+                      style={{ transition: "all .15s ease" }}
+                      onClick={() => dispatch(uiCloseModalCollaborator())}
+                    >
+                      <i className="fas fa-arrow-circle-left"></i>
+                    </button>
                 </div>
                 {/*body*/}
                 <form onSubmit={handleSubmitForm}>
@@ -350,14 +348,6 @@ export const ModalCollaborator = () => {
                   {/*footer*/}
                   <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
                     <button
-                      className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
-                      type="button"
-                      style={{ transition: "all .15s ease" }}
-                      onClick={() => dispatch(uiCloseModalCollaborator())}
-                    >
-                      Regresar
-                    </button>
-                    <button
                       disabled={
                         !currentCollaborator &&
                         !dispatch_date &&
@@ -365,14 +355,18 @@ export const ModalCollaborator = () => {
                       }
                       className={`${
                         currentCollaborator
-                          ? "bg-yellow-400 text-white active:bg-yellow-600 hover:bg-yellow-900"
-                          : "bg-blue-400 text-white active:bg-blue-600 hover:bg-blue-900"
-                      } font-bold uppercase text-sm px-6 py-3 rounded shadow outline-none focus:outline-none mr-1 mb-1"
+                          ? "text-yellow-700 hover:text-yellow-400"
+                          : "text-blue-700 hover:text-blue-400"
+                      } font-bold text-4xl ml-4 mb-1"
                       `}
                       type="submit"
                       style={{ transition: "all .15s ease" }}
                     >
-                      {currentCollaborator ? "Modificar" : "Contratar"}
+                      {currentCollaborator ? (
+                        <i className="fas fa-edit"></i>
+                      ) : (
+                        <i className="fas fa-save"></i>
+                      )}
                     </button>
                   </div>
                 </form>

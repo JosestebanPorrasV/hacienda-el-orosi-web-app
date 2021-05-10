@@ -96,40 +96,36 @@ export const CollaboratorScreen = () => {
       <div
         className={`${
           role === "Encargado del ganado" && "hidden"
-        } bg-gradient-to-r from-yellow-800 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12`}
+        } bg-gradient-to-r from-blue-200 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12`}
       >
-        <div>
-          <h2 className="text-2xl">COLABORADORES</h2>
-          <p className="text-gray-50">Funcionalidades principales</p>
-        </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0 text-lg text-gray-200">
           <button
             onClick={() => contractCollaborator()}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700 w-35 fas fa-user-plus"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black font-semibold rounded-lg hover:bg-gray-700 w-35"
           >
-            <span>  Contratar nuevo</span>
+            <span> Contratar</span>
           </button>
           <button
             onClick={() => dispatch(CollaboratorsLoading("Activo"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700  w-35 fas fa-clipboard-check"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black font-semibold rounded-lg hover:bg-gray-700  w-35"
           >
-            <span>  Listar activos</span>
+            <span>Activos</span>
           </button>
           <button
             onClick={() => dispatch(CollaboratorsLoading("Inactivo"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg  hover:bg-gray-700  w-35 fab fa-creative-commons-nd"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black font-semibold rounded-lg hover:bg-gray-700  w-35"
           >
-            <span> Listar inactivos</span>
+            <span> Inactivos</span>
           </button>
           <a
             href={`https://hacienda-el-orosi-bucket.s3.amazonaws.com/reporte-colaboradores-${
               collaboratorsState === "Activo" ? "activos" : "inactivos"
             }.pdf`}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg  hover:bg-gray-700  w-35 fas fa-file-medical-alt"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700  w-35"
           >
             <span>
               {" "}
-              {`Reporte de ${
+              {`Reporte ${
                 collaboratorsState
                   ? collaboratorsState === "Activo"
                     ? "activos"
@@ -141,32 +137,32 @@ export const CollaboratorScreen = () => {
 
           <Link
             to="/trabajos"
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700 w-35 fas fa-handshake"
+            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700 w-35"
           >
             <span> Trabajos</span>
           </Link>
         </nav>
       </div>
 
-      <div className="mt-8 bg-gray-700 rounded-lg">
-        <span className="pl-4 pt-2 text-lg flex space-x-4">
+      <div className="mt-4 bg-gray-700 rounded-lg">
+        <span className="pl-4 pt-1 flex text-gray-300 space-x-4 italic">
           {"Fecha actual: " +
-            dateNow.getDate() +
+            dateNow.getFullYear() +
             "-" +
             (dateNow.getMonth() + 1) +
             "-" +
-            dateNow.getFullYear()}
+            dateNow.getDate()}
         </span>
         {collaborators.length !== 0 ? (
           <>
             <h2
-              className={`p-4 ${
+              className={`p-2 ${
                 collaboratorsState === "Activo"
                   ? "text-green-400"
                   : collaboratorsState === "Inactivo"
                   ? "text-red-400"
                   : "text-yellow-400"
-              } text-xl font-bold mb-2`}
+              } text-xl font-bold`}
             >{`COLABORADORES ${
               collaboratorsState === "Activo"
                 ? "ACTIVOS"
@@ -178,7 +174,7 @@ export const CollaboratorScreen = () => {
               type="text"
               name="filter"
               className="rounded-t-lg w-1/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-              placeholder="Filtrar por ..."
+              placeholder="Buscar"
               value={filter}
               onChange={handleInputChange}
             />
@@ -194,7 +190,7 @@ export const CollaboratorScreen = () => {
               <i className="fas fa-box-open"></i>{" "}
               {`total: ${countCollaborators}`}
             </span>
-            <div className=" overflow-x-auto ">
+            <div className="overflow-x-auto">
               <SearchResults
                 value={filter}
                 data={collaborators}
@@ -210,22 +206,22 @@ export const CollaboratorScreen = () => {
                             role === "Encargado del ganado"
                           }
                         >
-                          <i className="fas fa-check"></i> Asistencia
+                          <i className="fas fa-check"></i>
                         </th>
                         <th className="p-4 w-1/4" hidden={collaboratorsState}>
-                          <i className="fas fa-signal"></i> Estado
+                          <i className="fas fa-signal"></i>
                         </th>
                         <th className="p-4 w-1/4">
-                          <i className="fas fa-user"></i> Nombre completo
+                          <i className="fas fa-user"></i>
                         </th>
                         <th className="p-4 w-1/4">
-                          <i className="fas fa-user"></i> Trabajo
+                          <i className="fas fa-hammer"></i>
                         </th>
                         <th className="p-4 w-1/4">
-                          <i className="fas fa-id-card"></i> Cédula
+                          <i className="fas fa-id-card"></i>
                         </th>
                         <th className="p-4 w-1/4">
-                          <i className="fas fa-user-lock"></i> Datos personales
+                          <i className="fas fa-user-lock"></i>
                         </th>
                         <th
                           className="p-4 w-1/4"
@@ -235,7 +231,7 @@ export const CollaboratorScreen = () => {
                             role === "Encargado del ganado"
                           }
                         >
-                          <i className="fas fa-caret-square-down"></i> Acciones
+                          <i className="fas fa-caret-square-down"></i>
                         </th>
 
                         <th
@@ -246,7 +242,7 @@ export const CollaboratorScreen = () => {
                             role === "Encargado del ganado"
                           }
                         >
-                          <i className="fas fa-caret-square-down"></i> Acciones
+                          <i className="fas fa-caret-square-down"></i>
                         </th>
                       </tr>
                     </thead>
@@ -267,7 +263,7 @@ export const CollaboratorScreen = () => {
                             <button
                               hidden={collaborator.validatePresence}
                               onClick={() => registerPresence(collaborator)}
-                              className="px-4 py-2 text-sm font-medium tracking-wide text-white transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+                              className="px-4 py-2 text-sm font-medium tracking-wide text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-indigo-600 "
                             >
                               <i className="far fa-calendar-check"></i> Registar
                               día
@@ -302,7 +298,7 @@ export const CollaboratorScreen = () => {
                               className="bg-blue-600 text-white  font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-400 hover:text-white outline-none"
                               type="button"
                             >
-                              <i className="far fa-eye"></i> ver
+                              <i className="far fa-eye"></i>
                             </button>
                           </th>
                           <th

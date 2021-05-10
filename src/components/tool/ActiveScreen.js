@@ -53,7 +53,7 @@ export const ActiveScreen = () => {
       }
     });
   };
-
+  let dateNow = new Date();
   return (
     <>
       <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
@@ -67,6 +67,14 @@ export const ActiveScreen = () => {
       </nav>
       {actives.length !== 0 ? (
         <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
+          <span className="pb-2 flex space-x-4 italic">
+            {"Fecha actual: " +
+              dateNow.getFullYear() +
+              "-" +
+              (dateNow.getMonth() + 1) +
+              "-" +
+              dateNow.getDate()}
+          </span>
           <h2 className="text-green-400 text-xl font-bold mb-2">
             HERRAMIENTAS EN USO
           </h2>
@@ -101,7 +109,10 @@ export const ActiveScreen = () => {
                   <table className="min-w-full">
                     <thead className="bg-gray-600">
                       <tr className="bg-gray-600 text-white text-lg">
-                        <th hidden={role === "Encargado del ganado"} className="py-2 px-4">
+                        <th
+                          hidden={role === "Encargado del ganado"}
+                          className="py-2 px-4"
+                        >
                           <i className="fas fa-check"></i> Marcar
                         </th>
                         <th className="p-4 w-1/4">
@@ -122,7 +133,10 @@ export const ActiveScreen = () => {
                     <tbody className="text-blue-100 text-opacity-80 whitespace-nowrap">
                       {results.map((active) => (
                         <tr key={active._id}>
-                          <th hidden={role === "Encargado del ganado"} className="py-3 px-2">
+                          <th
+                            hidden={role === "Encargado del ganado"}
+                            className="py-3 px-2"
+                          >
                             <label className="inline-flex items-center mt-3 ">
                               <input
                                 type="checkbox"

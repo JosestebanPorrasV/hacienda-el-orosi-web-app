@@ -7,6 +7,7 @@ const initialState = {
   currentSearch: null,
   currentType: null,
   total: 0,
+  count: 0,
 };
 
 export const AnimalReducer = (state = initialState, action) => {
@@ -21,6 +22,7 @@ export const AnimalReducer = (state = initialState, action) => {
       return {
         ...state,
         animals: [...action.payload.animals],
+        count: action.payload.count,
       };
 
     case Types.REGISTER_TYPE_ANIMAL_SUCCESS:

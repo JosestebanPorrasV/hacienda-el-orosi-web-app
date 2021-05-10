@@ -3,33 +3,11 @@ import { FetchConsult, uploadImage } from "../helpers/FetchService";
 import Swal from "sweetalert2";
 import TopLoaderService from "top-loader-service";
 
-export const animalsLoading = () => {
+export const animalsByTypeLoading = (type, page = 1) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`gestion-animal/todos/`);
-
-      const body = await resp.json();
-
-      if (body.status) {
-        await dispatch(animalsLoaded(body));
-        await dispatch(typeClearActive());
-        await TopLoaderService.end();
-      } else {
-        await Swal.fire("Error", body.msg, "error");
-        await TopLoaderService.end();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-export const animalsByTypeLoading = (type) => {
-  return async (dispatch) => {
-    await TopLoaderService.start();
-    try {
-      const resp = await FetchConsult(`gestion-animal/tipo/${type}`);
+      const resp = await FetchConsult(`gestion-animal/tipo/${type}/${page}`);
 
       const body = await resp.json();
 

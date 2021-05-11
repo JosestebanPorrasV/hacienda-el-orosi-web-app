@@ -51,14 +51,17 @@ export default function ModalMenu({ collaborator }) {
     <>
       <button
         onClick={() => modalOpen()}
-        className="bg-gray-300 text-gray-700 font-bold py-2 px-2 rounded inline-flex items-center hover:bg-gray-800 hover:text-white"
+        className="text-gray-300 text-2xl font-bold hover:text-white"
       >
-        <i className="fas fa-cogs"></i> <span className="ml-1 mr-1">Menu</span>
+        <i className="fas fa-cogs"></i>
       </button>
 
       {showModal && currentCollaborator ? (
         <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <div
+            onClick={() => setShowModal(false)}
+            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+          >
             <div className="relative w-auto my-6 mx-auto max-w-sm">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-900 outline-none focus:outline-none">
@@ -69,14 +72,6 @@ export default function ModalMenu({ collaborator }) {
                       ? `${currentCollaborator.name} ${currentCollaborator.surname}`
                       : "Menu"}
                   </h3>
-                  <button
-                    className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => modalClose()}
-                  >
-                    <span className="text-gray-200 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
-                  </button>
                 </div>
                 {/*body*/}
 
@@ -127,12 +122,12 @@ export default function ModalMenu({ collaborator }) {
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 rounded-b">
                   <button
-                    className="bg-gray-500 text-white active:bg-gray-600 font-semibold uppercase text-sm px-2 py-2 rounded shadow hover:bg-gray-800 outline-none focus:outline-none mr-1 mb-1"
+                    className="text-gray-400 font-bold text-3xl hover:text-gray-200"
                     type="button"
                     style={{ transition: "all .15s ease" }}
                     onClick={() => modalClose()}
                   >
-                    Regresar
+                    <i className="fas fa-arrow-circle-left"></i>
                   </button>
                 </div>
               </div>

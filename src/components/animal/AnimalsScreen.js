@@ -1,100 +1,102 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   animalsByTypeLoading,
-  animalsLoading,
+  animalsByStatusLoading,
+  animalsByStatusAndTypeLoading,
   regMilk,
   regWeight,
   typeClearActive,
   typeSetActive,
   TypesLoading,
-  animalsByTypeAndStatusLoading,
   animalSetActive,
   searchSetActive,
   animalClearActive,
-} from "../../actions/AnimalAction";
-import SearchResults from "react-filter-search";
-import { UseForm } from "../../hooks/UseForm";
-import Swal from "sweetalert2";
-import { uiOpenModalAnimal } from "../../actions/UIAction";
-import { Link } from "react-router-dom";
-import { ModalAnimal } from "./ModalAnimal";
-import moment from "moment";
-import UploadImgProfile from "./UploadImgProfile";
-import RegisterCalving from "./RegisterCalving";
+  changeStatus,
+  deleteRegisterWeight,
+  deleteRegisterMilk,
+  deleteRegisterCalving
+} from '../../actions/AnimalAction';
+import SearchResults from 'react-filter-search';
+import { UseForm } from '../../hooks/UseForm';
+import Swal from 'sweetalert2';
+import { uiOpenModalAnimal } from '../../actions/UIAction';
+import { Link } from 'react-router-dom';
+import { ModalAnimal } from './ModalAnimal';
+import moment from 'moment';
+import UploadImgProfile from './UploadImgProfile';
+import RegisterCalving from './RegisterCalving';
+import ReactPaginate from 'react-paginate';
+import ChangeNextDueDate from './ChangeNextDueDate';
 
 export const AnimalsScreen = () => {
   const dispatch = useDispatch();
-  const [openTab, setOpenTab] = React.useState(null);
+  const [openTab, setOpenTab] = React.useState(1);
 
-  const { animals, animalsTypes, currentType } = useSelector(
+  const { animals, animalsTypes, currentType, count, animalState } = useSelector(
     (state) => state.animal
   );
 
   useEffect(() => {
     dispatch(TypesLoading());
-    dispatch(animalsLoading());
+    dispatch(animalsByTypeLoading());
   }, [dispatch]);
 
   const [formValues, handleInputChange] = UseForm({
-    filter: "",
-    filterInWeight: "",
-    filterMilk: "",
-    filterCalving: "",
+    filter: '',
+    filterInWeight: '',
+    filterMilk: '',
+    filterCalving: ''
   });
 
   const { filter, filterInWeight, filterMilk, filterCalving } = formValues;
 
   const registerMilk = async (animalID) => {
     const { value: formValues } = await Swal.fire({
-      title: "Registrar litros de leche",
+      title: 'Registrar litros de leche',
       html:
         ` <label className="text-gray-700 text-bold">Litros</label>` +
         '<input id="swal-inputMilk" class="swal2-input">',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, registrar",
-      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, registrar',
+      cancelButtonText: 'Cancelar',
       focusConfirm: false,
       preConfirm: () => {
-        return document.getElementById("swal-inputMilk").value;
-      },
+        return document.getElementById('swal-inputMilk').value;
+      }
     });
 
     if (formValues) {
-      dispatch(
-        regMilk(animalID, formValues, moment(new Date()).format("YYYY-MM-DD"))
-      );
+      dispatch(regMilk(animalID, formValues, moment(new Date()).format('YYYY-MM-DD')));
     }
   };
 
   const registerWeight = async (animalID) => {
     const { value: formValues } = await Swal.fire({
-      title: "Registrar peso",
+      title: 'Registrar peso',
       html:
         ` <label className="text-gray-700 text-bold">Peso</label> <br/>` +
         '<input id="swal-input1Weight" type="number" class="swal2-input"> <br/>' +
         ` <label className="text-gray-700 text-bold">Observaciones</label> <br/>` +
         '<input id="swal-inputObs" type="textarea" class="swal2-input">',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, registrar",
-      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, registrar',
+      cancelButtonText: 'Cancelar',
       focusConfirm: false,
       preConfirm: () => {
         return [
-          document.getElementById("swal-input1Weight").value,
-          document.getElementById("swal-inputObs").value,
+          document.getElementById('swal-input1Weight').value,
+          document.getElementById('swal-inputObs').value
         ];
-      },
+      }
     });
 
     if (formValues) {
-      dispatch(
-        regWeight(animalID, formValues, moment(new Date()).format("YYYY-MM-DD"))
-      );
+      dispatch(regWeight(animalID, formValues, moment(new Date()).format('YYYY-MM-DD')));
     }
   };
 
@@ -117,58 +119,165 @@ export const AnimalsScreen = () => {
     dispatch(animalsByTypeLoading(typeID));
   };
 
+  const oneDeleteWeight = (animalId, weightId) => {
+    Swal.fire({
+      title: '¿Estas seguro?',
+      text: 'El peso no se podra recuperar',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteRegisterWeight(animalId, weightId));
+      }
+    });
+  };
+
+  const oneDeleteMilk = (animalId, milkId) => {
+    Swal.fire({
+      title: '¿Estas seguro?',
+      text: 'El registro de leche no se podra recuperar',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteRegisterMilk(animalId, milkId));
+      }
+    });
+  };
+
+  const oneDeleteCalving = (animalId, calvingId) => {
+    Swal.fire({
+      title: '¿Estas seguro?',
+      text: 'El parto no se podra recuperar',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(deleteRegisterCalving(animalId, calvingId));
+      }
+    });
+  };
+
+  const paginate = (data) => {
+    if (currentType && !animalState) {
+      dispatch(animalsByTypeLoading(currentType._id, data.selected + 1));
+    } else if (currentType && animalState) {
+      dispatch(animalsByStatusAndTypeLoading(currentType._id, animalState, data.selected + 1));
+    } else if (!currentType && animalState) {
+      dispatch(animalsByStatusLoading(animalState, data.selected + 1));
+    } else {
+      dispatch(animalsByTypeLoading('undefined', data.selected + 1));
+    }
+  };
+
   return (
     <>
-      <div className="bg-gradient-to-r from-green-400 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
-        <div>
-          <h2 className="text-2xl text-green-900">ANIMALES</h2>
-          <p className="text-green-900 opacity-80">
-            Funcionalidades principales
-          </p>
-        </div>
-        <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0 text-lg text-gray-200">
+      <div className="container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+        <Link
+          to="/herramientas"
+          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+        >
+          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-200 "></i>
+        </Link>
+        <span className="text-xl text-green-200">Herramientas</span>
+
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+            type="button"
+            style={{ transition: 'all .15s ease' }}
             onClick={() => regAnimal()}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
           >
-            <span>Registrar animal</span>
+            Registrar
           </button>
           <Link
             to="/tipos-de-animales"
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+            type="button"
+            style={{ transition: 'all .15s ease' }}
           >
-            <span>Tipos de animales</span>
+            Tipos
           </Link>
-          <Link
-            to="/dieta"
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
+
+          <button
+            onClick={() =>
+              dispatch(
+                currentType
+                  ? animalsByStatusAndTypeLoading(currentType._id, 'En finca')
+                  : animalsByStatusLoading('En finca')
+              )
+            }
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+            style={{ transition: 'all .15s ease' }}
           >
-            <span>Tipos de dietas</span>
-          </Link>
+            <span>En finca</span>
+          </button>
+
+          <button
+            onClick={() =>
+              dispatch(
+                currentType
+                  ? animalsByStatusAndTypeLoading(currentType._id, 'De baja')
+                  : animalsByStatusLoading('De baja')
+              )
+            }
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+            style={{ transition: 'all .15s ease' }}
+          >
+            <span>De baja</span>
+          </button>
+
+          <button
+            onClick={() =>
+              dispatch(
+                currentType
+                  ? animalsByStatusAndTypeLoading(currentType._id, 'Vendido')
+                  : animalsByStatusLoading('Vendido')
+              )
+            }
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+            style={{ transition: 'all .15s ease' }}
+          >
+            <span>Vendidos</span>
+          </button>
         </nav>
+        <span className="text-xl text-green-200"> Dietas</span>
+        <Link
+          to="/dietas"
+          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+        >
+          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-200"></i>
+        </Link>
       </div>
 
-      <div className="flex flex-col text-center w-full mt-6 mb-6">
+      <div className="flex flex-col text-center w-full mt-4 mb-4">
         <h2 className="text-sm text-green-500 tracking-widest font-medium title-font mb-1">
           Listar por:
         </h2>
 
         <div>
           <select
-            onChange={(e) =>
-              e.target.value === "DEFAULT"
-                ? dispatch(animalsLoading())
-                : setTypeActive(e.target.value)
-            }
+            onChange={(e) => setTypeActive(e.target.value)}
             name="types"
-            className="bg-gray-200 text-gray-900 font-bold  py-2 px-2 rounded-lg inline-flex  group-hover:bg-green-700 group-hover:text-white uppercase"
+            className="bg-gray-200 text-gray-900 font-semibold  py-1 px-1 rounded-lg inline-flex  group-hover:bg-green-700 group-hover:text-white uppercase"
           >
-            <option value="DEFAULT">Todos</option>
             {animalsTypes.map((option) => (
               <option
                 key={option._id}
                 value={option._id}
-                className="bg-gray-300 text-base text-gray-700 font-semibold"
+                className="bg-gray-300 text-gray-700 font-semibold"
               >
                 {option.name}
               </option>
@@ -177,58 +286,40 @@ export const AnimalsScreen = () => {
         </div>
       </div>
 
-      {currentType && (
-        <select
-          onChange={(e) =>
-            e.target.value !== "DEFAULT" &&
-            dispatch(
-              animalsByTypeAndStatusLoading(currentType._id, e.target.value)
-            )
-          }
-          className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-green-700 w-35"
-        >
-          <option value="DEFAULT">Ordenar por estado</option>
-          <option value="Vendido">Vendido</option>
-          <option value="En finca">En finca</option>
-          <option value="Activo">Activo</option>
-        </select>
-      )}
-      <br />
       {animals.length !== 0 ? (
         <div className="mt-2">
           <input
             type="text"
             name="filter"
-            className="rounded-t-lg h-6 p-5 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-            placeholder="Buscar"
+            className="rounded-t-lg h-6 mt-8 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
+            placeholder="Filtrar"
             value={filter}
             onChange={handleInputChange}
           />
-          <span
-            className={`text-white md:ml-2 rounded-t-lg  inline-block text uppercase`}
-          >
-            <i className="fas fa-box-open"></i> {`total: ${animals.length}`}
+          <span className={`text-white md:ml-2 rounded-t-lg  inline-block text uppercase`}>
+            <i className="fas fa-box-open"></i>{' '}
+            {animalState ? `${animalState}, total: ${count}` : `total: ${count}`}
           </span>
           <SearchResults
             value={filter}
             data={animals}
             renderResults={(results) => (
-              <div className="h-screen overflow-y-auto">
-                {results.map((animal, index) => (
+              <>
+                {results.map((animal) => (
                   <section
-                    className="bg-gray-700 body-font mb-6 rounded-lg overflow-hidden "
+                    className="bg-gradient-to-r from-gray-600 body-font mb-4 overflow-hidden "
                     key={animal._id}
                   >
-                    <div className="container px-5 py-4 mx-auto">
-                      <div className="lg:w-4/5 mx-auto flex flex-wrap">
-                        <div className="lg:w-1/2 w-full lg:pr-10 lg:py-1 mb-2 lg:mb-0">
+                    <div className="container px-5 py-2 mx-auto">
+                      <div className="mx-auto flex flex-wrap">
+                        <div className="lg:w-1/2 w-full lg:pr-5">
                           <h1 className="title-font font-bold">
                             <span
                               className={`${
-                                animal.plate_color === "#FFFFFF"
-                                  ? "text-gray-800"
-                                  : "text-gray-200 "
-                              } rounded-full px-3 py-1 inline-block text-center uppercase`}
+                                animal.plate_color === '#FFFFFF'
+                                  ? 'text-gray-800'
+                                  : 'text-gray-200 '
+                              } rounded-full px-3 py-1 mt-2 mb-2 inline-block text-center uppercase`}
                               style={{ backgroundColor: animal.plate_color }}
                             >
                               Número de chapa: {animal.plate_number}
@@ -237,134 +328,103 @@ export const AnimalsScreen = () => {
                           <div className="flex mb-4">
                             <a
                               className={`flex-grow border-b-2 ${
-                                openTab ===
-                                  `${
-                                    currentType ? currentType._id : animal._id
-                                  }/1` && `border-green-500`
-                              } py-2 px-1`}
+                                openTab === 1 && `border-green-600`
+                              } px-1`}
                               onClick={(e) => {
                                 e.preventDefault();
-                                setOpenTab(
-                                  `${
-                                    currentType ? currentType._id : animal._id
-                                  }/1`
-                                );
+                                setOpenTab(1);
                               }}
                               data-toggle="tab"
-                              href={`${
-                                currentType ? currentType._id : animal._id
-                              }/1`}
+                              href={1}
                             >
                               Información
                             </a>
                             <a
                               className={`flex-grow border-b-2 ${
-                                openTab ===
-                                  `${
-                                    currentType ? currentType._id : animal._id
-                                  }/2` && ` border-green-500`
+                                openTab === 2 && `border-green-600`
                               } py-2 px-1`}
                               onClick={(e) => {
                                 e.preventDefault();
-                                setOpenTab(
-                                  `${
-                                    currentType ? currentType._id : animal._id
-                                  }/2`
-                                );
+                                setOpenTab(2);
                               }}
                               data-toggle="tab"
-                              href={`${
-                                currentType ? currentType._id : animal._id
-                              }/2`}
+                              href={2}
                             >
                               Peso
                             </a>
                             <a
                               hidden={
-                                animal.type.gender === "Macho" &&
-                                animal.type.gender !== "Vaca lechera"
+                                animal.type.gender === 'Macho' &&
+                                animal.type.gender !== 'Vaca lechera'
                               }
                               className={`flex-grow border-b-2 ${
-                                openTab ===
-                                  `${
-                                    currentType ? currentType._id : animal._id
-                                  }/3` && ` border-green-500`
+                                openTab === 3 && `border-green-600`
                               } py-2 px-1`}
                               onClick={(e) => {
                                 e.preventDefault();
-                                setOpenTab(
-                                  `${
-                                    currentType ? currentType._id : animal._id
-                                  }/3`
-                                );
+                                setOpenTab(3);
                               }}
                               data-toggle="tab"
-                              href={`${
-                                currentType ? currentType._id : animal._id
-                              }/3`}
+                              href={3}
                             >
                               Leche
                             </a>
                             <a
-                              hidden={animal.type.gender === "Macho"}
+                              hidden={animal.type.gender === 'Macho'}
                               className={`flex-grow border-b-2 ${
-                                openTab ===
-                                  `${
-                                    currentType ? currentType._id : animal._id
-                                  }/4` && `border-green-500`
+                                openTab === 4 && `border-green-600`
                               } py-2 px-1`}
                               onClick={(e) => {
                                 e.preventDefault();
-                                setOpenTab(
-                                  `${
-                                    currentType ? currentType._id : animal._id
-                                  }/4`
-                                );
+                                setOpenTab(4);
                               }}
                               data-toggle="tab"
-                              href={`${
-                                currentType ? currentType._id : animal._id
-                              }/4`}
+                              href={4}
                             >
                               Partos
                             </a>
                           </div>
 
                           <div
-                            className={`overflow-y-auto h-72 bg-gray-800 rounded-lg ${
-                              openTab ===
-                              `${currentType ? currentType._id : animal._id}/1`
-                                ? "block"
-                                : "hidden"
+                            className={`overflow-y-auto h-72 bg-gradient-to-r from-gray-900 rounded-lg ${
+                              openTab === 1 ? 'block' : 'hidden'
                             }`}
                           >
                             <div className="flex py-2">
                               <span className="ml-2">Estado</span>
-                              <span className="ml-auto mr-2">
-                                {animal.status}
-                              </span>
+
+                              <select
+                                onChange={(e) => dispatch(changeStatus(animal._id, e.target.value))}
+                                name="type_animal"
+                                className="ml-auto mr-2 hover:underline font-bold bg-transparent"
+                              >
+                                <option value={animal.status}> {animal.status}</option>
+                                <option value="Vendido">Vendido</option>
+                                <option value="En finca">En finca</option>
+                                <option value="De baja">De baja</option>
+                              </select>
+                            </div>
+                            <div className="flex border-t border-gray-200 py-2">
+                              <span className="ml-2">Categoría</span>
+                              <span className="ml-auto mr-2">{animal.type.name}</span>
                             </div>
                             <div className="flex border-t border-gray-200 py-2">
                               <span className="ml-2">Fecha de registro</span>
-                              <span className="ml-auto mr-2">
-                                {animal.date_admission}
-                              </span>
+                              <span className="ml-auto mr-2">{animal.date_admission}</span>
                             </div>
 
                             <div
                               className={`flex border-t border-gray-200 py-2 ${
-                                !animal.race && "hidden"
+                                !animal.race && 'hidden'
                               }`}
                             >
                               <span className="ml-2">Raza</span>
-                              <span className="ml-auto mr-2">
-                                {animal.race}
-                              </span>
+                              <span className="ml-auto mr-2">{animal.race}</span>
                             </div>
 
                             <div
                               className={`flex border-t border-gray-200 py-2 ${
-                                !animal.photo_register && "hidden"
+                                !animal.photo_register && 'hidden'
                               }`}
                             >
                               <span className="ml-2">Foto de registro</span>
@@ -378,27 +438,24 @@ export const AnimalsScreen = () => {
 
                             <div
                               className={`flex border-t border-gray-200 py-2 ${
-                                !animal.name && "hidden"
+                                !animal.name && 'hidden'
                               }`}
                             >
                               <span className="ml-2">Nombre</span>
-                              <span className="ml-auto mr-2">
-                                {animal.name}
-                              </span>
+                              <span className="ml-auto mr-2">{animal.name}</span>
                             </div>
                             <div
                               className={`flex border-t border-gray-200 py-2 ${
-                                !animal.next_due_date && "hidden"
+                                !animal.next_due_date && 'hidden'
                               }`}
                             >
                               <span className="ml-2">Próximo parto</span>
-                              <span className="ml-auto mr-2">
-                                {animal.next_due_date}
-                              </span>
+                              <span className="ml-auto mr-2">{animal.next_due_date}</span>
+                              <ChangeNextDueDate animal={animal} />
                             </div>
                             <div
                               className={`flex border-t border-gray-200 py-2 ${
-                                !animal.age && "hidden"
+                                !animal.age && 'hidden'
                               }`}
                             >
                               <span className="ml-2">Edad</span>
@@ -407,67 +464,54 @@ export const AnimalsScreen = () => {
 
                             <div
                               className={`flex border-t border-gray-200 py-2 ${
-                                !animal.daughter_of && "hidden"
+                                !animal.daughter_of && 'hidden'
                               }`}
                             >
                               <span className="ml-2">
-                                {animal.gender === "Macho"
-                                  ? "Hijo de"
-                                  : "Hija de"}
+                                {animal.gender === 'Macho' ? 'Hijo de' : 'Hija de'}
                               </span>
                               <span className="ml-auto mr-2">
                                 {animal.daughter_of
                                   ? animal.daughter_of.plate_number
-                                  : "Sin padres"}
+                                  : 'Sin padres'}
                               </span>
                             </div>
                             <div
                               className={`flex border-t border-gray-200 py-2 ${
-                                !animal.starting_weight && "hidden"
+                                !animal.starting_weight && 'hidden'
                               }`}
                             >
                               <span className="ml-2">Peso inical</span>
                               <span className="ml-auto mr-2">
-                                {new Intl.NumberFormat("en-EN").format(
-                                  animal.starting_weight
-                                )}{" "}
+                                {new Intl.NumberFormat('en-EN').format(animal.starting_weight)}
                                 kg
                               </span>
                             </div>
 
                             <div
                               className={`flex border-t border-gray-200 py-2 ${
-                                !animal.place_origin && "hidden"
+                                !animal.place_origin && 'hidden'
                               }`}
                             >
                               <span className="ml-2">Lugar de origen </span>
-                              <span className="ml-auto mr-2">
-                                {animal.place_origin}
-                              </span>
+                              <span className="ml-auto mr-2">{animal.place_origin}</span>
                             </div>
 
-                            <div
-                              className={`flex border-t border-gray-200 py-2`}
-                            >
+                            <div className={`flex border-t border-gray-200 py-2`}>
                               <span className="ml-2">Género</span>
-                              <span className="ml-auto mr-2">
-                                {animal.type.gender}
-                              </span>
+                              <span className="ml-auto mr-2">{animal.type.gender}</span>
                             </div>
                           </div>
                           <div
                             className={`overflow-y-auto h-72 bg-gray-800 rounded-lg ${
-                              openTab ===
-                              `${currentType ? currentType._id : animal._id}/2`
-                                ? "block"
-                                : "hidden"
+                              openTab === 2 ? 'block' : 'hidden'
                             }`}
                           >
                             <input
                               type="text"
                               name="filterInWeight"
                               className="h-6 p-2 w-full placeholder-blue-800 text-black mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-                              placeholder="Buscar por ..."
+                              placeholder="Buscar"
                               value={filterInWeight}
                               onChange={handleInputChange}
                             />
@@ -483,18 +527,23 @@ export const AnimalsScreen = () => {
                                     >
                                       <div className="flex">
                                         <span className="ml-2">Fecha</span>
-                                        <span className="ml-auto mr-2">
-                                          {weight.date}
-                                        </span>
+                                        <span className="ml-auto mr-2">{weight.date}</span>
                                       </div>
                                       <div className="flex border-t border-gray-400">
                                         <span className="ml-2">Peso</span>
-                                        <span className="ml-auto mr-2">
-                                          {weight.weight} kg
-                                        </span>
+                                        <span className="ml-auto mr-2">{weight.weight} kg</span>
                                       </div>
                                       <div className="flex border-t ml-2 mr-2 border-gray-400">
                                         {weight.observations}
+                                      </div>
+
+                                      <div className="flex text-lg">
+                                        <button
+                                          onClick={() => oneDeleteWeight(animal._id, weight._id)}
+                                          className="ml-auto mr-2 hover:text-red-500"
+                                        >
+                                          <i className="fas fa-trash-alt"></i>
+                                        </button>
                                       </div>
                                     </div>
                                   ))}
@@ -505,10 +554,7 @@ export const AnimalsScreen = () => {
 
                           <div
                             className={`overflow-y-auto h-72 bg-gray-800 rounded-lg ${
-                              openTab ===
-                              `${currentType ? currentType._id : animal._id}/3`
-                                ? "block"
-                                : "hidden"
+                              openTab === 3 ? 'block' : 'hidden'
                             }`}
                           >
                             <input
@@ -537,9 +583,15 @@ export const AnimalsScreen = () => {
                                       </div>
                                       <div className="flex border-t border-gray-400">
                                         <span className="ml-2">Litros</span>
-                                        <span className="ml-auto mr-2">
-                                          {milk.liters}L
-                                        </span>
+                                        <span className="ml-auto mr-2">{milk.liters}L</span>
+                                      </div>
+                                      <div className="flex text-lg">
+                                        <button
+                                          onClick={() => oneDeleteMilk(animal._id, milk._id)}
+                                          className="ml-auto mr-2 hover:text-red-500"
+                                        >
+                                          <i className="fas fa-trash-alt"></i>
+                                        </button>
                                       </div>
                                     </div>
                                   ))}
@@ -550,10 +602,7 @@ export const AnimalsScreen = () => {
 
                           <div
                             className={`overflow-y-auto h-72 bg-gray-800 rounded-lg ${
-                              openTab ===
-                              `${currentType ? currentType._id : animal._id}/4`
-                                ? "block"
-                                : "hidden"
+                              openTab === 4 ? 'block' : 'hidden'
                             }`}
                           >
                             <input
@@ -576,18 +625,22 @@ export const AnimalsScreen = () => {
                                     >
                                       <div className="flex">
                                         <span className="ml-2">Fecha</span>
-                                        <span className="ml-auto mr-2">
-                                          {calving.date}
-                                        </span>
+                                        <span className="ml-auto mr-2">{calving.date}</span>
                                       </div>
                                       <div className="flex border-t border-gray-400">
                                         <span className="ml-2">Parto</span>
-                                        <span className="ml-auto mr-2">
-                                          {index + 1}
-                                        </span>
+                                        <span className="ml-auto mr-2">{index + 1}</span>
                                       </div>
                                       <div className="flex ml-2 border-t border-gray-400">
                                         {calving.complications}
+                                      </div>
+                                      <div className="flex text-lg">
+                                        <button
+                                          onClick={() => oneDeleteCalving(animal._id, calving._id)}
+                                          className="ml-auto mr-2 hover:text-red-500"
+                                        >
+                                          <i className="fas fa-trash-alt"></i>
+                                        </button>
                                       </div>
                                     </div>
                                   ))}
@@ -596,94 +649,44 @@ export const AnimalsScreen = () => {
                             />
                           </div>
                           <div className="flex pt-4">
-                            <span
-                              hidden={
-                                openTab !==
-                                `${
-                                  currentType ? currentType._id : animal._id
-                                }/2`
-                              }
-                              className="text-semibold"
-                            >
+                            <span hidden={openTab !== 2} className="text-semibold">
                               {`Registros: ${animal.weight.length}`}
                             </span>
-                            <span
-                              hidden={
-                                openTab !==
-                                `${
-                                  currentType ? currentType._id : animal._id
-                                }/3`
-                              }
-                              className="text-semibold"
-                            >
+                            <span hidden={openTab !== 3} className="text-semibold">
                               {`Registros: ${animal.milk.length}`}
                             </span>
-                            <span
-                              hidden={
-                                openTab !==
-                                `${
-                                  currentType ? currentType._id : animal._id
-                                }/4`
-                              }
-                              className="text-semibold"
-                            >
+                            <span hidden={openTab !== 4} className="text-semibold">
                               {`Registros: ${animal.calving.length}`}
                             </span>
-                            <div
-                              hidden={
-                                openTab !==
-                                `${
-                                  currentType ? currentType._id : animal._id
-                                }/1`
-                              }
-                              className="ml-auto"
-                            >
+                            <div hidden={openTab !== 1} className="ml-auto">
                               <button
                                 onClick={() => editAnimal(animal)}
-                                className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded"
+                                className="flex text-white font-bold text-xl bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-gray-400 rounded"
                               >
-                                Editar
+                                <i className="fas fa-edit"></i>
                               </button>
                             </div>
-                            <div
-                              hidden={
-                                openTab !==
-                                `${
-                                  currentType ? currentType._id : animal._id
-                                }/2`
-                              }
-                              className="ml-auto"
-                            >
+                            <div hidden={openTab !== 2} className="ml-auto">
                               <button
                                 onClick={() => registerWeight(animal._id)}
-                                className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded"
+                                className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-gray-400 rounded"
                               >
                                 Registrar peso
                               </button>
                             </div>
                             <div
-                              hidden={
-                                openTab !==
-                                `${
-                                  currentType ? currentType._id : animal._id
-                                }/3`
-                              }
+                              hidden={openTab !== 3 || animal.type.gender === 'Macho'}
                               className="ml-auto"
                             >
                               <button
                                 onClick={() => registerMilk(animal._id)}
-                                className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-blue-400 rounded"
+                                className="flex text-white font-semibold bg-white text-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-gray-400 rounded"
                               >
                                 Registrar leche
                               </button>
                             </div>
                             <div
-                              hidden={
-                                openTab !==
-                                `${
-                                  currentType ? currentType._id : animal._id
-                                }/4`
-                              }
+                              hidden={openTab !== 4 || animal.type.gender === 'Macho'}
                               className="ml-auto"
                             >
                               <RegisterCalving currentAnimal={animal} />
@@ -695,8 +698,29 @@ export const AnimalsScreen = () => {
                     </div>
                   </section>
                 ))}
-              </div>
+              </>
             )}
+          />
+          <ReactPaginate
+            pageCount={Math.ceil(count / 5)}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={2}
+            previousLabel={'Atras'}
+            activeClassName={'bg-green-900 rounded-full my-1'}
+            breakClassName={'text-2xl text-grey-900 pl-4'}
+            nextLabel={'Adelante'}
+            breakLabel={'...'}
+            pageLinkClassName={
+              'flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-gray-900 rounded-full my-1'
+            }
+            previousClassName={
+              'flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900'
+            }
+            nextClassName={
+              'flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900'
+            }
+            onPageChange={(data) => paginate(data)}
+            containerClassName={'sm:flex m-4 p-3'}
           />
         </div>
       ) : (

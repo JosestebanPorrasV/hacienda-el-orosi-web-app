@@ -51,7 +51,7 @@ export const ContractScreen = () => {
             <h2 className="text-green-400text-xl font-bold mb-2">ACTIVOS</h2>
 
             <span className="bg-purple-200 text-purple-600 md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase">
-              <i class="fas fa-file-contract"></i> {`total: ${count}`}
+              <i className="fas fa-file-contract"></i> {`total: ${count}`}
             </span>
             <div className="overflow-x-auto">
               <div className="align-middle inline-block min-w-full overflow-hidden">

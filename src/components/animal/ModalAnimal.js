@@ -1,39 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   typeSetActive,
   register,
   searchAnimal,
   update,
-  searchClearActive,
-} from "../../actions/AnimalAction";
-import { uiCloseModalAnimal } from "../../actions/UIAction";
+  searchClearActive
+} from '../../actions/AnimalAction';
+import { uiCloseModalAnimal } from '../../actions/UIAction';
 
-import { registerLocale } from "react-datepicker";
+import { registerLocale } from 'react-datepicker';
 
-import es from "date-fns/locale/es";
-import { Link } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import ImageUpload from "image-upload-react";
+import es from 'date-fns/locale/es';
+import { Link } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import ImageUpload from 'image-upload-react';
 
-import "react-datepicker/dist/react-datepicker.css";
-import "image-upload-react/dist/index.css";
-import Swal from "sweetalert2";
-import { UseForm } from "../../hooks/UseForm";
+import 'react-datepicker/dist/react-datepicker.css';
+import 'image-upload-react/dist/index.css';
+import Swal from 'sweetalert2';
+import { UseForm } from '../../hooks/UseForm';
 
-registerLocale("es", es);
+registerLocale('es', es);
 
 const initEvent = {
-  plate_number: "",
-  plate_color: "",
-  status: "",
-  race: "",
-  age: "",
-  starting_weight: "",
-  place_origin: "",
-  name: "",
-  next_due_date: "",
-  photo: undefined,
+  plate_number: '',
+  plate_color: '',
+  status: '',
+  race: '',
+  age: '',
+  starting_weight: '',
+  place_origin: '',
+  name: '',
+  next_due_date: '',
+  photo: undefined
 };
 
 export const ModalAnimal = () => {
@@ -44,12 +44,9 @@ export const ModalAnimal = () => {
   const [imgReg, setImgReg] = useState();
 
   const { modalAnimalOpen } = useSelector((state) => state.ui);
-  const {
-    currentAnimal,
-    currentSearch,
-    currentType,
-    animalsTypes,
-  } = useSelector((state) => state.animal);
+  const { currentAnimal, currentSearch, currentType, animalsTypes } = useSelector(
+    (state) => state.animal
+  );
 
   useEffect(() => {
     if (currentAnimal) {
@@ -70,27 +67,26 @@ export const ModalAnimal = () => {
     starting_weight,
     place_origin,
     name,
-    photo,
+    photo
   } = formValues;
 
   const [formInput, handleChange] = UseForm({
-    searchA: "",
+    searchA: ''
   });
 
   const { searchA } = formInput;
 
   const handleInputChange = ({ target }) => {
-    console.log(target);
     if (target.files) {
       setImgReg(URL.createObjectURL(target.files[0]));
       setFormValues({
         ...formValues,
-        photo: target.files[0],
+        photo: target.files[0]
       });
     } else {
       setFormValues({
         ...formValues,
-        [target.name]: target.value,
+        [target.name]: target.value
       });
     }
   };
@@ -101,15 +97,15 @@ export const ModalAnimal = () => {
       if (
         !currentType ||
         !plate_color ||
-        plate_color === "DEFAULT" ||
+        plate_color === 'DEFAULT' ||
         !status ||
-        status === "DEFAULT" ||
+        status === 'DEFAULT' ||
         !place_origin ||
-        (place_origin === "DEFAULT") | !plate_number ||
-        plate_number === "DEFAULT" ||
+        (place_origin === 'DEFAULT') | !plate_number ||
+        plate_number === 'DEFAULT' ||
         !plate_number
       ) {
-        return Swal.fire("Error", "Rellenar los compos", "warning");
+        return Swal.fire('Error', 'Rellenar los compos', 'warning');
       }
 
       dispatch(
@@ -119,11 +115,7 @@ export const ModalAnimal = () => {
           currentType._id,
           date_admission ? date_admission : currentAnimal.date_admission,
           next_due_date ? next_due_date : currentAnimal.next_due_date,
-          check
-            ? currentSearch
-              ? currentSearch._id
-              : currentAnimal.daughter_of
-            : null
+          check ? (currentSearch ? currentSearch._id : currentAnimal.daughter_of) : null
         )
       );
     } else {
@@ -131,15 +123,15 @@ export const ModalAnimal = () => {
         !currentType ||
         !date_admission ||
         !plate_color ||
-        plate_color === "DEFAULT" ||
+        plate_color === 'DEFAULT' ||
         !status ||
-        status === "DEFAULT" ||
+        status === 'DEFAULT' ||
         !place_origin ||
-        (place_origin === "DEFAULT") | !plate_number ||
-        plate_number === "DEFAULT" ||
+        (place_origin === 'DEFAULT') | !plate_number ||
+        plate_number === 'DEFAULT' ||
         !plate_number
       ) {
-        return Swal.fire("Error", "Rellenar los compos", "warning");
+        return Swal.fire('Error', 'Rellenar los compos', 'warning');
       }
 
       dispatch(
@@ -176,20 +168,16 @@ export const ModalAnimal = () => {
       {modalAnimalOpen ? (
         <>
           <div className="justify-center items-center  overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-6xl">
+            <div className="relative w-auto my-6 mx-auto max-w-2xl">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                   <h5
                     className={`${
-                      currentAnimal ? "text-yellow-400" : "text-blue-400"
+                      currentAnimal ? 'text-yellow-400' : 'text-blue-400'
                     } text-xl font-bold mb-2`}
-                  >{`${
-                    currentAnimal
-                      ? "Editar datos del animal"
-                      : "Registrar animal"
-                  }`}</h5>
+                  >{`${currentAnimal ? 'Editar datos del animal' : 'Registrar animal'}`}</h5>
                   <hr />
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black  float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -241,10 +229,7 @@ export const ModalAnimal = () => {
                   )}
                   <div className="grid grid-cols-1 gap-4  sm:grid-cols-2">
                     <div>
-                      <label
-                        className="text-gray-700 dark:text-gray-200"
-                        htmlFor="tel"
-                      >
+                      <label className="text-gray-700 dark:text-gray-200" htmlFor="tel">
                         Tipo de animal
                       </label>
                       <Link
@@ -266,14 +251,12 @@ export const ModalAnimal = () => {
                         </svg>
                       </Link>
                       <select
-                        onChange={(e) =>
-                          dispatch(typeSetActive(e.target.value))
-                        }
+                        onChange={(e) => dispatch(typeSetActive(e.target.value))}
                         name="type_animal"
                         className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md"
                       >
                         <option value="DEFAULT">
-                          {currentAnimal ? currentAnimal.type.name : "Elegir"}
+                          {currentAnimal ? currentAnimal.type.name : 'Elegir'}
                         </option>
                         {animalsTypes.map((option) => (
                           <option
@@ -335,7 +318,7 @@ export const ModalAnimal = () => {
                             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md"
                           >
                             <option value="DEFAULT">
-                              {currentAnimal ? currentAnimal.status : "Elegir"}
+                              {currentAnimal ? currentAnimal.status : 'Elegir'}
                             </option>
 
                             <option value="Subasta">Subasta</option>
@@ -344,9 +327,7 @@ export const ModalAnimal = () => {
                           </select>
                         </div>
                         <div>
-                          <label className="text-gray-700 dark:text-gray-200">
-                            Estado
-                          </label>
+                          <label className="text-gray-700 dark:text-gray-200">Estado</label>
                           <select
                             value={status}
                             onChange={handleInputChange}
@@ -354,18 +335,16 @@ export const ModalAnimal = () => {
                             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md"
                           >
                             <option value="DEFAULT">
-                              {currentAnimal ? currentAnimal.status : "Elegir"}
+                              {currentAnimal ? currentAnimal.status : 'Elegir'}
                             </option>
 
                             <option value="Vendido">Vendido</option>
                             <option value="En finca">En finca</option>
-                            <option value="Activo">Activo</option>
+                            <option value="De baja">De baja</option>
                           </select>
                         </div>
                         <div>
-                          <label className="text-gray-700 dark:text-gray-200">
-                            Color de chapa
-                          </label>
+                          <label className="text-gray-700 dark:text-gray-200">Color de chapa</label>
                           <select
                             value={plate_color}
                             onChange={handleInputChange}
@@ -400,11 +379,7 @@ export const ModalAnimal = () => {
                         </div>
                         <div>
                           <label className="text-gray-700 dark:text-gray-200">
-                            {`${
-                              currentAnimal
-                                ? "Cambiar fecha de ingreso"
-                                : "Fecha de ingreso"
-                            }`}
+                            {`${currentAnimal ? 'Cambiar fecha de ingreso' : 'Fecha de ingreso'}`}
                             <br />
                           </label>
                           <DatePicker
@@ -422,22 +397,16 @@ export const ModalAnimal = () => {
                           </label>
                           <DatePicker
                             locale="es"
-                            disabled={
-                              currentType.gender === "Macho" ? true : false
-                            }
+                            disabled={currentType.gender === 'Macho' ? true : false}
                             className={`py-2 mt-2 text-gray-700 ${
-                              currentType.gender === "Macho"
-                                ? "bg-gray-500"
-                                : "bg-white"
+                              currentType.gender === 'Macho' ? 'bg-gray-500' : 'bg-white'
                             }  border border-gray-300 rounded-md`}
                             selected={next_due_date}
                             onChange={(date) => setNext_due_date(date)}
                           />
                         </div>
                         <div>
-                          <label className="text-gray-700 dark:text-gray-200">
-                            Raza
-                          </label>
+                          <label className="text-gray-700 dark:text-gray-200">Raza</label>
                           <input
                             value={race}
                             name="race"
@@ -460,9 +429,7 @@ export const ModalAnimal = () => {
                           />
                         </div>
                         <div>
-                          <label className="text-gray-700 dark:text-gray-200">
-                            Edad
-                          </label>
+                          <label className="text-gray-700 dark:text-gray-200">Edad</label>
                           <input
                             value={age}
                             name="age"
@@ -473,9 +440,7 @@ export const ModalAnimal = () => {
                           />
                         </div>
                         <div>
-                          <label className="text-gray-700 dark:text-gray-200">
-                            Nombre
-                          </label>
+                          <label className="text-gray-700 dark:text-gray-200">Nombre</label>
                           <input
                             value={name}
                             name="name"
@@ -484,7 +449,7 @@ export const ModalAnimal = () => {
                             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                           />
                         </div>
-                        <div className="pt-6">
+                        <div className="mt-10">
                           <label className="text-gray-700 dark:text-gray-200">
                             Foto de registro (si la hay):
                           </label>
@@ -496,20 +461,20 @@ export const ModalAnimal = () => {
                             setImageSrc={setImgReg}
                             value={photo}
                             style={{
-                              marginTop: 10,
-                              width: "100%",
+                              marginTop: 27,
+                              width: '100%',
                               height: 315,
-                              background: "#CDEDD3",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
+                              background: '#12b981',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center'
                             }}
                           />
                         </div>
                         {currentAnimal && currentAnimal.photo_register && (
-                          <div className="mt-6">
+                          <div className="mt-10">
                             <label className="text-gray-700 dark:text-gray-200">
-                              Foto actual de registro (click){" "}
+                              Foto actual de registro (click){' '}
                               <i className="fas fa-cloud-download-alt"></i>
                             </label>
                             <a href={currentAnimal.photo_register}>
@@ -531,7 +496,7 @@ export const ModalAnimal = () => {
                   <button
                     className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
                     type="button"
-                    style={{ transition: "all .15s ease" }}
+                    style={{ transition: 'all .15s ease' }}
                     onClick={() => closeModal()}
                   >
                     Regresar
@@ -540,14 +505,14 @@ export const ModalAnimal = () => {
                     onClick={handleSubmitForm}
                     className={`${
                       currentAnimal
-                        ? "bg-yellow-400 text-white active:bg-yellow-600 hover:bg-yellow-900"
-                        : "bg-blue-400 text-white active:bg-blue-600 hover:bg-blue-900"
+                        ? 'bg-yellow-400 text-white active:bg-yellow-600 hover:bg-yellow-900'
+                        : 'bg-blue-400 text-white active:bg-blue-600 hover:bg-blue-900'
                     } font-bold uppercase text-sm px-6 py-3 rounded shadow outline-none focus:outline-none mr-1 mb-1"
                       `}
                     type="submit"
-                    style={{ transition: "all .15s ease" }}
+                    style={{ transition: 'all .15s ease' }}
                   >
-                    {currentAnimal ? "Modificar" : "Registrar"}
+                    {currentAnimal ? 'Modificar' : 'Registrar'}
                   </button>
                 </div>
               </div>

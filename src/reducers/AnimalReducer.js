@@ -1,4 +1,4 @@
-import { Types } from "../types/Types";
+import { Types } from '../types/Types';
 
 const initialState = {
   animals: [],
@@ -6,8 +6,8 @@ const initialState = {
   currentAnimal: null,
   currentSearch: null,
   currentType: null,
-  total: 0,
-  count: 0,
+  animalState: null,
+  count: 0
 };
 
 export const AnimalReducer = (state = initialState, action) => {
@@ -15,7 +15,7 @@ export const AnimalReducer = (state = initialState, action) => {
     case Types.TYPES_LOADED:
       return {
         ...state,
-        animalsTypes: action.payload.types,
+        animalsTypes: action.payload.types
       };
 
     case Types.ANIMALS_LOADED:
@@ -23,92 +23,111 @@ export const AnimalReducer = (state = initialState, action) => {
         ...state,
         animals: [...action.payload.animals],
         count: action.payload.count,
+        animalState: action.payload.animalState
       };
 
     case Types.REGISTER_TYPE_ANIMAL_SUCCESS:
       return {
         ...state,
-        animalsTypes: [...state.animalsTypes, action.payload],
+        animalsTypes: [...state.animalsTypes, action.payload]
       };
 
     case Types.DELETE_TYPE:
       return {
         ...state,
-        animalsTypes: state.animalsTypes.filter(
-          (e) => e._id !== action.payload._id
-        ),
+        animalsTypes: state.animalsTypes.filter((e) => e._id !== action.payload._id)
       };
 
     case Types.ADD_NEW_ANIMAL:
       return {
         ...state,
-        animals: [...state.animals, action.payload],
+        animals: [...state.animals, action.payload]
       };
 
     case Types.UPDATE_ANIMAL:
       return {
         ...state,
-        animals: state.animals.map((e) =>
-          e._id === action.payload._id ? action.payload : e
-        ),
+        animals: state.animals.map((e) => (e._id === action.payload._id ? action.payload : e))
       };
 
     case Types.TYPE_SET_ACTIVE:
       return {
         ...state,
-        currentType: state.animalsTypes.find((e) => e._id === action.payload),
+        currentType: state.animalsTypes.find((e) => e._id === action.payload)
       };
 
     case Types.TYPE_CLEAR_ACTIVE:
       return {
         ...state,
-        currentType: null,
+        currentType: null
       };
     case Types.ANIMAL_SET_ACTIVE:
       return {
         ...state,
-        currentAnimal: action.payload,
+        currentAnimal: action.payload
       };
     case Types.SEARCH_SET_ACTIVE:
       return {
         ...state,
-        currentSearch: action.payload,
+        currentSearch: action.payload
       };
 
     case Types.SEARCH_CLEAN_ACTIVE:
       return {
         ...state,
-        currentSearch: null,
+        currentSearch: null
       };
 
     case Types.ANIMAL_CLEAR_ACTIVE:
       return {
         ...state,
-        currentAnimal: null,
+        currentAnimal: null
       };
 
     case Types.REGISTER_MILK_SUCCESS:
       return {
         ...state,
-        animals: state.animals.map((e) =>
-          e._id === action.payload._id ? action.payload : e
-        ),
+        animals: state.animals.map((e) => (e._id === action.payload._id ? action.payload : e))
       };
 
     case Types.REGISTER_WEIGHT_SUCCESS:
       return {
         ...state,
-        animals: state.animals.map((e) =>
-          e._id === action.payload._id ? action.payload : e
-        ),
+        animals: state.animals.map((e) => (e._id === action.payload._id ? action.payload : e))
       };
 
     case Types.REGISTER_CALVING_SUCCESS:
       return {
         ...state,
-        animals: state.animals.map((e) =>
-          e._id === action.payload._id ? action.payload : e
-        ),
+        animals: state.animals.map((e) => (e._id === action.payload._id ? action.payload : e))
+      };
+    case Types.ANIMAL_CHANGE__NEXT_DUE_DATE:
+      return {
+        ...state,
+        animals: state.animals.map((e) => (e._id === action.payload._id ? action.payload : e))
+      };
+
+    case Types.ANIMAL_REMOVE__WEIGHT:
+      return {
+        ...state,
+        animals: state.animals.map((e) => (e._id === action.payload._id ? action.payload : e))
+      };
+
+    case Types.ANIMAL_REMOVE__MILK:
+      return {
+        ...state,
+        animals: state.animals.map((e) => (e._id === action.payload._id ? action.payload : e))
+      };
+
+    case Types.ANIMAL_REMOVE__CALVING:
+      return {
+        ...state,
+        animals: state.animals.map((e) => (e._id === action.payload._id ? action.payload : e))
+      };
+    case Types.ANIMAL_CHANGE_STATUS:
+      return {
+        ...state,
+        animals: state.animals.map((e) => (e._id === action.payload._id ? action.payload : e))
       };
 
     default:

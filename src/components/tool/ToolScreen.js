@@ -123,7 +123,7 @@ export const ToolScreen = () => {
             type="text"
             name="filter"
             className="rounded-t-lg w-1/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-            placeholder="Filtrar por ..."
+            placeholder="Filtrar"
             value={filter}
             onChange={handleInputChange}
           />

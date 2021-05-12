@@ -1,8 +1,8 @@
-import { Types } from "../types/Types";
-import { FetchConsult } from "../helpers/FetchService";
-import Swal from "sweetalert2";
-import TopLoaderService from "top-loader-service";
-import { lendsByCollaboratorLoading } from "./LendAction";
+import { Types } from '../types/Types';
+import { FetchConsult } from '../helpers/FetchService';
+import Swal from 'sweetalert2';
+import TopLoaderService from 'top-loader-service';
+import { lendsByCollaboratorLoading } from './LendAction';
 
 export const paymentRegister = (paymentReg) => {
   return async (dispatch, getState) => {
@@ -13,7 +13,7 @@ export const paymentRegister = (paymentReg) => {
       const resp = await FetchConsult(
         `recursos-humanos/realizar/pago/colaborador/${currentCollaborator._id}`,
         { paymentReg },
-        "POST"
+        'POST'
       );
 
       const body = await resp.json();
@@ -22,7 +22,7 @@ export const paymentRegister = (paymentReg) => {
         await dispatch(cleanPresenceByCollaborator());
         await TopLoaderService.end();
       } else {
-        await Swal.fire("Error", body.msg, "error");
+        await Swal.fire('Error', body.msg, 'error');
         await TopLoaderService.end();
       }
     } catch (error) {
@@ -31,21 +31,42 @@ export const paymentRegister = (paymentReg) => {
   };
 };
 
-export const paymentStartLoading = (page_) => {
+export const paymentStartLoading = (page = 1) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(`recursos-humanos/pagos/realizados/${page}`);
+
+      const body = await resp.json();
+
+      if (body.status) {
+        await dispatch(paymentLoaded(body));
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire('Error', body.msg, 'error');
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const paymentByCollaboratorLoading = (collaboratorId, page = 1) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
       const resp = await FetchConsult(
-        `recursos-humanos/pagos/realizados/${page_}`
+        `recursos-humanos/pagos/colaborador/${collaboratorId}/${page}`
       );
 
       const body = await resp.json();
 
       if (body.status) {
-        await dispatch(paymentLoaded(body.payments));
+        await dispatch(paymentLoaded(body));
         await TopLoaderService.end();
       } else {
-        await Swal.fire("Error", body.msg, "error");
+        await Swal.fire('Error', body.msg, 'error');
         await TopLoaderService.end();
       }
     } catch (error) {
@@ -67,12 +88,10 @@ export const presenceByCollaboratorLoading = () => {
 
       if (body.status) {
         await dispatch(presenceByCollaboratorLoaded(body));
-        await dispatch(
-          lendsByCollaboratorLoading(currentCollaborator.document_id)
-        );
+        await dispatch(lendsByCollaboratorLoading(currentCollaborator.document_id));
         await TopLoaderService.end();
       } else {
-        await Swal.fire("Error", body.msg, "error");
+        await Swal.fire('Error', body.msg, 'error');
         await TopLoaderService.end();
       }
     } catch (error) {
@@ -88,7 +107,7 @@ export function registerTodayPresence(collaborator, total_overtime = 0) {
     const resp = await FetchConsult(
       `recursos-humanos/registrar/dia-laboral/${collaborator._id}`,
       { total_overtime: total_overtime },
-      "POST"
+      'POST'
     );
 
     const body = await resp.json();
@@ -96,41 +115,41 @@ export function registerTodayPresence(collaborator, total_overtime = 0) {
     if (body.status) {
       await dispatch(registerPresence());
 
-      collaborator["validatePresence"] = true;
+      collaborator['validatePresence'] = true;
       dispatch(validatePresenceCollaborator(collaborator));
       await Swal.fire({
-        icon: "success",
+        icon: 'success',
         title: body.msg,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 2000
       });
 
       await TopLoaderService.end();
     } else {
-      await Swal.fire("Error", body.msg, "error");
+      await Swal.fire('Error', body.msg, 'error');
       await TopLoaderService.end();
     }
   };
 }
 export const cleanPresenceByCollaborator = () => ({
-  type: Types.CLEAN_PRESENCE_DAY_BY_COLLABORATOR,
+  type: Types.CLEAN_PRESENCE_DAY_BY_COLLABORATOR
 });
 
 const validatePresenceCollaborator = (collaborator) => ({
   type: Types.VALIDATE_PRESENCE_COLLABORATOR,
-  payload: collaborator,
+  payload: collaborator
 });
 
 const registerPresence = () => ({
-  type: Types.REGISTER_PRESENCE_SUCCESS,
+  type: Types.REGISTER_PRESENCE_SUCCESS
 });
 
 const presenceByCollaboratorLoaded = (presenceDay) => ({
   type: Types.PRESENCE_DAY_BY_COLLABORATOR_LOADED,
-  payload: presenceDay,
+  payload: presenceDay
 });
 
 const paymentLoaded = (payments) => ({
-  type: Types.PAYMENT_LOADED,
-  payload: payments,
+  type: Types.PAYMENTS_LOADED,
+  payload: payments
 });

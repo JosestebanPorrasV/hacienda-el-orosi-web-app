@@ -5,6 +5,7 @@ import SearchResults from 'react-filter-search';
 import { Link } from 'react-router-dom';
 
 import {
+  changeStatus,
   collaboratorClearActive,
   collaboratorSetActive,
   CollaboratorsLoading
@@ -23,6 +24,8 @@ import Swal from 'sweetalert2';
 import { registerTodayPresence } from '../../actions/PaymentAction';
 import { PaymentModal } from '../payment/PaymentModal';
 import ModalMenu from './ModalMenu';
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import { Report } from './Report';
 
 export const CollaboratorScreen = () => {
   const dispatch = useDispatch();
@@ -70,6 +73,24 @@ export const CollaboratorScreen = () => {
         registerTodayPresence(collaborator, !total_overtime.value ? 0 : total_overtime.value)
       );
     }
+  };
+
+  const changeStatusCollaborator = async (collaborator) => {
+    Swal.fire({
+      title: '¿Estas seguro?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, seguro',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(
+          changeStatus(collaborator._id, collaborator.status === 'Activo' ? 'Inactivo' : 'Activo')
+        );
+      }
+    });
   };
 
   const contractCollaborator = () => {
@@ -126,23 +147,38 @@ export const CollaboratorScreen = () => {
           >
             <span>Inactivos</span>
           </button>
-          <a
+          <ReactHTMLTableToExcel
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
-            style={{ transition: 'all .15s ease' }}
-            href={`https://hacienda-el-orosi-bucket.s3.amazonaws.com/reporte-colaboradores-${
-              collaboratorsState === 'Activo' ? 'activos' : 'inactivos'
-            }.pdf`}
+            table="collaborator-table-to-xls"
+            filename={`Reporte-colaboradores-${
+              collaboratorsState
+                ? collaboratorsState === 'Activo'
+                  ? 'activos'
+                  : 'inactivos'
+                : null
+            }-${dateNow.getFullYear()}-${dateNow.getMonth()}-${dateNow.getDate()}`}
+            sheet={`${
+              collaboratorsState
+                ? collaboratorsState === 'Activo'
+                  ? 'activos'
+                  : 'inactivos'
+                : null
+            }`}
+            buttonText={`Reporte ${
+              collaboratorsState
+                ? collaboratorsState === 'Activo'
+                  ? 'activos'
+                  : 'inactivos'
+                : null
+            }`}
+          />
+
+          <Link
+            to="/pagos"
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
           >
-            <span>
-              {`Reporte ${
-                collaboratorsState
-                  ? collaboratorsState === 'Activo'
-                    ? 'activos'
-                    : 'inactivos'
-                  : null
-              }`}
-            </span>
-          </a>
+            Pagos
+          </Link>
         </nav>
         <span className="text-xl text-green-200">Herramientas</span>
         <Link
@@ -152,9 +188,8 @@ export const CollaboratorScreen = () => {
           <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-200"></i>
         </Link>
       </div>
-
       <div className="mt-4 bg-gray-700 rounded-lg">
-        <span className="pl-4 pt-1 flex text-gray-300 space-x-4 italic">
+        <span className="pl-2 pt-1 flex text-gray-300 space-x-4 italic">
           {'Fecha actual: ' +
             dateNow.getFullYear() +
             '-' +
@@ -164,21 +199,7 @@ export const CollaboratorScreen = () => {
         </span>
         {collaborators.length !== 0 ? (
           <>
-            <h2
-              className={`p-2 ${
-                collaboratorsState === 'Activo'
-                  ? 'text-green-400'
-                  : collaboratorsState === 'Inactivo'
-                  ? 'text-red-400'
-                  : 'text-yellow-400'
-              } text-xl font-bold`}
-            >{`COLABORADORES ${
-              collaboratorsState === 'Activo'
-                ? 'ACTIVOS'
-                : collaboratorsState === 'Inactivo'
-                ? 'INACTIVOS'
-                : 'REGISTRADOS'
-            }`}</h2>
+            <h2 className={`p-2 text-xl text-green-500 font-bold`}>{`COLABORADORES`}</h2>
             <input
               type="text"
               name="filter"
@@ -231,21 +252,13 @@ export const CollaboratorScreen = () => {
                         <th className="p-4 w-1/4">
                           <i className="fas fa-user-lock"></i>
                         </th>
+                        <th className="p-4 w-1/4">
+                          <i className="fas fa-toggle-on"></i>
+                        </th>
                         <th
                           className="p-4 w-1/4"
                           hidden={
                             collaboratorsState === 'Inactivo' ||
-                            !collaboratorsState ||
-                            role === 'Encargado del ganado'
-                          }
-                        >
-                          <i className="fas fa-caret-square-down"></i>
-                        </th>
-
-                        <th
-                          className="p-4 w-1/4 pr-10"
-                          hidden={
-                            collaboratorsState === 'Activo' ||
                             !collaboratorsState ||
                             role === 'Encargado del ganado'
                           }
@@ -291,7 +304,7 @@ export const CollaboratorScreen = () => {
                           <th className="p-4 w-1/4">
                             {`${collaborator.name} ${collaborator.surname}`}
                           </th>
-                          <th className="p-4 w-1/4">{`${collaborator.job.name}`}</th>
+                          <th className="p-4 w-1/4">{collaborator.job.name}</th>
                           <th className="p-4 w-1/4">{collaborator.document_id}</th>
                           <th className="p-4 w-1/4">
                             <button
@@ -302,8 +315,26 @@ export const CollaboratorScreen = () => {
                               <i className="far fa-eye"></i>
                             </button>
                           </th>
+
+                          <th className="p-4 w-1/4">
+                            <span
+                              className={` ${
+                                collaborator.status === 'Activo'
+                                  ? 'bg-green-200 text-green-600'
+                                  : 'bg-red-200 text-red-600'
+                              }  text-xs rounded-full px-3 py-1 w-26 inline-block text-center uppercase`}
+                            >
+                              {collaborator.status === 'Activo' ? 'Activo' : 'Inactivo'}
+                            </span>
+                            <button
+                              onClick={() => changeStatusCollaborator(collaborator)}
+                              className="px-3 py-1 w-26 inline-block text-center uppercase"
+                            >
+                              <i className="fas fa-edit text-xl text-gray-400" />
+                            </button>
+                          </th>
                           <th
-                            className="p-4 w-1/4 "
+                            className="p-4 w-1/4"
                             hidden={
                               collaboratorsState === 'Inactivo' ||
                               !collaboratorsState ||
@@ -311,23 +342,6 @@ export const CollaboratorScreen = () => {
                             }
                           >
                             <ModalMenu collaborator={collaborator} />
-                          </th>
-
-                          <th
-                            className="p-4 w-1/4"
-                            hidden={
-                              collaboratorsState === 'Activo' ||
-                              !collaboratorsState ||
-                              role === 'Encargado del ganado'
-                            }
-                          >
-                            <button
-                              onClick={() => onSelectCollaborator(collaborator)}
-                              className="bg-green-400 text-green-900  font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-green-400 hover:text-white outline-none"
-                              type="button"
-                            >
-                              <i className="fas fa-user-plus"></i> contratar
-                            </button>
                           </th>
                           <th className="p-4 w-1/4" hidden={role !== 'Encargado del ganado'}>
                             <button
@@ -357,6 +371,7 @@ export const CollaboratorScreen = () => {
       {currentCollaborator && modalActiveOpen && <ModalActive />}
       {currentCollaborator && modalPaymentOpen && <PaymentModal />}
       <ModalCollaborator />
+      <Report collaborator={collaborators} />
     </>
   );
 };

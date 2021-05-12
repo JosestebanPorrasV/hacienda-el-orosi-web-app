@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   collaboratorClearActive,
   registerCollaborator,
-  editOneCollaborator,
-} from "../../actions/CollaboratorAction";
-import { JobsLoaded } from "../../actions/JobAction";
-import { uiCloseModalCollaborator } from "../../actions/UIAction";
-import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import { registerLocale } from "react-datepicker";
-import es from "date-fns/locale/es";
-import "react-datepicker/dist/react-datepicker.css";
+  editOneCollaborator
+} from '../../actions/CollaboratorAction';
+import { JobsLoaded } from '../../actions/JobAction';
+import { uiCloseModalCollaborator } from '../../actions/UIAction';
+import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import { registerLocale } from 'react-datepicker';
+import es from 'date-fns/locale/es';
+import 'react-datepicker/dist/react-datepicker.css';
 
-registerLocale("es", es);
+registerLocale('es', es);
 
 const initEvent = {
-  document_id: "",
-  job_id: "",
-  nationality: "",
-  name: "",
-  surname: "",
-  direction: "",
-  tel: "",
-  cel: "",
+  document_id: '',
+  job_id: '',
+  nationality: '',
+  name: '',
+  surname: '',
+  direction: '',
+  tel: '',
+  cel: ''
 };
 
 export const ModalCollaborator = () => {
@@ -45,21 +45,12 @@ export const ModalCollaborator = () => {
   }, [dispatch, currentCollaborator]);
 
   const [formValues, setFormValues] = useState(initEvent);
-  const {
-    document_id,
-    job,
-    nationality,
-    name,
-    surname,
-    direction,
-    tel,
-    cel,
-  } = formValues;
+  const { document_id, job, nationality, name, surname, direction, tel, cel } = formValues;
 
   const handleInputChange = ({ target }) => {
     setFormValues({
       ...formValues,
-      [target.name]: target.value,
+      [target.name]: target.value
     });
   };
 
@@ -79,8 +70,8 @@ export const ModalCollaborator = () => {
       dispatch(uiCloseModalCollaborator());
       dispatch(collaboratorClearActive());
     } else {
-      if (!job || job === "DEFAULT") {
-        return Swal.fire("Error", "Por favor elige un trabjo", "warning");
+      if (!job || job === 'DEFAULT') {
+        return Swal.fire('Error', 'Por favor elige un trabjo', 'warning');
       }
       dispatch(registerCollaborator(formValues, date_admission, dispatch_date));
     }
@@ -101,55 +92,41 @@ export const ModalCollaborator = () => {
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                   <h5
                     className={`${
-                      currentCollaborator ? "text-yellow-800" : "text-blue-800"
+                      currentCollaborator ? 'text-yellow-800' : 'text-blue-800'
                     } text-xl font-bold mb-2`}
-                  >{`${
-                    currentCollaborator ? "Editar contrato" : "Contratar"
-                  }`}</h5>
+                  >{`${currentCollaborator ? 'Editar contrato' : 'Contratar'}`}</h5>
                   <hr />
                   <button
-                      className="text-gray-500 font-bold text-3xl hover:text-gray-800"
-                      type="button"
-                      style={{ transition: "all .15s ease" }}
-                      onClick={() => dispatch(uiCloseModalCollaborator())}
-                    >
-                      <i className="fas fa-arrow-circle-left"></i>
-                    </button>
+                    className="text-gray-500 font-bold text-3xl hover:text-gray-800"
+                    type="button"
+                    style={{ transition: 'all .15s ease' }}
+                    onClick={() => dispatch(uiCloseModalCollaborator())}
+                  >
+                    <i className="fas fa-arrow-circle-left"></i>
+                  </button>
                 </div>
                 {/*body*/}
                 <form onSubmit={handleSubmitForm}>
                   <section className="max-w-4xl p-4 mx-auto bg-white dark:bg-gray-800">
                     <div className="grid grid-cols-1 gap-4  sm:grid-cols-2">
                       <div hidden={!currentCollaborator}>
-                        <label className="text-gray-700 dark:text-gray-200">
-                          Registrado el:
-                        </label>
+                        <label className="text-gray-700 dark:text-gray-200">Registrado el:</label>
                         <input
-                          defaultValue={
-                            currentCollaborator &&
-                            currentCollaborator.date_admission
-                          }
+                          defaultValue={currentCollaborator && currentCollaborator.date_admission}
                           className="text-gray-700"
                         />
                       </div>
 
                       <div hidden={!currentCollaborator}>
-                        <label className="text-gray-700 dark:text-gray-200">
-                          Finaliza el:
-                        </label>
+                        <label className="text-gray-700 dark:text-gray-200">Finaliza el:</label>
                         <input
-                          defaultValue={
-                            currentCollaborator &&
-                            currentCollaborator.dispatch_date
-                          }
+                          defaultValue={currentCollaborator && currentCollaborator.dispatch_date}
                           className="text-gray-700"
                         />
                       </div>
 
                       <div>
-                        <label className="text-gray-700 dark:text-gray-200">
-                          Cédula
-                        </label>
+                        <label className="text-gray-700 dark:text-gray-200">Cédula</label>
                         <input
                           required
                           value={document_id}
@@ -159,15 +136,8 @@ export const ModalCollaborator = () => {
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
-                      <div
-                        onClick={() =>
-                          jobs.length === 0 && dispatch(JobsLoaded())
-                        }
-                      >
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="tel"
-                        >
+                      <div onClick={() => jobs.length === 0 && dispatch(JobsLoaded())}>
+                        <label className="text-gray-700 dark:text-gray-200" htmlFor="tel">
                           Trabajo
                         </label>
                         <Link
@@ -195,9 +165,7 @@ export const ModalCollaborator = () => {
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md"
                         >
                           <option value="DEFAULT">
-                            {currentCollaborator
-                              ? currentCollaborator.job.name
-                              : "Elegir"}
+                            {currentCollaborator ? currentCollaborator.job.name : 'Elegir'}
                           </option>
                           {jobs.map((option) => (
                             <option
@@ -212,9 +180,7 @@ export const ModalCollaborator = () => {
                       </div>
 
                       <div>
-                        <label className="text-gray-700 dark:text-gray-200">
-                          Nacionalidad
-                        </label>
+                        <label className="text-gray-700 dark:text-gray-200">Nacionalidad</label>
                         <input
                           required
                           value={nationality}
@@ -225,9 +191,7 @@ export const ModalCollaborator = () => {
                         />
                       </div>
                       <div>
-                        <label className="text-gray-700 dark:text-gray-200">
-                          Nombre
-                        </label>
+                        <label className="text-gray-700 dark:text-gray-200">Nombre</label>
                         <input
                           required
                           value={name}
@@ -238,9 +202,7 @@ export const ModalCollaborator = () => {
                         />
                       </div>
                       <div>
-                        <label className="text-gray-700 dark:text-gray-200">
-                          Apellidos
-                        </label>
+                        <label className="text-gray-700 dark:text-gray-200">Apellidos</label>
                         <input
                           required
                           value={surname}
@@ -251,9 +213,7 @@ export const ModalCollaborator = () => {
                         />
                       </div>
                       <div>
-                        <label className="text-gray-700 dark:text-gray-200">
-                          Dirección
-                        </label>
+                        <label className="text-gray-700 dark:text-gray-200">Dirección</label>
                         <input
                           required
                           value={direction}
@@ -264,10 +224,7 @@ export const ModalCollaborator = () => {
                         />
                       </div>
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="tel"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200" htmlFor="tel">
                           Teléfono
                         </label>
                         <input
@@ -281,10 +238,7 @@ export const ModalCollaborator = () => {
                         />
                       </div>
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="cel"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200" htmlFor="cel">
                           Celular
                         </label>
                         <input
@@ -299,11 +253,7 @@ export const ModalCollaborator = () => {
                       </div>
                       <div>
                         <label className="text-gray-700 dark:text-gray-200">
-                          {`${
-                            currentCollaborator
-                              ? "Cambiar fecha inicial"
-                              : "Fecha inicial"
-                          }`}
+                          {`${currentCollaborator ? 'Cambiar fecha inicial' : 'Fecha inicial'}`}
                           <br />
                         </label>
                         <DatePicker
@@ -316,11 +266,7 @@ export const ModalCollaborator = () => {
 
                       <div>
                         <label className="text-gray-700 dark:text-gray-200">
-                          {`${
-                            currentCollaborator
-                              ? "Cambiar ficha final"
-                              : "Fecha final"
-                          }`}
+                          {`${currentCollaborator ? 'Cambiar ficha final' : 'Fecha final'}`}
                           <br />
                         </label>
                         <DatePicker
@@ -330,37 +276,21 @@ export const ModalCollaborator = () => {
                           onChange={(date) => setDispatch_date(date)}
                         />
                       </div>
-
-                      <div hidden={!currentCollaborator}>
-                        <Link
-                          to={`/contrato/${
-                            currentCollaborator &&
-                            `${currentCollaborator.name}-${currentCollaborator.surname}`
-                          }`}
-                          className="text-blue-900 font-semibold inline-flex items-center hover:underline"
-                        >
-                          <i className="fas fa-file-contract"></i> Ver contrato
-                        </Link>
-                      </div>
                     </div>
                   </section>
 
                   {/*footer*/}
                   <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
                     <button
-                      disabled={
-                        !currentCollaborator &&
-                        !dispatch_date &&
-                        !date_admission
-                      }
+                      disabled={!currentCollaborator && !dispatch_date && !date_admission}
                       className={`${
                         currentCollaborator
-                          ? "text-yellow-700 hover:text-yellow-400"
-                          : "text-blue-700 hover:text-blue-400"
+                          ? 'text-yellow-700 hover:text-yellow-400'
+                          : 'text-blue-700 hover:text-blue-400'
                       } font-bold text-4xl ml-4 mb-1"
                       `}
                       type="submit"
-                      style={{ transition: "all .15s ease" }}
+                      style={{ transition: 'all .15s ease' }}
                     >
                       {currentCollaborator ? (
                         <i className="fas fa-edit"></i>

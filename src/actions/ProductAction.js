@@ -1,13 +1,15 @@
 import { Types } from "../types/Types";
 import { FetchConsult } from "../helpers/FetchService";
 import Swal from "sweetalert2";
-import TopLoaderService from "top-loader-service"
+import TopLoaderService from "top-loader-service";
 
-export const ProductsLoaded = ( page = 1) => {
+export const ProductsLoaded = (page = 1) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`gestion-animal/listar-productos/${page}`);
+      const resp = await FetchConsult(
+        `gestion-animal/listar-productos/${page}`
+      );
       const body = await resp.json();
       if (body.status) {
         await dispatch(productsLoaded(body.products));
@@ -41,7 +43,7 @@ export function addProduct(productFormValues) {
     const body = await resp.json();
     if (body.status) {
       await dispatch(addProductSuccess(body.product));
-     
+
       await Swal.fire({
         icon: "success",
         title: body.msg,
@@ -57,7 +59,36 @@ export function addProduct(productFormValues) {
   };
 }
 
-export const oneProductDelete = ({_id}) => {
+export const searchProduct = (productName) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(
+        `gestion-animal/ver-producto/${productName}`
+      );
+      const body = await resp.json();
+      if (body.status) {
+        await dispatch(productSetActive(body.product));
+
+        await Swal.fire({
+          icon: "success",
+          title: body.msg,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire("Error", body.msg, "warning");
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const oneProductDelete = ({ _id }) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uiCloseModalAliment } from "../../actions/UIAction";
 import { alimentClearActive } from "../../actions/DietAction";
+import { searchProduct, productClearActive } from "../../actions/ProductAction";
 
 const initEvent = {
   product: "",
@@ -13,6 +14,7 @@ export const ModalAliment = () => {
 
   const { modalAlimentOpen } = useSelector((state) => state.ui);
   const { aliments, currentAliment } = useSelector((state) => state.diet);
+  const { currentProduct } = useSelector((state) => state.product);
 
   const [formValues, setFormValues] = useState(initEvent);
 
@@ -40,6 +42,7 @@ export const ModalAliment = () => {
 
   const clearForm = () => {
     dispatch(alimentClearActive());
+    dispatch(productClearActive());
     setFormValues(initEvent);
   };
 
@@ -89,6 +92,7 @@ export const ModalAliment = () => {
                         />
                         <button
                           hidden={!product}
+                          onClick={() => dispatch(searchProduct(product)) }
                           className="bg-blue-500 text-white active:bg-blue-600 uppercase text-sm px-2 py-1 rounded-b shadow hover:bg-blue-900 outline-none focus:outline-none mr-1 mb-1"
                           type="button"
                           style={{ transition: "all .15s ease" }}
@@ -96,7 +100,7 @@ export const ModalAliment = () => {
                           <i className="fas fa-search"></i> Buscar
                         </button>
                         <button
-                          hidden={!currentAliment}
+                          hidden={!product}
                           onClick={() => clearForm()}
                           className="text-gray-500 active:bg-gray-600  text-sm px-2 py-1 rounded-b  hover:text-red-900 outline-none focus:outline-none mr-1 mb-1"
                           type="button"
@@ -113,7 +117,7 @@ export const ModalAliment = () => {
                         </label>
                         <input
                           required
-                          disabled={!currentAliment}
+                          disabled={!currentProduct}
                           value={quantity_supplied}
                           name="quantity_supplied"
                           onChange={handleInputChange}

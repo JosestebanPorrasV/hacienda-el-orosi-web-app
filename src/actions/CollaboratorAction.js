@@ -1,23 +1,21 @@
-import { Types } from "../types/Types";
-import { FetchConsult } from "../helpers/FetchService";
-import Swal from "sweetalert2";
-import TopLoaderService from "top-loader-service";
+import { Types } from '../types/Types';
+import { FetchConsult } from '../helpers/FetchService';
+import Swal from 'sweetalert2';
+import TopLoaderService from 'top-loader-service';
 
-export const CollaboratorsLoading = (status = "Activo") => {
+export const CollaboratorsLoading = (status = 'Activo') => {
   return async (dispatch) => {
     await TopLoaderService.start();
 
     try {
-      const resp = await FetchConsult(
-        `recursos-humanos/colaboradores/${status}`
-      );
+      const resp = await FetchConsult(`recursos-humanos/colaboradores/${status}`);
       const body = await resp.json();
 
       if (body.status) {
         await dispatch(collaboratorsLoaded(body.collaborators));
         await TopLoaderService.end();
       } else {
-        await Swal.fire("Error", body.msg, "error");
+        await Swal.fire('Error', body.msg, 'error');
         await TopLoaderService.end();
       }
     } catch (error) {
@@ -30,15 +28,13 @@ export const searchCollaborator = (document_id) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(
-        `recursos-humanos/ver-colaborador/${document_id}`
-      );
+      const resp = await FetchConsult(`recursos-humanos/ver-colaborador/${document_id}`);
       const body = await resp.json();
       if (body.status) {
         await dispatch(collaboratorSetActive(body.collaborator));
         await TopLoaderService.end();
       } else {
-        await Swal.fire("Error", body.msg, "warning");
+        await Swal.fire('Error', body.msg, 'warning');
         await TopLoaderService.end();
       }
     } catch (error) {
@@ -47,15 +43,11 @@ export const searchCollaborator = (document_id) => {
   };
 };
 
-export function registerCollaborator(
-  collaboratorFormValues,
-  date_admission,
-  dispatch_date
-) {
+export function registerCollaborator(collaboratorFormValues, date_admission, dispatch_date) {
   return async (dispatch) => {
     await TopLoaderService.start();
     const resp = await FetchConsult(
-      "recursos-humanos/registrar-colaborador",
+      'recursos-humanos/registrar-colaborador',
       {
         document_id: collaboratorFormValues.document_id,
         job: collaboratorFormValues.job,
@@ -66,9 +58,9 @@ export function registerCollaborator(
         tel: collaboratorFormValues.tel,
         cel: collaboratorFormValues.cel,
         date_admission: date_admission,
-        dispatch_date: dispatch_date,
+        dispatch_date: dispatch_date
       },
-      "POST"
+      'POST'
     );
 
     const body = await resp.json();
@@ -76,14 +68,14 @@ export function registerCollaborator(
       await dispatch(addCollaboratorSuccess(body.collaborator));
       await dispatch(collaboratorSetActive(body.collaborator));
       await Swal.fire({
-        icon: "success",
+        icon: 'success',
         title: body.msg,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 2000
       });
       await TopLoaderService.end();
     } else {
-      Swal.fire("Error", body.msg, "error");
+      Swal.fire('Error', body.msg, 'error');
       await TopLoaderService.end();
     }
   };
@@ -110,48 +102,82 @@ export function editOneCollaborator(
         tel: collaboratorFormValues.tel,
         cel: collaboratorFormValues.cel,
         date_admission: date_admission,
-        dispatch_date: dispatch_date,
+        dispatch_date: dispatch_date
       },
-      "PUT"
+      'PUT'
     );
     const body = await resp.json();
     if (body.status) {
       await dispatch(CollaboratorsLoading());
       await dispatch(collaboratorClearActive());
       await Swal.fire({
-        icon: "success",
+        icon: 'success',
         title: body.msg,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 2000
       });
       await TopLoaderService.end();
     } else {
-      Swal.fire("Error", body.msg, "error");
+      Swal.fire('Error', body.msg, 'error');
       await TopLoaderService.end();
     }
   };
 }
 
+export function changeStatus(id, status) {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+
+    const resp = await FetchConsult(
+      `recursos-humanos/colaborador/cambiar-estado/${id}`,
+      { status: status },
+      'PUT'
+    );
+
+    const body = await resp.json();
+
+    if (body.status) {
+      await dispatch(CollaboratorsLoading());
+
+      await Swal.fire({
+        icon: 'success',
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000
+      });
+      await TopLoaderService.end();
+    } else {
+      await Swal.fire('Error', body.msg, 'error');
+      await TopLoaderService.end();
+    }
+  };
+}
+
+export const changeStatusSuccess = (collaborator) => ({
+  type: Types.COLLABORATOR_CHANGE_STATUS,
+  payload: collaborator
+});
+
 export const collaboratorSetActive = (collaborator) => ({
   type: Types.COLLABORATOR_SET_ACTIVE,
-  payload: collaborator,
+  payload: collaborator
 });
 
 export const collaboratorClearActive = () => ({
-  type: Types.COLLABORATOR_CLEAR_ACTIVE,
+  type: Types.COLLABORATOR_CLEAR_ACTIVE
 });
 export const addCollaboratorSuccess = (collaborator) => ({
   type: Types.ADD_NEW_COLLABORATOR,
-  payload: collaborator,
+  payload: collaborator
 });
 
 export const liquidateSetActive = () => ({
-  type: Types.LIQUIDATE_SET_ACTIVE,
+  type: Types.LIQUIDATE_SET_ACTIVE
 });
 export const liquidateCleanActive = () => ({
-  type: Types.LIQUIDATE_CLEAR_ACTIVE,
+  type: Types.LIQUIDATE_CLEAR_ACTIVE
 });
 const collaboratorsLoaded = (collaborators) => ({
   type: Types.COLLABORATORS_LOADED,
-  payload: collaborators,
+  payload: collaborators
 });

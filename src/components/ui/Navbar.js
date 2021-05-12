@@ -17,7 +17,7 @@ export const Navbar = () => {
   }
 
   return (
-    <div className="bg-green-900 py-2 px-4 flex items-center justify-between lg:hidden text-white">
+    <div className="bg-green-700 py-2 px-4 flex items-center justify-between lg:hidden text-white">
       <button onClick={() => menu()} >
         <i className="fas fa-bars"></i>
       </button>

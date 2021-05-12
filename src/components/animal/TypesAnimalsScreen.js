@@ -87,8 +87,7 @@ export const TypesAnimalsScreen = () => {
             onClick={() => register()}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-800 w-35"
           >
-            <i className="fas fa-plus-circle"></i>
-            <span className="text-gray-200 font-bold">Agregar Trabajo</span>
+            <span className="text-gray-200 font-bold">Agregar tipo</span>
           </button>
         </nav>
       </div>
@@ -118,20 +117,19 @@ export const TypesAnimalsScreen = () => {
                       <thead className="bg-gray-600">
                         <tr className="bg-gray-600 text-white text-lg">
                           <th className="py-2 w-1/6">
-                            <i className="fas fa-user-clock"></i> Orden
+                            <i className="fas fa-sort"></i>
                           </th>
                           <th className="p-5 w-1/6">
-                            <i className="fas fa-clock"></i> Nombre
+                            <i className="fas fa-signature"></i>
                           </th>
                           <th className="p-5 w-1/6">
-                            <i className="far fa-money-bill-alt"></i> Genero
+                            <i className="fas fa-venus-mars"></i>
                           </th>
                           <th
                             hidden={role === "Recursos Humanos"}
                             className="py-2 w-1/6"
                           >
-                            <i className="far fa-caret-square-down"></i>{" "}
-                            Acciones
+                            <i className="far fa-caret-square-down"></i>
                           </th>
                         </tr>
                       </thead>

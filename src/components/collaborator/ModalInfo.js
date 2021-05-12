@@ -48,7 +48,7 @@ export const ModalInfo = () => {
                     </div>
                     <div className="block py-1">
                       <h3 className="font-medium text-gray-700">
-                        Direccion fisica
+                        Dirección física
                       </h3>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                         {currentCollaborator.direction}
@@ -63,7 +63,7 @@ export const ModalInfo = () => {
                       </p>
                     </div>
                     <div className="block py-1">
-                      <h3 className="font-medium text-gray-700">Telefono</h3>
+                      <h3 className="font-medium text-gray-700">Teléfono</h3>
                       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                         {currentCollaborator.tel}
                       </p>
@@ -79,12 +79,12 @@ export const ModalInfo = () => {
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
                   <button
-                    className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
+                    className="text-gray-500 font-bold text-3xl hover:text-gray-800"
                     type="button"
                     style={{ transition: "all .15s ease" }}
                     onClick={() => closeModal()}
                   >
-                    Volver
+                    <i className="fas fa-arrow-circle-left"></i>
                   </button>
                 </div>
               </div>

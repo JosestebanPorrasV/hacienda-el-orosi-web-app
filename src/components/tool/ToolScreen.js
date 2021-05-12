@@ -8,6 +8,7 @@ import {
   toolsLoading,
   changeStatus,
   toolSetActive,
+  toolClearActive,
 } from "../../actions/ToolAction";
 import {
   uiOpenModalAddTool,
@@ -20,10 +21,9 @@ import { ModalAddActive } from "./ModalAddActive";
 
 export const ToolScreen = () => {
   const dispatch = useDispatch();
-  const { tools, actives, count, toolsState, currentTool } = useSelector(
+  const { tools, count, toolsState, currentTool } = useSelector(
     (state) => state.tool
   );
-  const { currentCollaborator } = useSelector((state) => state.collaborator);
 
   useEffect(() => {
     dispatch(toolsLoading());
@@ -40,7 +40,7 @@ export const ToolScreen = () => {
     dispatch(toolSetActive(tool));
   };
 
-  const deleteInBulk = () => {
+  const deleteInBulk = (tool) => {
     Swal.fire({
       title: "¿Estas seguro?",
       text: "La herramienta se regresara a Bodega",
@@ -48,27 +48,23 @@ export const ToolScreen = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#A0A0A0",
-      confirmButtonText: "Si, eliminar de activos",
+      confirmButtonText: "Si, regresar la herramienta",
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        if (actives.length > 0) {
-          dispatch(removeTools(currentCollaborator._id, actives));
-        } else {
-          Swal.fire("Cuidado", "Primero dale check a algun registro", "error");
-        }
+        dispatch(removeTools([{ tool_id: tool._id }]));
+      } else {
+        toolClearActive();
       }
     });
   };
 
   return (
     <>
-      <div className="bg-gradient-to-r from-blue-300 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
+      <div className="bg-gradient-to-r from-yellow-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
-          <h2 className="text-2xl text-blue-900">HERRAMIENTAS</h2>
-          <p className="text-blue-900 opacity-90">
-            Funcionalidades principales
-          </p>
+          <h2 className="text-2xl text-blue-50">HERRAMIENTAS</h2>
+          <p className="text-blue-50 opacity-90">Funcionalidades principales</p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
@@ -82,7 +78,7 @@ export const ToolScreen = () => {
             onClick={() => dispatch(toolsLoading("Activo"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-blue-800 w-35"
           >
-            <i className="fas fa-chart-line"></i>
+            <i className="fas fa-clipboard-check"></i>
             <span className="text-white font-bold">Listar activas</span>
           </button>
           <button
@@ -96,14 +92,14 @@ export const ToolScreen = () => {
             onClick={() => dispatch(toolsLoading("En reparacion"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-blue-800 w-35"
           >
-            <i className="fas fa-toolbox"></i>
+            <i className="fas fa-notes-medical"></i>
             <span className="text-white font-bold">Listar En reparacion</span>
           </button>
           <button
             onClick={() => dispatch(toolsLoading("De baja"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-blue-800 w-35"
           >
-            <i className="fas fa-toolbox"></i>
+            <i className="fas fa-heart-broken"></i>
             <span className="text-white font-bold">De baja</span>
           </button>
         </nav>
@@ -116,7 +112,9 @@ export const ToolScreen = () => {
                 ? "text-green-400"
                 : toolsState === "En bodega"
                 ? "text-gray-200"
-                : "text-yellow-400"
+                : toolsState === "En reparacion"
+                ? "text-yellow-600"
+                : "text-red-400"
             } text-xl font-bold mb-2`}
           >{`Herramientas ${
             toolsState === "Activo" ? "Activas" : toolsState
@@ -125,7 +123,7 @@ export const ToolScreen = () => {
             type="text"
             name="filter"
             className="rounded-t-lg w-1/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-            placeholder="Filtrar por ..."
+            placeholder="Filtrar"
             value={filter}
             onChange={handleInputChange}
           />
@@ -135,50 +133,57 @@ export const ToolScreen = () => {
                 ? "bg-green-200 text-green-600"
                 : toolsState === "En bodega"
                 ? "bg-gray-200 text-gray-600"
-                : "bg-yellow-200 text-yellow-600"
+                : toolsState === "En reparacion"
+                ? "bg-yellow-200 text-yellow-600"
+                : "bg-red-200 text-red-600"
             } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
           >
             <i className="fas fa-tools"></i> {`total: ${count}`}
           </span>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-auto flex flex-col h-screen">
             <SearchResults
               value={filter}
               data={tools}
               renderResults={(results) => (
-                <table className="text-center items-center w-full ">
-                  <thead className="bg-gray-600 flex text-white w-full">
-                    <tr className="flex w-full text-lg">
-                      <th className="py-2 px-12">
+                <table className="text-center relative w-full">
+                  <thead className="bg-gray-600">
+                    <tr className="text-lg">
+                      <th
+                        className="sticky top-0 px-6 py-3"
+                        hidden={toolsState !== "En bodega"}
+                      >
                         <i className="fas fa-signal"></i> Estado
                       </th>
-                      <th className="py-2 px-12">
+                      <th className="sticky top-0 px-6 py-3">
                         <i className="fas fa-wrench"></i> Herramienta
                       </th>
-                      <th className="py-2 px-12"># Codigo</th>
+                      <th className="py-2 px-12"># Código</th>
                       <th className="py-2 px-12">
                         <i className="far fa-calendar-alt"></i> Registrada
                       </th>
-                      <th className="py-2 px-12">
-                        <i className="fas fa-cash-register"></i> Activos
+                      <th
+                        className="sticky top-0 px-6 py-3"
+                        hidden={toolsState === "De baja"}
+                      >
+                        <i className="fas fa-cash-register"></i> Acciones
                       </th>
                     </tr>
                   </thead>
                   <tbody
-                    className="text-blue-100 flex flex-col justify-between overflow-y-scroll w-full"
+                    className="text-blue-100 divide-y "
                     style={{ height: "50vh" }}
                   >
                     {results.map((tool) => (
-                      <tr className="flex w-full" key={tool._id}>
+                      <tr key={tool._id}>
                         <th
-                          className="py-2 px-16"
-                          hidden={
-                            toolsState === "De baja" || toolsState === "Activo"
-                          }
+                          className="px-6 py-4 text-center"
+                          hidden={toolsState !== "En bodega"}
                         >
                           <div className="flex flex-col text-center w-full mt-6 mb-6">
                             <div>
                               <select
+                                value="value"
                                 onChange={(e) =>
                                   dispatch(
                                     changeStatus(tool._id, e.target.value)
@@ -209,10 +214,12 @@ export const ToolScreen = () => {
                           </div>
                         </th>
 
-                        <th className="py-2 px-12">{tool.name}</th>
-                        <th className="py-2 px-20">{tool.active_num}</th>
-                        <th className="py-2 px-12">{tool.date}</th>
-                        <th className="py-2 px-20">
+                        <th className="px-6 py-4 text-center">{tool.name}</th>
+                        <th className="px-6 py-4 text-center">
+                          {tool.active_num}
+                        </th>
+                        <th className="px-6 py-4 text-center">{tool.date}</th>
+                        <th className="px-6 py-4 text-center">
                           <button
                             className={`${
                               tool.status === "En bodega"
@@ -226,8 +233,11 @@ export const ToolScreen = () => {
                             <i className="fas fa-plus"></i>
                           </button>
                           <button
-                            hidden={tool.status === "En bodega"}
-                            onClick={() => deleteInBulk()}
+                            hidden={
+                              tool.status === "En bodega" ||
+                              tool.status === "De baja"
+                            }
+                            onClick={() => deleteInBulk(tool)}
                             className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             style={{ transition: "all .15s ease" }}

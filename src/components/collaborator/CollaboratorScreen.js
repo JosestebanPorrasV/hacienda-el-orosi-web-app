@@ -1,28 +1,31 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import SearchResults from "react-filter-search";
-import { Link } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import SearchResults from 'react-filter-search';
+import { Link } from 'react-router-dom';
 
 import {
+  changeStatus,
   collaboratorClearActive,
   collaboratorSetActive,
-  CollaboratorsLoading,
-} from "../../actions/CollaboratorAction";
-import { UseForm } from "../../hooks/UseForm";
-import { ModalInfo } from "./ModalInfo";
+  CollaboratorsLoading
+} from '../../actions/CollaboratorAction';
+import { UseForm } from '../../hooks/UseForm';
+import { ModalInfo } from './ModalInfo';
 import {
   uiOpenModalInfoCollaborator,
   uiOpenModalCollaborator,
-  uiOpenModalActive,
-} from "../../actions/UIAction";
-import { ModalLend } from "../lend/ModalLend";
-import { ModalActive } from "../tool/ModalActive";
-import { ModalCollaborator } from "./ModalCollaborator";
-import Swal from "sweetalert2";
-import { registerTodayPresence } from "../../actions/PaymentAction";
-import { PaymentModal } from "../payment/PaymentModal";
-import ModalMenu from "./ModalMenu";
+  uiOpenModalActive
+} from '../../actions/UIAction';
+import { ModalLend } from '../lend/ModalLend';
+import { ModalActive } from '../tool/ModalActive';
+import { ModalCollaborator } from './ModalCollaborator';
+import Swal from 'sweetalert2';
+import { registerTodayPresence } from '../../actions/PaymentAction';
+import { PaymentModal } from '../payment/PaymentModal';
+import ModalMenu from './ModalMenu';
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import { Report } from './Report';
 
 export const CollaboratorScreen = () => {
   const dispatch = useDispatch();
@@ -30,9 +33,7 @@ export const CollaboratorScreen = () => {
   const { collaborators, collaboratorsState, countCollaborators } = useSelector(
     (state) => state.collaborator
   );
-  const { modalPaymentOpen, modalActiveOpen } = useSelector(
-    (state) => state.ui
-  );
+  const { modalPaymentOpen, modalActiveOpen } = useSelector((state) => state.ui);
   const { role } = useSelector((state) => state.auth);
 
   const { currentCollaborator } = useSelector((state) => state.collaborator);
@@ -42,7 +43,7 @@ export const CollaboratorScreen = () => {
   }, [dispatch]);
 
   const [formValues, handleInputChange] = UseForm({
-    filter: "",
+    filter: ''
   });
 
   const onSelectCollaborator = (collaborator) => {
@@ -56,25 +57,40 @@ export const CollaboratorScreen = () => {
 
   const registerPresence = async (collaborator) => {
     const total_overtime = await Swal.fire({
-      title: "Registrar dia laboral ",
-      input: "number",
-      inputLabel: "Horas extras",
-      inputPlaceholder: "Escriba",
+      title: 'Registrar dia laboral ',
+      input: 'number',
+      inputLabel: 'Horas extras',
+      inputPlaceholder: 'Escriba',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#A0A0A0",
-      confirmButtonText: "Si, registrar",
-      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, registrar',
+      cancelButtonText: 'Cancelar'
     });
 
     if (total_overtime.isConfirmed) {
       dispatch(
-        registerTodayPresence(
-          collaborator,
-          !total_overtime.value ? 0 : total_overtime.value
-        )
+        registerTodayPresence(collaborator, !total_overtime.value ? 0 : total_overtime.value)
       );
     }
+  };
+
+  const changeStatusCollaborator = async (collaborator) => {
+    Swal.fire({
+      title: '¿Estas seguro?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, seguro',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(
+          changeStatus(collaborator._id, collaborator.status === 'Activo' ? 'Inactivo' : 'Activo')
+        );
+      }
+    });
   };
 
   const contractCollaborator = () => {
@@ -95,106 +111,115 @@ export const CollaboratorScreen = () => {
     <>
       <div
         className={`${
-          role === "Encargado del ganado" && "hidden"
-        } bg-gradient-to-r from-blue-200 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12`}
+          role === 'Encargado del ganado' && 'hidden'
+        } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
       >
-        <div>
-          <h2 className="text-2xl">COLABORADORES</h2>
-          <p className="text-gray-600">Funcionalidades principales</p>
-        </div>
-        <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0 text-lg text-gray-200">
+        <Link
+          to="/trabajos"
+          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+        >
+          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-200 "></i>
+        </Link>
+        <span className="text-xl text-green-200">Trabajos</span>
+
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+            type="button"
+            style={{ transition: 'all .15s ease' }}
             onClick={() => contractCollaborator()}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700 w-35 fas fa-user-plus"
           >
-            <span>Contratar nuevo</span>
+            Contratar
           </button>
+
           <button
-            onClick={() => dispatch(CollaboratorsLoading("Activo"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700  w-35 fas fa-chart-line"
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+            style={{ transition: 'all .15s ease' }}
+            onClick={() => dispatch(CollaboratorsLoading('Activo'))}
           >
-            <span>Listar activos</span>
+            <span>Activos</span>
           </button>
+
           <button
-            onClick={() => dispatch(CollaboratorsLoading("Inactivo"))}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg  hover:bg-gray-700  w-35 fas fa-stop-circle"
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+            style={{ transition: 'all .15s ease' }}
+            onClick={() => dispatch(CollaboratorsLoading('Inactivo'))}
           >
-            <span>Listar inactivos</span>
+            <span>Inactivos</span>
           </button>
-          <a
-            href={`https://hacienda-el-orosi-bucket.s3.amazonaws.com/reporte-colaboradores-${
-              collaboratorsState === "Activo" ? "activos" : "inactivos"
-            }.pdf`}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg  hover:bg-gray-700  w-35 fas fa-cloud-download-alt"
-          >
-            <span>
-              {" "}
-              {`Reporte de ${
-                collaboratorsState
-                  ? collaboratorsState === "Activo"
-                    ? "activos"
-                    : "inactivos"
-                  : null
-              }`}
-            </span>
-          </a>
+          <ReactHTMLTableToExcel
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+            table="collaborator-table-to-xls"
+            filename={`Reporte-colaboradores-${
+              collaboratorsState
+                ? collaboratorsState === 'Activo'
+                  ? 'activos'
+                  : 'inactivos'
+                : null
+            }-${dateNow.getFullYear()}-${dateNow.getMonth()}-${dateNow.getDate()}`}
+            sheet={`${
+              collaboratorsState
+                ? collaboratorsState === 'Activo'
+                  ? 'activos'
+                  : 'inactivos'
+                : null
+            }`}
+            buttonText={`Reporte ${
+              collaboratorsState
+                ? collaboratorsState === 'Activo'
+                  ? 'activos'
+                  : 'inactivos'
+                : null
+            }`}
+          />
 
           <Link
-            to="/trabajos"
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-700 w-35 fas fa-building"
+            to="/pagos"
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
           >
-            <span>Trabajos</span>
+            Pagos
           </Link>
         </nav>
+        <span className="text-xl text-green-200">Herramientas</span>
+        <Link
+          to="/herramientas"
+          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+        >
+          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-200"></i>
+        </Link>
       </div>
-
-      <div className="mt-8 bg-gray-700 rounded-lg">
-        <span className="pl-4 pt-2 text-lg flex space-x-4">
-          {"Fecha actual: " +
-            dateNow.getDate() +
-            "-" +
+      <div className="mt-4 bg-gray-700 rounded-lg">
+        <span className="pl-2 pt-1 flex text-gray-300 space-x-4 italic">
+          {'Fecha actual: ' +
+            dateNow.getFullYear() +
+            '-' +
             (dateNow.getMonth() + 1) +
-            "-" +
-            dateNow.getFullYear()}
+            '-' +
+            dateNow.getDate()}
         </span>
         {collaborators.length !== 0 ? (
           <>
-            <h2
-              className={`p-4 ${
-                collaboratorsState === "Activo"
-                  ? "text-green-400"
-                  : collaboratorsState === "Inactivo"
-                  ? "text-red-400"
-                  : "text-yellow-400"
-              } text-xl font-bold mb-2`}
-            >{`COLABORADORES ${
-              collaboratorsState === "Activo"
-                ? "ACTIVOS"
-                : collaboratorsState === "Inactivo"
-                ? "INACTIVOS"
-                : "REGISTRADOS"
-            }`}</h2>
+            <h2 className={`p-2 text-xl text-green-500 font-bold`}>{`COLABORADORES`}</h2>
             <input
               type="text"
               name="filter"
               className="rounded-t-lg w-1/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-              placeholder="Filtrar por ..."
+              placeholder="Buscar"
               value={filter}
               onChange={handleInputChange}
             />
             <span
               className={`${
-                collaboratorsState === "Activo"
-                  ? "bg-green-200 text-green-600"
-                  : collaboratorsState === "Inactivo"
-                  ? "bg-red-200 text-red-600"
-                  : "bg-yellow-200 text-yellow-600"
+                collaboratorsState === 'Activo'
+                  ? 'bg-green-200 text-green-600'
+                  : collaboratorsState === 'Inactivo'
+                  ? 'bg-red-200 text-red-600'
+                  : 'bg-yellow-200 text-yellow-600'
               } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
             >
-              <i className="fas fa-box-open"></i>{" "}
-              {`total: ${countCollaborators}`}
+              <i className="fas fa-box-open"></i> {`total: ${countCollaborators}`}
             </span>
-            <div className=" overflow-x-auto ">
+            <div className="overflow-x-auto">
               <SearchResults
                 value={filter}
                 data={collaborators}
@@ -205,137 +230,120 @@ export const CollaboratorScreen = () => {
                         <th
                           className="p-4 w-1/4"
                           hidden={
-                            collaboratorsState === "Inactivo" ||
+                            collaboratorsState === 'Inactivo' ||
                             !collaboratorsState ||
-                            role === "Encargado del ganado"
+                            role === 'Encargado del ganado'
                           }
                         >
-                          <i className="fas fa-check"></i> Asistencia
+                          <i className="fas fa-check"></i>
                         </th>
                         <th className="p-4 w-1/4" hidden={collaboratorsState}>
-                          <i className="fas fa-signal"></i> Estado
+                          <i className="fas fa-signal"></i>
                         </th>
                         <th className="p-4 w-1/4">
-                          <i className="fas fa-user"></i> Nombre completo
+                          <i className="fas fa-user"></i>
                         </th>
                         <th className="p-4 w-1/4">
-                          <i className="fas fa-user"></i> Trabajo
+                          <i className="fas fa-hammer"></i>
                         </th>
                         <th className="p-4 w-1/4">
-                          <i className="fas fa-id-card"></i> Cedula
+                          <i className="fas fa-id-card"></i>
                         </th>
                         <th className="p-4 w-1/4">
-                          <i className="fas fa-user-lock"></i> Datos personales
+                          <i className="fas fa-user-lock"></i>
+                        </th>
+                        <th className="p-4 w-1/4">
+                          <i className="fas fa-toggle-on"></i>
                         </th>
                         <th
                           className="p-4 w-1/4"
                           hidden={
-                            collaboratorsState === "Inactivo" ||
+                            collaboratorsState === 'Inactivo' ||
                             !collaboratorsState ||
-                            role === "Encargado del ganado"
+                            role === 'Encargado del ganado'
                           }
                         >
-                          <i className="fas fa-caret-square-down"></i> Acciones
-                        </th>
-
-                        <th
-                          className="p-4 w-1/4 pr-10"
-                          hidden={
-                            collaboratorsState === "Activo" ||
-                            !collaboratorsState ||
-                            role === "Encargado del ganado"
-                          }
-                        >
-                          <i className="fas fa-caret-square-down"></i> Acciones
+                          <i className="fas fa-caret-square-down"></i>
                         </th>
                       </tr>
                     </thead>
                     <tbody
                       className="text-blue-100 flex-col justify-between overflow-y-scroll w-full"
-                      style={{ height: "50vh" }}
+                      style={{ height: '50vh' }}
                     >
                       {results.map((collaborator) => (
                         <tr className="flex w-full" key={collaborator._id}>
                           <th
                             className="p-4 w-1/4"
                             hidden={
-                              collaboratorsState === "Inactivo" ||
+                              collaboratorsState === 'Inactivo' ||
                               !collaboratorsState ||
-                              role === "Encargado del ganado"
+                              role === 'Encargado del ganado'
                             }
                           >
                             <button
                               hidden={collaborator.validatePresence}
                               onClick={() => registerPresence(collaborator)}
-                              className="px-4 py-2 text-sm font-medium tracking-wide text-white transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+                              className="px-4 py-2 text-sm font-medium tracking-wide text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-600 "
                             >
-                              <i className="far fa-calendar-check"></i> Registar
-                              día
+                              <i className="far fa-calendar-check"></i> Registar día
                             </button>
                           </th>
                           <th className="p-4 w-1/4" hidden={collaboratorsState}>
                             <span
                               className={` ${
-                                collaborator.status === "Activo"
-                                  ? "bg-green-200 text-green-600"
-                                  : "bg-red-200 text-red-600"
+                                collaborator.status === 'Activo'
+                                  ? 'bg-green-200 text-green-600'
+                                  : 'bg-red-200 text-red-600'
                               }  text-xs rounded-full px-3 py-1 w-26 inline-block text-center uppercase`}
                             >
-                              {collaborator.status === "Activo"
-                                ? "Activo"
-                                : "Cancelado"}
+                              {collaborator.status === 'Activo' ? 'Activo' : 'Cancelado'}
                             </span>
                           </th>
 
                           <th className="p-4 w-1/4">
                             {`${collaborator.name} ${collaborator.surname}`}
                           </th>
-                          <th className="p-4 w-1/4">
-                            {`${collaborator.job.name}`}
-                          </th>
-                          <th className="p-4 w-1/4">
-                            {collaborator.document_id}
-                          </th>
+                          <th className="p-4 w-1/4">{collaborator.job.name}</th>
+                          <th className="p-4 w-1/4">{collaborator.document_id}</th>
                           <th className="p-4 w-1/4">
                             <button
                               onClick={() => onSelectCollaborator(collaborator)}
                               className="bg-blue-600 text-white  font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-400 hover:text-white outline-none"
                               type="button"
                             >
-                              <i className="far fa-eye"></i> ver
+                              <i className="far fa-eye"></i>
+                            </button>
+                          </th>
+
+                          <th className="p-4 w-1/4">
+                            <span
+                              className={` ${
+                                collaborator.status === 'Activo'
+                                  ? 'bg-green-200 text-green-600'
+                                  : 'bg-red-200 text-red-600'
+                              }  text-xs rounded-full px-3 py-1 w-26 inline-block text-center uppercase`}
+                            >
+                              {collaborator.status === 'Activo' ? 'Activo' : 'Inactivo'}
+                            </span>
+                            <button
+                              onClick={() => changeStatusCollaborator(collaborator)}
+                              className="px-3 py-1 w-26 inline-block text-center uppercase"
+                            >
+                              <i className="fas fa-edit text-xl text-gray-400" />
                             </button>
                           </th>
                           <th
-                            className="p-4 w-1/4 "
+                            className="p-4 w-1/4"
                             hidden={
-                              collaboratorsState === "Inactivo" ||
+                              collaboratorsState === 'Inactivo' ||
                               !collaboratorsState ||
-                              role === "Encargado del ganado"
+                              role === 'Encargado del ganado'
                             }
                           >
                             <ModalMenu collaborator={collaborator} />
                           </th>
-
-                          <th
-                            className="p-4 w-1/4"
-                            hidden={
-                              collaboratorsState === "Activo" ||
-                              !collaboratorsState ||
-                              role === "Encargado del ganado"
-                            }
-                          >
-                            <button
-                              onClick={() => onSelectCollaborator(collaborator)}
-                              className="bg-green-400 text-green-900  font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-green-400 hover:text-white outline-none"
-                              type="button"
-                            >
-                              <i className="fas fa-user-plus"></i> contratar
-                            </button>
-                          </th>
-                          <th
-                            className="p-4 w-1/4"
-                            hidden={role !== "Encargado del ganado"}
-                          >
+                          <th className="p-4 w-1/4" hidden={role !== 'Encargado del ganado'}>
                             <button
                               className="py-2 font-semibold  block w-full hover:bg-blue-700 hover:text-white"
                               onClick={() => showActiveModal(collaborator)}
@@ -363,6 +371,7 @@ export const CollaboratorScreen = () => {
       {currentCollaborator && modalActiveOpen && <ModalActive />}
       {currentCollaborator && modalPaymentOpen && <PaymentModal />}
       <ModalCollaborator />
+      <Report collaborator={collaborators} />
     </>
   );
 };

@@ -54,7 +54,7 @@ export const AdministratorScreen = () => {
 
   return (
     <>
-      <div className="bg-gradient-to-r from-blue-200 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
+      <div className="bg-gradient-to-r from-yellow-400 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
             onClick={() => addAdmin()}
@@ -68,7 +68,7 @@ export const AdministratorScreen = () => {
             to="/editar-cuenta"
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35"
           >
-            <i className="fas fa-plus-circle"></i>
+            <i className="fas fa-exchange-alt"></i>
             <span className="text-white font-bold">Cambiar contraseña</span>
           </Link>
         </nav>
@@ -100,7 +100,7 @@ export const AdministratorScreen = () => {
                   <thead className="bg-gray-600">
                     <tr className="bg-gray-600 text-white text-lg">
                       <th className="py-2 px-4">
-                        <i className="fas fa-id-card"></i> Cedula
+                        <i className="fas fa-id-card"></i> Cédula
                       </th>
                       <th className="py-2 px-4">
                         <i className="fas fa-user"></i> Nombre
@@ -116,7 +116,7 @@ export const AdministratorScreen = () => {
                         <i className="fas fa-user-tie"></i> Gerente
                       </th>
                       <th className="py-2 px-3">
-                        <i className="fas fa-cash-register"></i> Accion
+                        <i className="fas fa-cash-register"></i> Acción
                       </th>
                     </tr>
                   </thead>

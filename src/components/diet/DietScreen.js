@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
 import { Link } from "react-router-dom";
+import { ModalDiet } from "./ModalDiet";
 
-import {
-  DietsLoaded,
-} from "../../actions/DietAction";
+import { DietsLoaded } from "../../actions/DietAction";
 import { UseForm } from "../../hooks/UseForm";
+import { uiOpenModalDiet } from "../../actions/UIAction";
 
 export const DietScreen = () => {
   const dispatch = useDispatch();
@@ -24,97 +24,100 @@ export const DietScreen = () => {
 
   return (
     <>
-      <div className="bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900  rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
-        <div>
-          <h2 className="text-2xl">DIETAS DE LA HACIENDA</h2>
-          <p className="text-blue-100 opacity-70">
-            Funcionalidades principales
-          </p>
-        </div>
-        <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
+      <div className="container px-4 lg:px-8 py-4 lg:py-6 mt-4 mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+        <Link
+          to="/animales"
+          className="inline-flex flex-col justify-center items-center m-3 px-1 py-18 rounded-lg"
+        >
+          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-200 "></i>
+        </Link>
+        <span className="text-xl text-green-200">Animales</span>
+
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-purple-200 rounded-lg hover:bg-gray-900 w-35"
+            onClick={() => dispatch(uiOpenModalDiet())}
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+            type="button"
+            style={{ transition: "all .15s ease" }}
           >
-            <i className="fas fa-plus-circle"></i>
-            <span className="text-indigo-600 hover:text-indigo-200 font-bold">
-              Agregar Dieta
-            </span>
+            Agregar
           </button>
-          <Link
-          to="/alimento"
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-purple-200 rounded-lg hover:bg-gray-900 w-35"
-          >
-            <i class="fas fa-leaf"></i>
-            <span className="text-indigo-600 hover:text-indigo-200 font-bold">
-              Listar Alimentos
-            </span>
-          </Link>
         </nav>
+
+        <span className="text-xl text-green-200">Productos</span>
+        <Link
+          to="/producto"
+          className="inline-flex flex-col justify-center items-center m-3 px-1 py-18 rounded-lg"
+        >
+          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-200"></i>
+        </Link>
       </div>
 
-      <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
-        <h2 className="text-green-400 text-xl font-bold mb-2">
-          LISTA DE DIETAS
-        </h2>
-        <input
-          type="text"
-          name="filter"
-          className="rounded-t-lg w-1/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-          placeholder="Filtrar por ..."
-          value={filter}
-          onChange={handleInputChange}
-        />
-        <span className="bg-green-200 text-yellow-900 md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase">
-          <i className="fas fa-file-contract"></i> {`total: ${diets.length}`}
-        </span>
-
-        <div className="overflow-x-auto py-4">
-          <div className="align-middle inline-block min-w-full overflow-hidden">
-            <SearchResults
-              value={filter}
-              data={diets}
-              renderResults={(results) => (
-                <table className="min-w-full">
-                  <thead className="bg-gray-600">
-                    <tr className="bg-gray-600 text-white text-lg">
-                      <th className="py-2 px-5">
-                      <i class="far fa-bookmark"></i> Etapa
-                      </th>
-                      <th className="p-5 w-1/4">
-                        <i className="fas fa-leaf"></i> Nombre de la Dieta
-                      </th>
-                      <th className="p-5 w-1/4">
-                        # Numero de chapa
-                      </th>
-                      <th className="py-2 px-5">
-                      <i class="fas fa-horse-head"></i> Animal
-                      </th>
-                      <th className="py-2 px-5">
-                      <i class="fas fa-suitcase"></i> Alimento
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-blue-100 text-opacity-80">
-                    {results.map((diet) => (
-                      <tr key={diet._id}>
-                        <th className="py-5 px-8">{`${diet.stage}`}</th>
-                        <th className="py-5 px-8">{`${diet.diet_name}`}</th>
-                        <th className="py-3 px-3">#{diet.animal.plate_number}</th>
-                        <th className="py-3 px-3">{diet.animal.type_animal}</th>
-                        <th className="py-3 px-3">{diet.aliment.name_aliment}</th>
-                        <th className="whitespace-pre-line">
-                          {diet.description}
-                        </th>
-                    
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            />
+      <section className="text-gray-600 body-font">
+        <div className="container px-5 py-18 mx-auto">
+          <div className="flex flex-col text-center w-full mb-20">
+            <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-50">
+              Dietas
+            </h1>
+            <h2 className="text-xs text-green-700 tracking-widest font-medium title-font mb-1">
+              PARA LOS ANIMALES
+            </h2>
           </div>
+
+          <SearchResults
+            value={filter}
+            data={diets}
+            renderResults={(results) => (
+              <div className="flex flex-wrap -m-4">
+                {results.map(({ _id, diet_name, description }) => (
+                  <div key={_id} className="p-4 md:w-1/3">
+                    <div className="flex rounded-lg h-full bg-gray-100 p-8 flex-col group">
+                      <div className="flex items-center ">
+
+                        <div class="mr-2 inline-flex group-hover:text-red-900 items-center justify-center rounded-full text-gray-100 flex-shrink-0 ">
+                          <button
+                            className="text-gray text-xl"
+                            type="button"
+                            style={{ transition: "all .50s ease" }}
+                          >
+                            <i className="fas fa-trash-alt"></i>
+                          </button>
+                        </div>
+
+                        <h2 className="text-gray-900 text-lg title-font font-medium">
+                          {diet_name}
+                        </h2>
+                      </div>
+
+                      <div className="flex-grow mb-3">
+                        <p className="leading-relaxed text-base">
+                          {description}
+                        </p>
+                        <a className="mt-3 text-green-500 inline-flex items-center">
+                          Lista de productos
+                          <svg
+                            fill="none"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            className="w-4 h-4 ml-2"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M5 12h14M12 5l7 7-7 7"></path>
+                          </svg>
+                        </a>
+                      </div>
+
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          />
         </div>
-      </div>
+      </section>
+      <ModalDiet />
     </>
   );
 };

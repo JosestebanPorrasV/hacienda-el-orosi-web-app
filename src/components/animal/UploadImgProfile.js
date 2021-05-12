@@ -1,9 +1,9 @@
-import React from "react";
-import ImageUpload from "image-upload-react";
-import { useDispatch } from "react-redux";
+import React from 'react';
+import ImageUpload from 'image-upload-react';
+import { useDispatch } from 'react-redux';
 
-import "image-upload-react/dist/index.css";
-import { uploadImg } from "../../actions/AnimalAction";
+import 'image-upload-react/dist/index.css';
+import { uploadImg } from '../../actions/AnimalAction';
 
 export default function UploadImgProfile({ animal }) {
   const dispatch = useDispatch();
@@ -12,14 +12,14 @@ export default function UploadImgProfile({ animal }) {
 
   const [img, setImg] = React.useState();
 
-  const [formValues, setFormValues] = React.useState("");
+  const [formValues, setFormValues] = React.useState('');
   const { photo } = formValues;
 
   const handleInputChange = ({ target }) => {
     setImg(URL.createObjectURL(target.files[0]));
     setFormValues({
       ...formValues,
-      photo: target.files[0],
+      photo: target.files[0]
     });
   };
 
@@ -29,11 +29,9 @@ export default function UploadImgProfile({ animal }) {
         <img
           onClick={() => setShowModal(true)}
           alt="Hacienda El Orosi"
-          className="lg:w-1/2 w-full lg:h-96 h-64 sm:mt-14 object-cover border-8 object-center rounded"
+          className="lg:w-1/2 w-full lg:h-96 h-64 sm:mt-14 object-cover border-4 object-center rounded"
           src={
-            animal.photo_link
-              ? animal.photo_link
-              : "https://alternos.la/image/not-available-es.png"
+            animal.photo_link ? animal.photo_link : 'https://alternos.la/image/not-available-es.png'
           }
         />
       )}
@@ -66,23 +64,21 @@ export default function UploadImgProfile({ animal }) {
                   value={photo}
                   style={{
                     marginTop: 0,
-                    width: "100%",
+                    width: '100%',
                     height: 315,
-                    background: "#12B981",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    background: '#12B981',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 />
 
                 <button
                   disabled={!img}
-                  onClick={() =>
-                    dispatch(uploadImg(photo, animal._id, "foto-de-perfil"))
-                  }
+                  onClick={() => dispatch(uploadImg(photo, animal._id, 'foto-de-perfil'))}
                   className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-2 py-2 rounded shadow hover:bg-green-900 outline-none focus:outline-none mr-1 mb-1 mt-6"
                   type="submit"
-                  style={{ transition: "all .15s ease" }}
+                  style={{ transition: 'all .15s ease' }}
                 >
                   Guardar
                 </button>
@@ -91,7 +87,7 @@ export default function UploadImgProfile({ animal }) {
                   <button
                     className="bg-gray-500 text-white active:bg-gray-600 font-semibold uppercase text-sm px-2 py-2 rounded shadow hover:bg-gray-800 outline-none focus:outline-none mr-1 mb-1"
                     type="button"
-                    style={{ transition: "all .15s ease" }}
+                    style={{ transition: 'all .15s ease' }}
                     onClick={() => setShowModal(false)}
                   >
                     Regresar

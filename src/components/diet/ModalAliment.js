@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uiCloseModalAliment } from "../../actions/UIAction";
-import { alimentClearActive } from "../../actions/DietAction";
+import Swal from "sweetalert2";
+
+import {
+  alimentClearActive,
+  addAliment,
+  oneAlimentDelete,
+  alimentSetActive,
+  dietClearActive,
+} from "../../actions/DietAction";
 import { searchProduct, productClearActive } from "../../actions/ProductAction";
 
 const initEvent = {
@@ -13,7 +21,9 @@ export const ModalAliment = () => {
   const dispatch = useDispatch();
 
   const { modalAlimentOpen } = useSelector((state) => state.ui);
-  const { aliments, currentAliment } = useSelector((state) => state.diet);
+  const { aliments, currentAliment, currentDiet } = useSelector(
+    (state) => state.diet
+  );
   const { currentProduct } = useSelector((state) => state.product);
 
   const [formValues, setFormValues] = useState(initEvent);
@@ -35,6 +45,12 @@ export const ModalAliment = () => {
     });
   };
 
+  const handleAddAliment = async (e) => {
+    e.preventDefault();
+    await dispatch(addAliment(currentDiet, formValues));
+    await setFormValues(initEvent);
+  };
+
   const closeModal = () => {
     dispatch(uiCloseModalAliment());
     clearForm();
@@ -43,7 +59,32 @@ export const ModalAliment = () => {
   const clearForm = () => {
     dispatch(alimentClearActive());
     dispatch(productClearActive());
+    dispatch(dietClearActive());
     setFormValues(initEvent);
+  };
+
+  const onSelectAlimentOneDelete = (aliment) => {
+    dispatch(alimentSetActive(aliment));
+    deleteAliment(aliment);
+  };
+
+  const deleteAliment = (alimentId) => {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "El alimento se eliminara de la lista",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#A0A0A0",
+      confirmButtonText: "Si, eliminar!!",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(oneAlimentDelete(alimentId));
+      } else {
+        dispatch(alimentClearActive());
+      }
+    });
   };
 
   return (
@@ -69,7 +110,7 @@ export const ModalAliment = () => {
                   </button>
                 </div>
                 {/*body*/}
-                <form>
+                <form onSubmit={handleAddAliment}>
                   <section className="max-w-4xl mx-auto bg-white p-4 rounded-t">
                     <h2 className="text-2xl text-blue-700 font-bold m-1">
                       Agregar Alimentos
@@ -92,7 +133,7 @@ export const ModalAliment = () => {
                         />
                         <button
                           hidden={!product}
-                          onClick={() => dispatch(searchProduct(product)) }
+                          onClick={() => dispatch(searchProduct(product))}
                           className="bg-blue-500 text-white active:bg-blue-600 uppercase text-sm px-2 py-1 rounded-b shadow hover:bg-blue-900 outline-none focus:outline-none mr-1 mb-1"
                           type="button"
                           style={{ transition: "all .15s ease" }}
@@ -129,7 +170,7 @@ export const ModalAliment = () => {
                   </section>
                   <div className="flex items-center justify-end p-2 border-t border-solid border-gray-300 rounded-b">
                     <button
-                      disabled={!currentAliment}
+                      disabled={!currentProduct}
                       className="bg-blue-500 text-white font-bold uppercase text-sm px-2 py-2 rounded hover:bg-blue-900 mr-1 mb-1"
                       type="submit"
                       style={{ transition: "all .15s ease" }}
@@ -161,8 +202,13 @@ export const ModalAliment = () => {
                       <tbody className="text-center divide-y-2 divide-green-900 text-green-700 whitespace-nowrap">
                         {aliments.map((aliment) => (
                           <tr key={aliment._id}>
-                            <td className="py-3 px-6">{aliment.product.name}</td>
-                            <td className="py-3 px-6"> {aliment.quantity_supplied} kg</td>
+                            <td className="py-3 px-6">
+                              {aliment.product.name}
+                            </td>
+                            <td className="py-3 px-6">
+                              {" "}
+                              {aliment.quantity_supplied} kg
+                            </td>
                             <td className="py-3 px-6">
                               <button
                                 className="bg-yellow-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-yellow-600 outline-none focus:outline-none mr-1 mb-1"
@@ -172,6 +218,7 @@ export const ModalAliment = () => {
                                 <i className="fas fa-edit"></i>
                               </button>
                               <button
+                                onClick={() => onSelectAlimentOneDelete(aliment)}
                                 className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
                                 type="button"
                                 style={{ transition: "all .15s ease" }}

@@ -68,15 +68,13 @@ export function saveDiet(dietFormValues) {
   };
 }
 
-export function addAliment(alimentFormValues) {
+export function addAliment({_id}, alimentFormValues) {
   return async (dispatch) => {
     await TopLoaderService.start();
-    console.log(alimentFormValues);
     const resp = await FetchConsult(
-      "gestion-animal/agregar-alimento",
+      `gestion-animal/agregar-alimento/${_id}`, 
       {
-        diet_id: alimentFormValues.diet_id,
-        product_id: alimentFormValues.product_id,
+        product_name: alimentFormValues.product,
         quantity_supplied: alimentFormValues.quantity_supplied,
       },
       "POST"
@@ -125,6 +123,36 @@ export const oneDietDelete = ({_id}) => {
     }
   };
 };
+
+export const oneAlimentDelete = ({ _id }) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(
+        `gestion-animal/remover-alimento/${_id}`,
+        {},
+        "DELETE"
+      );
+
+      const body = await resp.json();
+      if (body.status) {
+        await Swal.fire("Eliminado", body.msg, "success");
+
+        await dispatch(deleteOneAliment());
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const deleteOneAliment = () => ({
+  type: Types.DELETE_ALIMENT,
+});
 
 export const deleteOneDiet = () => ({
   type: Types.DELETE_DIET,

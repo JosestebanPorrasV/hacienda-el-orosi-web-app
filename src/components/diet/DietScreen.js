@@ -32,6 +32,7 @@ export const DietScreen = () => {
 
   const onSelectAliment = (diet) => {
     dispatch(AlimentsLoaded(diet._id));
+    dispatch(dietSetActive(diet));
     dispatch(uiOpenModalAliment());
   };
   const onSelectDeleteOneDiet = (diet) => {

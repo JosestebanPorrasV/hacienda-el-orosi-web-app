@@ -98,6 +98,36 @@ export function addAliment({_id}, alimentFormValues) {
   };
 }
 
+export function editAliment({_id}, newQuantity) {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    console.log(_id,newQuantity)
+    const resp = await FetchConsult(
+      `gestion-animal/modificar-alimento/${_id}`, 
+      {
+        quantity_supplied: newQuantity,
+      },
+      "PUT"
+    );
+    const body = await resp.json();
+
+    if (body.status === "success") {
+      dispatch(editSuccessAliment(body.aliment));
+      Swal.fire({
+        icon: "success",
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      await TopLoaderService.end();
+    } else {
+      Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
+    }
+  };
+}
+
 export const oneDietDelete = ({_id}) => {
   return async (dispatch) => {
     await TopLoaderService.start();
@@ -156,6 +186,11 @@ export const deleteOneAliment = () => ({
 
 export const deleteOneDiet = () => ({
   type: Types.DELETE_DIET,
+});
+
+const editSuccessAliment = (aliment) => ({
+  type: Types.UPDATED_ALIMENT,
+  payload: aliment,
 });
 
 export const addDietSuccess = (diet) => ({

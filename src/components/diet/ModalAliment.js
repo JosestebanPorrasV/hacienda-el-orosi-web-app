@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import {
   alimentClearActive,
   addAliment,
+  editAliment,
   oneAlimentDelete,
   alimentSetActive,
   dietClearActive,
@@ -49,6 +50,7 @@ export const ModalAliment = () => {
     e.preventDefault();
     await dispatch(addAliment(currentDiet, formValues));
     await setFormValues(initEvent);
+    
   };
 
   const closeModal = () => {
@@ -66,6 +68,30 @@ export const ModalAliment = () => {
   const onSelectAlimentOneDelete = (aliment) => {
     dispatch(alimentSetActive(aliment));
     deleteAliment(aliment);
+  };
+
+  const onSelectAlimentEdit = (aliment) => {
+    dispatch(alimentSetActive(aliment));
+  };
+
+  const editAliment = async (aliment) => {
+    const { value: newQuantity } = await Swal.fire({
+      title: "Cambiar cantidad administrada",
+      input: "number",
+      inputLabel: "Nueva cantidad",
+      inputPlaceholder: "Ingrese",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#A0A0A0",
+      confirmButtonText: "Si, cambiar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (newQuantity) {
+      dispatch(editAliment(aliment, newQuantity));
+    } else {
+      dispatch(alimentClearActive());
+    }
   };
 
   const deleteAliment = (alimentId) => {
@@ -211,6 +237,7 @@ export const ModalAliment = () => {
                             </td>
                             <td className="py-3 px-6">
                               <button
+                                onClick={() => onSelectAlimentEdit(aliment)}
                                 className="bg-yellow-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-yellow-600 outline-none focus:outline-none mr-1 mb-1"
                                 type="button"
                                 style={{ transition: "all .15s ease" }}
@@ -218,7 +245,9 @@ export const ModalAliment = () => {
                                 <i className="fas fa-edit"></i>
                               </button>
                               <button
-                                onClick={() => onSelectAlimentOneDelete(aliment)}
+                                onClick={() =>
+                                  onSelectAlimentOneDelete(aliment)
+                                }
                                 className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
                                 type="button"
                                 style={{ transition: "all .15s ease" }}

@@ -35,6 +35,14 @@ export const DietReducer = (state = initialState, action) => {
         aliments: [...state.aliments, action.payload],
       };
 
+    case Types.UPDATED_ALIMENT:
+      return {
+        ...state,
+        aliments: state.aliments.map((e) =>
+          e._id === action.payload._id ? action.payload : e
+        ),
+      };
+
     case Types.DELETE_DIET:
       return {
         ...state,

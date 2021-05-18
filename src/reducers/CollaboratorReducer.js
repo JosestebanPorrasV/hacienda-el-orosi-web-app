@@ -1,11 +1,11 @@
-import { Types } from "../types/Types";
+import { Types } from '../types/Types';
 
 const initialState = {
   collaborators: [],
   countCollaborators: 0,
   collaboratorsState: null,
   currentCollaborator: null,
-  liquidate: false,
+  liquidate: false
 };
 
 export const CollaboratorReducer = (state = initialState, action) => {
@@ -15,36 +15,36 @@ export const CollaboratorReducer = (state = initialState, action) => {
         ...state,
         collaborators: [...action.payload.collaborators],
         countCollaborators: action.payload.count,
-        collaboratorsState: action.payload.collaboratorsState,
+        collaboratorsState: action.payload.collaboratorsState
       };
     case Types.ADD_NEW_COLLABORATOR:
       return {
         ...state,
-        collaborators: [...state.collaborators, action.payload],
+        collaborators: [...state.collaborators, action.payload]
       };
 
     case Types.COLLABORATOR_SET_ACTIVE:
       return {
         ...state,
-        currentCollaborator: action.payload,
+        currentCollaborator: action.payload
       };
 
     case Types.COLLABORATOR_CLEAR_ACTIVE:
       return {
         ...state,
-        currentCollaborator: null,
+        currentCollaborator: null
       };
 
     case Types.LIQUIDATE_SET_ACTIVE:
       return {
         ...state,
-        liquidate: true,
+        liquidate: true
       };
 
     case Types.LIQUIDATE_CLEAR_ACTIVE:
       return {
         ...state,
-        liquidate: false,
+        liquidate: false
       };
 
     case Types.VALIDATE_PRESENCE_COLLABORATOR:
@@ -52,8 +52,17 @@ export const CollaboratorReducer = (state = initialState, action) => {
         ...state,
         collaborators: state.collaborators.map((e) =>
           e._id === action.payload._id ? action.payload : e
-        ),
+        )
       };
+
+    case Types.COLLABORATOR_CHANGE_STATUS:
+      return {
+        ...state,
+        collaborators: state.collaborators.map((e) =>
+          e._id === action.payload._id ? action.payload : e
+        )
+      };
+
     default:
       return state;
   }

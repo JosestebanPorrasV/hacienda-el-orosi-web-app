@@ -68,7 +68,7 @@ export const AdministratorScreen = () => {
             to="/editar-cuenta"
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-gray-900 rounded-lg hover:bg-gray-800 w-35"
           >
-            <i class="fas fa-exchange-alt"></i>
+            <i className="fas fa-exchange-alt"></i>
             <span className="text-white font-bold">Cambiar contraseña</span>
           </Link>
         </nav>

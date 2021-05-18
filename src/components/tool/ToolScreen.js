@@ -92,14 +92,14 @@ export const ToolScreen = () => {
             onClick={() => dispatch(toolsLoading("En reparacion"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-blue-800 w-35"
           >
-            <i class="fas fa-notes-medical"></i>
+            <i className="fas fa-notes-medical"></i>
             <span className="text-white font-bold">Listar En reparacion</span>
           </button>
           <button
             onClick={() => dispatch(toolsLoading("De baja"))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-blue-800 w-35"
           >
-            <i class="fas fa-heart-broken"></i>
+            <i className="fas fa-heart-broken"></i>
             <span className="text-white font-bold">De baja</span>
           </button>
         </nav>
@@ -123,7 +123,7 @@ export const ToolScreen = () => {
             type="text"
             name="filter"
             className="rounded-t-lg w-1/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-            placeholder="Filtrar por ..."
+            placeholder="Filtrar"
             value={filter}
             onChange={handleInputChange}
           />

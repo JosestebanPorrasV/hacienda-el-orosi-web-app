@@ -32,7 +32,31 @@ export const DietReducer = (state = initialState, action) => {
     case Types.ADD_NEW_ALIMENT:
       return {
         ...state,
-        aliments: [...state.aliments, ...action.payload],
+        aliments: [...state.aliments, action.payload],
+      };
+
+    case Types.UPDATED_ALIMENT:
+      return {
+        ...state,
+        aliments: state.aliments.map((e) =>
+          e._id === action.payload._id ? action.payload : e
+        ),
+      };
+
+    case Types.DELETE_DIET:
+      return {
+        ...state,
+        diets: state.diets.filter((e) => e._id !== state.currentAnimal._id),
+        currentAnimal: null,
+      };
+
+    case Types.DELETE_ALIMENT:
+      return {
+        ...state,
+        aliments: state.aliments.filter(
+          (e) => e._id !== state.currentAliment._id
+        ),
+        currentAliment: null,
       };
 
     case Types.DIET_SET_ACTIVE:
@@ -50,13 +74,13 @@ export const DietReducer = (state = initialState, action) => {
     case Types.ALIMENT_SET_ACTIVE:
       return {
         ...state,
-        currentAnimal: action.payload,
+        currentAliment: action.payload,
       };
 
     case Types.ALIMENT_CLEAR_ACTIVE:
       return {
         ...state,
-        currentAnimal: null,
+        currentAliment: null,
       };
 
     default:

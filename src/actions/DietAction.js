@@ -20,15 +20,15 @@ export const DietsLoaded = () => {
   };
 };
 
-export const AlimentsLoaded = (page = 1) => {
+export const AlimentsLoaded = (id, page = 1) => {
   return async (dispatch) => {
     try {
       const resp = await FetchConsult(
-        `gestion-animal/listar-alimentos/${page}`
+        `gestion-animal/listar-alimentos/${id}/${page}`
       );
       const body = await resp.json();
       if (body.status) {
-        await dispatch(alimentsLoaded(body.aliments));
+        await dispatch(alimentsLoaded(body));
       } else {
         await Swal.fire("Error", body.msg, "error");
       }
@@ -68,15 +68,13 @@ export function saveDiet(dietFormValues) {
   };
 }
 
-export function addAliment(alimentFormValues) {
+export function addAliment({_id}, alimentFormValues) {
   return async (dispatch) => {
     await TopLoaderService.start();
-    console.log(alimentFormValues);
     const resp = await FetchConsult(
-      "gestion-animal/agregar-alimento",
+      `gestion-animal/agregar-alimento/${_id}`, 
       {
-        diet_id: alimentFormValues.diet_id,
-        product_id: alimentFormValues.product_id,
+        product_name: alimentFormValues.product,
         quantity_supplied: alimentFormValues.quantity_supplied,
       },
       "POST"
@@ -100,6 +98,101 @@ export function addAliment(alimentFormValues) {
   };
 }
 
+export function editAliment({_id}, newQuantity) {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    console.log(_id,newQuantity)
+    const resp = await FetchConsult(
+      `gestion-animal/modificar-alimento/${_id}`, 
+      {
+        quantity_supplied: newQuantity,
+      },
+      "PUT"
+    );
+    const body = await resp.json();
+
+    if (body.status === "success") {
+      dispatch(editSuccessAliment(body.aliment));
+      Swal.fire({
+        icon: "success",
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      await TopLoaderService.end();
+    } else {
+      Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
+    }
+  };
+}
+
+export const oneDietDelete = ({_id}) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(
+        `gestion-animal/remover-dieta/${_id}`,
+        {},
+        "DELETE"
+      );
+
+      const body = await resp.json();
+      if (body.status) {
+        await Swal.fire("Eliminado", body.msg, "success");
+
+        await dispatch(deleteOneDiet());
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const oneAlimentDelete = ({ _id }) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(
+        `gestion-animal/remover-alimento/${_id}`,
+        {},
+        "DELETE"
+      );
+
+      const body = await resp.json();
+      if (body.status) {
+        await Swal.fire("Eliminado", body.msg, "success");
+
+        await dispatch(deleteOneAliment());
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const deleteOneAliment = () => ({
+  type: Types.DELETE_ALIMENT,
+});
+
+export const deleteOneDiet = () => ({
+  type: Types.DELETE_DIET,
+});
+
+const editSuccessAliment = (aliment) => ({
+  type: Types.UPDATED_ALIMENT,
+  payload: aliment,
+});
+
 export const addDietSuccess = (diet) => ({
   type: Types.ADD_NEW_DIET,
   payload: diet,
@@ -118,11 +211,11 @@ export const dietClearActive = () => ({
   type: Types.DIET_CLEAR_ACTIVE,
 });
 
-export const productSetActive = (aliment) => ({
+export const alimentSetActive = (aliment) => ({
   type: Types.ALIMENT_SET_ACTIVE,
   payload: aliment,
 });
-export const productClearActive = () => ({
+export const alimentClearActive = () => ({
   type: Types.ALIMENT_CLEAR_ACTIVE,
 });
 

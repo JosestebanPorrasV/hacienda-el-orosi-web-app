@@ -1,31 +1,28 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { uiCloseModalPayment } from "../../actions/UIAction";
-import SearchResults from "react-filter-search";
-import { UseForm } from "../../hooks/UseForm";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { uiCloseModalPayment } from '../../actions/UIAction';
+import SearchResults from 'react-filter-search';
+import { UseForm } from '../../hooks/UseForm';
 
-import { liquidateCleanActive } from "../../actions/CollaboratorAction";
-import { Link } from "react-router-dom";
+import { liquidateCleanActive } from '../../actions/CollaboratorAction';
+import { Link } from 'react-router-dom';
 import {
   paymentRegister,
   presenceByCollaboratorLoading,
-  cleanPresenceByCollaborator,
-} from "../../actions/PaymentAction";
-import Swal from "sweetalert2";
+  cleanPresenceByCollaborator
+} from '../../actions/PaymentAction';
+import Swal from 'sweetalert2';
 
 export const PaymentModal = () => {
   const dispatch = useDispatch();
 
   const { modalPaymentOpen } = useSelector((state) => state.ui);
 
-  const { currentCollaborator, liquidate } = useSelector(
-    (state) => state.collaborator
+  const { currentCollaborator, liquidate } = useSelector((state) => state.collaborator);
+  const { lends } = useSelector((state) => state.lend);
+  const { presenceDayByCollaborator, totalOvertimeByCollaborator } = useSelector(
+    (state) => state.payment
   );
-  const { lends, count } = useSelector((state) => state.lend);
-  const {
-    presenceDayByCollaborator,
-    totalOvertimeByCollaborator,
-  } = useSelector((state) => state.payment);
 
   useEffect(() => {
     dispatch(presenceByCollaboratorLoading());
@@ -38,42 +35,37 @@ export const PaymentModal = () => {
   };
 
   const [formValues, handleInputChange] = UseForm({
-    filter1: "",
-    filter2: "",
+    filter1: '',
+    filter2: ''
   });
 
   const { filter1, filter2 } = formValues;
 
   const paymentReg = {
     collaborator_job_name: currentCollaborator.job.name,
-    total_days_worked:
-      presenceDayByCollaborator.length > 0
-        ? presenceDayByCollaborator.length
-        : 0,
-    total_hours_worked:
-      presenceDayByCollaborator.length * currentCollaborator.job.work_hours,
+    total_days_worked: presenceDayByCollaborator.length > 0 ? presenceDayByCollaborator.length : 0,
+    total_hours_worked: presenceDayByCollaborator.length * currentCollaborator.job.work_hours,
     total_extra_hours_price:
       totalOvertimeByCollaborator * currentCollaborator.job.price_extra_hours,
 
     extra_hours_price: currentCollaborator.job.price_extra_hours,
     price_day: currentCollaborator ? currentCollaborator.job.price_day : 0,
 
-    net_salary:
-      presenceDayByCollaborator.length * currentCollaborator.job.price_day,
+    net_salary: presenceDayByCollaborator.length * currentCollaborator.job.price_day,
     total_salary:
       presenceDayByCollaborator.length * currentCollaborator.job.price_day +
-      totalOvertimeByCollaborator * currentCollaborator.job.price_extra_hours,
+      totalOvertimeByCollaborator * currentCollaborator.job.price_extra_hours
   };
 
   const registerPayment = () => {
     Swal.fire({
-      title: "¿Realizara pago?",
-      icon: "warning",
+      title: '¿Realizara pago?',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#A0A0A0",
-      confirmButtonText: "Si, agregar",
-      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, agregar',
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
         dispatch(paymentRegister(paymentReg));
@@ -93,7 +85,7 @@ export const PaymentModal = () => {
                 {/*header*/}
                 <div className="flex items-start justify-between p-2 text-green-800 rounded-t">
                   <h3 className="text-2xl font-semibold">
-                    {liquidate ? "Liquidar colaborador" : "Realizar pago"}
+                    {liquidate ? 'Liquidar colaborador' : 'Realizar pago'}
                   </h3>
                   <button
                     className="p-1 ml-auto border-0 text-white float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -129,7 +121,7 @@ export const PaymentModal = () => {
                       <div className="p-4 sm:w-1/4 w-1/2">
                         <p className="leading-relaxed">Precio del día</p>
                         <h2 className="title-font font-medium text-gray-700">
-                          {`${new Intl.NumberFormat("en-EN").format(
+                          {`${new Intl.NumberFormat('en-EN').format(
                             currentCollaborator.job.price_day
                           )}`}
                           ₡
@@ -164,18 +156,13 @@ export const PaymentModal = () => {
                                 renderResults={(results) => (
                                   <div className="static inset-x-0 px-6 overflow-y-auto bg-white border border-gray-300 rounded-b-lg h-52 divide-y-2 divide-fuchsia-600">
                                     {results.map((presenceDay, index) => (
-                                      <div
-                                        className="md:flex  pb-4 pt-4"
-                                        key={presenceDay._id}
-                                      >
+                                      <div className="md:flex  pb-4 pt-4" key={presenceDay._id}>
                                         <span className="ml-2  text-gray-400 whitespace-nowrap">
-                                          <i className="far fa-hand-point-right"></i>{" "}
-                                          {index + 1} =
+                                          <i className="far fa-hand-point-right"></i> {index + 1} =
                                         </span>
 
                                         <span className="ml-2 text-red-800 whitespace-nowrap">
-                                          <i className="fas fa-calendar-day"></i>{" "}
-                                          Día:
+                                          <i className="fas fa-calendar-day"></i> Día:
                                           <span className="ml-2  text-red-80">
                                             {presenceDay.date}
                                           </span>
@@ -184,9 +171,7 @@ export const PaymentModal = () => {
                                         <span className="ml-2 text-gray-500 whitespace-nowrap">
                                           Horas extras:
                                           <span className="ml-2 text-gray-500">
-                                            {new Intl.NumberFormat(
-                                              "en-EN"
-                                            ).format(
+                                            {new Intl.NumberFormat('en-EN').format(
                                               presenceDay.total_overtime
                                             )}
                                           </span>
@@ -262,29 +247,23 @@ export const PaymentModal = () => {
                                 renderResults={(results) => (
                                   <div className="static inset-x-0 px-6 overflow-y-auto bg-white border border-gray-300 rounded-b-lg  divide-y-2 divide-fuchsia-600 h-52">
                                     {results.map((activeLend, index) => (
-                                      <div
-                                        className="md:flex  pb-4 pt-4"
-                                        key={activeLend._id}
-                                      >
+                                      <div className="md:flex  pb-4 pt-4" key={activeLend._id}>
                                         <span className="ml-2 text-gray-400 whitespace-nowrap">
-                                          <i className="fas fa-hand-point-right"></i>{" "}
-                                          {index + 1}
+                                          <i className="fas fa-hand-point-right"></i> {index + 1}
                                         </span>
 
                                         <span className="ml-2 text-blue-800 whitespace-nowrap">
                                           Monto actual:
                                           <span className="ml-2 text-gray-700">
-                                            {new Intl.NumberFormat(
-                                              "en-EN"
-                                            ).format(activeLend.amount)}
+                                            {new Intl.NumberFormat('en-EN').format(
+                                              activeLend.amount
+                                            )}
                                           </span>
                                         </span>
                                         <span className="ml-2 text-blue-800 whitespace-nowrap">
                                           Cuota:
                                           <span className="ml-2 text-gray-700">
-                                            {new Intl.NumberFormat(
-                                              "en-EN"
-                                            ).format(activeLend.fee)}
+                                            {new Intl.NumberFormat('en-EN').format(activeLend.fee)}
                                           </span>
                                         </span>
                                         <span className="ml-2 text-blue-800 whitespace-nowrap">
@@ -338,7 +317,7 @@ export const PaymentModal = () => {
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
                               </svg>
-                              Prestamos activos: {count}
+                              Prestamos activos: {lends.length}
                             </span>
                           </div>
                         </div>
@@ -353,34 +332,24 @@ export const PaymentModal = () => {
 
                     <div className="flex py-2">
                       <span className="text-gray-500">Horas laboradas</span>
-                      <span className="ml-auto text-gray-900">
-                        {paymentReg.total_hours_worked}
-                      </span>
+                      <span className="ml-auto text-gray-900">{paymentReg.total_hours_worked}</span>
                     </div>
                     <div className="flex border-t border-gray-200 py-2">
-                      <span className="text-gray-500">
-                        Horas de trabajo por día
-                      </span>
+                      <span className="text-gray-500">Horas de trabajo por día</span>
                       <span className="ml-auto text-gray-900">
                         {currentCollaborator.job.work_hours}
                       </span>
                     </div>
 
                     <div className="flex border-t border-gray-200 py-2">
-                      <span className="text-gray-500">
-                        Cantidad de horas extras
-                      </span>
-                      <span className="ml-auto text-gray-900">
-                        {totalOvertimeByCollaborator}
-                      </span>
+                      <span className="text-gray-500">Cantidad de horas extras</span>
+                      <span className="ml-auto text-gray-900">{totalOvertimeByCollaborator}</span>
                     </div>
 
                     <div className="flex border-t-2 border-yellow-700 py-2">
-                      <span className="text-gray-900">
-                        Precio de hora extra
-                      </span>
+                      <span className="text-gray-900">Precio de hora extra</span>
                       <span className="ml-auto text-gray-900">
-                        {new Intl.NumberFormat("en-EN").format(
+                        {new Intl.NumberFormat('en-EN').format(
                           currentCollaborator.job.price_extra_hours
                         )}
                         ₡
@@ -388,14 +357,9 @@ export const PaymentModal = () => {
                     </div>
 
                     <div className="flex border-t border-gray-200 py-2">
-                      <span className="text-gray-900">
-                        Total de horas extras
-                      </span>
+                      <span className="text-gray-900">Total de horas extras</span>
                       <span className="ml-auto text-gray-900">
-                        +
-                        {new Intl.NumberFormat("en-EN").format(
-                          paymentReg.total_extra_hours_price
-                        )}
+                        +{new Intl.NumberFormat('en-EN').format(paymentReg.total_extra_hours_price)}
                         ₡
                       </span>
                     </div>
@@ -403,20 +367,14 @@ export const PaymentModal = () => {
                     <div className="flex border-t border-gray-200 py-2">
                       <span className="text-gray-900">Salario bruto:</span>
                       <span className="ml-auto text-gray-900">
-                        {new Intl.NumberFormat("en-EN").format(
-                          paymentReg.net_salary
-                        )}
-                        ₡
+                        {new Intl.NumberFormat('en-EN').format(paymentReg.net_salary)}₡
                       </span>
                     </div>
 
                     <div className="flex border-t border-b mb-6 border-gray-200 py-2">
                       <span className="text-gray-900">Salario Total: </span>
                       <span className="ml-auto text-gray-900">
-                        {new Intl.NumberFormat("en-EN").format(
-                          paymentReg.total_salary
-                        )}
-                        ₡
+                        {new Intl.NumberFormat('en-EN').format(paymentReg.total_salary)}₡
                       </span>
                     </div>
 
@@ -424,7 +382,7 @@ export const PaymentModal = () => {
                       <button
                         className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
                         type="button"
-                        style={{ transition: "all .15s ease" }}
+                        style={{ transition: 'all .15s ease' }}
                         onClick={() => closeModal()}
                       >
                         Volver
@@ -432,7 +390,7 @@ export const PaymentModal = () => {
                       <button
                         onClick={() => registerPayment()}
                         className={`flex ml-auto text-lg text-white ${
-                          paymentReg.total_salary === 0 && "hidden"
+                          paymentReg.total_salary === 0 && 'hidden'
                         } bg-green-500 border-0 py-2 px-3 focus:outline-none hover:bg-green-600 rounded`}
                       >
                         Realizar pago

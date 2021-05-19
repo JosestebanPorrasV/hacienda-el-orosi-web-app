@@ -1,21 +1,21 @@
-import { Types } from "../types/Types";
-import { FetchConsult } from "../helpers/FetchService";
-import Swal from "sweetalert2";
-import TopLoaderService from "top-loader-service";
+import { Types } from '../types/Types';
+import { FetchConsult } from '../helpers/FetchService';
+import Swal from 'sweetalert2';
+import TopLoaderService from 'top-loader-service';
 
-export const contractsLoading = (status = "Activo", page = 1) => {
+export const contractsLoading = (status = 'Activo') => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`recursos-humanos/ver-contratos/${status}/${page}`);
+      const resp = await FetchConsult(`recursos-humanos/ver-contratos/${status}`);
       const body = await resp.json();
 
       if (body.status) {
-        await  dispatch(contractsLoaded(body.contracts));
+        await dispatch(contractsLoaded(body.contracts));
         await TopLoaderService.end();
       } else {
         await TopLoaderService.end();
-        await Swal.fire("Error", body.msg, "error");
+        await Swal.fire('Error', body.msg, 'error');
       }
     } catch (error) {
       console.log(error);
@@ -25,5 +25,5 @@ export const contractsLoading = (status = "Activo", page = 1) => {
 
 const contractsLoaded = (contracts) => ({
   type: Types.CONTRACTS_ACTIVES_LOADED,
-  payload: contracts,
+  payload: contracts
 });

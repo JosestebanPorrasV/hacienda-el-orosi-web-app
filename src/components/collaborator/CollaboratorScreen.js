@@ -30,9 +30,7 @@ import { Report } from './Report';
 export const CollaboratorScreen = () => {
   const dispatch = useDispatch();
 
-  const { collaborators, collaboratorsState, countCollaborators } = useSelector(
-    (state) => state.collaborator
-  );
+  const { collaborators, collaboratorsState } = useSelector((state) => state.collaborator);
   const { modalPaymentOpen, modalActiveOpen } = useSelector((state) => state.ui);
   const { role } = useSelector((state) => state.auth);
 
@@ -217,7 +215,7 @@ export const CollaboratorScreen = () => {
                   : 'bg-yellow-200 text-yellow-600'
               } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
             >
-              <i className="fas fa-box-open"></i> {`total: ${countCollaborators}`}
+              <i className="fas fa-box-open"></i> {`total: ${collaborators.length}`}
             </span>
             <div className="overflow-x-auto">
               <SearchResults

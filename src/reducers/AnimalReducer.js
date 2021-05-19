@@ -6,8 +6,7 @@ const initialState = {
   currentAnimal: null,
   currentSearch: null,
   currentType: null,
-  animalState: null,
-  count: 0
+  animalState: null
 };
 
 export const AnimalReducer = (state = initialState, action) => {
@@ -22,7 +21,6 @@ export const AnimalReducer = (state = initialState, action) => {
       return {
         ...state,
         animals: [...action.payload.animals],
-        count: action.payload.count,
         animalState: action.payload.animalState
       };
 

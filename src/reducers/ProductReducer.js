@@ -2,7 +2,6 @@ import { Types } from "../types/Types";
 
 const initialState = {
     products: [],
-    count: 0,
     currentProduct: null,
 }
 
@@ -12,7 +11,6 @@ export const ProductReducer = (state = initialState, action) =>{
             return{
                 ...state,
                 products: [...action.payload.products],
-                count: action.payload.count,
             };
         
         case Types.ADD_NEW_PRODUCT:

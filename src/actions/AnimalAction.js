@@ -3,11 +3,11 @@ import { FetchConsult, uploadImage } from '../helpers/FetchService';
 import Swal from 'sweetalert2';
 import TopLoaderService from 'top-loader-service';
 
-export const animalsByTypeLoading = (type = 'undefined', page = 1) => {
+export const animalsByTypeLoading = (type = 'undefined') => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`gestion-animal/tipo/${type}/${page}`);
+      const resp = await FetchConsult(`gestion-animal/tipo/${type}`);
       const body = await resp.json();
 
       if (body.status) {
@@ -23,11 +23,11 @@ export const animalsByTypeLoading = (type = 'undefined', page = 1) => {
   };
 };
 
-export const animalsByStatusLoading = (status, page = 1) => {
+export const animalsByStatusLoading = (status) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`gestion-animal/estado/${status}/${page}`);
+      const resp = await FetchConsult(`gestion-animal/estado/${status}`);
       const body = await resp.json();
 
       if (body.status) {
@@ -43,11 +43,11 @@ export const animalsByStatusLoading = (status, page = 1) => {
   };
 };
 
-export const animalsByStatusAndTypeLoading = (type = 'undefined', status, page = 1) => {
+export const animalsByStatusAndTypeLoading = (type = 'undefined', status ) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`gestion-animal/tipo/${type}/estado/${status}/${page}`);
+      const resp = await FetchConsult(`gestion-animal/tipo/${type}/estado/${status}`);
       const body = await resp.json();
 
       if (body.status) {

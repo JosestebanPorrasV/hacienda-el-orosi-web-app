@@ -4,7 +4,6 @@ const initialState = {
   payments: [],
   presenceDayByCollaborator: [],
   totalOvertimeByCollaborator: 0,
-  count: 0
 };
 
 export const PaymentReducer = (state = initialState, action) => {
@@ -12,8 +11,7 @@ export const PaymentReducer = (state = initialState, action) => {
     case Types.PAYMENTS_LOADED:
       return {
         ...state,
-        payments: [...action.payload.payments],
-        count: action.payload.count
+        payments: [...action.payload.payments]
       };
     case Types.PRESENCE_DAY_BY_COLLABORATOR_LOADED:
       return {

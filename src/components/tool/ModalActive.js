@@ -1,24 +1,24 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { uiCloseModalActive } from "../../actions/UIAction";
-import SearchResults from "react-filter-search";
-import { UseForm } from "../../hooks/UseForm";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { uiCloseModalActive } from '../../actions/UIAction';
+import SearchResults from 'react-filter-search';
+import { UseForm } from '../../hooks/UseForm';
 import {
   addToolSelected,
   toolsLoading,
   removeInSelectedTools,
   cleanSelectedTools,
-  registerActives,
-} from "../../actions/ToolAction";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+  registerActives
+} from '../../actions/ToolAction';
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export const ModalActive = () => {
   const dispatch = useDispatch();
 
   const { modalActiveOpen } = useSelector((state) => state.ui);
   const { currentCollaborator } = useSelector((state) => state.collaborator);
-  const { tools, selectedTools, count } = useSelector((state) => state.tool);
+  const { tools, selectedTools } = useSelector((state) => state.tool);
 
   const closeModal = () => {
     dispatch(cleanSelectedTools());
@@ -26,8 +26,8 @@ export const ModalActive = () => {
   };
 
   const [formValues, handleInputChange] = UseForm({
-    filter1: "",
-    filter2: "",
+    filter1: '',
+    filter2: ''
   });
 
   const { filter1, filter2 } = formValues;
@@ -49,7 +49,7 @@ export const ModalActive = () => {
           collaborator_id: currentCollaborator._id,
           tool_id: tool._id,
           name: tool.name,
-          active_num: tool.active_num,
+          active_num: tool.active_num
         })
       );
     }
@@ -57,20 +57,20 @@ export const ModalActive = () => {
 
   const addActives = () => {
     Swal.fire({
-      title: "¿Estas seguro?",
-      text: "Las herramientas se asiganaran a este colaborador",
-      icon: "warning",
+      title: '¿Estas seguro?',
+      text: 'Las herramientas se asiganaran a este colaborador',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#1E3A8A",
-      cancelButtonColor: "#A0A0A0",
-      confirmButtonText: "Si, asignar",
-      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#1E3A8A',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, asignar',
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
         if (selectedTools.length > 0) {
           dispatch(registerActives(selectedTools));
         } else {
-          Swal.fire("Cuidado", "Primero asigna herramientas", "error");
+          Swal.fire('Cuidado', 'Primero asigna herramientas', 'error');
         }
       }
     });
@@ -86,9 +86,7 @@ export const ModalActive = () => {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none bg-hwite">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blue-100  text-blue-800 rounded-t">
-                  <h3 className="text-3xl font-semibold">
-                    Menu de herramientas
-                  </h3>
+                  <h3 className="text-3xl font-semibold">Menu de herramientas</h3>
                   <button
                     className="p-1 ml-auto border-0 text-white float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => closeModal()}
@@ -103,18 +101,12 @@ export const ModalActive = () => {
                   <section className="max-w-4xl mx-auto bg-white">
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="document_id"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200" htmlFor="document_id">
                           Cédula del colaborador
                         </label>
                         <input
                           disabled={true}
-                          value={
-                            currentCollaborator &&
-                            currentCollaborator.document_id
-                          }
+                          value={currentCollaborator && currentCollaborator.document_id}
                           name="document_id"
                           type="number"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
@@ -215,7 +207,7 @@ export const ModalActive = () => {
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
                               </svg>
-                              Total en bodega: {count}
+                              Total en bodega: {tools.lengths}
                             </span>
                           </div>
                         </div>
@@ -241,17 +233,10 @@ export const ModalActive = () => {
                               renderResults={(results) => (
                                 <div className="static inset-x-0 px-6 py-3  mt-4 overflow-y-auto bg-white border border-gray-300 rounded-md max-h-72 divide-y-2 divide-fuchsia-600 h-72">
                                   {results.map((activeTools, index) => (
-                                    <div
-                                      className="md:flex  pb-4 pt-4"
-                                      key={index}
-                                    >
+                                    <div className="md:flex  pb-4 pt-4" key={index}>
                                       <span
                                         onClick={() =>
-                                          dispatch(
-                                            removeInSelectedTools(
-                                              activeTools.tool_id
-                                            )
-                                          )
+                                          dispatch(removeInSelectedTools(activeTools.tool_id))
                                         }
                                         className="text-red-500 h-6 w-6 rounded-full ml-2"
                                       >
@@ -310,7 +295,7 @@ export const ModalActive = () => {
                               <button
                                 className="bg-green-600 text-white active:bg-green-600 font-bold uppercase text-sm py-2 rounded shadow hover:bg-green-700 hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                                 type="button"
-                                style={{ transition: "all .15s ease" }}
+                                style={{ transition: 'all .15s ease' }}
                                 onClick={() => addActives()}
                               >
                                 CONFIRMAR
@@ -330,7 +315,7 @@ export const ModalActive = () => {
                   <button
                     className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
                     type="button"
-                    style={{ transition: "all .15s ease" }}
+                    style={{ transition: 'all .15s ease' }}
                     onClick={() => closeModal()}
                   >
                     Volver

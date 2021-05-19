@@ -107,7 +107,7 @@ export const ModalCollaborator = () => {
                 </div>
                 {/*body*/}
                 <form onSubmit={handleSubmitForm}>
-                  <section className="max-w-4xl p-4 mx-auto bg-white dark:bg-gray-800">
+                  <section className="p-4 mx-auto bg-white dark:bg-gray-800">
                     <div className="grid grid-cols-1 gap-4  sm:grid-cols-2">
                       <div hidden={!currentCollaborator}>
                         <label className="text-gray-700 dark:text-gray-200">Registrado el:</label>

@@ -3,10 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import SearchResults from "react-filter-search";
 import { Link } from "react-router-dom";
 import { ModalDiet } from "./ModalDiet";
+import { ModalAliment } from "./ModalAliment";
 
-import { DietsLoaded } from "../../actions/DietAction";
+import { 
+  DietsLoaded, 
+  oneDietDelete,
+  AlimentsLoaded,
+  dietSetActive,
+  dietClearActive,
+} from "../../actions/DietAction";
 import { UseForm } from "../../hooks/UseForm";
-import { uiOpenModalDiet } from "../../actions/UIAction";
+import { uiOpenModalDiet, uiOpenModalAliment } from "../../actions/UIAction";
+import Swal from "sweetalert2";
 
 export const DietScreen = () => {
   const dispatch = useDispatch();
@@ -21,6 +29,35 @@ export const DietScreen = () => {
   });
 
   const { filter } = formValues;
+
+  const onSelectAliment = (diet) => {
+    dispatch(AlimentsLoaded(diet._id));
+    dispatch(dietSetActive(diet));
+    dispatch(uiOpenModalAliment());
+  };
+  const onSelectDeleteOneDiet = (diet) => {
+    dispatch(dietSetActive(diet));
+    deleteDiet(diet);
+  };
+
+  const deleteDiet = (dietId) => {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "La dieta no se volerá a recuperar",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#A0A0A0",
+      confirmButtonText: "Si, eliminar!!",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.value) {
+        dispatch(oneDietDelete(dietId));
+      } else {
+        dispatch(dietClearActive());
+      }
+    });
+  };
 
   return (
     <>
@@ -54,8 +91,8 @@ export const DietScreen = () => {
       </div>
 
       <section className="text-gray-600 body-font">
-        <div className="container px-5 py-18 mx-auto">
-          <div className="flex flex-col text-center w-full mb-20">
+        <div className="container px-4 py-4 mx-auto">
+          <div className="flex flex-col text-center w-full mb-4">
             <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-50">
               Dietas
             </h1>
@@ -68,14 +105,15 @@ export const DietScreen = () => {
             value={filter}
             data={diets}
             renderResults={(results) => (
-              <div className="flex flex-wrap -m-4">
-                {results.map(({ _id, diet_name, description }) => (
-                  <div key={_id} className="p-4 md:w-1/3">
+              <div className="flex flex-wrap m-2">
+                {results.map((diets) => (
+                  <div key={diets._id} className="p-4 md:w-1/3">
                     <div className="flex rounded-lg h-full bg-gray-100 p-8 flex-col group">
                       <div className="flex items-center ">
 
-                        <div class="mr-2 inline-flex group-hover:text-red-900 items-center justify-center rounded-full text-gray-100 flex-shrink-0 ">
+                        <div className="mr-2 inline-flex group-hover:text-red-900 items-center justify-center rounded-full text-gray-100 flex-shrink-0 ">
                           <button
+                          onClick={() => onSelectDeleteOneDiet(diets)}
                             className="text-gray text-xl"
                             type="button"
                             style={{ transition: "all .50s ease" }}
@@ -85,16 +123,18 @@ export const DietScreen = () => {
                         </div>
 
                         <h2 className="text-gray-900 text-lg title-font font-medium">
-                          {diet_name}
+                          {diets.diet_name}
                         </h2>
                       </div>
 
                       <div className="flex-grow mb-3">
                         <p className="leading-relaxed text-base">
-                          {description}
+                          {diets.description}
                         </p>
-                        <a className="mt-3 text-green-500 inline-flex items-center">
-                          Lista de productos
+                        <button
+                        onClick={() => onSelectAliment(diets)} 
+                        className="mt-3 text-green-500 inline-flex items-center hover:text-blue-700">
+                          Alimentos
                           <svg
                             fill="none"
                             stroke="currentColor"
@@ -106,7 +146,7 @@ export const DietScreen = () => {
                           >
                             <path d="M5 12h14M12 5l7 7-7 7"></path>
                           </svg>
-                        </a>
+                        </button>
                       </div>
 
                     </div>
@@ -118,6 +158,7 @@ export const DietScreen = () => {
         </div>
       </section>
       <ModalDiet />
+      <ModalAliment />
     </>
   );
 };

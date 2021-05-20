@@ -31,11 +31,11 @@ export const paymentRegister = (paymentReg) => {
   };
 };
 
-export const paymentStartLoading = (page = 1) => {
+export const paymentStartLoading = () => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`recursos-humanos/pagos/realizados/${page}`);
+      const resp = await FetchConsult(`recursos-humanos/pagos/realizados`);
 
       const body = await resp.json();
 
@@ -52,13 +52,11 @@ export const paymentStartLoading = (page = 1) => {
   };
 };
 
-export const paymentByCollaboratorLoading = (collaboratorId, page = 1) => {
+export const paymentByCollaboratorLoading = (collaboratorId) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(
-        `recursos-humanos/pagos/colaborador/${collaboratorId}/${page}`
-      );
+      const resp = await FetchConsult(`recursos-humanos/pagos/colaborador/${collaboratorId}`);
 
       const body = await resp.json();
 

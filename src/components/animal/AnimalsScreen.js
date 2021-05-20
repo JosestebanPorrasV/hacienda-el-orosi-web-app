@@ -26,16 +26,13 @@ import { ModalAnimal } from './ModalAnimal';
 import moment from 'moment';
 import UploadImgProfile from './UploadImgProfile';
 import RegisterCalving from './RegisterCalving';
-import ReactPaginate from 'react-paginate';
 import ChangeNextDueDate from './ChangeNextDueDate';
 
 export const AnimalsScreen = () => {
   const dispatch = useDispatch();
   const [openTab, setOpenTab] = React.useState(1);
 
-  const { animals, animalsTypes, currentType, count, animalState } = useSelector(
-    (state) => state.animal
-  );
+  const { animals, animalsTypes, currentType, animalState } = useSelector((state) => state.animal);
 
   useEffect(() => {
     dispatch(TypesLoading());
@@ -298,7 +295,7 @@ export const AnimalsScreen = () => {
           />
           <span className={`text-white md:ml-2 rounded-t-lg  inline-block text uppercase`}>
             <i className="fas fa-box-open"></i>{' '}
-            {animalState ? `${animalState}, total: ${count}` : `total: ${count}`}
+            {animalState ? `${animalState}, total: ${animals.length}` : `total: ${animals.length}`}
           </span>
           <SearchResults
             value={filter}
@@ -700,27 +697,6 @@ export const AnimalsScreen = () => {
                 ))}
               </>
             )}
-          />
-          <ReactPaginate
-            pageCount={Math.ceil(count / 5)}
-            marginPagesDisplayed={1}
-            pageRangeDisplayed={2}
-            previousLabel={'Atras'}
-            activeClassName={'bg-green-900 rounded-full my-1'}
-            breakClassName={'text-2xl text-grey-900 pl-4'}
-            nextLabel={'Adelante'}
-            breakLabel={'...'}
-            pageLinkClassName={
-              'flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-gray-900 rounded-full my-1'
-            }
-            previousClassName={
-              'flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900'
-            }
-            nextClassName={
-              'flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900'
-            }
-            onPageChange={(data) => paginate(data)}
-            containerClassName={'sm:flex m-4 p-3'}
           />
         </div>
       ) : (

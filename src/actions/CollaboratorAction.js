@@ -2,8 +2,9 @@ import { Types } from '../types/Types';
 import { FetchConsult } from '../helpers/FetchService';
 import Swal from 'sweetalert2';
 import TopLoaderService from 'top-loader-service';
+import { uiCloseModalCollaborator } from './UIAction';
 
-export const CollaboratorsLoading = (status = 'Activo') => {
+export const CollaboratorsLoading = (status = 'ACTIVO') => {
   return async (dispatch) => {
     await TopLoaderService.start();
 
@@ -66,13 +67,14 @@ export function registerCollaborator(collaboratorFormValues, date_admission, dis
     const body = await resp.json();
     if (body.status) {
       await dispatch(addCollaboratorSuccess(body.collaborator));
-      await dispatch(collaboratorSetActive(body.collaborator));
       await Swal.fire({
         icon: 'success',
         title: body.msg,
         showConfirmButton: false,
         timer: 2000
       });
+      await dispatch(uiCloseModalCollaborator());
+      await dispatch(collaboratorClearActive());
       await TopLoaderService.end();
     } else {
       Swal.fire('Error', body.msg, 'error');
@@ -87,7 +89,6 @@ export function editOneCollaborator(
   date_admission,
   dispatch_date
 ) {
-  console.log(date_admission, dispatch_date);
   return async (dispatch) => {
     await TopLoaderService.start();
     const resp = await FetchConsult(
@@ -109,6 +110,7 @@ export function editOneCollaborator(
     const body = await resp.json();
     if (body.status) {
       await dispatch(CollaboratorsLoading());
+      await dispatch(uiCloseModalCollaborator());
       await dispatch(collaboratorClearActive());
       await Swal.fire({
         icon: 'success',
@@ -138,7 +140,7 @@ export function changeStatus(id, status) {
 
     if (body.status) {
       await dispatch(CollaboratorsLoading());
-
+      await dispatch(collaboratorClearActive());
       await Swal.fire({
         icon: 'success',
         title: body.msg,
@@ -169,13 +171,6 @@ export const collaboratorClearActive = () => ({
 export const addCollaboratorSuccess = (collaborator) => ({
   type: Types.ADD_NEW_COLLABORATOR,
   payload: collaborator
-});
-
-export const liquidateSetActive = () => ({
-  type: Types.LIQUIDATE_SET_ACTIVE
-});
-export const liquidateCleanActive = () => ({
-  type: Types.LIQUIDATE_CLEAR_ACTIVE
 });
 const collaboratorsLoaded = (collaborators) => ({
   type: Types.COLLABORATORS_LOADED,

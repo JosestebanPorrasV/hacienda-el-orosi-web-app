@@ -1,22 +1,18 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { paymentByCollaboratorLoading, paymentStartLoading } from '../../actions/PaymentAction';
+import { paymentStartLoading } from '../../actions/PaymentAction';
 import { Link } from 'react-router-dom';
-import { collaboratorClearActive } from '../../actions/CollaboratorAction';
+
+import MaterialTable from 'material-table';
+import { TableIcons, TableLocalization } from '../../helpers/TableInit';
 
 export const PaymentScreen = () => {
   const dispatch = useDispatch();
   const { payments } = useSelector((state) => state.payment);
-  const { currentCollaborator } = useSelector((state) => state.collaborator);
 
   useEffect(() => {
-    if (currentCollaborator) {
-      dispatch(paymentByCollaboratorLoading(currentCollaborator._id));
-    } else {
-      dispatch(paymentStartLoading());
-    }
-  }, [dispatch, currentCollaborator]);
+    dispatch(paymentStartLoading());
+  }, [dispatch]);
 
   return (
     <>
@@ -25,68 +21,50 @@ export const PaymentScreen = () => {
           to="/colaboradores"
           className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-200 "></i>
+          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-600 "></i>
         </Link>
-        <span className="text-xl text-green-200">Colaboradores</span>
+        <span className="text-xl text-green-600">Colaboradores</span>
 
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
-          <button
-            hidden={!currentCollaborator}
-            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
-            type="button"
-            style={{ transition: 'all .15s ease' }}
-            onClick={() => dispatch(collaboratorClearActive())}
-          >
-            Mostrar todos
-          </button>
-        </nav>
-        <span className="text-xl text-green-200"> Herramientas</span>
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0"></nav>
+        <span className="text-xl text-green-600"> Herramientas</span>
         <Link
           to="/herramientas"
           className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-200"></i>
+          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-600"></i>
         </Link>
       </div>
 
-      <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8">
-        <h2 className="text-xl text-blue-200 font-bold mb-4 lg:mb-6">
-          {currentCollaborator
-            ? `${currentCollaborator.name} ${currentCollaborator.surname}`
-            : 'Pagos'}
-        </h2>
-        <span className={`md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}>
-          <i className="fas fa-box-open"></i> {`total: ${payments.length}`}
-        </span>
-        <div className="overflow-x-auto">
-          <div className="align-middle inline-block min-w-full overflow-hidden">
-            <table className="min-w-full">
-              <thead className="text-left bg-gray-600">
-                <tr>
-                  <th className="py-2 px-3">Cedula</th>
-                  <th className="py-2 px-3">Nombre</th>
-                  <th className="py-2 px-3">Trabajo</th>
-                  <th className="py-2 px-3">Pago</th>
-                  <th className="py-2 px-3">Fecha</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-600 text-blue-100 text-opacity-80 whitespace-nowrap">
-                {payments.map((payment) => (
-                  <tr key={payment._id}>
-                    <td className="py-3 px-3">{payment.collaborator.document_id}</td>
-                    <td className="py-3 px-3">{`${payment.collaborator.name} ${payment.collaborator.surname}`}</td>
-                    <td className="py-3 px-3">{payment.collaborator_job_name}</td>
-                    <td className="py-3 px-3">
-                      {new Intl.NumberFormat('en-EN').format(payment.total_salary)} ₡
-                    </td>
-                    <td className="py-3 px-3">{payment.pay_date}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <MaterialTable
+        title="PAGOS"
+        icons={TableIcons}
+        localization={TableLocalization}
+        columns={[
+          { title: 'Cedula', field: 'collaborator.document_id', editable: 'never' },
+          { title: 'Nombre', field: 'collaborator.name', editable: 'never' },
+          { title: 'Apellido', field: 'collaborator.surname', editable: 'never' },
+          { title: 'Trabajo', field: 'collaborator_job_name', editable: 'never' },
+          { title: 'Fecha', field: 'pay_date', editable: 'never' },
+          {
+            title: 'Pago',
+            field: 'total_salary',
+            editable: 'never',
+            type: 'currency',
+            currencySetting: {
+              locale: 'es-CR',
+              currencyCode: 'CRC',
+            }
+          }
+        ]}
+        data={payments}
+        options={{
+          headerStyle: { color: '#076046' },
+          pageSizeOptions: [5, 10, 30, 50, 100],
+          actionsColumnIndex: -1,
+          pageSize: 10,
+          exportButton: true
+        }}
+      />
     </>
   );
 };

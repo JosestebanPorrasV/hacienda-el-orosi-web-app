@@ -92,7 +92,7 @@ export const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/animales"
+                to="/ganado"
                 className="hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-2 rounded-lg"
               >
                 <span className="flex-1">

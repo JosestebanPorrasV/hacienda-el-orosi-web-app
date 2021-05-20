@@ -138,6 +138,7 @@ export const ToolScreen = () => {
           <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
         </Link>
       </div>
+
       <span className="flex px-6 text-gray-600 space-x-4 italic mt-10">
         {'Fecha actual: ' +
           dateNow.getFullYear() +
@@ -189,7 +190,6 @@ export const ToolScreen = () => {
             hidden: toolsState === 'BAJA' || toolsState === 'BODEGA'
           }
         ]}
-
         options={{
           headerStyle: { color: '#076046' },
           pageSizeOptions: [5, 10, 30, 50, 100],

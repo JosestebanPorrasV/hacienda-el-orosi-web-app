@@ -29,7 +29,7 @@ export const ContractScreen = () => {
             <span> Añadir Contrato</span>
           </button>
           <button
-            onClick={() => dispatch(contractsLoading('Activo'))}
+            onClick={() => dispatch(contractsLoading('ACTIVO'))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-gray-800 w-35 fas fa-list-alt"
           >
             <span> Listar contratos activos</span>

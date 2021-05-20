@@ -24,7 +24,7 @@ export const DietScreen = () => {
     dispatch(DietsLoaded());
   }, [dispatch]);
 
-  const [formValues, handleInputChange] = UseForm({
+  const [formValues] = UseForm({
     filter: "",
   });
 
@@ -63,7 +63,7 @@ export const DietScreen = () => {
     <>
       <div className="container px-4 lg:px-8 py-4 lg:py-6 mt-4 mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
         <Link
-          to="/animales"
+          to="/ganado"
           className="inline-flex flex-col justify-center items-center m-3 px-1 py-18 rounded-lg"
         >
           <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-200 "></i>

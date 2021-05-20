@@ -27,10 +27,9 @@ export const DashboardRoutes = () => {
         <Route exact path="/herramientas" component={ToolScreen} />
         <Route exact path="/herramientas-activas" component={ActiveScreen} />
         <Route exact path="/trabajos" component={JobScreen} />
-        <Route exact path="/animales" component={AnimalsScreen} />
-        <Route exact path="/tipos-de-animales" component={TypesAnimalsScreen} />
+        <Route exact path="/ganado" component={AnimalsScreen} />
+        <Route exact path="/tipos-de-ganado" component={TypesAnimalsScreen} />
         <Route exact path="/dietas" component={DietScreen} />
-        <Route exact path="/producto" component={ProductScreen} />
         <Route exact path="/producto" component={ProductScreen} />
         <Redirect to="/colaboradores" />
       </Switch>

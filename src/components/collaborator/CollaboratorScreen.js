@@ -9,11 +9,11 @@ import {
   collaboratorSetActive,
   CollaboratorsLoading
 } from '../../actions/CollaboratorAction';
-import { UseForm } from '../../hooks/UseForm';
 import { ModalInfo } from './ModalInfo';
 import {
-  uiOpenModalCollaborator,
   uiOpenModalActive,
+  uiOpenModalAddLend,
+  uiOpenModalCollaborator,
   uiOpenModalPayment
 } from '../../actions/UIAction';
 import { ModalLend } from '../lend/ModalLend';
@@ -30,39 +30,18 @@ import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import BuildIcon from '@material-ui/icons/Build';
 import MoneyIcon from '@material-ui/icons/Money';
-import TimelineIcon from '@material-ui/icons/Timeline';
 
 export const CollaboratorScreen = () => {
   const dispatch = useDispatch();
 
-  const { collaborators, collaboratorsState } = useSelector((state) => state.collaborator);
+  const { collaborators } = useSelector((state) => state.collaborator);
   const { modalPaymentOpen, modalActiveOpen } = useSelector((state) => state.ui);
   const { role } = useSelector((state) => state.auth);
   const { currentCollaborator } = useSelector((state) => state.collaborator);
 
-  const [columns, setColumns] = React.useState([
-    { title: 'Nombre', field: 'name', editable: 'never' },
-    { title: 'Trabajo', field: 'job.name', editable: 'never' },
-    { title: 'Cedula', field: 'document_id', editable: 'never' },
-    {
-      title: 'Estado',
-      field: 'status',
-      lookup: { Activo: 'Activo', Inactivo: 'Inactivo' }
-    }
-  ]);
-
   useEffect(() => {
     dispatch(CollaboratorsLoading());
   }, [dispatch]);
-
-  const [formValues, handleInputChange] = UseForm({
-    filter: ''
-  });
-
-  const onSelectCollaborator = (collaborator) => {
-    dispatch(collaboratorSetActive(collaborator));
-    dispatch(uiOpenModalPayment());
-  };
 
   const registerPresence = async (collaborator) => {
     console.log(collaborator);
@@ -98,7 +77,7 @@ export const CollaboratorScreen = () => {
     }).then((result) => {
       if (result.value) {
         dispatch(
-          changeStatus(collaborator._id, collaborator.status === 'Activo' ? 'Inactivo' : 'Activo')
+          changeStatus(collaborator._id, collaborator.status === 'ACTIVO' ? 'INACTIVO' : 'ACTIVO')
         );
       }
     });
@@ -109,12 +88,18 @@ export const CollaboratorScreen = () => {
     dispatch(uiOpenModalCollaborator());
   };
 
-  const showActiveModal = (collaborator) => {
+  const paymentCollaborator = (collaborator) => {
+    dispatch(collaboratorSetActive(collaborator));
+    dispatch(uiOpenModalPayment());
+  };
+  const toolCollaborator = (collaborator) => {
     dispatch(collaboratorSetActive(collaborator));
     dispatch(uiOpenModalActive());
   };
-
-  const { filter } = formValues;
+  const lendCollaborator = (collaborator) => {
+    dispatch(collaboratorSetActive(collaborator));
+    dispatch(uiOpenModalAddLend());
+  };
 
   let dateNow = new Date();
 
@@ -146,7 +131,7 @@ export const CollaboratorScreen = () => {
           <button
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
             style={{ transition: 'all .15s ease' }}
-            onClick={() => dispatch(CollaboratorsLoading('Activo'))}
+            onClick={() => dispatch(CollaboratorsLoading('ACTIVO'))}
           >
             <span>Activos</span>
           </button>
@@ -154,7 +139,7 @@ export const CollaboratorScreen = () => {
           <button
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
             style={{ transition: 'all .15s ease' }}
-            onClick={() => dispatch(CollaboratorsLoading('Inactivo'))}
+            onClick={() => dispatch(CollaboratorsLoading('INACTIVO'))}
           >
             <span>Inactivos</span>
           </button>
@@ -186,7 +171,16 @@ export const CollaboratorScreen = () => {
         title="COLABORADORES"
         icons={TableIcons}
         localization={TableLocalization}
-        columns={columns}
+        columns={[
+          { title: 'Nombre', field: 'name', editable: 'never' },
+          { title: 'Trabajo', field: 'job.name', editable: 'never' },
+          { title: 'Cedula', field: 'document_id', editable: 'never' },
+          {
+            title: 'Estado',
+            field: 'status',
+            lookup: { ACTIVO: 'ACTIVO', INACTIVO: 'INACTIVO' }
+          }
+        ]}
         data={collaborators}
         cellEditable={{
           onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
@@ -214,38 +208,29 @@ export const CollaboratorScreen = () => {
           {
             icon: AttachMoneyIcon,
             tooltip: 'Realizar pagos',
-            onClick: (event, rowData) => onSelectCollaborator(rowData)
+            onClick: (event, rowData) => paymentCollaborator(rowData)
           },
           {
             icon: BuildIcon,
             tooltip: 'Asignar herramientas',
-            onClick: (event, rowData) => onSelectCollaborator(rowData)
+            onClick: (event, rowData) => toolCollaborator(rowData)
           },
           (rowData) => ({
             icon: MoneyIcon,
             tooltip: 'Realizar prestamo',
-            hidden: rowData.status === 'Inactivo',
-            onClick: (event, rowData) => alert('You saved ' + rowData.name)
-          }),
-          {
-            icon: () => (
-              <Link to="/pagos">
-                <TimelineIcon />
-              </Link>
-            ),
-            tooltip: 'Historial de pagos'
-          }
+            hidden: rowData.status === 'INACTIVO',
+            onClick: (event, rowData) => lendCollaborator(rowData)
+          })
         ]}
         onRowClick={(event, rowData, togglePanel) => togglePanel()}
         options={{
-          headerStyle: {color: "#076046"},
+          headerStyle: { color: '#076046' },
           pageSizeOptions: [5, 10, 30, 50, 100],
           actionsColumnIndex: -1,
           pageSize: 10,
           exportButton: true
         }}
       />
-
       {currentCollaborator && <ModalLend />}
       {currentCollaborator && modalActiveOpen && <ModalActive />}
       {currentCollaborator && modalPaymentOpen && <PaymentModal />}

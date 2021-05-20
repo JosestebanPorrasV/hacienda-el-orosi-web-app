@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { uiCloseModalPayment } from '../../actions/UIAction';
 import SearchResults from 'react-filter-search';
 import { UseForm } from '../../hooks/UseForm';
-
-import { liquidateCleanActive } from '../../actions/CollaboratorAction';
 import { Link } from 'react-router-dom';
 import {
   paymentRegister,
@@ -31,7 +29,6 @@ export const PaymentModal = () => {
   const closeModal = () => {
     dispatch(uiCloseModalPayment());
     dispatch(cleanPresenceByCollaborator());
-    dispatch(liquidateCleanActive());
   };
 
   const [formValues, handleInputChange] = UseForm({
@@ -69,7 +66,6 @@ export const PaymentModal = () => {
     }).then((result) => {
       if (result.value) {
         dispatch(paymentRegister(paymentReg));
-      } else {
       }
     });
   };
@@ -191,10 +187,10 @@ export const PaymentModal = () => {
                           </section>
                           <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 w-full">
                             <Link
-                              to="/herramientas"
+                              to={`/pagos`}
                               className="text-green-500 font-semibold inline-flex items-center hover:underline"
                             >
-                              Ver historial
+                              Ver historial de pagos
                               <svg
                                 className="w-4 h-4 ml-2"
                                 viewBox="0 0 24 24"

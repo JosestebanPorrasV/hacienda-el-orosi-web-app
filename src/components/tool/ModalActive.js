@@ -301,7 +301,7 @@ export const ModalActive = () => {
                                 CONFIRMAR
                               </button>
                               <span className="text-green-700 text-xs tracking-widest mt-0.5">
-                                Se asignaran estas herramientas
+                                *Se asignaran estas herramientas
                               </span>
                             </span>
                           </span>

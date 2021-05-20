@@ -112,9 +112,6 @@ export function registerTodayPresence(collaborator, total_overtime = 0) {
 
     if (body.status) {
       await dispatch(registerPresence());
-
-      collaborator['validatePresence'] = true;
-      dispatch(validatePresenceCollaborator(collaborator));
       await Swal.fire({
         icon: 'success',
         title: body.msg,
@@ -131,11 +128,6 @@ export function registerTodayPresence(collaborator, total_overtime = 0) {
 }
 export const cleanPresenceByCollaborator = () => ({
   type: Types.CLEAN_PRESENCE_DAY_BY_COLLABORATOR
-});
-
-const validatePresenceCollaborator = (collaborator) => ({
-  type: Types.VALIDATE_PRESENCE_COLLABORATOR,
-  payload: collaborator
 });
 
 const registerPresence = () => ({

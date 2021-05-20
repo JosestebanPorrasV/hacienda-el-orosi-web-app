@@ -152,7 +152,7 @@ export const searchAnimal = (animalID) => {
       if (body.status) {
         if (body.animal.type.gender === 'Macho') {
           await TopLoaderService.end();
-          return await Swal.fire('Cuidado', 'Solamente animales hembras', 'warning');
+          return await Swal.fire('Cuidado', 'Solamente ganado hembras', 'warning');
         }
         await dispatch(searchSetActive(body.animal));
         await Swal.fire({

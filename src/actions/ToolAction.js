@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { uiCloseModalAddTool } from "./../actions/UIAction";
 import TopLoaderService from "top-loader-service";
 
-export const toolsLoading = (status = "En bodega") => {
+export const toolsLoading = (status = "BODEGA") => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
@@ -76,6 +76,8 @@ export function registerTool(toolFormValues) {
 export function changeStatus(tool_id, status) {
   return async (dispatch) => {
     await TopLoaderService.start();
+    
+console.log(tool_id,status);
     const resp = await FetchConsult(
       `herramientas/cambiar-estado/${tool_id}`,
       { status },
@@ -84,7 +86,6 @@ export function changeStatus(tool_id, status) {
 
     const body = await resp.json();
     if (body.status) {
-
       await dispatch(changeStatusSuccess(body.tool));
 
       await Swal.fire({

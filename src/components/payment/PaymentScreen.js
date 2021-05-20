@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ReactPaginate from 'react-paginate';
-
 import { paymentByCollaboratorLoading, paymentStartLoading } from '../../actions/PaymentAction';
 import { Link } from 'react-router-dom';
 import { collaboratorClearActive } from '../../actions/CollaboratorAction';
 
 export const PaymentScreen = () => {
   const dispatch = useDispatch();
-  const { payments, count } = useSelector((state) => state.payment);
+  const { payments } = useSelector((state) => state.payment);
   const { currentCollaborator } = useSelector((state) => state.collaborator);
 
   useEffect(() => {
@@ -58,7 +56,7 @@ export const PaymentScreen = () => {
             : 'Pagos'}
         </h2>
         <span className={`md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}>
-          <i className="fas fa-box-open"></i> {`total: ${count}`}
+          <i className="fas fa-box-open"></i> {`total: ${payments.length}`}
         </span>
         <div className="overflow-x-auto">
           <div className="align-middle inline-block min-w-full overflow-hidden">
@@ -88,27 +86,6 @@ export const PaymentScreen = () => {
             </table>
           </div>
         </div>
-        <ReactPaginate
-          pageCount={Math.ceil(count / 5)}
-          marginPagesDisplayed={1}
-          pageRangeDisplayed={2}
-          previousLabel={'Atras'}
-          activeClassName={'bg-green-900 rounded-full my-1'}
-          breakClassName={'text-grey-900 pl-4'}
-          nextLabel={'Adelante'}
-          breakLabel={'...'}
-          pageLinkClassName={
-            'flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-gray-900 rounded-full my-1'
-          }
-          previousClassName={
-            'flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900'
-          }
-          nextClassName={
-            'flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900'
-          }
-          onPageChange={(data) => dispatch(paymentStartLoading(data.selected + 1))}
-          containerClassName={'sm:flex m-4 p-3 text-sm'}
-        />
       </div>
     </>
   );

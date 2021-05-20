@@ -10,7 +10,6 @@ const initialState = {
   modalAddToolOpen: false,
   modalActiveOpen: false,
   modalAddActiveOpen: false,
-  modalCollaboratorInfoOpen: false,
   modalPaymentOpen: false,
   modalAnimalOpen: false,
   modalDietOpen: false,
@@ -51,17 +50,6 @@ export const UIReducer = (state = initialState, action) => {
       return {
         ...state,
         modalCollaboratorOpen: false,
-      };
-
-    case Types.UI_OPEN_MODAL_COLLABORATOR_INFO:
-      return {
-        ...state,
-        modalCollaboratorInfoOpen: true,
-      };
-    case Types.UI_CLOSE_MODAL_COLLABORATOR_INFO:
-      return {
-        ...state,
-        modalCollaboratorInfoOpen: false,
       };
 
     case Types.UI_OPEN_MODAL_JOBS:

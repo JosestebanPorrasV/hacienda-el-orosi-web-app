@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import SearchResults from "react-filter-search";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import SearchResults from 'react-filter-search';
 
 import {
   addFee,
@@ -9,27 +9,26 @@ import {
   lendsByCollaboratorLoading,
   lendsStartLoading,
   changeFee,
-  FeeByLendLoading,
-} from "../../actions/LendAction";
-import { ModalFee } from "./ModalFee";
-import { uiOpenModalFee, uiOpenModalAddLend } from "../../actions/UIAction";
-import ReactPaginate from "react-paginate";
-import { UseForm } from "../../hooks/UseForm";
-import Swal from "sweetalert2";
-import { ModalLend } from "./ModalLend";
+  FeeByLendLoading
+} from '../../actions/LendAction';
+import { ModalFee } from './ModalFee';
+import { uiOpenModalFee, uiOpenModalAddLend } from '../../actions/UIAction';
+import { UseForm } from '../../hooks/UseForm';
+import Swal from 'sweetalert2';
+import { ModalLend } from './ModalLend';
 
 export const LendScreen = () => {
   const dispatch = useDispatch();
 
-  const { lends, count, lendsState } = useSelector((state) => state.lend);
+  const { lends, lendsState } = useSelector((state) => state.lend);
 
   useEffect(() => {
     dispatch(lendsStartLoading());
   }, [dispatch]);
 
   const [formValues, handleInputChange] = UseForm({
-    filter: "",
-    document_id: "",
+    filter: '',
+    document_id: ''
   });
 
   const { filter, document_id } = formValues;
@@ -54,15 +53,15 @@ export const LendScreen = () => {
 
   const lendChangeFee = async (lend) => {
     const { value: newFee } = await Swal.fire({
-      title: "Cambiar cuotas",
-      input: "number",
-      inputLabel: "Nueva cuota",
-      inputPlaceholder: "Ingrese",
+      title: 'Cambiar cuotas',
+      input: 'number',
+      inputLabel: 'Nueva cuota',
+      inputPlaceholder: 'Ingrese',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#A0A0A0",
-      confirmButtonText: "Si, cambiar",
-      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, cambiar',
+      cancelButtonText: 'Cancelar'
     });
 
     if (newFee) {
@@ -74,14 +73,14 @@ export const LendScreen = () => {
 
   const oneDeleteLend = (lend) => {
     Swal.fire({
-      title: "¿Estas seguro?",
-      text: "El prestamo no se podra recuperar",
-      icon: "warning",
+      title: '¿Estas seguro?',
+      text: 'El prestamo no se podra recuperar',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#A0A0A0",
-      confirmButtonText: "Si, eliminar",
-      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
         dispatch(deleteOneLend(lend._id));
@@ -93,14 +92,14 @@ export const LendScreen = () => {
 
   const lendAddFee = (lend) => {
     Swal.fire({
-      title: "¿Estas seguro?",
-      text: "Se agregara una nueva cuota",
-      icon: "warning",
+      title: '¿Estas seguro?',
+      text: 'Se agregara una nueva cuota',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#A0A0A0",
-      confirmButtonText: "Si, agregar",
-      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, agregar',
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
         dispatch(addFee(lend));
@@ -115,9 +114,7 @@ export const LendScreen = () => {
       <div className="bg-gradient-to-r from-yellow-200 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
         <div>
           <h2 className="text-2xl text-yellow-900">PRESTAMOS</h2>
-          <p className="text-yellow-900 opacity-70">
-            Funcionalidades principales
-          </p>
+          <p className="text-yellow-900 opacity-70">Funcionalidades principales</p>
         </div>
         <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0 text-lg text-gray-200">
           <button
@@ -127,13 +124,13 @@ export const LendScreen = () => {
             <span> Realizar prestamo</span>
           </button>
           <button
-            onClick={() => dispatch(lendsStartLoading("Activo"))}
+            onClick={() => dispatch(lendsStartLoading('Activo'))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-gray-800 w-35 fas fa-clipboard-check"
           >
             <span> Listar activos</span>
           </button>
           <button
-            onClick={() => dispatch(lendsStartLoading("Cancelado"))}
+            onClick={() => dispatch(lendsStartLoading('Cancelado'))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-gray-800 w-35 fas fa-strikethrough"
           >
             <span> Listar cancelados</span>
@@ -163,18 +160,18 @@ export const LendScreen = () => {
           <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
             <h2
               className={`${
-                lendsState === "Activo"
-                  ? "text-green-400"
-                  : lendsState === "Cancelado"
-                  ? "text-red-400"
-                  : "text-yellow-400"
+                lendsState === 'Activo'
+                  ? 'text-green-400'
+                  : lendsState === 'Cancelado'
+                  ? 'text-red-400'
+                  : 'text-yellow-400'
               } text-xl font-bold mb-2`}
             >{`PRESTAMOS ${
-              lendsState === "Activo"
-                ? "ACTIVOS"
-                : lendsState === "Cancelado"
-                ? "CANCELADOS"
-                : "REGISTRADOS"
+              lendsState === 'Activo'
+                ? 'ACTIVOS'
+                : lendsState === 'Cancelado'
+                ? 'CANCELADOS'
+                : 'REGISTRADOS'
             }`}</h2>
             <input
               type="text"
@@ -186,14 +183,14 @@ export const LendScreen = () => {
             />
             <span
               className={`${
-                lendsState === "Activo"
-                  ? "bg-green-200 text-green-600"
-                  : lendsState === "Cancelado"
-                  ? "bg-red-200 text-red-600"
-                  : "bg-yellow-200 text-yellow-600"
+                lendsState === 'Activo'
+                  ? 'bg-green-200 text-green-600'
+                  : lendsState === 'Cancelado'
+                  ? 'bg-red-200 text-red-600'
+                  : 'bg-yellow-200 text-yellow-600'
               } md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase`}
             >
-              <i className="fas fa-box-open"></i> {`total: ${count}`}
+              <i className="fas fa-box-open"></i> {`total: ${lends.length}`}
             </span>
             <div className="overflow-x-auto">
               <div className="align-middle inline-block min-w-full overflow-hidden">
@@ -220,8 +217,7 @@ export const LendScreen = () => {
                             <i className="fas fa-funnel-dollar"></i> Monto
                           </th>
                           <th className="py-2 px-3">
-                            <i className="fas fa-comments-dollar"></i> Cuota
-                            semanal
+                            <i className="fas fa-comments-dollar"></i> Cuota semanal
                           </th>
                           <th className="py-2 px-3">
                             <i className="fas fa-dollar-sign"></i> Restante
@@ -237,63 +233,51 @@ export const LendScreen = () => {
                             <th className="py-3 px-3" hidden={lendsState}>
                               <span
                                 className={` ${
-                                  lend.status === "Activo"
-                                    ? "bg-green-200 text-green-600"
-                                    : "bg-red-200 text-red-600"
+                                  lend.status === 'Activo'
+                                    ? 'bg-green-200 text-green-600'
+                                    : 'bg-red-200 text-red-600'
                                 }  text-xs rounded-full px-3 py-1 w-26 inline-block text-center uppercase`}
                               >
-                                {lend.status === "Activo"
-                                  ? "Activo"
-                                  : "Cancelado"}
+                                {lend.status === 'Activo' ? 'Activo' : 'Cancelado'}
                               </span>
                             </th>
 
                             <th className="py-3 px-3">
                               {lend.collaborator
                                 ? `${lend.collaborator.name} ${lend.collaborator.surname}`
-                                : "No existe colaborador"}
+                                : 'No existe colaborador'}
                             </th>
                             <th className="py-3 px-3">
                               {lend.collaborator
                                 ? lend.collaborator.document_id
-                                : "No existe colaborador"}
+                                : 'No existe colaborador'}
                             </th>
                             <th className="py-3 px-3">{lend.date_issued}</th>
                             <th className="py-3 px-3">
-                              {new Intl.NumberFormat("en-EN").format(
-                                lend.initial_amount
-                              )}
+                              {new Intl.NumberFormat('en-EN').format(lend.initial_amount)}
                             </th>
                             <th className="py-3 px-3">
                               <button
                                 onClick={() => lendChangeFee(lend)}
-                                hidden={lend.status === "Cancelado"}
+                                hidden={lend.status === 'Cancelado'}
                               >
                                 <i className="fas fa-edit text-xl text-yellow-400" />
                               </button>
-                              {new Intl.NumberFormat("en-EN").format(lend.fee)}
+                              {new Intl.NumberFormat('en-EN').format(lend.fee)}
                             </th>
-                            <th
-                              className="py-3 px-3"
-                              hidden={lend.status === "Cancelado"}
-                            >
-                              {new Intl.NumberFormat("en-EN").format(
-                                lend.amount
-                              )}
+                            <th className="py-3 px-3" hidden={lend.status === 'Cancelado'}>
+                              {new Intl.NumberFormat('en-EN').format(lend.amount)}
                             </th>
-                            <th
-                              className="py-3 px-3"
-                              hidden={lend.status === "Activo"}
-                            >
+                            <th className="py-3 px-3" hidden={lend.status === 'Activo'}>
                               <i className="fas fa-check-circle"></i>
                             </th>
                             <th className="py-3 px-3">
                               <button
                                 onClick={() => lendAddFee(lend)}
-                                hidden={lend.status === "Cancelado"}
+                                hidden={lend.status === 'Cancelado'}
                                 className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1"
                                 type="button"
-                                style={{ transition: "all .15s ease" }}
+                                style={{ transition: 'all .15s ease' }}
                               >
                                 <i className="fas fa-plus"></i>
                               </button>
@@ -301,16 +285,16 @@ export const LendScreen = () => {
                                 onClick={() => onSelectLend(lend)}
                                 className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-green-600 outline-none focus:outline-none mr-1 mb-1"
                                 type="button"
-                                style={{ transition: "all .15s ease" }}
+                                style={{ transition: 'all .15s ease' }}
                               >
                                 <i className="far fa-eye"></i>
                               </button>
                               <button
                                 onClick={() => oneDeleteLend(lend)}
-                                hidden={lend.status === "Cancelado"}
+                                hidden={lend.status === 'Cancelado'}
                                 className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
                                 type="button"
-                                style={{ transition: "all .15s ease" }}
+                                style={{ transition: 'all .15s ease' }}
                               >
                                 <i className="fas fa-trash-alt"></i>
                               </button>
@@ -324,35 +308,6 @@ export const LendScreen = () => {
               </div>
             </div>
           </div>
-          <ReactPaginate
-            pageCount={Math.ceil(count / 10)}
-            marginPagesDisplayed={1}
-            pageRangeDisplayed={2}
-            previousLabel={"Atras"}
-            activeClassName={"bg-green-900 rounded-full my-1"}
-            breakClassName={"text-2xl text-grey-900 pl-4"}
-            nextLabel={"Adelante"}
-            breakLabel={"..."}
-            pageLinkClassName={
-              "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-gray-900 rounded-full my-1"
-            }
-            previousClassName={
-              "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900"
-            }
-            nextClassName={
-              "flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900"
-            }
-            onPageChange={
-              lendsState
-                ? (data) =>
-                    dispatch(lendsStartLoading(lendsState, data.selected + 1))
-                : (data) =>
-                    dispatch(
-                      lendsByCollaboratorLoading(document_id, data.selected + 1)
-                    )
-            }
-            containerClassName={"sm:flex m-4 p-3"}
-          />
         </>
       ) : (
         <span className="ml-2 text-gray-400 whitespace-nowrap italic">

@@ -139,7 +139,7 @@ export const ModalAnimal = () => {
           formValues,
           currentType._id,
           date_admission,
-          next_due_date && next_due_date,
+          next_due_date,
           currentSearch && currentSearch._id
         )
       );
@@ -233,7 +233,7 @@ export const ModalAnimal = () => {
                         Tipo de animal
                       </label>
                       <Link
-                        to="/tipos-de-animales"
+                        to="/tipos-de-ganado"
                         className="ml-2 text-blue-500 inline-flex items-center"
                       >
                         Ir

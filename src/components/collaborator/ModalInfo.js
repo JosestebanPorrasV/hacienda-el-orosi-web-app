@@ -37,14 +37,14 @@ export const ModalInfo = ({ currentCollaborator }) => {
         </div>
       </div>
       <button
-        className="text-yellow-400 hover:text-yellow-700 font-bold text-2xl ml-4 mb-1"
+        className="mt-4 bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-sm px-3 py-3 rounded shadow hover:bg-yellow-900 outline-none focus:outline-none mr-1 mb-1"
         type="submit"
         style={{ transition: 'all .15s ease' }}
         onClick={() =>
           dispatch(collaboratorSetActive(currentCollaborator), dispatch(uiOpenModalCollaborator()))
         }
       >
-        <i className="fas fa-edit"></i>
+        <i className="fas fa-edit"></i> Editar
       </button>
     </div>
   );

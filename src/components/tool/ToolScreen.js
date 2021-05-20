@@ -70,7 +70,7 @@ export const ToolScreen = () => {
             <span className="text-white font-bold">Agregar Herramienta</span>
           </button>
           <button
-            onClick={() => dispatch(toolsLoading('Activo'))}
+            onClick={() => dispatch(toolsLoading('ACTIVO'))}
             className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black  rounded-lg hover:bg-blue-800 w-35"
           >
             <i className="fas fa-clipboard-check"></i>
@@ -103,7 +103,7 @@ export const ToolScreen = () => {
         <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
           <h2
             className={`${
-              toolsState === 'Activo'
+              toolsState === 'ACTIVO'
                 ? 'text-green-400'
                 : toolsState === 'En bodega'
                 ? 'text-gray-200'
@@ -111,7 +111,7 @@ export const ToolScreen = () => {
                 ? 'text-yellow-600'
                 : 'text-red-400'
             } text-xl font-bold mb-2`}
-          >{`Herramientas ${toolsState === 'Activo' ? 'Activas' : toolsState}`}</h2>
+          >{`Herramientas ${toolsState === 'ACTIVO' ? 'Activas' : toolsState}`}</h2>
           <input
             type="text"
             name="filter"
@@ -122,7 +122,7 @@ export const ToolScreen = () => {
           />
           <span
             className={`${
-              toolsState === 'Activo'
+              toolsState === 'ACTIVO'
                 ? 'bg-green-200 text-green-600'
                 : toolsState === 'En bodega'
                 ? 'bg-gray-200 text-gray-600'

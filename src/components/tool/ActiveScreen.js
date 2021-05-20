@@ -9,30 +9,19 @@ import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import {
   activesToolsLoaded,
   removeTools,
-  addActiveSelected,
-  removeInSelectedActives
 } from '../../actions/ToolAction';
 import Swal from 'sweetalert2';
 
 export const ActiveScreen = () => {
   const dispatch = useDispatch();
-  const { actives, selectedActives } = useSelector((state) => state.tool);
+  const { actives } = useSelector((state) => state.tool);
   const { role } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(activesToolsLoaded());
   }, [dispatch]);
-  
 
-  const toggleCheckbox = (e, active) => {
-    if (e.target.checked) {
-      dispatch(addActiveSelected({ active_id: active._id, tool_id: active.tool._id }));
-    } else {
-      dispatch(removeInSelectedActives(active._id));
-    }
-  };
-
-  const removeManyTool = () => {
+  const removeManyTool = (data) => {
     Swal.fire({
       title: '¿Estas seguro?',
       text: 'Las herramientas se regresaran a Bodega',
@@ -44,7 +33,7 @@ export const ActiveScreen = () => {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        dispatch(removeTools(selectedActives));
+        dispatch(removeTools(data));
       }
     });
   };
@@ -64,9 +53,7 @@ export const ActiveScreen = () => {
         </Link>
         <span className="text-xl text-green-600">Colaboradores</span>
 
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
-       
-        </nav>
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0"></nav>
         <span className="text-xl text-green-600">Herramientas</span>
         <Link
           to="/herramientas"
@@ -83,9 +70,7 @@ export const ActiveScreen = () => {
           '-' +
           dateNow.getDate()}
       </span>
-     
-    
-      <MaterialTable 
+      <MaterialTable
         title="HERRAMIENTAS EN USO"
         icons={TableIcons}
         localization={TableLocalization}
@@ -101,6 +86,7 @@ export const ActiveScreen = () => {
           {
             icon: DeleteOutline,
             tooltip: 'Eliminar',
+            onClick: (event, rowData) => removeManyTool(rowData)
           }
         ]}
         options={{
@@ -108,15 +94,10 @@ export const ActiveScreen = () => {
           pageSizeOptions: [5, 10, 30, 50, 100],
           actionsColumnIndex: -1,
           pageSize: 10,
+          selection: true,
           exportButton: true
         }}
       />
-   
-      ) : (
-        <span className="ml-2 text-gray-400 whitespace-nowrap italic">
-          - ( Sin herramientas activas ) -
-        </span>
-      )}
     </>
   );
 };

@@ -1,6 +1,5 @@
 import { Types } from '../types/Types';
 import { FetchConsult } from '../helpers/FetchService';
-import { uiCloseModalDiet } from './UIAction';
 import Swal from 'sweetalert2';
 import TopLoaderService from 'top-loader-service';
 

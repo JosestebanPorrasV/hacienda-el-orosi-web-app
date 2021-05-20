@@ -24,7 +24,7 @@ export const DietScreen = () => {
     dispatch(DietsLoaded());
   }, [dispatch]);
 
-  const [formValues, handleInputChange] = UseForm({
+  const [formValues] = UseForm({
     filter: "",
   });
 

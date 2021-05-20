@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { uiCloseModalAddActive } from '../../actions/UIAction';
-import { removeInSelectedActives, registerActives } from '../../actions/ToolAction';
-import { collaboratorClearActive, searchCollaborator } from '../../actions/CollaboratorAction';
-import { UseForm } from '../../hooks/UseForm';
+
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { uiCloseModalAddActive } from "../../actions/UIAction";
+import {
+  removeInSelectedActives,
+  registerActives,
+} from "../../actions/ToolAction";
+import {
+  collaboratorClearActive,
+  searchCollaborator,
+} from "../../actions/CollaboratorAction";
+import { UseForm } from "../../hooks/UseForm";
 
 export const ModalAddActive = () => {
   const dispatch = useDispatch();

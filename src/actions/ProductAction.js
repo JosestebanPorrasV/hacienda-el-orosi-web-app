@@ -10,7 +10,7 @@ export const ProductsLoaded = () => {
       const resp = await FetchConsult(`gestion-animal/listar-productos`);
       const body = await resp.json();
       if (body.status) {
-        await dispatch(productsLoaded(body.products));
+        await dispatch(productsLoaded(body));
 
         await TopLoaderService.end();
       } else {
@@ -106,6 +106,40 @@ export const oneProductDelete = ({ _id }) => {
   };
 };
 
+export function editProduct(productId, products) {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    
+    console.log(productId, products);
+    const resp = await FetchConsult(  
+      `gestion-animal/modificar-producto/${productId}`,
+      {
+        name_product: products.name,
+        kilograms: products.kilograms,
+        work_hours: products.liters,
+        price_product: products.price,
+      },
+      "PUT"
+    );
+    const body = await resp.json();
+    if (body.status) {
+      await dispatch(updateProductSuccess(body));
+      await dispatch(productClearActive());
+      await Swal.fire({
+        icon: "success",
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      await TopLoaderService.end();
+    } else {
+      await Swal.fire("Error", body.msg, "error");
+      await TopLoaderService.end();
+    }
+  };
+}
+
 export const deleteOneProduct = () => ({
   type: Types.DELETE_PRODUCT
 });
@@ -121,6 +155,11 @@ export const productSetActive = (product) => ({
 });
 export const productClearActive = () => ({
   type: Types.PRODUCT_CLEAR_ACTIVE
+});
+
+export const updateProductSuccess = (product) => ({
+  type: Types.UPDATED_PRODUCT,
+  payload: product,
 });
 
 const productsLoaded = (products) => ({

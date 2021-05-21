@@ -172,6 +172,32 @@ export const searchAnimal = (animalID) => {
   };
 };
 
+export const searchAllAnimals = (animalID) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(`gestion-animal/ver-animal/${animalID}`);
+      const body = await resp.json();
+      if (body.status) {
+       
+        await dispatch(searchSetActive(body.animal));
+        await Swal.fire({
+          icon: 'success',
+          title: body.msg,
+          showConfirmButton: false,
+          timer: 2000
+        });
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire('Error', body.msg, 'warning');
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export function register(valuesForm, typeID, date_admission, next_due_date, daughter_of) {
   return async (dispatch) => {
     await TopLoaderService.start();

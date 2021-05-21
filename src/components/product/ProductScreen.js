@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import SearchResults from 'react-filter-search';
 import { Link } from 'react-router-dom';
 import { ModalProduct } from './ModalProduct';
+import MaterialTable from 'material-table';
+import { TableIcons, TableLocalization } from '../../helpers/TableInit';
+
+import Edit from '@material-ui/icons/Edit';
+import DeleteOutline from '@material-ui/icons/DeleteOutline';
 
 import {
   ProductsLoaded,
@@ -11,7 +15,6 @@ import {
   productSetActive
 } from '../../actions/ProductAction';
 
-import { UseForm } from '../../hooks/UseForm';
 import { uiOpenModalProduct } from '../../actions/UIAction';
 import Swal from 'sweetalert2';
 
@@ -24,11 +27,14 @@ export const ProductScreen = () => {
     dispatch(ProductsLoaded());
   }, [dispatch]);
 
-  const [formValues, handleInputChange] = UseForm({
-    filter: ''
-  });
+  const onSelectAddEditProduct = (productId) => {
+    dispatch(productSetActive(productId));
+    openModalProduct();
+  };
 
-  const { filter } = formValues;
+  const openModalProduct = () => {
+    dispatch(uiOpenModalProduct());
+  };
 
   const onSelectProductOneDelete = (product) => {
     dispatch(productSetActive(product));
@@ -54,103 +60,81 @@ export const ProductScreen = () => {
     });
   };
 
+  let dateNow = new Date();
+
   return (
     <>
-      <div className="bg-gradient-to-r from-green-400 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12">
-        <div>
-          <h2 className="text-2xl text-green-900">PRODUCTOS DE LA HACIENDA</h2>
-          <p className="text-green-900 opacity-70">Funcionalidades principales</p>
-        </div>
-        <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
+      <div
+        className={`${
+          role === 'Encargado del ganado' && 'hidden'
+        } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
+      >
+        <Link
+          to="/dietas"
+          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+        >
+          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-500 "></i>
+        </Link>
+        <span className="text-xl text-green-600">Dieta</span>
+
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
-            onClick={() => dispatch(uiOpenModalProduct())}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-gray-900 w-35"
+            onClick={() => onSelectAddEditProduct()}
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+            type="button"
+            style={{ transition: 'all .15s ease' }}
           >
-            <i className="fas fa-plus-circle"></i>
-            <span className="text-green-600 hover:text-indigo-200 font-bold">Agregar Producto</span>
-          </button>
-          <Link
-            to="/dieta"
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-gray-900 w-35"
-          >
-            <i className="fas fa-seedling"></i>
-            <span className="text-green-600 hover:text-indigo-200 font-bold">Listar Dieta</span>
-          </Link>
-          <button className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-green-900 rounded-lg hover:bg-gray-900 w-35">
-            <i className="fas fa-leaf"></i>
-            <span className="text-green-600 hover:text-indigo-200 font-bold">Listar Productos</span>
+            Agregar Producto
           </button>
         </nav>
+        <span className="text-xl text-green-600">Ganado</span>
+        <Link
+          to="/animales"
+          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+        >
+          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
+        </Link>
       </div>
+      <span className="flex px-6 text-gray-600 space-x-4 italic mt-10">
+        {'Fecha actual: ' +
+          dateNow.getFullYear() +
+          '-' +
+          (dateNow.getMonth() + 1) +
+          '-' +
+          dateNow.getDate()}
+      </span>
 
-      <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
-        <h2 className="text-green-400 text-xl font-bold mb-2">LISTA DE PRODUCTOS</h2>
-        <input
-          type="text"
-          name="filter"
-          className="rounded-t-lg w-1/4 h-4 p-4 placeholder-blue-800 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-60"
-          placeholder="Filtrar por ..."
-          value={filter}
-          onChange={handleInputChange}
-        />
-        <span className="bg-green-200 text-yellow-900 md:ml-2 py-1 px-1 rounded-t-lg  inline-block text-center uppercase">
-          <i className="fas fa-file-contract"></i> {`total: ${products.length}`}
-        </span>
-
-        <div className="overflow-x-auto py-4">
-          <div className="align-middle inline-block min-w-full overflow-hidden">
-            <SearchResults
-              value={filter}
-              data={products}
-              renderResults={(results) => (
-                <table className="min-w-full">
-                  <thead className="bg-gray-600">
-                    <tr className="bg-gray-600 text-white text-lg">
-                      <th className="p-5 w-1/4">Nombre del Producto</th>
-                      <th className="p-5 w-1/4">Kilogramos</th>
-                      <th className="p-5 w-1/4">Litros del Producto</th>
-                      <th className="p-5 w-1/4">Precio del Producto</th>
-                      <th hidden={role === 'Recursos Humanos'} className="p-5 w-1/4">
-                        <i className="far fa-caret-square-down"></i> Acciones
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-blue-100 text-opacity-80">
-                    {results.map((products) => (
-                      <tr key={products._id}>
-                        <th className="py-5 px-8">{`${products.name}`}</th>
-                        <th className="py-5 px-8">
-                          {`${!products.kilograms ? 0 : products.kilograms}`}kg
-                        </th>
-                        <th className="py-5 px-8">
-                          {`${
-                            !products.liters ? (
-                              <i className="far fa-caret-square-down" />
-                            ) : (
-                              products.liters
-                            )
-                          }`}
-                        </th>
-                        <th className="py-3 px-3">₡{products.price}</th>
-                        <th hidden={role === 'Recursos Humanos'} className="py-3 px-3">
-                          <button
-                            onClick={() => onSelectProductOneDelete(products)}
-                            className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:bg-red-600 outline-none focus:outline-none mr-1 mb-1"
-                            type="button"
-                            style={{ transition: 'all .15s ease' }}
-                          >
-                            <i className="fas fa-trash-alt"></i>
-                          </button>
-                        </th>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            />
-          </div>
-        </div>
-      </div>
+      <MaterialTable
+        title="LISTA DE PRODUCTOS"
+        icons={TableIcons}
+        localization={TableLocalization}
+        columns={[
+          { title: 'Producto', field: 'name', editable: 'never' },
+          { title: 'Kilogramos', field: 'kilograms', editable: 'never' },
+          { title: 'Litros del Producto', field: 'liters', editable: 'never' },
+          { title: 'Precio por Producto', field: 'price', editable: 'never' }
+        ]}
+        data={products}
+        actions={[
+          {
+            icon: Edit,
+            tooltip: 'Editar',
+            onClick: (event, rowData) => onSelectAddEditProduct(rowData)
+          },
+          {
+            icon: DeleteOutline,
+            tooltip: 'Eliminar',
+            onClick: (event, rowData) => onSelectProductOneDelete(rowData)
+          }
+        ]}
+        options={{
+          headerStyle: { color: '#076046' },
+          pageSizeOptions: [5, 10, 30, 50, 100],
+          actionsColumnIndex: -1,
+          pageSize: 10,
+          exportButton: true
+        }}
+      />
       <ModalProduct />
     </>
   );

@@ -113,11 +113,11 @@ export const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/contratos"
+                to="/salud"
                 className="hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-2 rounded-lg"
               >
                 <span className="flex-1">
-                  <i className="fas fa-donate pr-4"></i>Contratos
+                <i className="fas fa-book-medical pr-4"></i>Salud
                 </span>
               </Link>
             </li>

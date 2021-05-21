@@ -831,7 +831,10 @@ export const AnimalsScreen = () => {
             ]}
             onRowClick={(event, rowData, togglePanel) => togglePanel()}
             options={{
-              headerStyle: { color: '#076046' },
+              headerStyle: { background: '#404A59', color: 'white' },
+              rowStyle: {
+                color: '#1F3A8A'
+              },
               pageSizeOptions: [5, 10, 30, 50, 100],
               actionsColumnIndex: -1,
               pageSize: 10,

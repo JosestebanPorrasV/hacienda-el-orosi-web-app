@@ -130,11 +130,6 @@ export const JobScreen = () => {
           exportButton: true
         }}
       />
-      ) : (
-      <span className="ml-2 text-gray-400 whitespace-nowrap italic">
-        - ( No se encontraron trabajos ) -
-      </span>
-      )
       <ModalJob />
     </>
   );

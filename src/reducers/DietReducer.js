@@ -42,8 +42,8 @@ export const DietReducer = (state = initialState, action) => {
     case Types.DELETE_DIET:
       return {
         ...state,
-        diets: state.diets.filter((e) => e._id !== state.currentAnimal._id),
-        currentAnimal: null
+        diets: state.diets.filter((e) => e._id !== state.currentDiet._id),
+        currentDiet: null
       };
 
     case Types.DELETE_ALIMENT:

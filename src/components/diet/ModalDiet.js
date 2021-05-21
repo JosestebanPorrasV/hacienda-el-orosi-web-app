@@ -46,22 +46,22 @@ export const ModalDiet = () => {
     });
   };
 
-  const handleSaveDiet = async () => {
-    await dispatch(saveDiet(formValues));
-    await setFormValues(initEvent); 
+  const handleSaveDiet = () => {
+     dispatch(saveDiet(formValues));
+     setFormValues(initEvent); 
   };
 
   return (
     <>
       {modalDietOpen ? (
         <>
-          <div className="absolute inset-0  z-50 outline-none focus:outline-none">
-            <div className="relative fixed w-full h-full top-0 left-0 flex items-center justify-center">
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-auto my-6 mx-auto max-w-6xl">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-3/4 bg-white outline-none focus:outline-none bg-hwite">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-blue-100  text-blue-800 rounded-t">
-                  <h3 className="text-3xl font-semibold">
+                <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+                <h3 className="text-3xl text-green-900 font-semibold">
                     Guardar Dieta
                   </h3>
                   <button
@@ -75,9 +75,8 @@ export const ModalDiet = () => {
                 </div>
                 {/*body*/}
                 <form onSubmit={handleSaveDiet}>
-                  <section className="max-w-4xl mx-auto bg-white">
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-
+                <section className="max-w-4xl p-6 mx-auto bg-white dark:bg-gray-800">
+                    <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                       <div>
                         <label
                           className="text-gray-700 dark:text-gray-200"
@@ -116,6 +115,15 @@ export const ModalDiet = () => {
                 </form>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+                <button
+                    className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
+                    type="button"
+                    style={{ transition: "all .15s ease" }}
+                    onClick={() => closeModal()}
+                  >
+                    Regresar
+                  </button>
+                  
                   <button
                     className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                     type="button"
@@ -123,15 +131,6 @@ export const ModalDiet = () => {
                     onClick={() => handleSaveDiet()}
                   >
                     Agregar
-                  </button>
-
-                  <button
-                    className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
-                    type="button"
-                    style={{ transition: "all .15s ease" }}
-                    onClick={() => closeModal()}
-                  >
-                    Regresar
                   </button>
                 </div>
               </div>

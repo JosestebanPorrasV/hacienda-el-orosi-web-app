@@ -45,7 +45,7 @@ export const HealthScreen = () => {
 
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
-          onClick={() =>onSelectHealth()}
+            onClick={() => onSelectHealth()}
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
             type="button"
             style={{ transition: 'all .15s ease' }}
@@ -54,7 +54,10 @@ export const HealthScreen = () => {
           </button>
         </nav>
         <span className="text-xl text-green-600">Medicamentos</span>
-        <Link to="/" className="inline-flex flex-col justify-center items-center px-1 rounded-lg">
+        <Link
+          to="/medicamentos"
+          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+        >
           <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
         </Link>
       </div>
@@ -90,7 +93,6 @@ export const HealthScreen = () => {
           }
         ]}
         data={healths}
-        
         options={{
           headerStyle: { color: '#076046' },
           pageSizeOptions: [5, 10, 30, 50, 100],
@@ -99,7 +101,7 @@ export const HealthScreen = () => {
           exportButton: true
         }}
       />
-      <ModalHealth/>
+      <ModalHealth />
     </>
   );
 };

@@ -1,57 +1,29 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ModalJob } from './ModalJob';
 import { Link } from 'react-router-dom';
 import MaterialTable from 'material-table';
 import { TableIcons, TableLocalization } from '../../helpers/TableInit';
 
-import Edit from '@material-ui/icons/Edit';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import { ModalHealth } from './ModalHealth';
+import { HealthsLoaded, healthSetActive } from '../../actions/HealthAction';
+import { uiOpenModalHealth } from '../../actions/UIAction';
 
-import { JobsLoaded, oneJobDelete, jobSetActive, jobClearActive } from '../../actions/JobAction';
-import Swal from 'sweetalert2';
-import { uiOpenModalJob } from '../../actions/UIAction';
-
-export const JobScreen = () => {
+export const HealthScreen = () => {
   const dispatch = useDispatch();
-  const { jobs } = useSelector((state) => state.job);
+  const { healths } = useSelector((state) => state.health);
   const { role } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(JobsLoaded());
+    dispatch(HealthsLoaded());
   }, [dispatch]);
 
-  const onSelectJobOneDelete = (job) => {
-    dispatch(jobSetActive(job));
-    deleteJob(job);
+  const onSelectHealth = (healthId) => {
+    dispatch(healthSetActive(healthId));
+    openModalHealth();
   };
 
-  const onSelectAddEditJob = (jobId) => {
-    dispatch(jobSetActive(jobId));
-    openModalJob();
-  };
-
-  const openModalJob = () => {
-    dispatch(uiOpenModalJob());
-  };
-
-  const deleteJob = (job) => {
-    Swal.fire({
-      title: '¿Estas seguro?',
-      text: 'El trabajo no se volerá a recuperar',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#A0A0A0',
-      confirmButtonText: 'Si, eliminar!!',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.value) {
-        dispatch(oneJobDelete(job));
-      } else {
-        dispatch(jobClearActive());
-      }
-    });
+  const openModalHealth = () => {
+    dispatch(uiOpenModalHealth());
   };
 
   let dateNow = new Date();
@@ -64,26 +36,26 @@ export const JobScreen = () => {
         } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
       >
         <Link
-          to="/colaboradores"
+          to="/animales"
           className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
         >
           <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-500 "></i>
         </Link>
-        <span className="text-xl text-green-600">Colaboradores</span>
+        <span className="text-xl text-green-600">Ganado</span>
 
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
-            onClick={() => onSelectAddEditJob()}
+            onClick={() => onSelectHealth()}
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
             type="button"
             style={{ transition: 'all .15s ease' }}
           >
-            Añadir
+            Añadir Registro
           </button>
         </nav>
-        <span className="text-xl text-green-600">Ganado</span>
+        <span className="text-xl text-green-600">Medicamentos</span>
         <Link
-          to="/animales"
+          to="/medicamentos"
           className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
         >
           <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
@@ -99,29 +71,28 @@ export const JobScreen = () => {
       </span>
 
       <MaterialTable
-        title="TRABAJOS"
+        title="REGISTRO MEDICO"
         icons={TableIcons}
         localization={TableLocalization}
         columns={[
-          { title: 'Trabajo', field: 'name', editable: 'never' },
-          { title: 'Horas', field: 'work_hours', editable: 'never' },
-          { title: 'Precio día', field: 'price_day', editable: 'never' },
-          { title: 'Hora extra', field: 'price_extra_hours', editable: 'never' },
-          { title: 'Descripción', field: 'description', editable: 'never' }
-        ]}
-        data={jobs}
-        actions={[
+          { title: 'Chapa', field: 'animal.plate_number', editable: 'never' },
+          { title: 'Animal', field: 'animal.name', editable: 'never' },
+          { title: 'Medicamento', field: 'medicament.name', editable: 'never' },
+          { title: 'Dosis Inyectada', field: 'dose', editable: 'never' },
           {
-            icon: Edit,
-            tooltip: 'Editar',
-            onClick: (event, rowData) => onSelectAddEditJob(rowData)
+            title: 'Fecha Inyección',
+            field: 'administrator_date',
+            type: 'date',
+            editable: 'never'
           },
           {
-            icon: DeleteOutline,
-            tooltip: 'Eliminar',
-            onClick: (event, rowData) => onSelectJobOneDelete(rowData)
+            title: 'Fecha para consumo',
+            field: 'human_consumed_date',
+            type: 'date',
+            editable: 'never'
           }
         ]}
+        data={healths}
         options={{
           headerStyle: { background: '#404A59', color: 'white' },
           rowStyle: {
@@ -133,7 +104,7 @@ export const JobScreen = () => {
           exportButton: true
         }}
       />
-      <ModalJob />
+      <ModalHealth />
     </>
   );
 };

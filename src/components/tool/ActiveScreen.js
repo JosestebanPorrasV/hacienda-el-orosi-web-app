@@ -6,10 +6,7 @@ import { TableIcons, TableLocalization } from '../../helpers/TableInit';
 
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 
-import {
-  activesToolsLoaded,
-  removeTools,
-} from '../../actions/ToolAction';
+import { activesToolsLoaded, removeTools } from '../../actions/ToolAction';
 import Swal from 'sweetalert2';
 
 export const ActiveScreen = () => {
@@ -72,6 +69,7 @@ export const ActiveScreen = () => {
       </span>
       <MaterialTable
         title="HERRAMIENTAS EN USO"
+        title={<h2 className={`text-green-700 text-xl font-bold`}>HERRAMIENTAS EN USO</h2>}
         icons={TableIcons}
         localization={TableLocalization}
         columns={[
@@ -90,7 +88,10 @@ export const ActiveScreen = () => {
           }
         ]}
         options={{
-          headerStyle: { color: '#076046' },
+          headerStyle: { background: '#404A59', color: 'white' },
+          rowStyle: {
+            color: '#1F3A8A'
+          },
           pageSizeOptions: [5, 10, 30, 50, 100],
           actionsColumnIndex: -1,
           pageSize: 10,

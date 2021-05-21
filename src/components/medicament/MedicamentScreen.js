@@ -1,44 +1,48 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ModalJob } from './ModalJob';
 import { Link } from 'react-router-dom';
 import MaterialTable from 'material-table';
 import { TableIcons, TableLocalization } from '../../helpers/TableInit';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 
-import Edit from '@material-ui/icons/Edit';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import {
+  MedicamentsLoaded,
+  medicamentSetActive,
+  medicamentClearActive,
+  medicamentDelete
+} from '../../actions/MedicamentAction';
 
-import { JobsLoaded, oneJobDelete, jobSetActive, jobClearActive } from '../../actions/JobAction';
 import Swal from 'sweetalert2';
-import { uiOpenModalJob } from '../../actions/UIAction';
+import { ModalMedicament } from './ModalMedicament';
+import { uiOpenModalMedicament } from '../../actions/UIAction';
 
-export const JobScreen = () => {
+export const MedicamentScreen = () => {
   const dispatch = useDispatch();
-  const { jobs } = useSelector((state) => state.job);
+  const { medicaments } = useSelector((state) => state.medicament);
   const { role } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(JobsLoaded());
+    dispatch(MedicamentsLoaded());
   }, [dispatch]);
 
-  const onSelectJobOneDelete = (job) => {
-    dispatch(jobSetActive(job));
-    deleteJob(job);
+  const onSelectMedicament = (medicament) => {
+    dispatch(medicamentSetActive(medicament));
+    openModalMedicament();
   };
 
-  const onSelectAddEditJob = (jobId) => {
-    dispatch(jobSetActive(jobId));
-    openModalJob();
+  const openModalMedicament = () => {
+    dispatch(uiOpenModalMedicament());
   };
 
-  const openModalJob = () => {
-    dispatch(uiOpenModalJob());
+  const onSelectMedicamentDelete = (medicament) => {
+    dispatch(medicamentSetActive(medicament));
+    deleteMedicament(medicament);
   };
 
-  const deleteJob = (job) => {
+  const deleteMedicament = (medicament) => {
     Swal.fire({
       title: '¿Estas seguro?',
-      text: 'El trabajo no se volerá a recuperar',
+      text: 'El medicamento no se volerá a recuperar',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -47,9 +51,9 @@ export const JobScreen = () => {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        dispatch(oneJobDelete(job));
+        dispatch(medicamentDelete(medicament));
       } else {
-        dispatch(jobClearActive());
+        dispatch(medicamentClearActive());
       }
     });
   };
@@ -64,26 +68,26 @@ export const JobScreen = () => {
         } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
       >
         <Link
-          to="/colaboradores"
+          to="/animales"
           className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
         >
           <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-500 "></i>
         </Link>
-        <span className="text-xl text-green-600">Colaboradores</span>
+        <span className="text-xl text-green-600">Ganado</span>
 
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
-            onClick={() => onSelectAddEditJob()}
+            onClick={() => onSelectMedicament()}
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
             type="button"
             style={{ transition: 'all .15s ease' }}
           >
-            Añadir
+            Añadir Medicamento
           </button>
         </nav>
-        <span className="text-xl text-green-600">Ganado</span>
+        <span className="text-xl text-green-600">Salud</span>
         <Link
-          to="/animales"
+          to="/salud"
           className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
         >
           <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
@@ -99,27 +103,35 @@ export const JobScreen = () => {
       </span>
 
       <MaterialTable
-        title="TRABAJOS"
+        title="MEDICAMENTOS"
         icons={TableIcons}
         localization={TableLocalization}
         columns={[
-          { title: 'Trabajo', field: 'name', editable: 'never' },
-          { title: 'Horas', field: 'work_hours', editable: 'never' },
-          { title: 'Precio día', field: 'price_day', editable: 'never' },
-          { title: 'Hora extra', field: 'price_extra_hours', editable: 'never' },
-          { title: 'Descripción', field: 'description', editable: 'never' }
+          { title: 'Medicamento', field: 'name', editable: 'never' },
+          { title: 'Cantidad de unidades', field: 'quantity', editable: 'never' },
+          { title: 'Unidad ml', field: 'milliliters', editable: 'never' },
+          {
+            title: 'Precio por unidad',
+            field: 'unit_price',
+            editable: 'never',
+            type: 'currency',
+            currencySetting: {
+              locale: 'es-CR',
+              currencyCode: 'CRC'
+            }
+          }
         ]}
-        data={jobs}
+        data={medicaments}
         actions={[
+          /* {
+              icon: Edit,
+              tooltip: 'Editar',
+              onClick: (event, rowData) => onSelectAddEditJob(rowData)
+            },*/
           {
-            icon: Edit,
-            tooltip: 'Editar',
-            onClick: (event, rowData) => onSelectAddEditJob(rowData)
-          },
-          {
-            icon: DeleteOutline,
+            icon: DeleteOutlineIcon,
             tooltip: 'Eliminar',
-            onClick: (event, rowData) => onSelectJobOneDelete(rowData)
+            onClick: (event, rowData) => onSelectMedicamentDelete(rowData)
           }
         ]}
         options={{
@@ -127,13 +139,15 @@ export const JobScreen = () => {
           rowStyle: {
             color: '#1F3A8A'
           },
+          rowStyle: {
+            color: '#1F3A8A'
+          },
           pageSizeOptions: [5, 10, 30, 50, 100],
-          actionsColumnIndex: -1,
           pageSize: 10,
           exportButton: true
         }}
       />
-      <ModalJob />
+      <ModalMedicament />
     </>
   );
 };

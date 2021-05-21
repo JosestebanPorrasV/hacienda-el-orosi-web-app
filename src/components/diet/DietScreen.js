@@ -68,7 +68,7 @@ export const DietScreen = () => {
         >
           <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-200 "></i>
         </Link>
-        <span className="text-xl text-green-200">Animales</span>
+        <span className="text-xl text-green-700">Animales</span>
 
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
@@ -81,7 +81,7 @@ export const DietScreen = () => {
           </button>
         </nav>
 
-        <span className="text-xl text-green-200">Productos</span>
+        <span className="text-xl text-green-700">Productos</span>
         <Link
           to="/producto"
           className="inline-flex flex-col justify-center items-center m-3 px-1 py-18 rounded-lg"
@@ -93,7 +93,7 @@ export const DietScreen = () => {
       <section className="text-gray-600 body-font">
         <div className="container px-4 py-4 mx-auto">
           <div className="flex flex-col text-center w-full mb-4">
-            <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-50">
+            <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-700">
               Dietas
             </h1>
             <h2 className="text-xs text-green-700 tracking-widest font-medium title-font mb-1">

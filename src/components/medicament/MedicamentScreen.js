@@ -12,7 +12,7 @@ import {
   medicamentDelete
 } from '../../actions/MedicamentAction';
 
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 import { ModalMedicament } from './ModalMedicament';
 import { uiOpenModalMedicament } from '../../actions/UIAction';
 
@@ -77,7 +77,7 @@ export const MedicamentScreen = () => {
 
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
-          onClick={() => onSelectMedicament()}
+            onClick={() => onSelectMedicament()}
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
             type="button"
             style={{ transition: 'all .15s ease' }}
@@ -110,25 +110,39 @@ export const MedicamentScreen = () => {
           { title: 'Medicamento', field: 'name', editable: 'never' },
           { title: 'Cantidad de unidades', field: 'quantity', editable: 'never' },
           { title: 'Unidad ml', field: 'milliliters', editable: 'never' },
-          { title: 'Precio por unidad', field: 'unit_price', editable: 'never' }
+          {
+            title: 'Precio por unidad',
+            field: 'unit_price',
+            editable: 'never',
+            type: 'currency',
+            currencySetting: {
+              locale: 'es-CR',
+              currencyCode: 'CRC'
+            }
+          }
         ]}
         data={medicaments}
         actions={[
-           /* {
+          /* {
               icon: Edit,
               tooltip: 'Editar',
               onClick: (event, rowData) => onSelectAddEditJob(rowData)
             },*/
-            {
-              icon: DeleteOutlineIcon,
-              tooltip: 'Eliminar',
-              onClick: (event, rowData) => onSelectMedicamentDelete(rowData)
-            }
-          ]}
+          {
+            icon: DeleteOutlineIcon,
+            tooltip: 'Eliminar',
+            onClick: (event, rowData) => onSelectMedicamentDelete(rowData)
+          }
+        ]}
         options={{
-          headerStyle: { color: '#076046' },
+          headerStyle: { background: '#404A59', color: 'white' },
+          rowStyle: {
+            color: '#1F3A8A'
+          },
+          rowStyle: {
+            color: '#1F3A8A'
+          },
           pageSizeOptions: [5, 10, 30, 50, 100],
-          actionsColumnIndex: -1,
           pageSize: 10,
           exportButton: true
         }}

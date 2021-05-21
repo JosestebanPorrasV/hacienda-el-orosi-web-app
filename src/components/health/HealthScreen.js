@@ -54,7 +54,10 @@ export const HealthScreen = () => {
           </button>
         </nav>
         <span className="text-xl text-green-600">Medicamentos</span>
-        <Link to="/" className="inline-flex flex-col justify-center items-center px-1 rounded-lg">
+        <Link
+          to="/medicamentos"
+          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+        >
           <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
         </Link>
       </div>

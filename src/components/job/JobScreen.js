@@ -99,7 +99,7 @@ export const JobScreen = () => {
       </span>
 
       <MaterialTable
-        title={<h2 className={`text-green-700 text-xl font-bold`}>TRABAJOS</h2>}
+        title="TRABAJOS"
         icons={TableIcons}
         localization={TableLocalization}
         columns={[

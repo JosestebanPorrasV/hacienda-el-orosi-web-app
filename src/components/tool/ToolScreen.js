@@ -146,7 +146,7 @@ export const ToolScreen = () => {
           dateNow.getDate()}
       </span>
       <MaterialTable
-        title={<h2 className={`text-green-700 text-xl font-bold`}>HERRAMIENTAS</h2>}
+        title="HERRAMIENTAS"
         icons={TableIcons}
         localization={TableLocalization}
         columns={[

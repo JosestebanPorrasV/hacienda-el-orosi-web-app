@@ -105,7 +105,7 @@ export const ProductScreen = () => {
       </span>
 
       <MaterialTable
-        title={<h2 className={`text-green-700 text-xl font-bold`}>LISTA DE PRODUCTOS</h2>}
+        title="LISTA DE PRODUCTOS"
         icons={TableIcons}
         localization={TableLocalization}
         columns={[

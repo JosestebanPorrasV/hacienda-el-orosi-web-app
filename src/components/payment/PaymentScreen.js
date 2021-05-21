@@ -36,7 +36,7 @@ export const PaymentScreen = () => {
       </div>
 
       <MaterialTable
-        title={<h2 className={`text-green-700 text-xl font-bold`}>PAGOS</h2>}
+        title="PAGOS"
         icons={TableIcons}
         localization={TableLocalization}
         columns={[

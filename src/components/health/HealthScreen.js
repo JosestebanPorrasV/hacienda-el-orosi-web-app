@@ -71,7 +71,7 @@ export const HealthScreen = () => {
       </span>
 
       <MaterialTable
-        title={<h2 className={`text-green-700 text-xl font-bold`}>REGISTRO MEDICO</h2>}
+        title="REGISTRO MEDICO"
         icons={TableIcons}
         localization={TableLocalization}
         columns={[

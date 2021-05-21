@@ -150,7 +150,7 @@ export const LendScreen = () => {
       </div>
 
       <MaterialTable
-        title={<h2 className={`text-green-700 text-xl font-bold`}>PRESTAMOS</h2>}
+        title="PRESTAMOS"
         icons={TableIcons}
         localization={TableLocalization}
         columns={[

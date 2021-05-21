@@ -697,7 +697,7 @@ export const AnimalsScreen = () => {
           />
 
           <MaterialTable
-            title={<h2 className={`text-green-700 text-xl font-bold`}>GANADO</h2>}
+            title="GANADO"
             icons={TableIcons}
             localization={TableLocalization}
             columns={[

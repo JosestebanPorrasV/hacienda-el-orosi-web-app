@@ -168,7 +168,7 @@ export const CollaboratorScreen = () => {
           dateNow.getDate()}
       </span>
       <MaterialTable
-        title={<h2 className={`text-green-700 text-xl font-bold`}>COLABORADORES REGISTRADOS</h2>}
+        title="COLABORADORES REGISTRADOS"
         icons={TableIcons}
         localization={TableLocalization}
         columns={[

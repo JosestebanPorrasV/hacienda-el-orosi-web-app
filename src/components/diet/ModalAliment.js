@@ -203,9 +203,7 @@ export const ModalAliment = () => {
                   </form>
 
                   <MaterialTable
-                    title={
-                      <h2 className={`text-green-700 text-xl font-bold`}>LISTA DE ALIMENTOS</h2>
-                    }
+                    title="LISTA DE ALIMENTOS"
                     icons={TableIcons}
                     localization={TableLocalization}
                     columns={[

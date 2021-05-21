@@ -4,11 +4,8 @@ import { Link } from 'react-router-dom';
 import MaterialTable from 'material-table';
 import { TableIcons, TableLocalization } from '../../helpers/TableInit';
 
-import Edit from '@material-ui/icons/Edit';
-
 import { ModalHealth } from './ModalHealth';
 import { HealthsLoaded, healthSetActive } from '../../actions/HealthAction';
-import Swal from 'sweetalert2';
 import { uiOpenModalHealth } from '../../actions/UIAction';
 
 export const HealthScreen = () => {
@@ -93,12 +90,7 @@ export const HealthScreen = () => {
           }
         ]}
         data={healths}
-        actions={[
-          {
-            icon: Edit,
-            tooltip: 'Editar'
-          },
-        ]}
+        
         options={{
           headerStyle: { color: '#076046' },
           pageSizeOptions: [5, 10, 30, 50, 100],

@@ -16,7 +16,7 @@ export const HealthReducer = (state = initialState, action) => {
     case Types.ADD_HEALTH:
       return {
         ...state,
-        healths: [...state.healths, action.payload],
+        healths: [...state.healths, action.payload.health],
       };
 
     case Types.UPDATED_HEALTH:

@@ -13,6 +13,7 @@ import { AnimalReducer } from "./AnimalReducer";
 import { DietReducer } from "./DietReducer";
 import { ProductReducer } from "./ProductReducer";
 import { HealthReducer } from "./HealthReducer";
+import { MedicamentReducer } from "./MedicamentReducer";
 
 export const rootReducer = combineReducers({
   auth: AuthReducer,
@@ -28,4 +29,5 @@ export const rootReducer = combineReducers({
   diet: DietReducer,
   product: ProductReducer,
   health: HealthReducer,
+  medicament: MedicamentReducer,
 });

@@ -10,7 +10,7 @@ export const searchMedicament = (medicamentName) => {
       const resp = await FetchConsult(`gestion-salud/ver-medicamento/${medicamentName}`);
       const body = await resp.json();
       if (body.status) {
-        await dispatch(medicamentSetActive(body.medicament));
+        await dispatch(medicamentSetActive(body));
 
         await Swal.fire({
           icon: 'success',

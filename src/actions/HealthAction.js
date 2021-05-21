@@ -25,23 +25,23 @@ export const HealthsLoaded = () => {
   };
 };
 
-export function registerHealth(animalId, healthFormValues) {
+export function registerHealth(animalId, healthFormValues, medicamentID, administrator_date, consumed_date) {
   return async (dispatch) => {
     await TopLoaderService.start();
     const resp = await FetchConsult(
         `gestion-salud/registro-medico/${animalId}`,
         {
-          medicamentID: healthFormValues.medicamentID,
+          medicamentID: medicamentID,
           dose: healthFormValues.dose,
-          administrator_date: healthFormValues.administrator_date,
-          human_consumed_date: healthFormValues.human_consumed_date,
+          administrator_date: administrator_date,
+          human_consumed_date: consumed_date,
       },
       "POST"
     );
 
     const body = await resp.json();
     if (body.status) {
-      await dispatch(addHealthSuccess(body.health));
+      await dispatch(addHealthSuccess(body));
       await Swal.fire({
         icon: "success",
         title: body.msg,

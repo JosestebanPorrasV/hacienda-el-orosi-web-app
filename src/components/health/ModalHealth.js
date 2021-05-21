@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiCloseModalHealth } from '../../actions/UIAction';
-import { animalClearActive, searchAllAnimals } from '../../actions/AnimalAction';
+import { animalClearActive, searchAllAnimals, searchClearActive } from '../../actions/AnimalAction';
 import { registerHealth } from '../../actions/HealthAction';
 import DatePicker from 'react-datepicker';
 import { searchMedicament } from '../../actions/MedicamentAction';
+
+const initEvent = {
+  plate_number: '',
+  name: '',
+  medicamentId: '',
+  dose: ''
+};
 
 export const ModalHealth = () => {
   const dispatch = useDispatch();
@@ -13,13 +20,7 @@ export const ModalHealth = () => {
 
   const { modalHealthOpen } = useSelector((state) => state.ui);
   const { currentAnimal, currentSearch } = useSelector((state) => state.animal);
-
-  const initEvent = {
-    plate_number: '',
-    name: '',
-    medicamentId: '',
-    dose: ''
-  };
+  const { currentMedicament } = useSelector((state) => state.medicament);
 
   const [formValues, setFormValues] = useState(initEvent);
 
@@ -42,12 +43,18 @@ export const ModalHealth = () => {
     setFormValues(initEvent);
   };
 
-  const handleRegisterHealth = async (e) => {
+  const handleRegisterHealth = (e) => {
     e.preventDefault();
-    await dispatch(
-      registerHealth(currentAnimal._id, formValues, administrator_date, human_consumed_date)
+    dispatch(
+      registerHealth(
+        currentSearch._id,
+        formValues,
+        currentMedicament._id,
+        administrator_date,
+        human_consumed_date
+      )
     );
-    await setFormValues(initEvent);
+    setFormValues(initEvent);
     setAdministrator_date(null);
     setConsumed_date(null);
   };
@@ -100,7 +107,7 @@ export const ModalHealth = () => {
                         </button>
                         <button
                           hidden={!plate_number}
-                          onClick={() => dispatch(searchClearActive())}
+                          onClick={() => dispatch(searchClearActive()) && clearForm()}
                           className="text-gray-500 active:bg-gray-600  text-sm px-2 py-1 rounded-b  hover:text-red-900 outline-none focus:outline-none mr-1 mb-1"
                           type="button"
                         >
@@ -114,7 +121,7 @@ export const ModalHealth = () => {
                         </label>
                         <input
                           disabled={true}
-                          value={currentSearch ? currentSearch.name : name} 
+                          value={currentSearch ? currentSearch.name : name}
                           id="nameAnimal"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
@@ -204,7 +211,6 @@ export const ModalHealth = () => {
                       Volver
                     </button>
                     <button
-                      disabled={!currentAnimal}
                       className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-blue-900 outline-none focus:outline-none mr-1 mb-1"
                       type="submit"
                       style={{ transition: 'all .15s ease' }}

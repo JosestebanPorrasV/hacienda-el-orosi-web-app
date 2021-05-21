@@ -11,13 +11,13 @@ export const MedicamentReducer = (state = initialState, action) => {
     case Types.MEDICAMENT_SET_ACTIVE:
       return {
         ...state,
-        currentMedicament: action.payload
+        currentMedicament: action.payload.medicament,
       };
 
     case Types.MEDICAMENT_CLEAR_ACTIVE:
       return {
         ...state,
-        currentMedicament: null
+        currentMedicament: null,
       };
 
     default:

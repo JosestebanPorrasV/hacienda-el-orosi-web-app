@@ -1,4 +1,4 @@
-import { Types } from "../types/Types";
+import { Types } from '../types/Types';
 
 const initialState = {
   menuOpen: false,
@@ -15,6 +15,7 @@ const initialState = {
   modalDietOpen: false,
   modalProductOpen: false,
   modalAlimentOpen: false,
+  modalHealthOpen: false
 };
 
 export const UIReducer = (state = initialState, action) => {
@@ -22,152 +23,162 @@ export const UIReducer = (state = initialState, action) => {
     case Types.UI_OPEN_MENU:
       return {
         ...state,
-        menuOpen: true,
+        menuOpen: true
       };
     case Types.UI_CLOSE_MENU:
       return {
         ...state,
-        menuOpen: false,
+        menuOpen: false
       };
 
     case Types.UI_OPEN_MODAL_ADMINISTRATOR:
       return {
         ...state,
-        modalAdministratorOpen: true,
+        modalAdministratorOpen: true
       };
     case Types.UI_CLOSE_MODAL_ADMINISTRATOR:
       return {
         ...state,
-        modalAdministratorOpen: false,
+        modalAdministratorOpen: false
       };
 
     case Types.UI_OPEN_MODAL_COLLABORATOR:
       return {
         ...state,
-        modalCollaboratorOpen: true,
+        modalCollaboratorOpen: true
       };
     case Types.UI_CLOSE_MODAL_COLLABORATOR:
       return {
         ...state,
-        modalCollaboratorOpen: false,
+        modalCollaboratorOpen: false
       };
 
     case Types.UI_OPEN_MODAL_JOBS:
       return {
         ...state,
-        modalJobOpen: true,
+        modalJobOpen: true
       };
     case Types.UI_CLOSE_MODAL_JOBS:
       return {
         ...state,
-        modalJobOpen: false,
+        modalJobOpen: false
       };
 
     case Types.UI_OPEN_MODAL_FEES:
       return {
         ...state,
-        modalFeeOpen: true,
+        modalFeeOpen: true
       };
     case Types.UI_CLOSE_MODAL_FEES:
       return {
         ...state,
-        modalFeeOpen: false,
+        modalFeeOpen: false
       };
 
     case Types.UI_OPEN_MODAL_ADD_LEND:
       return {
         ...state,
-        modalAddLendOpen: true,
+        modalAddLendOpen: true
       };
     case Types.UI_CLOSE_MODAL_ADD_LEND:
       return {
         ...state,
-        modalAddLendOpen: false,
+        modalAddLendOpen: false
       };
 
     case Types.UI_OPEN_MODAL_ADD_TOOL:
       return {
         ...state,
-        modalAddToolOpen: true,
+        modalAddToolOpen: true
       };
     case Types.UI_CLOSE_MODAL_ADD_TOOL:
       return {
         ...state,
-        modalAddToolOpen: false,
+        modalAddToolOpen: false
       };
 
     case Types.UI_OPEN_MODAL_ACTIVES:
       return {
         ...state,
-        modalActiveOpen: true,
+        modalActiveOpen: true
       };
     case Types.UI_CLOSE_MODAL_ACTIVES:
       return {
         ...state,
-        modalActiveOpen: false,
+        modalActiveOpen: false
       };
     case Types.UI_OPEN_MODAL_ADD_ACTIVE:
       return {
         ...state,
-        modalAddActiveOpen: true,
+        modalAddActiveOpen: true
       };
     case Types.UI_CLOSE_MODAL_ADD_ACTIVE:
       return {
         ...state,
-        modalAddActiveOpen: false,
+        modalAddActiveOpen: false
       };
 
     case Types.UI_OPEN_MODAL_PAYMENT:
       return {
         ...state,
-        modalPaymentOpen: true,
+        modalPaymentOpen: true
       };
     case Types.UI_CLOSE_MODAL_PAYMENT:
       return {
         ...state,
-        modalPaymentOpen: false,
+        modalPaymentOpen: false
       };
 
     case Types.UI_OPEN_MODAL_ANIMAL:
       return {
         ...state,
-        modalAnimalOpen: true,
+        modalAnimalOpen: true
       };
     case Types.UI_CLOSE_MODAL_ANIMAL:
       return {
         ...state,
-        modalAnimalOpen: false,
+        modalAnimalOpen: false
       };
     case Types.UI_OPEN_MODAL_DIET:
       return {
         ...state,
-        modalDietOpen: true,
+        modalDietOpen: true
       };
     case Types.UI_CLOSE_MODAL_DIET:
       return {
         ...state,
-        modalDietOpen: false,
+        modalDietOpen: false
       };
     case Types.UI_OPEN_MODAL_PRODUCT:
       return {
         ...state,
-        modalProductOpen: true,
+        modalProductOpen: true
       };
     case Types.UI_CLOSE_MODAL_PRODUCT:
       return {
         ...state,
-        modalProductOpen: false,
+        modalProductOpen: false
       };
-      case Types.UI_OPEN_MODAL_ALIMENT:
-        return {
-          ...state,
-          modalAlimentOpen: true,
-        };
-      case Types.UI_CLOSE_MODAL_ALIMENT:
-        return {
-          ...state,
-          modalAlimentOpen: false,
-        };
+    case Types.UI_OPEN_MODAL_ALIMENT:
+      return {
+        ...state,
+        modalAlimentOpen: true
+      };
+    case Types.UI_CLOSE_MODAL_ALIMENT:
+      return {
+        ...state,
+        modalAlimentOpen: false
+      };
+    case Types.UI_OPEN_MODAL_HEALTH:
+      return {
+        ...state,
+        modalHealthOpen: true
+      };
+    case Types.UI_CLOSE_MODAL_HEALTH:
+      return {
+        ...state,
+        modalHealthOpen: false
+      };
 
     default:
       return state;

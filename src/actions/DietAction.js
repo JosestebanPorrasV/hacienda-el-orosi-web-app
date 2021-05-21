@@ -38,6 +38,7 @@ export const AlimentsLoaded = (id) => {
 export function saveDiet(dietFormValues) {
   return async (dispatch) => {
     await TopLoaderService.start();
+    console.log(dietFormValues.diet_name);
     const resp = await FetchConsult(
       'gestion-animal/guardar-dieta',
       {
@@ -49,6 +50,7 @@ export function saveDiet(dietFormValues) {
 
     const body = await resp.json();
     if (body.status) {
+      console.log(body);
       await dispatch(addDietSuccess(body.diet));
       await Swal.fire({
         icon: 'success',

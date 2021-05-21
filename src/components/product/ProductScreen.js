@@ -105,7 +105,7 @@ export const ProductScreen = () => {
       </span>
 
       <MaterialTable
-        title="LISTA DE PRODUCTOS"
+        title={<h2 className={`text-green-700 text-xl font-bold`}>LISTA DE PRODUCTOS</h2>}
         icons={TableIcons}
         localization={TableLocalization}
         columns={[
@@ -128,7 +128,10 @@ export const ProductScreen = () => {
           }
         ]}
         options={{
-          headerStyle: { color: '#076046' },
+          headerStyle: { background: '#404A59', color: 'white' },
+          rowStyle: {
+            color: '#1F3A8A'
+          },
           pageSizeOptions: [5, 10, 30, 50, 100],
           actionsColumnIndex: -1,
           pageSize: 10,

@@ -29,7 +29,7 @@ export const ToolScreen = () => {
     dispatch(toolsLoading());
   }, [dispatch]);
 
-  const changeStatusTool = async (tool,status) => {
+  const changeStatusTool = async (tool, status) => {
     Swal.fire({
       title: '¿Estas seguro?',
       icon: 'warning',
@@ -40,9 +40,7 @@ export const ToolScreen = () => {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        dispatch(
-          changeStatus(tool._id, status)
-        );
+        dispatch(changeStatus(tool._id, status));
       }
     });
   };
@@ -148,10 +146,10 @@ export const ToolScreen = () => {
           dateNow.getDate()}
       </span>
       <MaterialTable
-        title="HERRAMIENTAS"
+        title={<h2 className={`text-green-700 text-xl font-bold`}>HERRAMIENTAS</h2>}
         icons={TableIcons}
         localization={TableLocalization}
-        columns = {([
+        columns={[
           { title: 'Herramienta', field: 'name', editable: 'never' },
           { title: 'Código', field: 'active_num', editable: 'never' },
           { title: 'Registrada', field: 'date', editable: 'never' },
@@ -164,9 +162,9 @@ export const ToolScreen = () => {
               REPARACION: 'REPARACION',
               BAJA: 'BAJA'
             },
-            validate: rowData => rowData.status === 'BAJA' ? {isValid: false} : true,
+            validate: (rowData) => (rowData.status === 'BAJA' ? { isValid: false } : true)
           }
-        ])}
+        ]}
         data={tools}
         cellEditable={{
           onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
@@ -191,17 +189,16 @@ export const ToolScreen = () => {
           }
         ]}
         options={{
-          headerStyle: { color: '#076046' },
+          headerStyle: { background: '#404A59', color: 'white' },
+          rowStyle: {
+            color: '#1F3A8A'
+          },
           pageSizeOptions: [5, 10, 30, 50, 100],
           actionsColumnIndex: -1,
           pageSize: 10,
           exportButton: true
         }}
       />
-      ) : (
-      <span className="ml-2 text-gray-400 whitespace-nowrap italic">
-        - ( No se encontraron herramientas ) -
-      </span>
       <ModalTool />
       {currentTool && <ModalAddActive />}
     </>

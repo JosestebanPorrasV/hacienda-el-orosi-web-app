@@ -53,7 +53,7 @@ export const JobScreen = () => {
       }
     });
   };
-  
+
   let dateNow = new Date();
 
   return (
@@ -97,9 +97,9 @@ export const JobScreen = () => {
           '-' +
           dateNow.getDate()}
       </span>
-     
-      <MaterialTable 
-        title="TRABAJOS"
+
+      <MaterialTable
+        title={<h2 className={`text-green-700 text-xl font-bold`}>TRABAJOS</h2>}
         icons={TableIcons}
         localization={TableLocalization}
         columns={[
@@ -123,7 +123,10 @@ export const JobScreen = () => {
           }
         ]}
         options={{
-          headerStyle: { color: '#076046' },
+          headerStyle: { background: '#404A59', color: 'white' },
+          rowStyle: {
+            color: '#1F3A8A'
+          },
           pageSizeOptions: [5, 10, 30, 50, 100],
           actionsColumnIndex: -1,
           pageSize: 10,

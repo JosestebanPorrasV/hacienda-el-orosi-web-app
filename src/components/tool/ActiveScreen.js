@@ -69,7 +69,6 @@ export const ActiveScreen = () => {
       </span>
       <MaterialTable
         title="HERRAMIENTAS EN USO"
-        title={<h2 className={`text-green-700 text-xl font-bold`}>HERRAMIENTAS EN USO</h2>}
         icons={TableIcons}
         localization={TableLocalization}
         columns={[

@@ -5,14 +5,12 @@ import {
   addFee,
   deleteOneLend,
   lendClearActive,
-  lendsByCollaboratorLoading,
   lendsStartLoading,
   changeFee,
   FeeByLendLoading
 } from '../../actions/LendAction';
 import { ModalFee } from './ModalFee';
 import { uiOpenModalFee, uiOpenModalAddLend } from '../../actions/UIAction';
-import { UseForm } from '../../hooks/UseForm';
 import Swal from 'sweetalert2';
 import { ModalLend } from './ModalLend';
 import MaterialTable from 'material-table';

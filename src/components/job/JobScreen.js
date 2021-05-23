@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ModalJob } from './ModalJob';
 import { Link } from 'react-router-dom';
 import MaterialTable from 'material-table';
-import { TableIcons, TableLocalization } from '../../helpers/TableInit';
+import { TableIcons, TableLocalization, TableOptions } from '../../helpers/TableInit';
 
 import Edit from '@material-ui/icons/Edit';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
@@ -43,7 +43,7 @@ export const JobScreen = () => {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#A0A0A0',
-      confirmButtonText: 'Si, eliminar!!',
+      confirmButtonText: 'Si, eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
@@ -54,8 +54,6 @@ export const JobScreen = () => {
     });
   };
 
-  let dateNow = new Date();
-
   return (
     <>
       <div
@@ -65,11 +63,11 @@ export const JobScreen = () => {
       >
         <Link
           to="/colaboradores"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+          className="inline-flex justify-center items-center px-1 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-500 "></i>
+          <i className="fas fa-arrow-circle-left text-blue-500 text-2xl hover:text-blue-900 "></i>{' '}
+          <span className="text-xl text-blue-500 hover:underline ml-1">Colaboradores</span>
         </Link>
-        <span className="text-xl text-green-600">Colaboradores</span>
 
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
@@ -78,26 +76,21 @@ export const JobScreen = () => {
             type="button"
             style={{ transition: 'all .15s ease' }}
           >
-            Añadir
+            Registrar trabajo
           </button>
         </nav>
-        <span className="text-xl text-green-600">Ganado</span>
-        <Link
-          to="/animales"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
-        >
-          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
+        <Link to="/animales" className="inline-flex justify-center items-center px-1 rounded-lg">
+          <span className="text-xl text-blue-500 hover:underline mr-1 ">Ganado</span>
+          <i className="fas fa-arrow-circle-right text-blue-500 text-2xl hover:text-blue-900"></i>
         </Link>
       </div>
-      <span className="flex px-6 text-gray-600 space-x-4 italic mt-10">
-        {'Fecha actual: ' +
-          dateNow.getFullYear() +
-          '-' +
-          (dateNow.getMonth() + 1) +
-          '-' +
-          dateNow.getDate()}
-      </span>
-
+      <div className="flex flex-col text-center w-full mt-4 mb-4">
+        <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-700">TRABAJOS</h1>
+        <h2 className="text-xs text-green-700 tracking-widest font-medium title-font mb-1">
+          REGISTRADOS
+        </h2>
+      </div>
+      Ï
       <MaterialTable
         title="TRABAJOS"
         icons={TableIcons}
@@ -105,9 +98,27 @@ export const JobScreen = () => {
         columns={[
           { title: 'Trabajo', field: 'name', editable: 'never' },
           { title: 'Horas', field: 'work_hours', editable: 'never' },
-          { title: 'Precio día', field: 'price_day', editable: 'never' },
-          { title: 'Hora extra', field: 'price_extra_hours', editable: 'never' },
-          { title: 'Descripción', field: 'description', editable: 'never' }
+          { title: 'Descripción', field: 'description', editable: 'never' },
+          {
+            title: 'Precio día',
+            field: 'price_day',
+            editable: 'never',
+            type: 'currency',
+            currencySetting: {
+              locale: 'es-CR',
+              currencyCode: 'CRC'
+            }
+          },
+          {
+            title: 'Hora extra',
+            field: 'price_extra_hours',
+            editable: 'never',
+            type: 'currency',
+            currencySetting: {
+              locale: 'es-CR',
+              currencyCode: 'CRC'
+            }
+          }
         ]}
         data={jobs}
         actions={[
@@ -122,16 +133,7 @@ export const JobScreen = () => {
             onClick: (event, rowData) => onSelectJobOneDelete(rowData)
           }
         ]}
-        options={{
-          headerStyle: { background: '#404A59', color: 'white' },
-          rowStyle: {
-            color: '#1F3A8A'
-          },
-          pageSizeOptions: [5, 10, 30, 50, 100],
-          actionsColumnIndex: -1,
-          pageSize: 10,
-          exportButton: true
-        }}
+        options={TableOptions}
       />
       <ModalJob />
     </>

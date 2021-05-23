@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  registerJob,
-  editOneJob,
-  jobClearActive,
-} from "../../actions/JobAction";
+import { registerJob, editOneJob, jobClearActive } from '../../actions/JobAction';
 
-import { uiCloseModalJob } from "../../actions/UIAction";
+import { uiCloseModalJob } from '../../actions/UIAction';
 
 const initEvent = {
-  name: "",
-  description: "",
-  work_hours: "",
-  price_extra_hours: "",
-  price_day: "",
+  name: '',
+  description: '',
+  work_hours: '',
+  price_extra_hours: '',
+  price_day: ''
 };
 
 export const ModalJob = () => {
@@ -25,13 +21,7 @@ export const ModalJob = () => {
 
   const [formValues, setFormValues] = useState(initEvent);
 
-  const {
-    name,
-    description,
-    work_hours,
-    price_extra_hours,
-    price_day,
-  } = formValues;
+  const { name, description, work_hours, price_extra_hours, price_day } = formValues;
 
   useEffect(() => {
     if (currentJob) {
@@ -44,7 +34,7 @@ export const ModalJob = () => {
   const handleInputChange = ({ target }) => {
     setFormValues({
       ...formValues,
-      [target.name]: target.value,
+      [target.name]: target.value
     });
   };
 
@@ -67,7 +57,6 @@ export const ModalJob = () => {
     } else {
       dispatch(registerJob(formValues));
     }
-
   };
 
   return (
@@ -82,14 +71,10 @@ export const ModalJob = () => {
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                   <h3
                     className={`${
-                      currentJob ? "text-yellow-400" : "text-blue-400"
+                      currentJob ? 'text-yellow-400' : 'text-blue-400'
                     } text-3xl font-semibold mb-2`}
                   >
-                    {`${
-                      currentJob
-                        ? "Editar datos del trabajo"
-                        : "Registrar trabajo"
-                    }`}
+                    {`${currentJob ? 'Editar datos del trabajo' : 'Registrar trabajo'}`}
                   </h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black  float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -126,6 +111,7 @@ export const ModalJob = () => {
                           Precio de la hora extra
                         </label>
                         <input
+                          required
                           id="price_extra_hours"
                           name="price_extra_hours"
                           value={price_extra_hours}
@@ -135,13 +121,11 @@ export const ModalJob = () => {
                         />
                       </div>
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="price_day"
-                        >
-                          Pagó por día
+                        <label className="text-gray-700 dark:text-gray-200" htmlFor="price_day">
+                          Pago por día
                         </label>
                         <input
+                          required
                           id="price_day"
                           name="price_day"
                           value={price_day}
@@ -151,13 +135,11 @@ export const ModalJob = () => {
                         />
                       </div>
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="work_hours"
-                        >
-                          Duración de horas del trabajo
+                        <label className="text-gray-700 dark:text-gray-200" htmlFor="work_hours">
+                          Duración en horas
                         </label>
                         <input
+                          required
                           id="work_hours"
                           name="work_hours"
                           value={work_hours}
@@ -171,6 +153,7 @@ export const ModalJob = () => {
                           Descripción del trabajo
                         </label>
                         <input
+                          required
                           name="description"
                           value={description}
                           onChange={handleInputChange}
@@ -183,24 +166,16 @@ export const ModalJob = () => {
                   {/*footer*/}
                   <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
                     <button
-                      className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
-                      type="button"
-                      style={{ transition: "all .15s ease" }}
-                      onClick={() => closeModal()}
-                    >
-                      Regresar
-                    </button>
-                    <button
                       className={`${
                         currentJob
-                          ? "bg-yellow-400 text-white active:bg-yellow-600 hover:bg-yellow-900"
-                          : "bg-blue-400 text-white active:bg-blue-600 hover:bg-blue-900"
+                          ? 'bg-yellow-400 text-white active:bg-yellow-600 hover:bg-yellow-900'
+                          : 'bg-blue-400 text-white active:bg-blue-600 hover:bg-blue-900'
                       } font-bold uppercase text-sm px-6 py-3 rounded shadow  outline-none focus:outline-none mr-1 mb-1"
                       `}
                       type="submit"
-                      style={{ transition: "all .15s ease" }}
+                      style={{ transition: 'all .15s ease' }}
                     >
-                      {currentJob ? "Modificar" : "Añadir"}
+                      {currentJob ? 'Modificar' : 'Registrar'}
                     </button>
                   </div>
                 </form>

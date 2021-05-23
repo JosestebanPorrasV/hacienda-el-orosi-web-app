@@ -23,7 +23,7 @@ import Swal from 'sweetalert2';
 import { registerTodayPresence } from '../../actions/PaymentAction';
 import { PaymentModal } from '../payment/PaymentModal';
 
-import { TableIcons, TableLocalization } from '../../helpers/TableInit';
+import { TableIcons, TableLocalization, TableOptions } from '../../helpers/TableInit';
 
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
@@ -47,7 +47,7 @@ export const CollaboratorScreen = () => {
     console.log(collaborator);
 
     const total_overtime = await Swal.fire({
-      title: 'Registrar dia laboral ',
+      title: 'Registrar día laboral ',
       input: 'number',
       inputLabel: 'Horas extras',
       inputPlaceholder: 'Escriba',
@@ -110,14 +110,10 @@ export const CollaboratorScreen = () => {
           role === 'Encargado del ganado' && 'hidden'
         } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
       >
-        <Link
-          to="/trabajos"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
-        >
-          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-500 "></i>
+        <Link to="/trabajos" className="inline-flex justify-center items-center px-1 rounded-lg">
+          <i className="fas fa-arrow-circle-left text-blue-500 text-2xl hover:text-blue-900 "></i>{' '}
+          <span className="text-xl text-blue-500 hover:underline ml-1">Trabajos</span>
         </Link>
-        <span className="text-xl text-green-600">Trabajos</span>
-
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
@@ -151,22 +147,27 @@ export const CollaboratorScreen = () => {
             Pagos
           </Link>
         </nav>
-        <span className="text-xl text-green-600">Herramientas</span>
         <Link
           to="/herramientas"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+          className="inline-flex justify-center items-center px-1 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
+          <span className="text-xl text-blue-500 hover:underline mr-1">Herramientas</span>{' '}
+          <i className="fas fa-arrow-circle-right text-blue-500 text-2xl hover:text-blue-800"></i>
         </Link>
       </div>
-      <span className="flex px-6 text-gray-600 space-x-4 italic mt-10">
-        {'Fecha actual: ' +
-          dateNow.getFullYear() +
-          '-' +
-          (dateNow.getMonth() + 1) +
-          '-' +
-          dateNow.getDate()}
-      </span>
+      <div className="flex flex-col text-center w-full mt-4 mb-4">
+        <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-700">
+          COLABORADORES
+        </h1>
+        <h2 className="text-xs text-green-700 tracking-widest font-medium title-font mb-1">
+          {'Fecha actual: ' +
+            dateNow.getFullYear() +
+            '-' +
+            (dateNow.getMonth() + 1) +
+            '-' +
+            dateNow.getDate()}
+        </h2>
+      </div>
       <MaterialTable
         title="COLABORADORES REGISTRADOS"
         icons={TableIcons}
@@ -223,16 +224,7 @@ export const CollaboratorScreen = () => {
           })
         ]}
         onRowClick={(event, rowData, togglePanel) => togglePanel()}
-        options={{
-          headerStyle: { background: '#404A59', color: 'white' },
-          rowStyle: {
-            color: '#1F3A8A'
-          },
-          pageSizeOptions: [5, 10, 30, 50, 100],
-          actionsColumnIndex: -1,
-          pageSize: 10,
-          exportButton: true
-        }}
+        options={TableOptions}
       />
       {currentCollaborator && <ModalLend />}
       {currentCollaborator && modalActiveOpen && <ModalActive />}

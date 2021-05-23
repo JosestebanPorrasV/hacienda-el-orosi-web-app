@@ -104,18 +104,16 @@ export const ModalCollaborator = () => {
                     <div className="grid grid-cols-1 gap-4  sm:grid-cols-2">
                       <div hidden={!currentCollaborator}>
                         <label className="text-gray-700 dark:text-gray-200">Registrado el:</label>
-                        <input
-                          defaultValue={currentCollaborator && currentCollaborator.date_admission}
-                          className="text-gray-700"
-                        />
+                        <span className="text-gray-700 ml-1">
+                          {currentCollaborator && currentCollaborator.date_admission}
+                        </span>
                       </div>
 
                       <div hidden={!currentCollaborator}>
                         <label className="text-gray-700 dark:text-gray-200">Finaliza el:</label>
-                        <input
-                          defaultValue={currentCollaborator && currentCollaborator.dispatch_date}
-                          className="text-gray-700"
-                        />
+                        <span className="text-gray-700 ml-1">
+                          {currentCollaborator && currentCollaborator.dispatch_date}
+                        </span>
                       </div>
 
                       <div>

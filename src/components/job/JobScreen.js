@@ -79,7 +79,7 @@ export const JobScreen = () => {
             Registrar trabajo
           </button>
         </nav>
-        <Link to="/animales" className="inline-flex justify-center items-center px-1 rounded-lg">
+        <Link to="/ganado" className="inline-flex justify-center items-center px-1 rounded-lg">
           <span className="text-xl text-blue-500 hover:underline mr-1 ">Ganado</span>
           <i className="fas fa-arrow-circle-right text-blue-500 text-2xl hover:text-blue-900"></i>
         </Link>
@@ -90,7 +90,7 @@ export const JobScreen = () => {
           REGISTRADOS
         </h2>
       </div>
-      Ï
+
       <MaterialTable
         title="TRABAJOS"
         icons={TableIcons}

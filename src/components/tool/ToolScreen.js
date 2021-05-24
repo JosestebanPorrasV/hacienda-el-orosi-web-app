@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import MaterialTable from 'material-table';
-import { TableIcons, TableLocalization } from '../../helpers/TableInit';
+import { TableIcons, TableLocalization, TableOptions } from '../../helpers/TableInit';
 
 import AddBox from '@material-ui/icons/AddBox';
 import Remove from '@material-ui/icons/Remove';
@@ -50,7 +50,7 @@ export const ToolScreen = () => {
     dispatch(toolSetActive(tool));
   };
 
-  const deleteInBulk = (tool) => {
+  const deleteInBulk = (data) => {
     Swal.fire({
       title: '¿Estas seguro?',
       text: 'La herramienta se regresara a Bodega',
@@ -62,7 +62,7 @@ export const ToolScreen = () => {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        dispatch(removeTools([{ tool_id: tool._id }]));
+        dispatch(removeTools([ {tool: data}] ));
       } else {
         toolClearActive();
       }
@@ -80,11 +80,11 @@ export const ToolScreen = () => {
       >
         <Link
           to="/colaboradores"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+          className="inline-flex justify-center items-center px-1 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-500 "></i>
+          <i className="fas fa-arrow-circle-left text-blue-600 text-2xl hover:text-green-800 "></i>{' '}
+          <span className="text-xl text-blue-600 hover:underline ml-1">Colaboradores</span>
         </Link>
-        <span className="text-xl text-green-600">Colaboradores</span>
 
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
@@ -93,7 +93,7 @@ export const ToolScreen = () => {
             type="button"
             style={{ transition: 'all .15s ease' }}
           >
-            Añadir
+            Agregar
           </button>
 
           <button
@@ -128,23 +128,26 @@ export const ToolScreen = () => {
             <span>De baja</span>
           </button>
         </nav>
-        <span className="text-xl text-green-600">Ganado</span>
-        <Link
-          to="/animales"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
-        >
-          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
+
+        <Link to="/ganado" className="inline-flex justify-center items-center px-1 rounded-lg">
+          <span className="text-xl text-blue-600 hover:underline mr-1">Ganado</span>
+          <i className="fas fa-arrow-circle-right text-blue-600 text-2xl hover:text-blue-800"></i>
         </Link>
       </div>
 
-      <span className="flex px-6 text-gray-600 space-x-4 italic mt-10">
-        {'Fecha actual: ' +
-          dateNow.getFullYear() +
-          '-' +
-          (dateNow.getMonth() + 1) +
-          '-' +
-          dateNow.getDate()}
-      </span>
+      <div className="flex flex-col text-center w-full mt-4 mb-4">
+        <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-700 uppercase">
+          herramientas registradas
+        </h1>
+        <h2 className="text-xs text-green-700 tracking-widest font-medium title-font mb-1">
+          {'Fecha actual: ' +
+            dateNow.getFullYear() +
+            '-' +
+            (dateNow.getMonth() + 1) +
+            '-' +
+            dateNow.getDate()}
+        </h2>
+      </div>
       <MaterialTable
         title="HERRAMIENTAS"
         icons={TableIcons}
@@ -152,13 +155,13 @@ export const ToolScreen = () => {
         columns={[
           { title: 'Herramienta', field: 'name', editable: 'never' },
           { title: 'Código', field: 'active_num', editable: 'never' },
-          { title: 'Registrada', field: 'date', editable: 'never' },
+          { title: 'Registrada', field: 'date', type: 'date', editable: 'never' },
           {
             title: 'Estado',
             field: 'status',
             lookup: {
               BODEGA: 'BODEGA',
-              Activo: 'ACTIVO',
+              ACTIVO: 'ACTIVO',
               REPARACION: 'REPARACION',
               BAJA: 'BAJA'
             },
@@ -184,20 +187,11 @@ export const ToolScreen = () => {
           {
             icon: Remove,
             tooltip: 'Regresar a bodega',
-            onClick: (event, rowData) => deleteInBulk(rowData),
-            hidden: toolsState === 'BAJA' || toolsState === 'BODEGA'
+            hidden: toolsState === 'BAJA' || toolsState === 'BODEGA',
+            onClick: (event, rowData) => deleteInBulk(rowData)
           }
         ]}
-        options={{
-          headerStyle: { background: '#404A59', color: 'white' },
-          rowStyle: {
-            color: '#1F3A8A'
-          },
-          pageSizeOptions: [5, 10, 30, 50, 100],
-          actionsColumnIndex: -1,
-          pageSize: 10,
-          exportButton: true
-        }}
+        options={TableOptions}
       />
       <ModalTool />
       {currentTool && <ModalAddActive />}

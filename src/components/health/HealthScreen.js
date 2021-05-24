@@ -36,7 +36,7 @@ export const HealthScreen = () => {
         } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
       >
         <Link
-          to="/animales"
+          to="/ganado"
           className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
         >
           <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-500 "></i>

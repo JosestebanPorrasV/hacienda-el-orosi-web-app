@@ -201,21 +201,24 @@ export const CollaboratorScreen = () => {
           }
         ]}
         actions={[
-          {
+          (rowData) => ({
             icon: EventAvailableIcon,
             tooltip: 'Registrar dia',
+            hidden: rowData.status === 'INACTIVO',
             onClick: (event, rowData) => registerPresence(rowData)
-          },
-          {
+          }),
+          (rowData) => ({
             icon: AttachMoneyIcon,
             tooltip: 'Realizar pagos',
+            hidden: rowData.status === 'INACTIVO',
             onClick: (event, rowData) => paymentCollaborator(rowData)
-          },
-          {
+          }),
+          (rowData) => ({
             icon: BuildIcon,
             tooltip: 'Asignar herramientas',
+            hidden: rowData.status === 'INACTIVO',
             onClick: (event, rowData) => toolCollaborator(rowData)
-          },
+          }),
           (rowData) => ({
             icon: MoneyIcon,
             tooltip: 'Realizar prestamo',

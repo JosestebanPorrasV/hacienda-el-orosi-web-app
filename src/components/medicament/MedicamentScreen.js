@@ -109,7 +109,7 @@ export const MedicamentScreen = () => {
         columns={[
           { title: 'Medicamento', field: 'name', editable: 'never' },
           { title: 'Cantidad de unidades', field: 'quantity', editable: 'never' },
-          { title: 'Unidad ml', field: 'milliliters', editable: 'never' },
+          { title: 'Unidad ml c/u', field: 'milliliters', editable: 'never' },
           {
             title: 'Precio por unidad',
             field: 'unit_price',

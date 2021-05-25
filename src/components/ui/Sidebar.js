@@ -72,6 +72,17 @@ export const Sidebar = () => {
                 </span>
               </Link>
             </li>
+            <li hidden={role !== 'Encargado del ganado'}>
+              <Link
+                to="/trabajos"
+                className="hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-2 rounded-lg"
+              >
+                <span className="flex-1">
+                  <i className="fas fa-users pr-4"></i>
+                  Trabajos
+                </span>
+              </Link>
+            </li>
             <li hidden={role === 'Encargado del ganado'}>
               <Link
                 to="/prestamos"
@@ -105,18 +116,6 @@ export const Sidebar = () => {
                 </span>
               </Link>
             </li>
-            <li hidden={role !== 'Encargado del ganado'}>
-              <Link
-                to="/trabajos"
-                className="hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-2 rounded-lg"
-              >
-                <span className="flex-1">
-                  <i className="fas fa-users pr-4"></i>
-                  Trabajos
-                </span>
-              </Link>
-            </li>
-
             <li hidden={role !== 'Dueño'}>
               <Link
                 to="/administradores"

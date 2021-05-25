@@ -104,13 +104,10 @@ export const LendScreen = () => {
   return (
     <>
       <div className="container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center">
-        <Link
-          to="/ganado"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
-        >
-          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-600 "></i>
+        <Link to="/ganado" className="inline-flex justify-center items-center px-1 rounded-lg">
+          <i className="fas fa-arrow-circle-left text-blue-600 text-2xl hover:text-blue-800 "></i>{' '}
+          <span className="text-xl text-blue-600 ml-1 hover:underline">Ganado</span>
         </Link>
-        <span className="text-xl text-green-600">Ganado</span>
 
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
@@ -138,17 +135,20 @@ export const LendScreen = () => {
             Listar cancelados
           </button>
         </nav>
-        <span className="text-xl text-green-600"> Salud</span>
+
         <Link
           to="/salud"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+          className="inline-flex justify-center items-center px-1 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-600"></i>
+          <span className="text-xl text-blue-600 mr-1 hover:underline"> Salud</span>
+          <i className="fas fa-arrow-circle-right text-blue-600 text-2xl hover:text-blue-800"></i>
         </Link>
       </div>
 
       <div className="flex flex-col text-center w-full mt-4 mb-4">
-        <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-700 uppercase">Prestamos</h1>
+        <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-700 uppercase">
+          Prestamos
+        </h1>
         <h2 className="text-xs text-green-700 tracking-widest font-medium title-font mb-1">
           Registrados
         </h2>

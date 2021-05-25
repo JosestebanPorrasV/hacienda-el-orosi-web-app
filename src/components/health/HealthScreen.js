@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import MaterialTable from 'material-table';
-import { TableIcons, TableLocalization } from '../../helpers/TableInit';
+import { TableIcons, TableLocalization, TableOptions } from '../../helpers/TableInit';
 
 import { ModalHealth } from './ModalHealth';
-import { HealthsLoaded, healthSetActive } from '../../actions/HealthAction';
+import { HealthsLoaded } from '../../actions/HealthAction';
 import { uiOpenModalHealth } from '../../actions/UIAction';
 
 export const HealthScreen = () => {
@@ -17,17 +17,6 @@ export const HealthScreen = () => {
     dispatch(HealthsLoaded());
   }, [dispatch]);
 
-  const onSelectHealth = (healthId) => {
-    dispatch(healthSetActive(healthId));
-    openModalHealth();
-  };
-
-  const openModalHealth = () => {
-    dispatch(uiOpenModalHealth());
-  };
-
-  let dateNow = new Date();
-
   return (
     <>
       <div
@@ -35,41 +24,37 @@ export const HealthScreen = () => {
           role === 'Encargado del ganado' && 'hidden'
         } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
       >
-        <Link
-          to="/ganado"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
-        >
-          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-500 "></i>
+        <Link to="/ganado" className="inline-flex justify-center items-center px-1 rounded-lg">
+          <i className="fas fa-arrow-circle-left text-blue-600 text-2xl hover:text-blue-800 "></i>{' '}
+          <span className="text-xl text-blue-600 hover:underline ml-1">Ganado</span>
         </Link>
-        <span className="text-xl text-green-600">Ganado</span>
 
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
-          <button
-            onClick={() => onSelectHealth()}
-            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
-            type="button"
-            style={{ transition: 'all .15s ease' }}
-          >
-            Añadir Registro
-          </button>
-        </nav>
-        <span className="text-xl text-green-600">Medicamentos</span>
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0"></nav>
+
         <Link
           to="/medicamentos"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+          className="inline-flex justify-center items-center px-1 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
+          <span className="text-xl text-blue-600 mr-1 hover:underline">Medicamentos</span>
+          <i className="fas fa-arrow-circle-right text-blue-900 text-2xl hover:text-blue-500"></i>
         </Link>
       </div>
-      <span className="flex px-6 text-gray-600 space-x-4 italic mt-10">
-        {'Fecha actual: ' +
-          dateNow.getFullYear() +
-          '-' +
-          (dateNow.getMonth() + 1) +
-          '-' +
-          dateNow.getDate()}
-      </span>
 
+      <div className="flex flex-col text-center w-full mb-4">
+        <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-700">REGISTRO</h1>
+        <h2 className="text-xs text-green-700 tracking-widest font-medium title-font mb-1">
+          MEDICO
+        </h2>
+      </div>
+
+      <button
+        onClick={() => dispatch(uiOpenModalHealth())}
+        className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+        type="button"
+        style={{ transition: 'all .15s ease' }}
+      >
+        Añadir Registro
+      </button>
       <MaterialTable
         title="REGISTRO MEDICO"
         icons={TableIcons}
@@ -93,16 +78,7 @@ export const HealthScreen = () => {
           }
         ]}
         data={healths}
-        options={{
-          headerStyle: { background: '#404A59', color: 'white' },
-          rowStyle: {
-            color: '#1F3A8A'
-          },
-          pageSizeOptions: [5, 10, 30, 50, 100],
-          actionsColumnIndex: -1,
-          pageSize: 10,
-          exportButton: true
-        }}
+        options={TableOptions}
       />
       <ModalHealth />
     </>

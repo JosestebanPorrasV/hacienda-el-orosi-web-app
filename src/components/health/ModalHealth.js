@@ -5,11 +5,12 @@ import { animalClearActive, searchAllAnimals, searchClearActive } from '../../ac
 import { registerHealth } from '../../actions/HealthAction';
 import DatePicker from 'react-datepicker';
 import { searchMedicament } from '../../actions/MedicamentAction';
+import Swal from 'sweetalert2';
 
 const initEvent = {
   plate_number: '',
   name: '',
-  medicamentId: '',
+  medicamentName: '',
   dose: ''
 };
 
@@ -19,12 +20,12 @@ export const ModalHealth = () => {
   const [human_consumed_date, setConsumed_date] = useState();
 
   const { modalHealthOpen } = useSelector((state) => state.ui);
-  const { currentAnimal, currentSearch } = useSelector((state) => state.animal);
+  const { currentSearch } = useSelector((state) => state.animal);
   const { currentMedicament } = useSelector((state) => state.medicament);
 
   const [formValues, setFormValues] = useState(initEvent);
 
-  const { plate_number, name, medicamentId, dose } = formValues;
+  const { plate_number, medicamentName, dose } = formValues;
 
   const handleInputChange = ({ target }) => {
     setFormValues({
@@ -45,6 +46,9 @@ export const ModalHealth = () => {
 
   const handleRegisterHealth = (e) => {
     e.preventDefault();
+    if (!administrator_date && !human_consumed_date) {
+      return Swal.fire('Error', 'Por favor elegir fechas', 'warning');
+    }
     dispatch(
       registerHealth(
         currentSearch._id,
@@ -54,7 +58,6 @@ export const ModalHealth = () => {
         human_consumed_date
       )
     );
-    setFormValues(initEvent);
     setAdministrator_date(null);
     setConsumed_date(null);
   };
@@ -89,17 +92,17 @@ export const ModalHealth = () => {
                         </label>
                         <input
                           required
-                          value={currentAnimal ? currentAnimal.plate_number : plate_number}
+                          value={plate_number}
                           onChange={handleInputChange}
                           name="plate_number"
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border-2 border-blue-500  dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                          placeholder="Requerido"
+                          placeholder="Buscar"
                         />
                         <button
                           hidden={!plate_number}
                           onClick={() => dispatch(plate_number && searchAllAnimals(plate_number))}
-                          className="bg-blue-500 text-white active:bg-blue-600 uppercase text-sm px-2 py-1 rounded-b shadow hover:bg-blue-900 outline-none focus:outline-none mr-1 mb-1"
+                          className="bg-yellow-500 text-white active:bg-yellow-600 uppercase text-sm px-2 py-1 rounded-b shadow hover:bg-yellow-900 outline-none focus:outline-none mr-1 mb-1"
                           type="button"
                           style={{ transition: 'all .15s ease' }}
                         >
@@ -121,27 +124,30 @@ export const ModalHealth = () => {
                         </label>
                         <input
                           disabled={true}
-                          value={currentSearch ? currentSearch.name : name}
-                          id="nameAnimal"
+                          value={currentSearch ? currentSearch.name : ''}
                           type="text"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
                       <div>
-                        <label className="text-gray-700 dark:text-gray-200" htmlFor="medicamentId">
+                        <label
+                          className="text-gray-700 dark:text-gray-200"
+                          htmlFor="medicamentName"
+                        >
                           Medicamento
                         </label>
                         <input
                           required
-                          value={medicamentId}
-                          name="medicamentId"
+                          value={medicamentName}
+                          name="medicamentName"
                           onChange={handleInputChange}
                           type="text"
+                          placeholder="Buscar"
                           className="block w-full px-2 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                         <button
-                          hidden={!medicamentId}
-                          onClick={() => dispatch(searchMedicament(medicamentId))}
+                          hidden={!medicamentName}
+                          onClick={() => dispatch(searchMedicament(medicamentName))}
                           className="bg-blue-500 text-white active:bg-blue-600 uppercase text-sm px-2 py-1 rounded-b shadow hover:bg-blue-900 outline-none focus:outline-none mr-1 mb-1"
                           type="button"
                           style={{ transition: 'all .15s ease' }}
@@ -149,7 +155,7 @@ export const ModalHealth = () => {
                           <i className="fas fa-search"></i> Buscar
                         </button>
                         <button
-                          hidden={!medicamentId}
+                          hidden={!medicamentName}
                           onClick={() => clearForm()}
                           className="text-gray-500 active:bg-gray-600  text-sm px-2 py-1 rounded-b  hover:text-red-900 outline-none focus:outline-none mr-1 mb-1"
                           type="button"
@@ -175,7 +181,7 @@ export const ModalHealth = () => {
                       </div>
                       <div>
                         <label className="text-gray-700 dark:text-gray-200">
-                          {`${currentAnimal ? 'Cambiar fecha administrada' : 'Fecha administrada'}`}
+                          {`${currentSearch ? 'Cambiar fecha administrada' : 'Fecha administrada'}`}
                           <br />
                         </label>
                         <DatePicker
@@ -188,7 +194,7 @@ export const ModalHealth = () => {
 
                       <div>
                         <label className="text-gray-700 dark:text-gray-200">
-                          {`${currentAnimal ? 'Cambiar fecha de consumo' : 'Fecha consumo'}`}
+                          {`${currentSearch ? 'Cambiar fecha de consumo' : 'Fecha consumo'}`}
                           <br />
                         </label>
                         <DatePicker
@@ -211,6 +217,7 @@ export const ModalHealth = () => {
                       Volver
                     </button>
                     <button
+                      disabled={!currentSearch || !currentMedicament}
                       className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-blue-900 outline-none focus:outline-none mr-1 mb-1"
                       type="submit"
                       style={{ transition: 'all .15s ease' }}

@@ -16,7 +16,7 @@ export const PaymentModal = () => {
 
   const { modalPaymentOpen } = useSelector((state) => state.ui);
 
-  const { currentCollaborator, liquidate } = useSelector((state) => state.collaborator);
+  const { currentCollaborator } = useSelector((state) => state.collaborator);
   const { lends } = useSelector((state) => state.lend);
   const { presenceDayByCollaborator, totalOvertimeByCollaborator } = useSelector(
     (state) => state.payment
@@ -75,14 +75,12 @@ export const PaymentModal = () => {
       {modalPaymentOpen ? (
         <>
           <div className="absolute inset-0  z-50 outline-none focus:outline-none">
-            <div className="relative w-auto mx-auto max-w-6xl">
+            <div className="relative w-auto mt-6 mb-8 mx-auto max-w-6xl">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none bg-white">
                 {/*header*/}
                 <div className="flex items-start justify-between p-2 text-green-800 rounded-t">
-                  <h3 className="text-2xl font-semibold">
-                    {liquidate ? 'Liquidar colaborador' : 'Realizar pago'}
-                  </h3>
+                  <h3 className="text-2xl font-semibold">Realizar pago</h3>
                   <button
                     className="p-1 ml-auto border-0 text-white float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => closeModal()}

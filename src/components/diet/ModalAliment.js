@@ -11,7 +11,7 @@ import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import {
   alimentClearActive,
   addAliment,
-  editAliment,
+  //editAliment,
   oneAlimentDelete,
   alimentSetActive,
   dietClearActive
@@ -72,6 +72,7 @@ export const ModalAliment = () => {
     deleteAliment(aliment);
   };
 
+  /*
   const onSelectAlimentEdit = (aliment) => {
     dispatch(alimentSetActive(aliment));
   };
@@ -95,7 +96,7 @@ export const ModalAliment = () => {
       dispatch(alimentClearActive());
     }
   };
-
+*/
   const deleteAliment = (alimentId) => {
     Swal.fire({
       title: '¿Estas seguro?',

@@ -110,7 +110,7 @@ export const removeTools = (data) => {
         });
 
         await dispatch(cleanSelectedActives());
-        await Swal.fire('Eliminados', body.msg, 'success');
+        await Swal.fire('Todo bien', body.msg, 'success');
         await TopLoaderService.end();
       } else {
         await Swal.fire('Error', body.msg, 'error');

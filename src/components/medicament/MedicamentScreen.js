@@ -107,6 +107,7 @@ export const MedicamentScreen = () => {
         icons={TableIcons}
         localization={TableLocalization}
         columns={[
+          { title: 'Código', field: 'active_num', editable: 'never' },
           { title: 'Medicamento', field: 'name', editable: 'never' },
           { title: 'Cantidad de unidades', field: 'quantity', editable: 'never' },
           { title: 'Unidad ml c/u', field: 'milliliters', editable: 'never' },

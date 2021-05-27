@@ -161,7 +161,6 @@ export const ToolScreen = () => {
             field: 'status',
             lookup: {
               BODEGA: 'BODEGA',
-              ACTIVO: 'ACTIVO',
               REPARACION: 'REPARACION',
               BAJA: 'BAJA'
             },

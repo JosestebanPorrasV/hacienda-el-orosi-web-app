@@ -63,6 +63,7 @@ export const HealthScreen = () => {
           { title: 'Chapa', field: 'animal.plate_number', editable: 'never' },
           { title: 'Animal', field: 'animal.name', editable: 'never' },
           { title: 'Medicamento', field: 'medicament.name', editable: 'never' },
+          { title: 'Código', field: 'medicament.active_num', editable: 'never' },
           { title: 'Dosis Inyectada', field: 'dose', editable: 'never' },
           {
             title: 'Fecha Inyección',

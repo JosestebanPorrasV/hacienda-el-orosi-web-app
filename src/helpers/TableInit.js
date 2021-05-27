@@ -73,7 +73,7 @@ export const TableLocalization = {
   },
   toolbar: {
     addRemoveColumns: 'Agregar o quitar columnas',
-    nRowsSelected: '{0} línea(s) seleccionado(s)',
+    nRowsSelected: '{0} línea(s) seleccionada(s)',
     showColumnsTitle: 'Ver columnas',
     showColumnsAriaLabel: 'Ver columnas',
     exportTitle: 'Exportar',
@@ -81,7 +81,19 @@ export const TableLocalization = {
     exportName: 'Exportar en CSV',
     searchTooltip: 'Buscar',
     searchPlaceholder: 'Buscar',
-    exportCSVName: "Descargar en EXEL",
-    exportPDFName: "Descargar en PDF"
+    exportCSVName: 'Descargar en EXEL',
+    exportPDFName: 'Descargar en PDF'
   }
+};
+
+export const TableOptions = {
+  showTitle: false,
+  headerStyle: { background: '#404A59', color: 'white' },
+  rowStyle: {
+    color: '#1F3A8A'
+  },
+  pageSizeOptions: [5, 10, 30, 50, 100],
+  actionsColumnIndex: -1,
+  pageSize: 10,
+  exportButton: true
 };

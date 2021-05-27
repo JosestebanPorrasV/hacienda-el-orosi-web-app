@@ -57,15 +57,15 @@ export function saveMedicament(medicamentFormValues) {
   };
 }
 
-export const searchMedicament = (medicamentName) => {
+export const searchMedicament = (active_num) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`gestion-salud/ver-medicamento/${medicamentName}`);
+      const resp = await FetchConsult(`gestion-salud/ver-medicamento/${active_num}`);
       const body = await resp.json();
       if (body.status) {
-        await dispatch(medicamentSetActive(body));
-
+        console.log(body);
+        await dispatch(medicamentSetActive(body.medicament));
         await Swal.fire({
           icon: 'success',
           title: body.msg,

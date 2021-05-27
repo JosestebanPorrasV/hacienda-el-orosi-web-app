@@ -4,11 +4,12 @@ import { paymentStartLoading } from '../../actions/PaymentAction';
 import { Link } from 'react-router-dom';
 
 import MaterialTable from 'material-table';
-import { TableIcons, TableLocalization } from '../../helpers/TableInit';
+import { TableIcons, TableLocalization, TableOptions } from '../../helpers/TableInit';
 
 export const PaymentScreen = () => {
   const dispatch = useDispatch();
   const { payments } = useSelector((state) => state.payment);
+  let dateNow = new Date();
 
   useEffect(() => {
     dispatch(paymentStartLoading());
@@ -19,20 +20,34 @@ export const PaymentScreen = () => {
       <div className="container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center">
         <Link
           to="/colaboradores"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+          className="inline-flex justify-center items-center px-1 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-600 "></i>
+          <i className="fas fa-arrow-circle-left text-blue-600 text-2xl hover:text-blue-800"></i>{' '}
+          <span className="text-xl text-blue-600 ml-1 hover:underline">Colaboradores</span>
         </Link>
-        <span className="text-xl text-green-600">Colaboradores</span>
 
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0"></nav>
-        <span className="text-xl text-green-600"> Herramientas</span>
         <Link
           to="/herramientas"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
+          className="inline-flex justify-center items-center px-1 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-600"></i>
+          <span className="text-xl text-blue-600 mr-1 hover:underline"> Herramientas</span>
+          <i className="fas fa-arrow-circle-right text-blue-600 text-2xl hover:text-blue-800"></i>
         </Link>
+      </div>
+
+      <div className="flex flex-col text-center w-full mt-4 mb-4">
+        <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-700 uppercase">
+          Pagos registrados
+        </h1>
+        <h2 className="text-xs text-green-700 tracking-widest font-medium title-font mb-1">
+          {'Fecha actual: ' +
+            dateNow.getFullYear() +
+            '-' +
+            (dateNow.getMonth() + 1) +
+            '-' +
+            dateNow.getDate()}
+        </h2>
       </div>
 
       <MaterialTable
@@ -57,16 +72,7 @@ export const PaymentScreen = () => {
           }
         ]}
         data={payments}
-        options={{
-          headerStyle: { background: '#404A59', color: 'white' },
-          rowStyle: {
-            color: '#1F3A8A'
-          },
-          pageSizeOptions: [5, 10, 30, 50, 100],
-          actionsColumnIndex: -1,
-          pageSize: 10,
-          exportButton: true
-        }}
+        options={TableOptions}
       />
     </>
   );

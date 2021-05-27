@@ -68,7 +68,7 @@ export const MedicamentScreen = () => {
         } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
       >
         <Link
-          to="/animales"
+          to="/ganado"
           className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
         >
           <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-500 "></i>
@@ -107,9 +107,10 @@ export const MedicamentScreen = () => {
         icons={TableIcons}
         localization={TableLocalization}
         columns={[
+          { title: 'Código', field: 'active_num', editable: 'never' },
           { title: 'Medicamento', field: 'name', editable: 'never' },
           { title: 'Cantidad de unidades', field: 'quantity', editable: 'never' },
-          { title: 'Unidad ml', field: 'milliliters', editable: 'never' },
+          { title: 'Unidad ml c/u', field: 'milliliters', editable: 'never' },
           {
             title: 'Precio por unidad',
             field: 'unit_price',
@@ -136,9 +137,6 @@ export const MedicamentScreen = () => {
         ]}
         options={{
           headerStyle: { background: '#404A59', color: 'white' },
-          rowStyle: {
-            color: '#1F3A8A'
-          },
           rowStyle: {
             color: '#1F3A8A'
           },

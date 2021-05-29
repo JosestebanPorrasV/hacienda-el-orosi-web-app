@@ -1,7 +1,9 @@
-import { Types } from "../types/Types";
-import { FetchConsult } from "../helpers/FetchService";
-import Swal from "sweetalert2";
-import TopLoaderService from "top-loader-service";
+import { Types } from '../types/Types';
+import { FetchConsult } from '../helpers/FetchService';
+import Swal from 'sweetalert2';
+import TopLoaderService from 'top-loader-service';
+import { animalClearActive } from './AnimalAction';
+import { uiCloseModalHealth } from './UIAction';
 
 export const HealthsLoaded = () => {
   return async (dispatch) => {
@@ -15,7 +17,7 @@ export const HealthsLoaded = () => {
 
         await TopLoaderService.end();
       } else {
-        await Swal.fire("Error", body.msg, "error");
+        await Swal.fire('Error', body.msg, 'error');
 
         await TopLoaderService.end();
       }
@@ -25,33 +27,42 @@ export const HealthsLoaded = () => {
   };
 };
 
-export function registerHealth(animalId, healthFormValues, medicamentID, administrator_date, consumed_date) {
+export function registerHealth(
+  animalId,
+  healthFormValues,
+  medicamentID,
+  administrator_date,
+  consumed_date
+) {
   return async (dispatch) => {
     await TopLoaderService.start();
     const resp = await FetchConsult(
-        `gestion-salud/registro-medico/${animalId}`,
-        {
-          medicamentID: medicamentID,
-          dose: healthFormValues.dose,
-          administrator_date: administrator_date,
-          human_consumed_date: consumed_date,
+      `gestion-salud/registro-medico/${animalId}`,
+      {
+        medicamentID: medicamentID,
+        dose: healthFormValues.dose,
+        administrator_date: administrator_date,
+        human_consumed_date: consumed_date
       },
-      "POST"
+      'POST'
     );
 
     const body = await resp.json();
     if (body.status) {
       await dispatch(addHealthSuccess(body));
+      await dispatch(animalClearActive());
+      await dispatch(healthClearActive());
+      await dispatch(uiCloseModalHealth());
       await Swal.fire({
-        icon: "success",
+        icon: 'success',
         title: body.msg,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 2000
       });
 
       await TopLoaderService.end();
     } else {
-      await Swal.fire("Error", body.msg, "error");
+      await Swal.fire('Error', body.msg, 'error');
       await TopLoaderService.end();
     }
   };
@@ -67,23 +78,22 @@ export function editOneJob(job_id, job) {
         description: job.description,
         work_hours: job.work_hours,
         price_extra_hours: job.price_extra_hours,
-        price_day: job.price_day,
+        price_day: job.price_day
       },
-      "PUT"
+      'PUT'
     );
     const body = await resp.json();
     if (body.status) {
-      
       await Swal.fire({
-        icon: "success",
+        icon: 'success',
         title: body.msg,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 2000
       });
 
       await TopLoaderService.end();
     } else {
-      await Swal.fire("Error", body.msg, "error");
+      await Swal.fire('Error', body.msg, 'error');
       await TopLoaderService.end();
     }
   };
@@ -91,23 +101,23 @@ export function editOneJob(job_id, job) {
 
 export const healthSetActive = (health) => ({
   type: Types.HEALTH_SET_ACTIVE,
-  payload: health,
+  payload: health
 });
 export const healthClearActive = () => ({
-  type: Types.HEALTH_CLEAR_ACTIVE,
+  type: Types.HEALTH_CLEAR_ACTIVE
 });
 
 export const addHealthSuccess = (health) => ({
   type: Types.ADD_HEALTH,
-  payload: health,
+  payload: health
 });
 
 export const updateHealthSuccess = (health) => ({
   type: Types.UPDATED_HEALTH,
-  payload: health,
+  payload: health
 });
 
 const healthsLoaded = (healths) => ({
   type: Types.HEALTHS_LOADED,
-  payload: healths,
+  payload: healths
 });

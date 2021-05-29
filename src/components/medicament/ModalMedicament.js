@@ -129,7 +129,7 @@ export const ModalMedicament = () => {
                       </div>
                       <div>
                         <label className="text-gray-700 dark:text-gray-200" htmlFor="unit_price">
-                          Precio x unidad
+                          Precio por unidad
                         </label>
                         <input
                           id="unit_price"

@@ -34,7 +34,6 @@ export const ActiveScreen = () => {
       }
     });
   };
-  let dateNow = new Date();
   return (
     <>
       <div
@@ -59,17 +58,16 @@ export const ActiveScreen = () => {
           <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
         </Link>
       </div>
-      <span className="flex px-6 text-gray-600 space-x-4 italic mt-10">
-        {'Fecha actual: ' +
-          dateNow.getFullYear() +
-          '-' +
-          (dateNow.getMonth() + 1) +
-          '-' +
-          dateNow.getDate()}
-      </span>
+      <div className="flex flex-col text-center w-full mt-4 mb-4">
+        <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-700 uppercase">
+          herramientas
+        </h1>
+        <h2 className="text-xs text-green-700 tracking-widest font-medium title-font mb-1">
+          En uso
+        </h2>
+      </div>
       <MaterialTable
         title="HERRAMIENTAS EN USO"
-        title={<h2 className={`text-green-700 text-xl font-bold`}>HERRAMIENTAS EN USO</h2>}
         icons={TableIcons}
         localization={TableLocalization}
         columns={[
@@ -88,6 +86,7 @@ export const ActiveScreen = () => {
           }
         ]}
         options={{
+          showTitle: false,
           headerStyle: { background: '#404A59', color: 'white' },
           rowStyle: {
             color: '#1F3A8A'
@@ -95,8 +94,8 @@ export const ActiveScreen = () => {
           pageSizeOptions: [5, 10, 30, 50, 100],
           actionsColumnIndex: -1,
           pageSize: 10,
-          selection: true,
-          exportButton: true
+          exportButton: true,
+          selection: true
         }}
       />
     </>

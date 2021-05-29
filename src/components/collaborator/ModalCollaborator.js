@@ -104,18 +104,16 @@ export const ModalCollaborator = () => {
                     <div className="grid grid-cols-1 gap-4  sm:grid-cols-2">
                       <div hidden={!currentCollaborator}>
                         <label className="text-gray-700 dark:text-gray-200">Registrado el:</label>
-                        <input
-                          defaultValue={currentCollaborator && currentCollaborator.date_admission}
-                          className="text-gray-700"
-                        />
+                        <span className="text-gray-700 ml-1">
+                          {currentCollaborator && currentCollaborator.date_admission}
+                        </span>
                       </div>
 
                       <div hidden={!currentCollaborator}>
                         <label className="text-gray-700 dark:text-gray-200">Finaliza el:</label>
-                        <input
-                          defaultValue={currentCollaborator && currentCollaborator.dispatch_date}
-                          className="text-gray-700"
-                        />
+                        <span className="text-gray-700 ml-1">
+                          {currentCollaborator && currentCollaborator.dispatch_date}
+                        </span>
                       </div>
 
                       <div>
@@ -280,7 +278,7 @@ export const ModalCollaborator = () => {
                         currentCollaborator
                           ? 'bg-yellow-400 hover:bg-yellow-700'
                           : 'bg-blue-400 hover:bg-blue-700'
-                      } active:bg-yellow-600 font-bold uppercase  px-3 py-3 rounded shadow hover:bg-yellow-900 outline-none focus:outline-none mr-1 mb-1"
+                      } active:bg-yellow-600 uppercase  px-3 py-3 rounded shadow hover:bg-yellow-900 outline-none focus:outline-none mr-1 mb-1"
                       `}
                       type="submit"
                       style={{ transition: 'all .15s ease' }}

@@ -181,7 +181,7 @@ export const ModalLend = () => {
                       type="submit"
                       style={{ transition: "all .15s ease" }}
                     >
-                      Registrar prestamo
+                      Registrar
                     </button>
                   </div>
                 </form>

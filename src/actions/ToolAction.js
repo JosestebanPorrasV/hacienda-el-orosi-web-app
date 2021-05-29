@@ -58,6 +58,7 @@ export function registerTool(toolFormValues) {
     const body = await resp.json();
     if (body.status) {
       await dispatch(addToolSuccess(body.tool));
+      await dispatch(toolsLoading());
       await dispatch(uiCloseModalAddTool());
       await Swal.fire({
         icon: 'success',
@@ -82,7 +83,7 @@ export function changeStatus(tool_id, status) {
     const body = await resp.json();
     if (body.status) {
       await dispatch(changeStatusSuccess(body.tool));
-
+      await dispatch(toolsLoading());
       await Swal.fire({
         icon: 'success',
         title: body.msg,
@@ -108,7 +109,7 @@ export const removeTools = (data) => {
         data.forEach(async function (element) {
           await dispatch(removeInActives(element._id));
         });
-
+        await dispatch(toolsLoading());
         await dispatch(cleanSelectedActives());
         await Swal.fire('Todo bien', body.msg, 'success');
         await TopLoaderService.end();

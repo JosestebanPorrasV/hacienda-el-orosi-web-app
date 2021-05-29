@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import MaterialTable from 'material-table';
-import { TableIcons, TableLocalization } from '../../helpers/TableInit';
+import { TableIcons, TableLocalization, TableOptions } from '../../helpers/TableInit';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 
 import {
@@ -135,15 +135,7 @@ export const MedicamentScreen = () => {
             onClick: (event, rowData) => onSelectMedicamentDelete(rowData)
           }
         ]}
-        options={{
-          headerStyle: { background: '#404A59', color: 'white' },
-          rowStyle: {
-            color: '#1F3A8A'
-          },
-          pageSizeOptions: [5, 10, 30, 50, 100],
-          pageSize: 10,
-          exportButton: true
-        }}
+        options={TableOptions}
       />
       <ModalMedicament />
     </>

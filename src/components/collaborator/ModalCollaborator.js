@@ -278,7 +278,7 @@ export const ModalCollaborator = () => {
                         currentCollaborator
                           ? 'bg-yellow-400 hover:bg-yellow-700'
                           : 'bg-blue-400 hover:bg-blue-700'
-                      } active:bg-yellow-600 font-bold uppercase  px-3 py-3 rounded shadow hover:bg-yellow-900 outline-none focus:outline-none mr-1 mb-1"
+                      } active:bg-yellow-600 uppercase  px-3 py-3 rounded shadow hover:bg-yellow-900 outline-none focus:outline-none mr-1 mb-1"
                       `}
                       type="submit"
                       style={{ transition: 'all .15s ease' }}

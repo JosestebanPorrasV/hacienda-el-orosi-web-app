@@ -53,6 +53,26 @@ export const Sidebar = () => {
             </li>
             <li>
               <Link
+                to="/dietas"
+                className="hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-2 rounded-lg"
+              >
+                <span className="flex-1">
+                  <i className="fas fa-horse pr-4"></i>Dietas
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/pagos"
+                className="hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-2 rounded-lg"
+              >
+                <span className="flex-1">
+                  <i className="fas fa-book-medical pr-4"></i>Pagos
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/herramientas-activas"
                 className="hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-2 rounded-lg"
               >
@@ -72,7 +92,7 @@ export const Sidebar = () => {
                 </span>
               </Link>
             </li>
-            <li hidden={role !== 'Encargado del ganado'}>
+            <li>
               <Link
                 to="/trabajos"
                 className="hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-2 rounded-lg"
@@ -80,6 +100,17 @@ export const Sidebar = () => {
                 <span className="flex-1">
                   <i className="fas fa-users pr-4"></i>
                   Trabajos
+                </span>
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to="/productos"
+                className="hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-2 rounded-lg"
+              >
+                <span className="flex-1">
+                  <i className="fas fa-horse pr-4"></i>Productos
                 </span>
               </Link>
             </li>
@@ -102,6 +133,16 @@ export const Sidebar = () => {
                 <span className="flex-1">
                   <i className="fas fa-tools pr-4"></i>
                   Herramientas
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/medicamentos"
+                className="hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-2 rounded-lg"
+              >
+                <span className="flex-1">
+                  <i className="fas fa-book-medical pr-4"></i>Medicamentos
                 </span>
               </Link>
             </li>
@@ -131,7 +172,7 @@ export const Sidebar = () => {
         </nav>
       </div>
       <button
-        className="px-4 py-2 font-medium tracking-wide capitalize transition-colors duration-200 transform bg-black rounded-md dark:bg-gray-800 hover:bg-blue-500 dark:hover:bg-gray-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-gray-700"
+        className="px-4 py-2 mt-10 font-medium tracking-wide capitalize transition-colors duration-200 transform bg-black rounded-md dark:bg-gray-800 hover:bg-blue-500 dark:hover:bg-gray-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-gray-700"
         onClick={() => adminLogout()}
       >
         <span>

@@ -2,10 +2,8 @@ import { Types } from '../types/Types';
 
 const initialState = {
   collaborators: [],
-  countCollaborators: 0,
   collaboratorsState: null,
-  currentCollaborator: null,
-  liquidate: false
+  currentCollaborator: null
 };
 
 export const CollaboratorReducer = (state = initialState, action) => {
@@ -14,7 +12,6 @@ export const CollaboratorReducer = (state = initialState, action) => {
       return {
         ...state,
         collaborators: [...action.payload.collaborators],
-        countCollaborators: action.payload.count,
         collaboratorsState: action.payload.collaboratorsState
       };
     case Types.ADD_NEW_COLLABORATOR:
@@ -33,26 +30,6 @@ export const CollaboratorReducer = (state = initialState, action) => {
       return {
         ...state,
         currentCollaborator: null
-      };
-
-    case Types.LIQUIDATE_SET_ACTIVE:
-      return {
-        ...state,
-        liquidate: true
-      };
-
-    case Types.LIQUIDATE_CLEAR_ACTIVE:
-      return {
-        ...state,
-        liquidate: false
-      };
-
-    case Types.VALIDATE_PRESENCE_COLLABORATOR:
-      return {
-        ...state,
-        collaborators: state.collaborators.map((e) =>
-          e._id === action.payload._id ? action.payload : e
-        )
       };
 
     case Types.COLLABORATOR_CHANGE_STATUS:

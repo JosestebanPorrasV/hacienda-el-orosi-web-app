@@ -1,50 +1,48 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ModalProduct } from './ModalProduct';
 import MaterialTable from 'material-table';
-import { TableIcons, TableLocalization } from '../../helpers/TableInit';
-
-import Edit from '@material-ui/icons/Edit';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import { TableIcons, TableLocalization, TableOptions } from '../../helpers/TableInit';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 
 import {
-  ProductsLoaded,
-  productClearActive,
-  oneProductDelete,
-  productSetActive
-} from '../../actions/ProductAction';
+  MedicamentsLoaded,
+  medicamentSetActive,
+  medicamentClearActive,
+  medicamentDelete
+} from '../../actions/MedicamentAction';
 
-import { uiOpenModalProduct } from '../../actions/UIAction';
 import Swal from 'sweetalert2';
+import { ModalMedicament } from './ModalMedicament';
+import { uiOpenModalMedicament } from '../../actions/UIAction';
 
-export const ProductScreen = () => {
+export const MedicamentScreen = () => {
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.product);
+  const { medicaments } = useSelector((state) => state.medicament);
   const { role } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(ProductsLoaded());
+    dispatch(MedicamentsLoaded());
   }, [dispatch]);
 
-  const onSelectAddEditProduct = (productId) => {
-    dispatch(productSetActive(productId));
-    openModalProduct();
+  const onSelectMedicament = (medicament) => {
+    dispatch(medicamentSetActive(medicament));
+    openModalMedicament();
   };
 
-  const openModalProduct = () => {
-    dispatch(uiOpenModalProduct());
+  const openModalMedicament = () => {
+    dispatch(uiOpenModalMedicament());
   };
 
-  const onSelectProductOneDelete = (product) => {
-    dispatch(productSetActive(product));
-    deleteProduct(product);
+  const onSelectMedicamentDelete = (medicament) => {
+    dispatch(medicamentSetActive(medicament));
+    deleteMedicament(medicament);
   };
 
-  const deleteProduct = (productId) => {
+  const deleteMedicament = (medicament) => {
     Swal.fire({
       title: '¿Estas seguro?',
-      text: 'El producto no se volerá a recuperar',
+      text: 'El medicamento no se volerá a recuperar',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -53,9 +51,9 @@ export const ProductScreen = () => {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        dispatch(oneProductDelete(productId));
+        dispatch(medicamentDelete(medicament));
       } else {
-        dispatch(productClearActive());
+        dispatch(medicamentClearActive());
       }
     });
   };
@@ -70,26 +68,26 @@ export const ProductScreen = () => {
         } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
       >
         <Link
-          to="/dietas"
+          to="/ganado"
           className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
         >
           <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-500 "></i>
         </Link>
-        <span className="text-xl text-green-600">Dieta</span>
+        <span className="text-xl text-green-600">Ganado</span>
 
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
-            onClick={() => onSelectAddEditProduct()}
+            onClick={() => onSelectMedicament()}
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
             type="button"
             style={{ transition: 'all .15s ease' }}
           >
-            Agregar Producto
+            Añadir Medicamento
           </button>
         </nav>
-        <span className="text-xl text-green-600">Ganado</span>
+        <span className="text-xl text-green-600">Salud</span>
         <Link
-          to="/ganado"
+          to="/salud"
           className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
         >
           <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
@@ -105,40 +103,41 @@ export const ProductScreen = () => {
       </span>
 
       <MaterialTable
-        title="LISTA DE PRODUCTOS"
+        title="MEDICAMENTOS"
         icons={TableIcons}
         localization={TableLocalization}
         columns={[
-          { title: 'Producto', field: 'name', editable: 'never' },
-          { title: 'Kilogramos', field: 'kilograms', editable: 'never' },
-          { title: 'Litros del Producto', field: 'liters', editable: 'never' },
-          { title: 'Precio por Producto', field: 'price', editable: 'never' }
-        ]}
-        data={products}
-        actions={[
+          { title: 'Código', field: 'active_num', editable: 'never' },
+          { title: 'Medicamento', field: 'name', editable: 'never' },
+          { title: 'Cantidad de unidades', field: 'quantity', editable: 'never' },
+          { title: 'Unidad ml c/u', field: 'milliliters', editable: 'never' },
           {
-            icon: Edit,
-            tooltip: 'Editar',
-            onClick: (event, rowData) => onSelectAddEditProduct(rowData)
-          },
-          {
-            icon: DeleteOutline,
-            tooltip: 'Eliminar',
-            onClick: (event, rowData) => onSelectProductOneDelete(rowData)
+            title: 'Precio por unidad',
+            field: 'unit_price',
+            editable: 'never',
+            type: 'currency',
+            currencySetting: {
+              locale: 'es-CR',
+              currencyCode: 'CRC'
+            }
           }
         ]}
-        options={{
-          headerStyle: { background: '#404A59', color: 'white' },
-          rowStyle: {
-            color: '#1F3A8A'
-          },
-          pageSizeOptions: [5, 10, 30, 50, 100],
-          actionsColumnIndex: -1,
-          pageSize: 10,
-          exportButton: true
-        }}
+        data={medicaments}
+        actions={[
+          /* {
+              icon: Edit,
+              tooltip: 'Editar',
+              onClick: (event, rowData) => onSelectAddEditJob(rowData)
+            },*/
+          {
+            icon: DeleteOutlineIcon,
+            tooltip: 'Eliminar',
+            onClick: (event, rowData) => onSelectMedicamentDelete(rowData)
+          }
+        ]}
+        options={TableOptions}
       />
-      <ModalProduct />
+      <ModalMedicament />
     </>
   );
 };

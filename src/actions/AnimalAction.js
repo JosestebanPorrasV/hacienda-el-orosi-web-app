@@ -3,11 +3,11 @@ import { FetchConsult, uploadImage } from '../helpers/FetchService';
 import Swal from 'sweetalert2';
 import TopLoaderService from 'top-loader-service';
 
-export const animalsByTypeLoading = (type = 'undefined', page = 1) => {
+export const animalsByTypeLoading = (type = 'undefined') => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`gestion-animal/tipo/${type}/${page}`);
+      const resp = await FetchConsult(`gestion-animal/tipo/${type}`);
       const body = await resp.json();
 
       if (body.status) {
@@ -23,11 +23,11 @@ export const animalsByTypeLoading = (type = 'undefined', page = 1) => {
   };
 };
 
-export const animalsByStatusLoading = (status, page = 1) => {
+export const animalsByStatusLoading = (status) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`gestion-animal/estado/${status}/${page}`);
+      const resp = await FetchConsult(`gestion-animal/estado/${status}`);
       const body = await resp.json();
 
       if (body.status) {
@@ -43,11 +43,11 @@ export const animalsByStatusLoading = (status, page = 1) => {
   };
 };
 
-export const animalsByStatusAndTypeLoading = (type = 'undefined', status, page = 1) => {
+export const animalsByStatusAndTypeLoading = (type = 'undefined', status ) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`gestion-animal/tipo/${type}/estado/${status}/${page}`);
+      const resp = await FetchConsult(`gestion-animal/tipo/${type}/estado/${status}`);
       const body = await resp.json();
 
       if (body.status) {
@@ -152,8 +152,34 @@ export const searchAnimal = (animalID) => {
       if (body.status) {
         if (body.animal.type.gender === 'Macho') {
           await TopLoaderService.end();
-          return await Swal.fire('Cuidado', 'Solamente animales hembras', 'warning');
+          return await Swal.fire('Cuidado', 'Solamente ganado hembras', 'warning');
         }
+        await dispatch(searchSetActive(body.animal));
+        await Swal.fire({
+          icon: 'success',
+          title: body.msg,
+          showConfirmButton: false,
+          timer: 2000
+        });
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire('Error', body.msg, 'warning');
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const searchAllAnimals = (animalID) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(`gestion-animal/ver-animal/${animalID}`);
+      const body = await resp.json();
+      if (body.status) {
+       
         await dispatch(searchSetActive(body.animal));
         await Swal.fire({
           icon: 'success',

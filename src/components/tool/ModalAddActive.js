@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uiCloseModalAddActive } from "../../actions/UIAction";
 import {
@@ -29,16 +30,14 @@ export const ModalAddActive = () => {
   };
 
   const [formValues, handleInputChange] = UseForm({
-    collaborator_id: "",
+    collaborator_id: ''
   });
 
   const { collaborator_id } = formValues;
 
   const handleAddOneActive = async () => {
     await dispatch(
-      registerActives([
-        { collaborator_id: currentCollaborator._id, tool_id: currentTool._id },
-      ])
+      registerActives([{ collaborator_id: currentCollaborator._id, tool_id: currentTool._id }])
     );
     await clearForm();
   };
@@ -52,9 +51,7 @@ export const ModalAddActive = () => {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none bg-hwite">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blue-100  text-blue-800 rounded-t">
-                  <h3 className="text-3xl font-semibold">
-                    Asignar Herramienta
-                  </h3>
+                  <h3 className="text-3xl font-semibold">Asignar Herramienta</h3>
                   <button
                     className="p-1 ml-auto border-0 text-white float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => closeModal()}
@@ -69,10 +66,7 @@ export const ModalAddActive = () => {
                   <section className="max-w-4xl mx-auto bg-white">
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="active_num"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200" htmlFor="active_num">
                           Código de la herramienta
                         </label>
                         <input
@@ -85,10 +79,7 @@ export const ModalAddActive = () => {
                       </div>
 
                       <div>
-                        <label
-                          className="text-gray-700 dark:text-gray-200"
-                          htmlFor="name"
-                        >
+                        <label className="text-gray-700 dark:text-gray-200" htmlFor="name">
                           Nombre de la herramienta
                         </label>
                         <input
@@ -109,7 +100,7 @@ export const ModalAddActive = () => {
                         </label>
                         <input
                           required
-                          value={ collaborator_id} 
+                          value={collaborator_id}
                           onChange={handleInputChange}
                           name="collaborator_id"
                           type="number"
@@ -117,12 +108,10 @@ export const ModalAddActive = () => {
                           placeholder="Requerido"
                         />
                         <button
-                          onClick={() =>
-                            dispatch(searchCollaborator(collaborator_id))
-                          }
+                          onClick={() => dispatch(searchCollaborator(collaborator_id))}
                           className="bg-blue-500 text-white active:bg-blue-600 uppercase text-sm px-2 py-1 rounded-b shadow hover:bg-blue-900 outline-none focus:outline-none mr-1 mb-1"
                           type="button"
-                          style={{ transition: "all .15s ease" }}
+                          style={{ transition: 'all .15s ease' }}
                         >
                           <i className="fas fa-search"></i> Buscar
                         </button>
@@ -146,8 +135,9 @@ export const ModalAddActive = () => {
                         <input
                           disabled={true}
                           value={
-                            currentCollaborator ?
-                            `${currentCollaborator.name} ${currentCollaborator.surname}` : ""
+                            currentCollaborator
+                              ? `${currentCollaborator.name} ${currentCollaborator.surname}`
+                              : ''
                           }
                           id="nameCollaborator"
                           type="text"
@@ -163,7 +153,7 @@ export const ModalAddActive = () => {
                     disabled={!currentCollaborator}
                     className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                     type="button"
-                    style={{ transition: "all .15s ease" }}
+                    style={{ transition: 'all .15s ease' }}
                     onClick={() => handleAddOneActive()}
                   >
                     Asignar
@@ -172,7 +162,7 @@ export const ModalAddActive = () => {
                   <button
                     className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
                     type="button"
-                    style={{ transition: "all .15s ease" }}
+                    style={{ transition: 'all .15s ease' }}
                     onClick={() => closeModal()}
                   >
                     Regresar

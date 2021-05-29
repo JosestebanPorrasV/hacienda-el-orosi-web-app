@@ -1,28 +1,27 @@
-import React from "react";
-import Swal from "sweetalert2";
-import bgLogin from "../../assets/bgLogin.jpg";
+import React from 'react';
+import Swal from 'sweetalert2';
+import bgLogin from '../../assets/bgLogin.jpg';
 
-import { useDispatch, useSelector } from "react-redux";
-import { UseForm } from "../../hooks/UseForm";
-import { setRecoveryKey } from "../../actions/AuthAction";
-import { verifyRecoveryKey } from "../../actions/AuthAction";
-import { changePass } from "../../actions/AuthAction";
-import { Link } from "react-router-dom";
-
-import "../../assets/css/TopLoaderService.css";
+import { useDispatch, useSelector } from 'react-redux';
+import { UseForm } from '../../hooks/UseForm';
+import { setRecoveryKey } from '../../actions/AuthAction';
+import { verifyRecoveryKey } from '../../actions/AuthAction';
+import { changePass } from '../../actions/AuthAction';
+import { Link } from 'react-router-dom';
+import '../../assets/css/TopLoaderService.css';
 
 export const RecoveryPass = () => {
   const dispatch = useDispatch();
 
   const { findMail, recoveryState } = useSelector((state) => state.auth);
 
-  const administrator = localStorage.getItem("identity") || "";
+  const administrator = localStorage.getItem('identity') || '';
 
   const [formRecoveryValues, handleRecoveryInputChange] = UseForm({
-    email: "",
-    code: "",
-    password0: "",
-    password1: "",
+    email: '',
+    code: '',
+    password0: '',
+    password1: ''
   });
 
   const { email, code, password0, password1 } = formRecoveryValues;
@@ -41,11 +40,7 @@ export const RecoveryPass = () => {
     e.preventDefault();
 
     if (password0 !== password1) {
-      return Swal.fire(
-        "Error",
-        "Las contraseñas deben de ser iguales",
-        "error"
-      );
+      return Swal.fire('Error', 'Las contraseñas deben de ser iguales', 'error');
     }
 
     dispatch(changePass(findMail, password0, 3));
@@ -54,21 +49,13 @@ export const RecoveryPass = () => {
   if (recoveryState !== 3) {
     return (
       <section
-        className="m-0 p-0 box-border relative h-screen w-full text-white bg-cover bg-center"
+        className="m-0 p-0  box-border relative h-screen w-full text-white bg-cover bg-center"
         style={{ backgroundImage: `url(${!administrator && bgLogin})` }}
       >
         <div className="container mx-auto flex flex-col px-5 justify-center items-center">
-          {!administrator && (
-            <img
-              className="lg:w-2/6 md:w-3/6 w-5/6 mb-4 mt-4 object-cover object-center rounded"
-              alt="hero"
-              src="https://dummyimage.com/720x600"
-            />
-          )}
-
-          <div className="w-full md:w-2/3 flex flex-col mb-16 items-center text-center bg-black bg-opacity-70 rounded-2xl md:p-4">
+          <div className="w-full md:w-2/3 mt-20 flex flex-col mb-16 items-center text-center bg-black bg-opacity-70 rounded-2xl md:p-4">
             <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-200">
-             {administrator ? "Cambiar contraseña" : "Sistema de recuperacion"} 
+              {administrator ? 'Cambiar contraseña' : 'Sistema de recuperación'}
             </h1>
             <form
               onSubmit={(() => {
@@ -84,9 +71,7 @@ export const RecoveryPass = () => {
             >
               {recoveryState === 0 && (
                 <div className="relative mr-4 lg:w-full xl:w-1/2 w-2/4 md:w-full text-left">
-                  <label className="leading-7 text-sm text-white">
-                    Correo electrónico
-                  </label>
+                  <label className="leading-7 text-sm text-white">Correo electrónico</label>
                   <input
                     required
                     type="email"
@@ -100,10 +85,7 @@ export const RecoveryPass = () => {
 
               {recoveryState === 1 && (
                 <div className="relative mr-4 lg:w-full xl:w-1/2 w-2/4 md:w-full text-left">
-                  <label
-                    htmlFor="code"
-                    className="leading-7 text-sm text-white"
-                  >
+                  <label htmlFor="code" className="leading-7 text-sm text-white">
                     Código recibido por correo
                   </label>
                   <input
@@ -120,10 +102,7 @@ export const RecoveryPass = () => {
 
               {recoveryState === 2 && (
                 <div className="relative mr-4 lg:w-full xl:w-1/2 w-2/4 md:w-full text-left">
-                  <label
-                    htmlFor="code"
-                    className="leading-7 text-sm text-white"
-                  >
+                  <label htmlFor="code" className="leading-7 text-sm text-white">
                     Nueva contraseña
                   </label>
                   <input
@@ -135,10 +114,7 @@ export const RecoveryPass = () => {
                     value={password0}
                     onChange={handleRecoveryInputChange}
                   />
-                  <label
-                    htmlFor="code"
-                    className="leading-7 text-sm text-white"
-                  >
+                  <label htmlFor="code" className="leading-7 text-sm text-white">
                     Repetir contraseña
                   </label>
 
@@ -164,16 +140,15 @@ export const RecoveryPass = () => {
 
             {recoveryState === 0 && (
               <p className="text-sm mt-2 text-gray-300 mb-8 w-full">
-                *Se enviara un mensaje al correo proporcionado, por favor seguir
-                instruciones.
+                *Se enviara un mensaje al correo proporcionado, por favor seguir instruciones.
               </p>
             )}
 
             <Link
-              className="bg-white text-black border-0 py-2 px-6 m-8 focus:outline-none hover:bg-gray-600 hover:text-white rounded text-lg"
-              to= {administrator ? "/administradores": "/ingresar" }
+              className="text-white border-0 text-4xl m-8 focus:outline-none hover:text-gray-400 rounded text-lg"
+              to={administrator ? '/administradores' : '/ingresar'}
             >
-              Regresar
+              <i className="fas fa-arrow-circle-left"></i>
             </Link>
           </div>
         </div>

@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  collaboratorClearActive,
-  registerCollaborator,
-  editOneCollaborator
-} from '../../actions/CollaboratorAction';
+import { registerCollaborator, editOneCollaborator } from '../../actions/CollaboratorAction';
 import { JobsLoaded } from '../../actions/JobAction';
 import { uiCloseModalCollaborator } from '../../actions/UIAction';
 import Swal from 'sweetalert2';
@@ -67,15 +63,12 @@ export const ModalCollaborator = () => {
           dispatch_date ? dispatch_date : currentCollaborator.dispatch_date
         )
       );
-      dispatch(uiCloseModalCollaborator());
-      dispatch(collaboratorClearActive());
     } else {
       if (!job || job === 'DEFAULT') {
         return Swal.fire('Error', 'Por favor elige un trabjo', 'warning');
       }
       dispatch(registerCollaborator(formValues, date_admission, dispatch_date));
     }
-
     setDate_admission(null);
     setDispatch_date(null);
   };
@@ -107,22 +100,20 @@ export const ModalCollaborator = () => {
                 </div>
                 {/*body*/}
                 <form onSubmit={handleSubmitForm}>
-                  <section className="max-w-4xl p-4 mx-auto bg-white dark:bg-gray-800">
+                  <section className="p-4 mx-auto bg-white dark:bg-gray-800">
                     <div className="grid grid-cols-1 gap-4  sm:grid-cols-2">
                       <div hidden={!currentCollaborator}>
                         <label className="text-gray-700 dark:text-gray-200">Registrado el:</label>
-                        <input
-                          defaultValue={currentCollaborator && currentCollaborator.date_admission}
-                          className="text-gray-700"
-                        />
+                        <span className="text-gray-700 ml-1">
+                          {currentCollaborator && currentCollaborator.date_admission}
+                        </span>
                       </div>
 
                       <div hidden={!currentCollaborator}>
                         <label className="text-gray-700 dark:text-gray-200">Finaliza el:</label>
-                        <input
-                          defaultValue={currentCollaborator && currentCollaborator.dispatch_date}
-                          className="text-gray-700"
-                        />
+                        <span className="text-gray-700 ml-1">
+                          {currentCollaborator && currentCollaborator.dispatch_date}
+                        </span>
                       </div>
 
                       <div>
@@ -285,17 +276,21 @@ export const ModalCollaborator = () => {
                       disabled={!currentCollaborator && !dispatch_date && !date_admission}
                       className={`${
                         currentCollaborator
-                          ? 'text-yellow-700 hover:text-yellow-400'
-                          : 'text-blue-700 hover:text-blue-400'
-                      } font-bold text-4xl ml-4 mb-1"
+                          ? 'bg-yellow-400 hover:bg-yellow-700'
+                          : 'bg-blue-400 hover:bg-blue-700'
+                      } active:bg-yellow-600 uppercase  px-3 py-3 rounded shadow hover:bg-yellow-900 outline-none focus:outline-none mr-1 mb-1"
                       `}
                       type="submit"
                       style={{ transition: 'all .15s ease' }}
                     >
                       {currentCollaborator ? (
-                        <i className="fas fa-edit"></i>
+                        <>
+                          <i className="fas fa-edit"></i> Editar
+                        </>
                       ) : (
-                        <i className="fas fa-save"></i>
+                        <>
+                          <i className="fas fa-save"></i> Contratar
+                        </>
                       )}
                     </button>
                   </div>

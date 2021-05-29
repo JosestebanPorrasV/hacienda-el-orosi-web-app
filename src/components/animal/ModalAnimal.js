@@ -139,7 +139,7 @@ export const ModalAnimal = () => {
           formValues,
           currentType._id,
           date_admission,
-          next_due_date && next_due_date,
+          next_due_date,
           currentSearch && currentSearch._id
         )
       );
@@ -195,18 +195,18 @@ export const ModalAnimal = () => {
                       {currentAnimal && (
                         <div className="sm:w-1/4 w-1/2">
                           <p className="leading-relaxed">Registrado el</p>
-                          <h2 className="title-font font-medium text-gray-700">
+                          <span className="title-font font-medium text-gray-700">
                             {currentAnimal.date_admission}
-                          </h2>
+                          </span>
                         </div>
                       )}
 
                       {currentAnimal && currentAnimal.next_due_date && (
                         <div className="sm:w-1/4 w-1/2">
                           <p className="leading-relaxed">próximo de parto</p>
-                          <h2 className="title-font font-medium text-gray-700">
+                          <span className="title-font font-medium text-gray-700">
                             {currentAnimal.next_due_date}
-                          </h2>
+                          </span>
                         </div>
                       )}
                       {currentSearch && (
@@ -233,7 +233,7 @@ export const ModalAnimal = () => {
                         Tipo de animal
                       </label>
                       <Link
-                        to="/tipos-de-animales"
+                        to="/tipos-de-ganado"
                         className="ml-2 text-blue-500 inline-flex items-center"
                       >
                         Ir

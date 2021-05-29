@@ -13,9 +13,9 @@ export const Dashboard = () => {
         <Navbar />
         <Sidebar />
 
-        <div className="flex-1 flex flex-col bg-gray-800  px-4 overflow-hidden">
+        <div className="flex-1 flex flex-col px-3 overflow-hidden">
           <div className="flex-1">
-            <div className="max-w-screen-2xl mx-auto">
+            <div className="mx-auto">
               <DashboardRoutes />
             </div>
           </div>

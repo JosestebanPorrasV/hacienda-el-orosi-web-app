@@ -1,10 +1,10 @@
-import { Types } from "../types/Types";
-import { FetchConsult } from "../helpers/FetchService";
-import Swal from "sweetalert2";
-import { uiCloseModalAddTool } from "./../actions/UIAction";
-import TopLoaderService from "top-loader-service";
+import { Types } from '../types/Types';
+import { FetchConsult } from '../helpers/FetchService';
+import Swal from 'sweetalert2';
+import { uiCloseModalAddTool } from './../actions/UIAction';
+import TopLoaderService from 'top-loader-service';
 
-export const toolsLoading = (status = "En bodega") => {
+export const toolsLoading = (status = 'BODEGA') => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
@@ -15,7 +15,7 @@ export const toolsLoading = (status = "En bodega") => {
         await dispatch(toolLoaded(body.tools));
         await TopLoaderService.end();
       } else {
-        await Swal.fire("Error", body.msg, "error");
+        await Swal.fire('Error', body.msg, 'error');
         await TopLoaderService.end();
       }
     } catch (error) {
@@ -32,10 +32,10 @@ export const activesToolsLoaded = () => {
       const body = await resp.json();
 
       if (body.status) {
-        await dispatch(activesLoaded(body.actives));
+        await dispatch(activesLoaded(body));
         await TopLoaderService.end();
       } else {
-        await Swal.fire("Error", body.msg, "error");
+        await Swal.fire('Error', body.msg, 'error');
         await TopLoaderService.end();
       }
     } catch (error) {
@@ -48,11 +48,11 @@ export function registerTool(toolFormValues) {
   return async (dispatch) => {
     await TopLoaderService.start();
     const resp = await FetchConsult(
-      "herramientas/registrar",
+      'herramientas/registrar',
       {
-        name: toolFormValues.name,
+        name: toolFormValues.name
       },
-      "POST"
+      'POST'
     );
 
     const body = await resp.json();
@@ -60,14 +60,14 @@ export function registerTool(toolFormValues) {
       await dispatch(addToolSuccess(body.tool));
       await dispatch(uiCloseModalAddTool());
       await Swal.fire({
-        icon: "success",
+        icon: 'success',
         title: body.msg,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 2000
       });
       await TopLoaderService.end();
     } else {
-      await Swal.fire("Error", body.msg, "error");
+      await Swal.fire('Error', body.msg, 'error');
       await TopLoaderService.end();
     }
   };
@@ -76,26 +76,22 @@ export function registerTool(toolFormValues) {
 export function changeStatus(tool_id, status) {
   return async (dispatch) => {
     await TopLoaderService.start();
-    const resp = await FetchConsult(
-      `herramientas/cambiar-estado/${tool_id}`,
-      { status },
-      "PUT"
-    );
+
+    const resp = await FetchConsult(`herramientas/cambiar-estado/${tool_id}`, { status }, 'PUT');
 
     const body = await resp.json();
     if (body.status) {
-
       await dispatch(changeStatusSuccess(body.tool));
 
       await Swal.fire({
-        icon: "success",
+        icon: 'success',
         title: body.msg,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 2000
       });
       await TopLoaderService.end();
     } else {
-      await Swal.fire("Error", body.msg, "error");
+      await Swal.fire('Error', body.msg, 'error');
       await TopLoaderService.end();
     }
   };
@@ -105,25 +101,19 @@ export const removeTools = (data) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      console.log(data);
-      const resp = await FetchConsult(
-        `herramientas/eliminar-activos`,
-        { tools: data },
-        "DELETE"
-      );
+      const resp = await FetchConsult(`herramientas/eliminar-activos`, { tools: data }, 'DELETE');
       const body = await resp.json();
 
       if (body.status) {
         data.forEach(async function (element) {
-          await dispatch(removeInActives(element.active_id));
+          await dispatch(removeInActives(element._id));
         });
 
         await dispatch(cleanSelectedActives());
-
-        await Swal.fire("Eliminados", body.msg, "success");
+        await Swal.fire('Todo bien', body.msg, 'success');
         await TopLoaderService.end();
       } else {
-        await Swal.fire("Error", body.msg, "error");
+        await Swal.fire('Error', body.msg, 'error');
         await TopLoaderService.end();
       }
     } catch (error) {
@@ -136,11 +126,7 @@ export const registerActives = (data) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(
-        `herramientas/registrar-activos`,
-        { tools: data },
-        "POST"
-      );
+      const resp = await FetchConsult(`herramientas/registrar-activos`, { tools: data }, 'POST');
       const body = await resp.json();
 
       if (body.status) {
@@ -148,10 +134,10 @@ export const registerActives = (data) => {
         await dispatch(cleanSelectedTools());
         await dispatch(toolsLoading());
 
-        await Swal.fire("Todo bien", body.msg, "success");
+        await Swal.fire('Todo bien', body.msg, 'success');
         await TopLoaderService.end();
       } else {
-        await Swal.fire("Error", body.msg, "error");
+        await Swal.fire('Error', body.msg, 'error');
         await TopLoaderService.end();
       }
     } catch (error) {
@@ -162,11 +148,11 @@ export const registerActives = (data) => {
 
 export const toolSetActive = (tool) => ({
   type: Types.TOOL_SET_ACTIVE,
-  payload: tool,
+  payload: tool
 });
 
 export const toolClearActive = () => ({
-  type: Types.TOOL_CLEAR_ACTIVE,
+  type: Types.TOOL_CLEAR_ACTIVE
 });
 
 export const addToolSelected = (tool) => {
@@ -183,53 +169,53 @@ export const addActiveSelected = (tool) => {
 
 export const addToSelectedTools = (tool) => ({
   type: Types.ADD_TO_SELECT_TOOLS,
-  payload: tool,
+  payload: tool
 });
 
 export const removeInSelectedTools = (tool_id) => ({
   type: Types.REMOVE_IN_SELECT_TOOLS,
-  payload: tool_id,
+  payload: tool_id
 });
 
 export const addToSelectedActives = (tool) => ({
   type: Types.ADD_TO_SELECT_ACTIVES,
-  payload: tool,
+  payload: tool
 });
 
 export const removeInSelectedActives = (tool_id) => ({
   type: Types.REMOVE_IN_SELECT_ACTIVES,
-  payload: tool_id,
+  payload: tool_id
 });
 
 export const removeInActives = (tool_id) => ({
   type: Types.REMOVE_IN_ACTIVES,
-  payload: tool_id,
+  payload: tool_id
 });
 
 export const changeStatusSuccess = (tool) => ({
   type: Types.TOOL_CHANGE_STATUS,
-  payload: tool,
+  payload: tool
 });
 
 export const cleanSelectedTools = () => ({
-  type: Types.CLEAN_SELECT_TOOLS,
+  type: Types.CLEAN_SELECT_TOOLS
 });
 
 export const cleanSelectedActives = () => ({
-  type: Types.CLEAN_SELECT_ACTIVES,
+  type: Types.CLEAN_SELECT_ACTIVES
 });
 
 export const addToolSuccess = (tool) => ({
   type: Types.ADD_NEW_TOOL,
-  payload: tool,
+  payload: tool
 });
 
 const toolLoaded = (tools) => ({
   type: Types.TOOLS_LOADED,
-  payload: tools,
+  payload: tools
 });
 
 const activesLoaded = (actives) => ({
   type: Types.ACTIVES_LOADED,
-  payload: actives,
+  payload: actives
 });

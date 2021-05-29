@@ -26,16 +26,22 @@ import { ModalAnimal } from './ModalAnimal';
 import moment from 'moment';
 import UploadImgProfile from './UploadImgProfile';
 import RegisterCalving from './RegisterCalving';
-import ReactPaginate from 'react-paginate';
 import ChangeNextDueDate from './ChangeNextDueDate';
+
+import MaterialTable from 'material-table';
+import { TableIcons, TableLocalization } from '../../helpers/TableInit';
+
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import BuildIcon from '@material-ui/icons/Build';
+import MoneyIcon from '@material-ui/icons/Money';
 
 export const AnimalsScreen = () => {
   const dispatch = useDispatch();
   const [openTab, setOpenTab] = React.useState(1);
 
-  const { animals, animalsTypes, currentType, count, animalState } = useSelector(
-    (state) => state.animal
-  );
+  const { animals, animalsTypes, currentType, animalState } = useSelector((state) => state.animal);
 
   useEffect(() => {
     dispatch(TypesLoading());
@@ -170,18 +176,6 @@ export const AnimalsScreen = () => {
     });
   };
 
-  const paginate = (data) => {
-    if (currentType && !animalState) {
-      dispatch(animalsByTypeLoading(currentType._id, data.selected + 1));
-    } else if (currentType && animalState) {
-      dispatch(animalsByStatusAndTypeLoading(currentType._id, animalState, data.selected + 1));
-    } else if (!currentType && animalState) {
-      dispatch(animalsByStatusLoading(animalState, data.selected + 1));
-    } else {
-      dispatch(animalsByTypeLoading('undefined', data.selected + 1));
-    }
-  };
-
   return (
     <>
       <div className="container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center">
@@ -189,9 +183,9 @@ export const AnimalsScreen = () => {
           to="/herramientas"
           className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-200 "></i>
+          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-400 "></i>
         </Link>
-        <span className="text-xl text-green-200">Herramientas</span>
+        <span className="text-xl text-green-700">Herramientas</span>
 
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
           <button
@@ -203,7 +197,7 @@ export const AnimalsScreen = () => {
             Registrar
           </button>
           <Link
-            to="/tipos-de-animales"
+            to="/tipos-de-ganado"
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
             type="button"
             style={{ transition: 'all .15s ease' }}
@@ -215,8 +209,8 @@ export const AnimalsScreen = () => {
             onClick={() =>
               dispatch(
                 currentType
-                  ? animalsByStatusAndTypeLoading(currentType._id, 'En finca')
-                  : animalsByStatusLoading('En finca')
+                  ? animalsByStatusAndTypeLoading(currentType._id, 'FINCA')
+                  : animalsByStatusLoading('FINCA')
               )
             }
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
@@ -229,8 +223,8 @@ export const AnimalsScreen = () => {
             onClick={() =>
               dispatch(
                 currentType
-                  ? animalsByStatusAndTypeLoading(currentType._id, 'De baja')
-                  : animalsByStatusLoading('De baja')
+                  ? animalsByStatusAndTypeLoading(currentType._id, 'ELIMINADO')
+                  : animalsByStatusLoading('ELIMINADO')
               )
             }
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
@@ -243,8 +237,8 @@ export const AnimalsScreen = () => {
             onClick={() =>
               dispatch(
                 currentType
-                  ? animalsByStatusAndTypeLoading(currentType._id, 'Vendido')
-                  : animalsByStatusLoading('Vendido')
+                  ? animalsByStatusAndTypeLoading(currentType._id, 'VENDIDO')
+                  : animalsByStatusLoading('VENDIDO')
               )
             }
             className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
@@ -253,12 +247,12 @@ export const AnimalsScreen = () => {
             <span>Vendidos</span>
           </button>
         </nav>
-        <span className="text-xl text-green-200"> Dietas</span>
+        <span className="text-xl text-green-700"> Dietas</span>
         <Link
           to="/dietas"
           className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-200"></i>
+          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-400"></i>
         </Link>
       </div>
 
@@ -287,7 +281,7 @@ export const AnimalsScreen = () => {
       </div>
 
       {animals.length !== 0 ? (
-        <div className="mt-2">
+        <div className="bg-gray-700 mt-2">
           <input
             type="text"
             name="filter"
@@ -298,7 +292,7 @@ export const AnimalsScreen = () => {
           />
           <span className={`text-white md:ml-2 rounded-t-lg  inline-block text uppercase`}>
             <i className="fas fa-box-open"></i>{' '}
-            {animalState ? `${animalState}, total: ${count}` : `total: ${count}`}
+            {animalState ? `${animalState}, total: ${animals.length}` : `total: ${animals.length}`}
           </span>
           <SearchResults
             value={filter}
@@ -701,31 +695,156 @@ export const AnimalsScreen = () => {
               </>
             )}
           />
-          <ReactPaginate
-            pageCount={Math.ceil(count / 5)}
-            marginPagesDisplayed={1}
-            pageRangeDisplayed={2}
-            previousLabel={'Atras'}
-            activeClassName={'bg-green-900 rounded-full my-1'}
-            breakClassName={'text-2xl text-grey-900 pl-4'}
-            nextLabel={'Adelante'}
-            breakLabel={'...'}
-            pageLinkClassName={
-              'flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-gray-900 rounded-full my-1'
-            }
-            previousClassName={
-              'flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900'
-            }
-            nextClassName={
-              'flex items-center px-4 py-2 mx-1 text-white text-bold transition-colors duration-200 transform bg-green-700 rounded-full hover:bg-green-900'
-            }
-            onPageChange={(data) => paginate(data)}
-            containerClassName={'sm:flex m-4 p-3'}
+
+          <MaterialTable
+            title="GANADO"
+            icons={TableIcons}
+            localization={TableLocalization}
+            columns={[
+              { title: 'Placa', field: 'plate_number', editable: 'never' },
+
+              {
+                title: 'Color',
+                field: 'plate_color',
+                editable: 'never',
+                render: (rowData) => (
+                  <span
+                    className={`bg-gray-200 rounded-full px-3 py-1 mt-2 mb-2 inline-block text-center`}
+                    style={{ color: rowData.plate_color }}
+                  >
+                    <i className="fas fa-tint"></i>
+                  </span>
+                )
+              },
+              {
+                title: 'Estado',
+                field: 'status',
+                lookup: { VENDIDO: 'VENDIDO', FINCA: 'FINCA', ELIMINADO: 'ELIMINADO' }
+              },
+              { title: 'Categoría', field: 'type.name', editable: 'never' },
+              { title: 'Ingreso', field: 'date_admission', type: 'date', editable: 'never' },
+              {
+                title: 'Peso inicial(KG)',
+                field: 'starting_weight',
+                editable: 'never',
+                type: 'numeric'
+              },
+              { title: 'Raza', field: 'race', editable: 'never' },
+              { title: 'Nombre', field: 'name', editable: 'never' },
+              {
+                title: 'Madre',
+                field: 'daughter_of.plate_number',
+                editable: 'never',
+                render: (rowData) => (
+                  <>
+                    {rowData.daughter_of ? (
+                      <span>{rowData.daughter_of.plate_number}</span>
+                    ) : (
+                      <i className="fas fa-ban"></i>
+                    )}
+                  </>
+                )
+              },
+              {
+                title: 'Registro',
+                field: '',
+                editable: 'never',
+                render: (rowData) => (
+                  <>
+                    {rowData.photo_register ? (
+                      <a className="ml-auto mr-2 hover:underline" href={rowData.photo_register}>
+                        <i className="fas fa-cloud-download-alt"></i>
+                      </a>
+                    ) : (
+                      <i className="fas fa-ban"></i>
+                    )}
+                  </>
+                )
+              },
+              {
+                title: 'Prx parto',
+                field: 'next_due_date',
+                editable: 'never',
+                render: (rowData) => (
+                  <>
+                    {rowData.next_due_date ? (
+                      <span className="whitespace-nowrap">{rowData.next_due_date}</span>
+                    ) : (
+                      <i className="fas fa-ban"></i>
+                    )}
+                  </>
+                )
+              },
+              { title: 'Edad', field: 'age', editable: 'never' },
+              { title: 'Origen', field: 'place_origin', editable: 'never' }
+            ]}
+            data={animals}
+            cellEditable={{
+              onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
+                return new Promise((resolve, reject) => {
+                  //changeStatusCollaborator(rowData);
+                  setTimeout(resolve, 1000);
+                });
+              }
+            }}
+            actions={[
+              {
+                icon: EventAvailableIcon,
+                tooltip: 'Registrar dia',
+                onClick: (event, rowData) => {}
+              },
+              {
+                icon: AttachMoneyIcon,
+                tooltip: 'Realizar pagos',
+                onClick: (event, rowData) => {}
+              },
+              {
+                icon: BuildIcon,
+                tooltip: 'Asignar herramientas',
+                onClick: (event, rowData) => {}
+              },
+              (rowData) => ({
+                icon: MoneyIcon,
+                tooltip: 'Realizar prestamo',
+                hidden: rowData.status === 'INACTIVO',
+                onClick: (event, rowData) => {}
+              })
+            ]}
+            detailPanel={[
+              {
+                icon: VisibilityIcon,
+                tooltip: 'Ver imagen',
+                render: (rowData) => {
+                  return (
+                    <img
+                      alt="Hacienda El Orosi"
+                      className="lg:h-96 h-64  object-contain rounded"
+                      src={
+                        rowData.photo_link
+                          ? rowData.photo_link
+                          : 'https://alternos.la/image/not-available-es.png'
+                      }
+                    />
+                  );
+                }
+              }
+            ]}
+            onRowClick={(event, rowData, togglePanel) => togglePanel()}
+            options={{
+              headerStyle: { background: '#404A59', color: 'white' },
+              rowStyle: {
+                color: '#1F3A8A'
+              },
+              pageSizeOptions: [5, 10, 30, 50, 100],
+              actionsColumnIndex: -1,
+              pageSize: 10,
+              exportButton: true
+            }}
           />
         </div>
       ) : (
         <span className="ml-2 text-gray-400 whitespace-nowrap italic">
-          - ( No se encontraron animales registrados ) -
+          - ( No se encontraron ganado registrados ) -
         </span>
       )}
 

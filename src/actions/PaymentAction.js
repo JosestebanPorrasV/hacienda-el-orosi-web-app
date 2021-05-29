@@ -31,11 +31,11 @@ export const paymentRegister = (paymentReg) => {
   };
 };
 
-export const paymentStartLoading = (page = 1) => {
+export const paymentStartLoading = () => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`recursos-humanos/pagos/realizados/${page}`);
+      const resp = await FetchConsult(`recursos-humanos/pagos/realizados`);
 
       const body = await resp.json();
 
@@ -52,13 +52,11 @@ export const paymentStartLoading = (page = 1) => {
   };
 };
 
-export const paymentByCollaboratorLoading = (collaboratorId, page = 1) => {
+export const paymentByCollaboratorLoading = (collaboratorId) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(
-        `recursos-humanos/pagos/colaborador/${collaboratorId}/${page}`
-      );
+      const resp = await FetchConsult(`recursos-humanos/pagos/colaborador/${collaboratorId}`);
 
       const body = await resp.json();
 
@@ -114,9 +112,6 @@ export function registerTodayPresence(collaborator, total_overtime = 0) {
 
     if (body.status) {
       await dispatch(registerPresence());
-
-      collaborator['validatePresence'] = true;
-      dispatch(validatePresenceCollaborator(collaborator));
       await Swal.fire({
         icon: 'success',
         title: body.msg,
@@ -133,11 +128,6 @@ export function registerTodayPresence(collaborator, total_overtime = 0) {
 }
 export const cleanPresenceByCollaborator = () => ({
   type: Types.CLEAN_PRESENCE_DAY_BY_COLLABORATOR
-});
-
-const validatePresenceCollaborator = (collaborator) => ({
-  type: Types.VALIDATE_PRESENCE_COLLABORATOR,
-  payload: collaborator
 });
 
 const registerPresence = () => ({

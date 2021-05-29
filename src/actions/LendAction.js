@@ -5,14 +5,14 @@ import { uiCloseModalAddLend } from './UIAction';
 import { collaboratorClearActive } from './CollaboratorAction';
 import TopLoaderService from 'top-loader-service';
 
-export const lendsStartLoading = (status = 'Activo', page = 1) => {
+export const lendsStartLoading = (status = 'ACTIVO') => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`recursos-humanos/prestamos/${status}/${page}`);
+      const resp = await FetchConsult(`recursos-humanos/prestamos/${status}`);
       const body = await resp.json();
       if (body.status) {
-        await dispatch(lendsLoaded(body.lends));
+        await dispatch(lendsLoaded(body));
         await TopLoaderService.end();
       } else {
         await Swal.fire('Error', body.msg, 'error');
@@ -24,7 +24,7 @@ export const lendsStartLoading = (status = 'Activo', page = 1) => {
   };
 };
 
-export const lendsByCollaboratorLoading = (document_id, page = 1) => {
+export const lendsByCollaboratorLoading = (document_id) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
@@ -32,12 +32,10 @@ export const lendsByCollaboratorLoading = (document_id, page = 1) => {
         return Swal.fire('Error', 'Escribir cedula', 'warning');
       }
 
-      const resp = await FetchConsult(
-        `recursos-humanos/colaborador/prestamos/${document_id}/${page}`
-      );
+      const resp = await FetchConsult(`recursos-humanos/colaborador/prestamos/${document_id}`);
       const body = await resp.json();
       if (body.status) {
-        await dispatch(lendsByCollaboratorLoaded(body.lends));
+        await dispatch(lendsByCollaboratorLoaded(body));
         await TopLoaderService.end();
       } else {
         await dispatch(lendsStartLoading());

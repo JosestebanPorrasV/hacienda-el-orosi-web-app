@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import {
   administratorClearActive,
   registerAdministrator,
-} from "../../actions/AdministratorAction";
+  updateAdmin
+} from '../../actions/AdministratorAction';
 
-import { uiCloseModalAdministrator } from "../../actions/UIAction";
+import { uiCloseModalAdministrator } from '../../actions/UIAction';
 
 const initEvent = {
-  document_id: "",
-  password: "",
-  email: "",
-  name: "",
-  surname: "",
-  role: "",
+  document_id: '',
+  password: '',
+  email: '',
+  name: '',
+  surname: '',
+  role: ''
 };
 
-export const ModalAdministrator = () => {
+export const ModalAdministrator = ({ currentAdministrator }) => {
   const dispatch = useDispatch();
 
   const { modalAdministratorOpen } = useSelector((state) => state.ui);
@@ -31,22 +32,31 @@ export const ModalAdministrator = () => {
   const { document_id, password, email, name, surname, role } = formValues;
 
   useEffect(() => {
-    setFormValues(initEvent);
-  }, []);
+    if (currentAdministrator) {
+      setFormValues(currentAdministrator);
+    } else {
+      setFormValues(initEvent);
+    }
+  }, [currentAdministrator, setFormValues]);
 
   const handleInputChange = ({ target }) => {
     setFormValues({
       ...formValues,
-      [target.name]: target.value,
+      [target.name]: target.value
     });
   };
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    if (!role || role === "DEFAULT") {
-      return Swal.fire("Error", "Por favor elige un trabjo", "warning");
+    if (!role || role === 'DEFAULT') {
+      return Swal.fire('Error', 'Por favor elige un trabjo', 'warning');
     }
-    dispatch(registerAdministrator(formValues));
+
+    if (currentAdministrator) {
+      dispatch(updateAdmin(currentAdministrator._id, formValues));
+    } else {
+      dispatch(registerAdministrator(formValues));
+    }
   };
 
   return (
@@ -60,7 +70,8 @@ export const ModalAdministrator = () => {
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                   <h5 className="text-blue-400 text-xl font-bold mb-2">
-                    Registrar nuevo administrador
+                    {' '}
+                    {currentAdministrator ? 'Editar Datos' : 'Registrar administrador'}{' '}
                   </h5>
                   <hr />
                   <button
@@ -77,15 +88,13 @@ export const ModalAdministrator = () => {
                   <section className="max-w-4xl p-6 mx-auto bg-white dark:bg-gray-800">
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                       <div>
-                        <label className="text-gray-700 dark:text-gray-200">
-                          Cédula
-                        </label>
+                        <label className="text-gray-700 dark:text-gray-200">Cédula</label>
                         <input
                           required
                           value={document_id}
                           name="document_id"
                           onChange={handleInputChange}
-                          type="text"
+                          type="number"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
@@ -98,27 +107,13 @@ export const ModalAdministrator = () => {
                           value={email}
                           name="email"
                           onChange={handleInputChange}
-                          type="text"
+                          type="email"
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
+
                       <div>
-                        <label className="text-gray-700 dark:text-gray-200">
-                          contraseña
-                        </label>
-                        <input
-                          required
-                          value={password}
-                          name="password"
-                          onChange={handleInputChange}
-                          type="password"
-                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-gray-700 dark:text-gray-200">
-                          Nombre
-                        </label>
+                        <label className="text-gray-700 dark:text-gray-200">Nombre</label>
                         <input
                           required
                           value={name}
@@ -129,9 +124,7 @@ export const ModalAdministrator = () => {
                         />
                       </div>
                       <div>
-                        <label className="text-gray-700 dark:text-gray-200">
-                          Apellidos
-                        </label>
+                        <label className="text-gray-700 dark:text-gray-200">Apellidos</label>
                         <input
                           required
                           value={surname}
@@ -141,26 +134,34 @@ export const ModalAdministrator = () => {
                           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                         />
                       </div>
-                      <div>
-                        <label className="text-gray-700 dark:text-gray-200">
-                          Cargo
-                        </label>
-                        <select
-                          value={role}
-                          onChange={handleInputChange}
-                          name="role"
-                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md"
-                        >
-                          <option value="DEFAULT">Elegir</option>
-                          <option value="Recursos Humanos">
-                            Recursos Humano
-                          </option>
-                          <option value="Encargado del ganado">
-                            Encargado del ganado
-                          </option>
-                          <option value="Dueño">Dueño</option>
-                        </select>
-                      </div>
+                      {!currentAdministrator && (
+                        <>
+                          <div>
+                            <label className="text-gray-700 dark:text-gray-200">Contraseña</label>
+                            <input
+                              required
+                              value={!password && ''}
+                              name="password"
+                              onChange={handleInputChange}
+                              type="password"
+                              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-gray-700 dark:text-gray-200">Cargo</label>
+                            <select
+                              value={role}
+                              onChange={handleInputChange}
+                              name="role"
+                              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md"
+                            >
+                              <option value="DEFAULT">Elegir</option>
+                              <option value="Recursos Humanos">Recursos Humano</option>
+                              <option value="Encargado del ganado">Encargado del ganado</option>
+                            </select>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </section>
                   {/*footer*/}
@@ -168,18 +169,17 @@ export const ModalAdministrator = () => {
                     <button
                       className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
                       type="button"
-                      style={{ transition: "all .15s ease" }}
+                      style={{ transition: 'all .15s ease' }}
                       onClick={() => closeModal()}
                     >
                       Regresar
                     </button>
                     <button
-                      className={` bg-blue-400 text-white active:bg-blue-600 hover:bg-blue-900 font-bold uppercase text-sm px-6 py-3 rounded shadow outline-none focus:outline-none mr-1 mb-1"
-                      `}
+                      className={`bg-blue-400 text-white active:bg-blue-600 hover:bg-blue-900 font-bold uppercase text-sm px-6 py-3 rounded shadow outline-none focus:outline-none mr-1 mb-1`}
                       type="submit"
-                      style={{ transition: "all .15s ease" }}
+                      style={{ transition: 'all .15s ease' }}
                     >
-                      Registrar
+                      {currentAdministrator ? 'Editar' : 'Registar'}
                     </button>
                   </div>
                 </form>

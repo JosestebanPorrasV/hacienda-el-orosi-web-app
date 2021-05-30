@@ -27,6 +27,13 @@ export const HealthReducer = (state = initialState, action) => {
         ),
       };
 
+      case Types.DELETE_HEALTH:
+        return {
+          ...state,
+          healths: state.healths.filter((e) => e._id !== state.currentHealth._id),
+          currentHealth: null
+        };
+
     case Types.HEALTH_SET_ACTIVE:
       return {
         ...state,

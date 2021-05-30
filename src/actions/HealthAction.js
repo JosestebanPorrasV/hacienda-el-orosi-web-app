@@ -99,6 +99,38 @@ export function editOneJob(job_id, job) {
   };
 }
 
+export const healthDelete = ({ _id }) => {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    try {
+      const resp = await FetchConsult(
+        `gestion-salud/remover-registro-medico/${_id}`,
+        { },
+        "DELETE"
+      );
+
+      const body = await resp.json();
+      if (body.status) {
+        await Swal.fire("Eliminado", body.msg, "success");
+
+        await dispatch(deleteOneHealth());
+        await dispatch(HealthsLoaded());
+
+        await TopLoaderService.end();
+      } else {
+        await Swal.fire("Error", body.msg, "error");
+        await TopLoaderService.end();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const deleteOneHealth = () => ({
+  type: Types.DELETE_HEALTH,
+});
+
 export const healthSetActive = (health) => ({
   type: Types.HEALTH_SET_ACTIVE,
   payload: health

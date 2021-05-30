@@ -88,7 +88,7 @@ export const ModalDiet = () => {
                       </div>
                       <div>
                         <label className="text-gray-700 dark:text-gray-200"> Descripción </label>
-                        <input
+                        <textarea
                           required
                           value={description}
                           onChange={handleInputChange}

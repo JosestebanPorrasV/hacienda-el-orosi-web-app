@@ -44,15 +44,8 @@ export default function UploadImgProfile({ animal }) {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-700 outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 rounded-t">
-                  <h3 className="text-3xl font-semibold">Foto de perfil</h3>
-                  <button
-                    className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => setShowModal(false)}
-                  >
-                    <span className="h-6 w-6 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
-                  </button>
+                  <h3 className="text-3xl font-semibold text-white">Foto de perfil</h3>
+
                 </div>
                 {/*body*/}
 
@@ -64,7 +57,7 @@ export default function UploadImgProfile({ animal }) {
                   value={photo}
                   style={{
                     marginTop: 0,
-                    width: '100%',
+                    width: 380,
                     height: 315,
                     background: '#12B981',
                     display: 'flex',

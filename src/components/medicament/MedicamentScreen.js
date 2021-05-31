@@ -65,7 +65,7 @@ export const MedicamentScreen = () => {
           role === 'Encargado del ganado' && 'hidden'
         } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
       >
-        <Link to="/ganado" className="inline-flex justify-center items-center px-1 rounded-lg">
+        <Link to="/ganado-detallado" className="inline-flex justify-center items-center px-1 rounded-lg">
           <i className="fas fa-arrow-circle-left text-blue-600 text-2xl hover:text-blue-800 "></i>{' '}
           <span className="text-xl text-blue-600 hover:underline ml-1">Ganado</span>
         </Link>

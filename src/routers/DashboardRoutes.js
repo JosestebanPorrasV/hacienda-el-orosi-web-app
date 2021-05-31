@@ -14,6 +14,7 @@ import { ProductScreen } from '../components/product/ProductScreen';
 import { CollaboratorScreen } from '../components/collaborator/CollaboratorScreen';
 import { RecoveryPass } from '../components/auth/RecoveryPass';
 import { TypesAnimalsScreen } from '../components/animal/TypesAnimalsScreen';
+import { AnimalsScreenV2 } from '../components/animal/AnimalsScreenV2';
 
 export const DashboardRoutes = () => {
   return (
@@ -28,7 +29,8 @@ export const DashboardRoutes = () => {
         <Route exact path="/herramientas" component={ToolScreen} />
         <Route exact path="/herramientas-activas" component={ActiveScreen} />
         <Route exact path="/trabajos" component={JobScreen} />
-        <Route exact path="/ganado" component={AnimalsScreen} />
+        <Route exact path="/ganado-funcional" component={AnimalsScreen} />
+        <Route exact path="/ganado-detallado" component={AnimalsScreenV2} />
         <Route exact path="/tipos-de-ganado" component={TypesAnimalsScreen} />
         <Route exact path="/dietas" component={DietScreen} />
         <Route exact path="/productos" component={ProductScreen} />

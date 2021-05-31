@@ -119,7 +119,7 @@ export const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/ganado"
+                to="/ganado-detallado"
                 className="hover:bg-gray-900 transition-colors duration-100 flex items-end py-3 px-2 rounded-lg"
               >
                 <img src={ganado} alt="Ganado" className="pr-4" width="36" height="36"></img>

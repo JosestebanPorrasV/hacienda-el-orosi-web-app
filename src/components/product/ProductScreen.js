@@ -72,7 +72,7 @@ export const ProductScreen = () => {
         </Link>
 
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0"></nav>
-        <Link to="/ganado" className="inline-flex justify-center items-center px-1 rounded-lg">
+        <Link to="/ganado-detallado" className="inline-flex justify-center items-center px-1 rounded-lg">
           <span className="text-xl text-blue-600 hover:underline mr-1">Ganado</span>
           <i className="fas fa-arrow-circle-right text-blue-600 text-2xl hover:text-blue-800"></i>
         </Link>

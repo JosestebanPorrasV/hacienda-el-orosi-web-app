@@ -175,7 +175,7 @@ export const ModalAnimal = () => {
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                   <h5
                     className={`${
-                      currentAnimal ? 'text-yellow-400' : 'text-blue-400'
+                      currentAnimal ? 'text-yellow-700' : 'text-blue-700'
                     } text-xl font-bold mb-2`}
                   >{`${currentAnimal ? 'Editar datos del animal' : 'Registrar animal'}`}</h5>
                   <hr />
@@ -321,9 +321,9 @@ export const ModalAnimal = () => {
                               {currentAnimal ? currentAnimal.status : 'Elegir'}
                             </option>
 
-                            <option value="Subasta">Subasta</option>
-                            <option value="Criollo">Criollo</option>
-                            <option value="En finca">En finca</option>
+                            <option value="SUBASTA">SUBASTA</option>
+                            <option value="CRIOLLO">CRIOLLO</option>
+                            <option value="FINCA">FINCA</option>
                           </select>
                         </div>
                         <div>
@@ -338,9 +338,8 @@ export const ModalAnimal = () => {
                               {currentAnimal ? currentAnimal.status : 'Elegir'}
                             </option>
 
-                            <option value="Vendido">Vendido</option>
-                            <option value="En finca">En finca</option>
-                            <option value="De baja">De baja</option>
+                            <option value="FINCA">FINCA</option>
+                            <option value="ELIMINADO">ELIMINADO</option>
                           </select>
                         </div>
                         <div>
@@ -352,17 +351,12 @@ export const ModalAnimal = () => {
                             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md"
                           >
                             <option value="DEFAULT">Elegir</option>
-
+                            <option value="#DB885C">Naranja</option>
                             <option value="#FFFFFF">Blanco</option>
                             <option value="#EECA06">Amarillo</option>
-                            <option value="#C74C66">Salmon</option>
-                            <option value="#B0316E">Rojo Lila</option>
-                            <option value="#FF6B02">Naranja</option>
-                            <option value="#DB885C">Naranja Oscuro</option>
-                            <option value="#319404">verde</option>
-                            <option value="#0367AB">Azul Cian</option>
-                            <option value="#17277E">Azul Oscuro</option>
-                            <option value="#F5075D">Magenta</option>
+                            <option value="#B0316E">Rojo</option>
+                            <option value="#319404">Verde</option>
+                            <option value="#17277E">Azul</option>
                           </select>
                         </div>
                         <div>
@@ -399,7 +393,7 @@ export const ModalAnimal = () => {
                             locale="es"
                             disabled={currentType.gender === 'Macho' ? true : false}
                             className={`py-2 mt-2 text-gray-700 ${
-                              currentType.gender === 'Macho' ? 'bg-gray-500' : 'bg-white'
+                              currentType.gender === 'Macho' ? 'bg-gray-300' : 'bg-white'
                             }  border border-gray-300 rounded-md`}
                             selected={next_due_date}
                             onChange={(date) => setNext_due_date(date)}

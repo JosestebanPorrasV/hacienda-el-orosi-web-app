@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { regType, typeDelete, TypesLoading } from '../../actions/AnimalAction';
 import { UseForm } from '../../hooks/UseForm';
@@ -76,24 +76,38 @@ export const TypesAnimalsScreen = () => {
     <>
       <div
         className={`${
-          role === 'Recursos Humanos' && 'hidden'
-        } bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900  rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12`}
+          role === 'Encargado del ganado' && 'hidden'
+        } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
       >
-        <div>
-          <h2 className="text-2xl">Tipos de ganado</h2>
-        </div>
-        <nav className="md:flex md:space-x-4 space-y-2 md:space-y-0">
-          <button
-            onClick={() => register()}
-            className="inline-flex flex-col justify-center items-center m-1 px-3 py-3 bg-black rounded-lg hover:bg-gray-800 w-35"
-          >
-            <span className="text-gray-200 font-bold">Agregar tipo</span>
-          </button>
-        </nav>
+        <Link to="/dietas" className="inline-flex justify-center items-center px-1 rounded-lg">
+          <i className="fas fa-arrow-circle-left text-blue-500 text-2xl hover:text-blue-900 "></i>{' '}
+          <span className="text-xl text-blue-500 hover:underline ml-1">Dietas</span>
+        </Link>
+
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0"></nav>
+        <Link to="/ganado-detallado" className="inline-flex justify-center items-center px-1 rounded-lg">
+          <span className="text-xl text-blue-500 hover:underline mr-1 ">Ganado</span>
+          <i className="fas fa-arrow-circle-right text-blue-500 text-2xl hover:text-blue-900"></i>
+        </Link>
       </div>
+
+      <div className="flex flex-col text-center w-full mt-4 mb-4">
+        <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-700 uppercase">Tipos de ganado</h1>
+        <h2 className="text-xs text-green-700 tracking-widest font-medium title-font mb-1">
+          Registrados actualmente
+        </h2>
+      </div>
+      <button
+        onClick={() => register()}
+        className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+        type="button"
+        style={{ transition: 'all .15s ease' }}
+      >
+        Agregar tipo
+      </button>
       {animalsTypes.length !== 0 ? (
         <>
-          <div className="bg-gray-700 rounded-lg px-4 lg:px-8 py-4 lg:py-6 mt-8 ">
+          <div className="bg-gray-200 rounded-lg px-4 lg:px-8 lg:py-6 mt-8 ">
             <input
               type="text"
               name="filter"
@@ -129,7 +143,7 @@ export const TypesAnimalsScreen = () => {
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="text-blue-100 text-opacity-80">
+                      <tbody className="text-gray-700 text-opacity-80">
                         {results.map((type, index) => (
                           <tr key={type._id}>
                             <th className="py-5 px-8">{index + 1}</th>

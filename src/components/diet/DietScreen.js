@@ -24,7 +24,7 @@ export const DietScreen = () => {
     dispatch(DietsLoaded());
   }, [dispatch]);
 
-  const [formValues] = UseForm({
+  const [formValues, handleInputChange] = UseForm({
     filter: ''
   });
 
@@ -48,7 +48,7 @@ export const DietScreen = () => {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#A0A0A0',
-      confirmButtonText: 'Si, eliminar!!',
+      confirmButtonText: 'Si, eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
@@ -63,33 +63,23 @@ export const DietScreen = () => {
     <>
       <div className="container px-4 lg:px-8 py-4 lg:py-6 mt-4 mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
         <Link
-          to="/ganado"
-          className="inline-flex flex-col justify-center items-center m-3 px-1 py-18 rounded-lg"
+          to="/ganado-detallado"
+          className="inline-flex justify-center items-center m-3 px-1 py-18 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-200 "></i>
+          <i className="fas fa-arrow-circle-left text-blue-600 text-2xl hover:text-blue-800 "></i>
+          <span className="text-xl text-blue-600 hover:underline ml-1">Animales</span>
         </Link>
-        <span className="text-xl text-green-700">Animales</span>
 
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
-          <button
-            onClick={() => dispatch(uiOpenModalDiet())}
-            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
-            type="button"
-            style={{ transition: 'all .15s ease' }}
-          >
-            Agregar
-          </button>
-        </nav>
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0"></nav>
 
-        <span className="text-xl text-green-700">Productos</span>
         <Link
-          to="/producto"
-          className="inline-flex flex-col justify-center items-center m-3 px-1 py-18 rounded-lg"
+          to="/productos"
+          className="inline-flex justify-center items-center m-3 px-1 py-18 rounded-lg"
         >
-          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-200"></i>
+          <span className="text-xl text-blue-600 hover:underline mr-1">Productos</span>
+          <i className="fas fa-arrow-circle-right text-blue-600 text-2xl hover:text-blue-800"></i>
         </Link>
       </div>
-
       <section className="text-gray-600 body-font">
         <div className="container px-4 py-4 mx-auto">
           <div className="flex flex-col text-center w-full mb-4">
@@ -99,6 +89,23 @@ export const DietScreen = () => {
             </h2>
           </div>
 
+          <button
+            onClick={() => dispatch(uiOpenModalDiet())}
+            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+            type="button"
+            style={{ transition: 'all .15s ease' }}
+          >
+            Crear dieta
+          </button>
+
+          <input
+            type="text"
+            name="filter"
+            className="rounded-lg w-1/4 h-4 p-4 placeholder-blue-gray-600 text-black focus:outline-none bg-gray-200"
+            placeholder="Buscar"
+            value={filter}
+            onChange={handleInputChange}
+          />
           <SearchResults
             value={filter}
             data={diets}
@@ -106,9 +113,9 @@ export const DietScreen = () => {
               <div className="flex flex-wrap m-2">
                 {results.map((diet) => (
                   <div key={diet._id} className="p-4 md:w-1/3">
-                    <div className="flex rounded-lg h-full bg-gray-100 p-8 flex-col group">
+                    <div className="flex rounded-lg h-full bg-gray-600 p-8 flex-col group">
                       <div className="flex items-center ">
-                        <div className="mr-2 inline-flex group-hover:text-red-900 items-center justify-center rounded-full text-gray-100 flex-shrink-0 ">
+                        <div className="mr-2 inline-flex group-hover:text-red-400 items-center justify-center rounded-full text-gray-600 flex-shrink-0 ">
                           <button
                             onClick={() => onSelectDeleteOneDiet(diet)}
                             className="text-gray text-xl"
@@ -119,16 +126,18 @@ export const DietScreen = () => {
                           </button>
                         </div>
 
-                        <h2 className="text-gray-900 text-lg title-font font-medium">
+                        <h2 className="text-white text-lg title-font font-medium">
                           {diet.diet_name}
                         </h2>
                       </div>
 
                       <div className="flex-grow mb-3">
-                        <p className="leading-relaxed text-base">{diet.description}</p>
+                        <p className="leading-relaxed text-base text-gray-200">
+                          {diet.description}
+                        </p>
                         <button
                           onClick={() => onSelectAliment(diet)}
-                          className="mt-3 text-green-500 inline-flex items-center hover:text-blue-700"
+                          className="mt-3 text-green-500 inline-flex items-center hover:text-green-200"
                         >
                           Alimentos
                           <svg

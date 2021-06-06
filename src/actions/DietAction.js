@@ -97,6 +97,35 @@ export function addAliment({ _id }, alimentFormValues) {
   };
 }
 
+export function updateDiet(dietID, dietFormValues) {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+
+    const resp = await FetchConsult(`gestion-animal/modificar-dieta/${dietID}`, 
+    {
+       diet_name: dietFormValues.diet_name,
+       description: dietFormValues.description
+    }, 
+    'PUT'
+    );
+
+    const body = await resp.json();
+    if (body.status) {
+      await dispatch(DietsLoaded());
+      await Swal.fire({
+        icon: 'success',
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000
+      });
+      await TopLoaderService.end();
+    } else {
+      await Swal.fire('Error', body.msg, 'error');
+      await TopLoaderService.end();
+    }
+  };
+}
+
 export function editAliment(dietID, alimentID, newQuantity) {
   return async (dispatch) => {
     await TopLoaderService.start();

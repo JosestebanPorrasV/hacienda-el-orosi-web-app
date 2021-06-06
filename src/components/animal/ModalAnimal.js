@@ -356,7 +356,7 @@ export const ModalAnimal = () => {
                             <option value="#EECA06">Amarillo</option>
                             <option value="#B0316E">Rojo</option>
                             <option value="#319404">Verde</option>
-                            <option value="#17277E">Azul</option>
+                            <option value="#0CB7F2">Celeste</option>
                           </select>
                         </div>
                         <div>

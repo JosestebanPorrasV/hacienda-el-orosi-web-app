@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import { UseForm } from '../../hooks/UseForm';
 import {
   administratorClearActive,
   registerAdministrator,
@@ -11,7 +12,6 @@ import { uiCloseModalAdministrator } from '../../actions/UIAction';
 
 const initEvent = {
   document_id: '',
-  password: '',
   email: '',
   name: '',
   surname: '',
@@ -28,8 +28,14 @@ export const ModalAdministrator = ({ currentAdministrator }) => {
     dispatch(uiCloseModalAdministrator());
   };
 
+  const [formPassword, handlePasswordChange] = UseForm({
+    password1: ''
+  });
+
+  const { password1 } = formPassword;
+
   const [formValues, setFormValues] = useState(initEvent);
-  const { document_id, password, email, name, surname, role } = formValues;
+  const { document_id, email, name, surname, role } = formValues;
 
   useEffect(() => {
     if (currentAdministrator) {
@@ -55,7 +61,10 @@ export const ModalAdministrator = ({ currentAdministrator }) => {
     if (currentAdministrator) {
       dispatch(updateAdmin(currentAdministrator._id, formValues));
     } else {
-      dispatch(registerAdministrator(formValues));
+      if (!password1) {
+        return Swal.fire('Error', 'Por favor proporcione una contraseña', 'warning');
+      }
+      dispatch(registerAdministrator(formValues, password1));
     }
   };
 
@@ -140,9 +149,9 @@ export const ModalAdministrator = ({ currentAdministrator }) => {
                             <label className="text-gray-700 dark:text-gray-200">Contraseña</label>
                             <input
                               required
-                              value={!password && ''}
-                              name="password"
-                              onChange={handleInputChange}
+                              value={password1}
+                              name="password1"
+                              onChange={handlePasswordChange}
                               type="password"
                               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                             />

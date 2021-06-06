@@ -98,6 +98,35 @@ export function changeStatus(tool_id, status) {
   };
 }
 
+export function changeName(tool_id, newName) {
+  return async (dispatch) => {
+    await TopLoaderService.start();
+    const resp = await FetchConsult(
+      `herramientas/modificar-herramienta/${tool_id}`,
+      {
+        name: newName
+      },
+      'PUT'
+    );
+    const body = await resp.json();
+
+    if (body.status) {
+      await dispatch(toolsLoading());
+      await Swal.fire({
+        icon: 'success',
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000
+      });
+
+      await TopLoaderService.end();
+    } else {
+      await Swal.fire('Error', body.msg, 'error');
+      await TopLoaderService.end();
+    }
+  };
+}
+
 export const removeTools = (data) => {
   return async (dispatch) => {
     await TopLoaderService.start();

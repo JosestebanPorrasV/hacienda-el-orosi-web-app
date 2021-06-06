@@ -389,9 +389,8 @@ export const AnimalsScreenV2 = () => {
                                 className="ml-auto mr-2 hover:underline font-bold bg-transparent"
                               >
                                 <option value={animal.status}> {animal.status}</option>
-                                <option value="Vendido">Vendido</option>
-                                <option value="En finca">En finca</option>
-                                <option value="De baja">De baja</option>
+                                <option value="FINCA">FINCA</option>
+                                <option value="ELIMINADO">ELIMINADO</option>
                               </select>
                             </div>
                             <div className="flex border-t border-green-800 py-2">
@@ -458,7 +457,7 @@ export const AnimalsScreenV2 = () => {
                               }`}
                             >
                               <span className="ml-2">
-                                {animal.gender === 'Macho' ? 'Hijo de' : 'Hija de'}
+                                {animal.type.gender === 'Macho' ? 'Hijo de' : 'Hija de'}
                               </span>
                               <span className="ml-auto mr-2">
                                 {animal.daughter_of

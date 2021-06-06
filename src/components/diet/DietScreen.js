@@ -4,6 +4,7 @@ import SearchResults from 'react-filter-search';
 import { Link } from 'react-router-dom';
 import { ModalDiet } from './ModalDiet';
 import { ModalAliment } from './ModalAliment';
+import UpdateDiet from './UpdateDiet';
 
 import {
   DietsLoaded,
@@ -135,6 +136,7 @@ export const DietScreen = () => {
                         <p className="leading-relaxed text-base text-gray-200">
                           {diet.description}
                         </p>
+                        <UpdateDiet currentDiet={diet}/>
                         <button
                           onClick={() => onSelectAliment(diet)}
                           className="mt-3 text-green-500 inline-flex items-center hover:text-green-200"

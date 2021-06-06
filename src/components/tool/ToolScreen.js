@@ -12,6 +12,7 @@ import {
   removeTools,
   toolsLoading,
   changeStatus,
+  changeName,
   toolSetActive,
   toolClearActive
 } from '../../actions/ToolAction';
@@ -44,6 +45,23 @@ export const ToolScreen = () => {
       }
     });
   };
+
+  const changeNameTool = async (tool, name) => {
+    Swal.fire({
+      title: '¿Estas seguro?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, seguro',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(changeName(tool, name));
+      }
+    });
+  };
+
 
   const addOneToolActive = (tool) => {
     dispatch(uiOpenModalAddActive());
@@ -153,7 +171,7 @@ export const ToolScreen = () => {
         icons={TableIcons}
         localization={TableLocalization}
         columns={[
-          { title: 'Herramienta', field: 'name', editable: 'never' },
+          { title: 'Herramienta', field: 'name'},
           { title: 'Código', field: 'active_num', editable: 'never' },
           { title: 'Registrada', field: 'date', type: 'date', editable: 'never' },
           {
@@ -171,7 +189,11 @@ export const ToolScreen = () => {
         cellEditable={{
           onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
             return new Promise((resolve, reject) => {
-              changeStatusTool(rowData, newValue);
+              if(columnDef.field === 'status'){
+                changeStatusTool(rowData, newValue);
+              }else{
+                changeNameTool(rowData._id, newValue);
+              }
               setTimeout(resolve, 1000);
             });
           }

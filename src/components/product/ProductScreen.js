@@ -124,7 +124,16 @@ export const ProductScreen = () => {
               <>{rowData.liters ? <span>{rowData.liters}</span> : <i className="fas fa-ban"></i>}</>
             )
           },
-          { title: 'Precio', field: 'price', editable: 'never' }
+          {
+            title: 'Precio c/u',
+            field: 'price',
+            editable: 'never',
+            type: 'currency',
+            currencySetting: {
+              locale: 'es-CR',
+              currencyCode: 'CRC'
+            }
+          }
         ]}
         data={products}
         actions={[

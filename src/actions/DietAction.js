@@ -73,7 +73,7 @@ export function addAliment({ _id }, alimentFormValues) {
     const resp = await FetchConsult(
       `gestion-animal/agregar-alimento/${_id}`,
       {
-        product_name: alimentFormValues.product,
+        product_code: alimentFormValues.product,
         quantity_supplied: alimentFormValues.quantity_supplied
       },
       'POST'
@@ -81,7 +81,7 @@ export function addAliment({ _id }, alimentFormValues) {
 
     const body = await resp.json();
     if (body.status) {
-      await dispatch(addAlimentSuccess(body.aliment));
+      await dispatch(AlimentsLoaded(_id));
       await Swal.fire({
         icon: 'success',
         title: body.msg,
@@ -97,12 +97,40 @@ export function addAliment({ _id }, alimentFormValues) {
   };
 }
 
-export function editAliment({ _id }, newQuantity) {
+export function updateDiet(dietID, dietFormValues) {
   return async (dispatch) => {
     await TopLoaderService.start();
-    console.log(_id, newQuantity);
+
+    const resp = await FetchConsult(`gestion-animal/modificar-dieta/${dietID}`, 
+    {
+       diet_name: dietFormValues.diet_name,
+       description: dietFormValues.description
+    }, 
+    'PUT'
+    );
+
+    const body = await resp.json();
+    if (body.status) {
+      await dispatch(DietsLoaded());
+      await Swal.fire({
+        icon: 'success',
+        title: body.msg,
+        showConfirmButton: false,
+        timer: 2000
+      });
+      await TopLoaderService.end();
+    } else {
+      await Swal.fire('Error', body.msg, 'error');
+      await TopLoaderService.end();
+    }
+  };
+}
+
+export function editAliment(dietID, alimentID, newQuantity) {
+  return async (dispatch) => {
+    await TopLoaderService.start();
     const resp = await FetchConsult(
-      `gestion-animal/modificar-alimento/${_id}`,
+      `gestion-animal/modificar-alimento/${alimentID}`,
       {
         quantity_supplied: newQuantity
       },
@@ -110,8 +138,8 @@ export function editAliment({ _id }, newQuantity) {
     );
     const body = await resp.json();
 
-    if (body.status === 'success') {
-      dispatch(editSuccessAliment(body.aliment));
+    if (body.status) {
+      await dispatch(AlimentsLoaded(dietID));
       Swal.fire({
         icon: 'success',
         title: body.msg,
@@ -177,11 +205,6 @@ export const deleteOneAliment = () => ({
 
 export const deleteOneDiet = () => ({
   type: Types.DELETE_DIET
-});
-
-const editSuccessAliment = (aliment) => ({
-  type: Types.UPDATED_ALIMENT,
-  payload: aliment
 });
 
 export const addDietSuccess = (diet) => ({

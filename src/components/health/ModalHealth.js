@@ -99,7 +99,7 @@ export const ModalHealth = () => {
                     <div className="p-4 sm:w-1/4 w-1/2">
                       <p className="leading-relaxed">Medicamento</p>
                       <h2 className="title-font font-medium text-gray-700">
-                        {currentMedicament && currentMedicament.active_num}
+                        {currentMedicament && currentMedicament.name}
                       </h2>
                     </div>
                   </div>

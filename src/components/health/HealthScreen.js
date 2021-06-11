@@ -3,9 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import MaterialTable from 'material-table';
 import { TableIcons, TableLocalization, TableOptions } from '../../helpers/TableInit';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import Swal from 'sweetalert2';
 
 import { ModalHealth } from './ModalHealth';
-import { HealthsLoaded } from '../../actions/HealthAction';
+import {
+  HealthsLoaded,
+  healthSetActive,
+  healthClearActive,
+  healthDelete
+} from '../../actions/HealthAction';
 import { uiOpenModalHealth } from '../../actions/UIAction';
 
 export const HealthScreen = () => {
@@ -17,6 +24,30 @@ export const HealthScreen = () => {
     dispatch(HealthsLoaded());
   }, [dispatch]);
 
+  const onSelectHealthDelete = (health) => {
+    dispatch(healthSetActive(health));
+    deleteHealth(health);
+  };
+
+  const deleteHealth = (health) => {
+    Swal.fire({
+      title: '¿Estas seguro?',
+      text: 'El registro de salud no se volerá a recuperar',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#A0A0A0',
+      confirmButtonText: 'Si, eliminar!!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        dispatch(healthDelete(health));
+      } else {
+        dispatch(healthClearActive());
+      }
+    });
+  };
+
   return (
     <>
       <div
@@ -24,7 +55,7 @@ export const HealthScreen = () => {
           role === 'Encargado del ganado' && 'hidden'
         } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
       >
-        <Link to="/ganado" className="inline-flex justify-center items-center px-1 rounded-lg">
+        <Link to="/ganado-detallado" className="inline-flex justify-center items-center px-1 rounded-lg">
           <i className="fas fa-arrow-circle-left text-blue-600 text-2xl hover:text-blue-800 "></i>{' '}
           <span className="text-xl text-blue-600 hover:underline ml-1">Ganado</span>
         </Link>
@@ -79,6 +110,13 @@ export const HealthScreen = () => {
           }
         ]}
         data={healths}
+        actions={[
+          {
+            icon: DeleteOutlineIcon,
+            tooltip: 'Eliminar',
+            onClick: (event, rowData) => onSelectHealthDelete(rowData)
+          }
+        ]}
         options={TableOptions}
       />
       <ModalHealth />

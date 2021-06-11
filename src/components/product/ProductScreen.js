@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ModalProduct } from './ModalProduct';
 import MaterialTable from 'material-table';
-import { TableIcons, TableLocalization } from '../../helpers/TableInit';
+import { TableIcons, TableLocalization, TableOptions } from '../../helpers/TableInit';
 
-import Edit from '@material-ui/icons/Edit';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 
 import {
@@ -60,8 +59,6 @@ export const ProductScreen = () => {
     });
   };
 
-  let dateNow = new Date();
-
   return (
     <>
       <div
@@ -69,74 +66,84 @@ export const ProductScreen = () => {
           role === 'Encargado del ganado' && 'hidden'
         } container px-4 py-4 mx-auto flex flex-wrap flex-col md:flex-row items-center`}
       >
-        <Link
-          to="/dietas"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
-        >
-          <i className="fas fa-arrow-circle-left text-green-900 text-2xl hover:text-green-500 "></i>
+        <Link to="/dietas" className="inline-flex justify-center items-center px-1 rounded-lg">
+          <i className="fas fa-arrow-circle-left text-blue-600 text-2xl hover:text-blue-800 "></i>
+          <span className="text-xl text-blue-600 hover:underline ml-1">Dieta</span>
         </Link>
-        <span className="text-xl text-green-600">Dieta</span>
 
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0">
-          <button
-            onClick={() => onSelectAddEditProduct()}
-            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
-            type="button"
-            style={{ transition: 'all .15s ease' }}
-          >
-            Agregar Producto
-          </button>
-        </nav>
-        <span className="text-xl text-green-600">Ganado</span>
-        <Link
-          to="/ganado"
-          className="inline-flex flex-col justify-center items-center px-1 rounded-lg"
-        >
-          <i className="fas fa-arrow-circle-right text-green-900 text-2xl hover:text-green-500"></i>
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center md:flex md:space-x-4 space-y-2 md:space-y-0"></nav>
+        <Link to="/ganado-detallado" className="inline-flex justify-center items-center px-1 rounded-lg">
+          <span className="text-xl text-blue-600 hover:underline mr-1">Ganado</span>
+          <i className="fas fa-arrow-circle-right text-blue-600 text-2xl hover:text-blue-800"></i>
         </Link>
       </div>
-      <span className="flex px-6 text-gray-600 space-x-4 italic mt-10">
-        {'Fecha actual: ' +
-          dateNow.getFullYear() +
-          '-' +
-          (dateNow.getMonth() + 1) +
-          '-' +
-          dateNow.getDate()}
-      </span>
 
+      <div className="flex flex-col text-center w-full mt-4 mb-4">
+        <h1 className="sm:text-3xl text-2xl font-medium title-font text-green-700 uppercase">
+          PRODUCTOS
+        </h1>
+        <h2 className="text-xs text-green-700 tracking-widest font-medium title-font mb-1">
+          Registrados
+        </h2>
+      </div>
+
+      <button
+        onClick={() => onSelectAddEditProduct()}
+        className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
+        type="button"
+        style={{ transition: 'all .15s ease' }}
+      >
+        Agregar Producto
+      </button>
       <MaterialTable
-        title="LISTA DE PRODUCTOS"
+        title="PRODUCTOS"
         icons={TableIcons}
         localization={TableLocalization}
         columns={[
           { title: 'Producto', field: 'name', editable: 'never' },
-          { title: 'Kilogramos', field: 'kilograms', editable: 'never' },
-          { title: 'Litros del Producto', field: 'liters', editable: 'never' },
-          { title: 'Precio por Producto', field: 'price', editable: 'never' }
+          { title: 'Código', field: 'active_num', editable: 'never' },
+          {
+            title: 'Kilogramos',
+            field: 'kilograms',
+            editable: 'never',
+            render: (rowData) => (
+              <>
+                {rowData.kilograms ? (
+                  <span>{rowData.kilograms}</span>
+                ) : (
+                  <i className="fas fa-ban"></i>
+                )}
+              </>
+            )
+          },
+          {
+            title: 'Litros',
+            field: 'liters',
+            editable: 'never',
+            render: (rowData) => (
+              <>{rowData.liters ? <span>{rowData.liters}</span> : <i className="fas fa-ban"></i>}</>
+            )
+          },
+          {
+            title: 'Precio c/u',
+            field: 'price',
+            editable: 'never',
+            type: 'currency',
+            currencySetting: {
+              locale: 'es-CR',
+              currencyCode: 'CRC'
+            }
+          }
         ]}
         data={products}
         actions={[
-          {
-            icon: Edit,
-            tooltip: 'Editar',
-            onClick: (event, rowData) => onSelectAddEditProduct(rowData)
-          },
           {
             icon: DeleteOutline,
             tooltip: 'Eliminar',
             onClick: (event, rowData) => onSelectProductOneDelete(rowData)
           }
         ]}
-        options={{
-          headerStyle: { background: '#404A59', color: 'white' },
-          rowStyle: {
-            color: '#1F3A8A'
-          },
-          pageSizeOptions: [5, 10, 30, 50, 100],
-          actionsColumnIndex: -1,
-          pageSize: 10,
-          exportButton: true
-        }}
+        options={TableOptions}
       />
       <ModalProduct />
     </>

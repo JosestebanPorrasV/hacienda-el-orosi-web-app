@@ -1,16 +1,9 @@
-
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { uiCloseModalAddActive } from "../../actions/UIAction";
-import {
-  removeInSelectedActives,
-  registerActives,
-} from "../../actions/ToolAction";
-import {
-  collaboratorClearActive,
-  searchCollaborator,
-} from "../../actions/CollaboratorAction";
-import { UseForm } from "../../hooks/UseForm";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { uiCloseModalAddActive } from '../../actions/UIAction';
+import { removeInSelectedActives, registerActives } from '../../actions/ToolAction';
+import { collaboratorClearActive, searchCollaborator } from '../../actions/CollaboratorAction';
+import { UseForm } from '../../hooks/UseForm';
 
 export const ModalAddActive = () => {
   const dispatch = useDispatch();
@@ -150,6 +143,14 @@ export const ModalAddActive = () => {
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
                   <button
+                    className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
+                    type="button"
+                    style={{ transition: 'all .15s ease' }}
+                    onClick={() => closeModal()}
+                  >
+                    Regresar
+                  </button>
+                  <button
                     disabled={!currentCollaborator}
                     className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                     type="button"
@@ -157,15 +158,6 @@ export const ModalAddActive = () => {
                     onClick={() => handleAddOneActive()}
                   >
                     Asignar
-                  </button>
-
-                  <button
-                    className="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-gray-700 outline-none focus:outline-none mr-1 mb-1"
-                    type="button"
-                    style={{ transition: 'all .15s ease' }}
-                    onClick={() => closeModal()}
-                  >
-                    Regresar
                   </button>
                 </div>
               </div>

@@ -2,6 +2,7 @@ import { Types } from '../types/Types';
 import { FetchConsult } from '../helpers/FetchService';
 import Swal from 'sweetalert2';
 import TopLoaderService from 'top-loader-service';
+import { uiCloseModalProduct } from './UIAction';
 
 export const ProductsLoaded = () => {
   return async (dispatch) => {
@@ -41,7 +42,8 @@ export function addProduct(productFormValues) {
     const body = await resp.json();
     if (body.status) {
       await dispatch(addProductSuccess(body.product));
-
+      await dispatch(uiCloseModalProduct());
+      await dispatch(productClearActive());
       await Swal.fire({
         icon: 'success',
         title: body.msg,
@@ -57,11 +59,11 @@ export function addProduct(productFormValues) {
   };
 }
 
-export const searchProduct = (productName) => {
+export const searchProduct = (activeNum) => {
   return async (dispatch) => {
     await TopLoaderService.start();
     try {
-      const resp = await FetchConsult(`gestion-animal/ver-producto/${productName}`);
+      const resp = await FetchConsult(`gestion-animal/ver-producto/${activeNum}`);
       const body = await resp.json();
       if (body.status) {
         await dispatch(productSetActive(body.product));
@@ -93,7 +95,6 @@ export const oneProductDelete = ({ _id }) => {
       const body = await resp.json();
       if (body.status) {
         await Swal.fire('Eliminado', body.msg, 'success');
-
         await dispatch(deleteOneProduct());
         await TopLoaderService.end();
       } else {
@@ -109,32 +110,33 @@ export const oneProductDelete = ({ _id }) => {
 export function editProduct(productId, products) {
   return async (dispatch) => {
     await TopLoaderService.start();
-    
+
     console.log(productId, products);
-    const resp = await FetchConsult(  
+    const resp = await FetchConsult(
       `gestion-animal/modificar-producto/${productId}`,
       {
         name_product: products.name,
         kilograms: products.kilograms,
         work_hours: products.liters,
-        price_product: products.price,
+        price_product: products.price
       },
-      "PUT"
+      'PUT'
     );
     const body = await resp.json();
     if (body.status) {
       await dispatch(updateProductSuccess(body));
+      await dispatch(uiCloseModalProduct());
       await dispatch(productClearActive());
       await Swal.fire({
-        icon: "success",
+        icon: 'success',
         title: body.msg,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 2000
       });
 
       await TopLoaderService.end();
     } else {
-      await Swal.fire("Error", body.msg, "error");
+      await Swal.fire('Error', body.msg, 'error');
       await TopLoaderService.end();
     }
   };
@@ -159,7 +161,7 @@ export const productClearActive = () => ({
 
 export const updateProductSuccess = (product) => ({
   type: Types.UPDATED_PRODUCT,
-  payload: product,
+  payload: product
 });
 
 const productsLoaded = (products) => ({

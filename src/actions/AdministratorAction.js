@@ -23,14 +23,14 @@ export const AdministratorsLoading = () => {
   };
 };
 
-export function registerAdministrator(administratorFormValues) {
+export function registerAdministrator(administratorFormValues, pass) {
   return async (dispatch) => {
     await TopLoaderService.start();
     const resp = await FetchConsult(
       '/registrar-administrador',
       {
         document_id: administratorFormValues.document_id,
-        password: administratorFormValues.password,
+        password: pass,
         email: administratorFormValues.email,
         name: administratorFormValues.name,
         surname: administratorFormValues.surname,

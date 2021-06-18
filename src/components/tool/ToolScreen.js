@@ -180,7 +180,7 @@ export const ToolScreen = () => {
             lookup: {
               BODEGA: 'BODEGA',
               REPARACION: 'REPARACION',
-              BAJA: 'BAJA'
+              BAJA: 'BAJA',
             },
             validate: (rowData) => (rowData.status === 'BAJA' ? { isValid: false } : true)
           }

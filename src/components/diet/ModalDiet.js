@@ -43,7 +43,8 @@ export const ModalDiet = () => {
     });
   };
 
-  const handleSaveDiet = () => {
+  const handleSaveDiet = (e) => {
+    e.preventDefault();
     dispatch(saveDiet(formValues));
     setFormValues(initEvent);
   };

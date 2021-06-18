@@ -48,7 +48,7 @@ export const ProductScreen = () => {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#A0A0A0',
-      confirmButtonText: 'Si, eliminar!!',
+      confirmButtonText: 'Si, eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {

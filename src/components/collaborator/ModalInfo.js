@@ -16,6 +16,12 @@ export const ModalInfo = ({ currentCollaborator }) => {
           </p>
         </div>
         <div className="block py-1">
+          <h3 className="font-medium text-gray-700">Fecha de despacho</h3>
+          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            {currentCollaborator.dispatch_date}
+          </p>
+        </div>
+        <div className="block py-1">
           <h3 className="font-medium text-gray-700">Dirección física</h3>
           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
             {currentCollaborator.direction}

@@ -197,26 +197,29 @@ export const LendScreen = () => {
         ]}
         data={lends}
         actions={[
-          {
+          (rowData) => ({
             icon: AddToPhotosIcon,
             tooltip: 'Registrar cuota',
+            hidden: rowData.status === 'CANCELADO',
             onClick: (event, rowData) => lendAddFee(rowData)
-          },
+          }),
           {
             icon: VisibilityIcon,
             tooltip: 'Ver cuotas',
             onClick: (event, rowData) => onSelectLend(rowData)
           },
-          {
+          (rowData) => ({
             icon: DeleteForeverIcon,
             tooltip: 'Eliminar prestamo',
+            hidden: rowData.status === 'CANCELADO',
             onClick: (event, rowData) => oneDeleteLend(rowData)
-          },
-          {
+          }),
+          (rowData) => ({
             icon: LocalAtmIcon,
             tooltip: 'Cambiar cuota',
+            hidden: rowData.status === 'CANCELADO',
             onClick: (event, rowData) => lendChangeFee(rowData)
-          }
+          }),
         ]}
         options={TableOptions}
       />

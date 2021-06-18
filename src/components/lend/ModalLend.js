@@ -42,8 +42,8 @@ export const ModalLend = () => {
 
   const handleRegisterLend = async (e) => {
     e.preventDefault();
-    await dispatch(registerLend(currentCollaborator._id, formValues));
-    await setFormValues(initEvent); 
+    dispatch(registerLend(currentCollaborator._id, formValues));
+    setFormValues(initEvent);
   };
 
   return (

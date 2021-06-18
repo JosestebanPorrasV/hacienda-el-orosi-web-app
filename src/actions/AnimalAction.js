@@ -179,7 +179,6 @@ export const searchAllAnimals = (animalID) => {
       const resp = await FetchConsult(`gestion-animal/ver-animal/${animalID}`);
       const body = await resp.json();
       if (body.status) {
-       
         await dispatch(searchSetActive(body.animal));
         await Swal.fire({
           icon: 'success',

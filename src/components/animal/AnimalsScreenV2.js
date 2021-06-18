@@ -232,19 +232,6 @@ export const AnimalsScreenV2 = () => {
             <span>De baja</span>
           </button>
 
-          <button
-            onClick={() =>
-              dispatch(
-                currentType
-                  ? animalsByStatusAndTypeLoading(currentType._id, 'VENDIDO')
-                  : animalsByStatusLoading('VENDIDO')
-              )
-            }
-            className="bg-green-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-4 py-2 rounded-2xl shadow transform hover:scale-110 motion-reduce:transform-none mr-1 mb-1"
-            style={{ transition: 'all .15s ease' }}
-          >
-            <span>Vendidos</span>
-          </button>
         </nav>
         <Link to="/dietas" className="inline-flex justify-center items-center px-1 rounded-lg">
           <span className="text-xl text-blue-600 hover:underline mr-1"> Dietas</span>
